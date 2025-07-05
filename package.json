@@ -1,0 +1,21 @@
+{
+  "name": "sathyabama-erp",
+  "version": "1.0.0",
+  "description": "Sathyabama ERP System with Supabase Integration",
+  "main": "index.html",
+  "scripts": {
+    "dev": "live-server",
+    "build": "echo 'Build complete'",
+    "deploy": "echo 'Deploy to your hosting platform'"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.38.0",
+    "bcryptjs": "^2.4.3"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  },
+  "keywords": ["erp", "supabase", "sathyabama", "education"],
+  "author": "Your Name",
+  "license": "MIT"
+} 
