@@ -20,18 +20,26 @@
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
-        display: flex;
-        justify-content: center;
-        align-items: center;
         color: white;
         font-family: 'Poppins', sans-serif;
         position: relative;
+        overflow-x: hidden;
     }
     *{
         margin: 0;
         padding: 0;
         box-sizing:border-box;
     }
+    .login-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100vh;
+        position: relative;
+        z-index: 1;
+    }
+    
     .login{
         width: 100%;
         max-width: 420px;
@@ -145,10 +153,11 @@
     }
     
     .toggle-container {
-        position: absolute;
-        top: 220px;
-        right: -235px;
-        z-index: 10;
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+        pointer-events: auto;
     }
     
     .toggle-btn {
@@ -163,6 +172,7 @@
         backdrop-filter: blur(5px);
         transition: all 0.3s ease;
         font-family: 'Poppins', sans-serif;
+        white-space: nowrap;
     }
     
     .toggle-btn:hover {
@@ -172,14 +182,14 @@
     }
     
     .toggle-btn:active {
-        transform: scale(0.96);
+        transform: scale(0.95);
     }
     
     .lms-link {
-        position: absolute;
-        top: 280px;
-        right: -280px;
-        z-index: 10;
+        position: fixed;
+        top: 70px;
+        right: 20px;
+        z-index: 1000;
         text-decoration: none;
         color: white;
         background: rgba(255, 255, 255, 0.2);
@@ -192,6 +202,8 @@
         transition: all 0.3s ease;
         font-family: 'Poppins', sans-serif;
         text-align: center;
+        white-space: nowrap;
+        pointer-events: auto;
     }
     
     .lms-link:hover {
@@ -213,15 +225,13 @@
         }
         
         .toggle-container {
-            position: fixed;
-            top: 20px;
-            right: 20px;
+            top: 15px;
+            right: 15px;
         }
         
         .lms-link {
-            position: fixed;
-            top: 70px;
-            right: 20px;
+            top: 65px;
+            right: 15px;
         }
         
         .pass {
@@ -286,13 +296,14 @@
 <body> 
     <div id="particles-js"></div>
 
-    <div class="login">
-        <div class="toggle-container">
-            <button class="toggle-btn" onclick="toggleBackground()">Toggle Background</button>
-        </div>
-        
-        <a href="Lms.html" class="lms-link">Want to go LMS? Click here</a>
-        
+    <div class="toggle-container">
+        <button class="toggle-btn" onclick="toggleBackground()">Toggle Background</button>
+    </div>
+    
+    <a href="Lms.html" class="lms-link">Want to go LMS? Click here</a>
+
+    <div class="login-wrapper">
+        <div class="login">
         <div class="header">
                 <img src="Assets/header.jpg">
                 <h1 class="heading">SATHYABAMA ERP</h1>
@@ -311,6 +322,7 @@
             <div id="loginMessage" style="margin-top: 1rem; text-align: center; display: none;"></div>
         </form>
         <a href="register.html" class="new">New user ? Register</a> 
+        </div>
     </div>
     <a class="pass" href="mailto:ashwinkathir2006@gmail.com">Forget your Password?</a>
 <footer>
