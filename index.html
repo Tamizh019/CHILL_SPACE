@@ -320,12 +320,10 @@
             <button type="submit" class="btn">LOG IN</button>
             <div id="loginMessage" style="margin-top: 1rem; text-align: center; display: none;"></div>
         </form>
-             <a class="pass" href="mailto:ashwinkathir2006@gmail.com">Forget your Password?</a>
+        <a class="pass" href="mailto:ashwinkathir2006@gmail.com">Forget your Password?</a>
         <a href="register.html" class="new">New user ? Register</a> 
-            
         </div>
     </div>
-   
 <footer>
     2021 © Sathyabama ERP
 </footer>   
@@ -418,6 +416,12 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         
         if (error || !users) {
             showMessage('User not found', 'error');
+            return;
+        }
+        
+        // Check if email is verified
+        if (!users.email_verified) {
+            showMessage('Please verify your email before logging in. Check your inbox for verification email.', 'error');
             return;
         }
         
