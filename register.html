@@ -555,6 +555,23 @@ document.addEventListener('DOMContentLoaded', function() {
     handleEmailVerification();
 });
 
+window.addEventListener('DOMContentLoaded', async () => {
+  const url = new URL(window.location.href);
+  const type = url.searchParams.get('type');
+  const access_token = url.searchParams.get('access_token');
+
+  if (type === 'signup' && access_token) {
+    // Confirm the user's email with Supabase
+    const { data, error } = await supabase.auth.getUser(access_token);
+    if (error) {
+      alert('Email confirmation failed: ' + error.message);
+    } else {
+      alert('Email confirmed! You can now log in.');
+      // Optionally, you can update the UI or redirect the user
+    }
+  }
+});
+
 </script>
 
 </body>
