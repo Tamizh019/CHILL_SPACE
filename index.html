@@ -149,6 +149,7 @@
         left: 0;
         z-index: 0; 
         background: #000; 
+        pointer-events: auto !important;
     }
     
     .toggle-container {
@@ -214,6 +215,15 @@
     
     .lms-link:active {
         transform: scale(0.95);
+    }
+    
+    .login-wrapper {
+        position: relative;
+        z-index: 1;
+        pointer-events: none; 
+    }
+    .login {
+        pointer-events: auto; 
     }
     
     @media (max-width: 768px) {
