@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>StudySpace – Home</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: #121212;
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: #1e1e1e;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #333;
+    }
+
+    header h1 {
+      font-size: 1.5rem;
+      color: #f1c40f;
+    }
+
+    .logout-btn {
+      background: #f39c12;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .logout-btn:hover {
+      background: #e67e22;
+    }
+
+    main {
+      flex: 1;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .upload-section {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 1.5rem;
+      border-radius: 12px;
+      border: 1px solid #2c2c2c;
+    }
+
+    .upload-section h2 {
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+      color: #f1c40f;
+    }
+
+    .upload-section input {
+      margin-top: 0.5rem;
+      background: #fff;
+      color: #000;
+      padding: 0.6rem;
+      border-radius: 6px;
+    }
+
+    .file-list {
+      background: rgba(255, 255, 255, 0.03);
+      padding: 1.5rem;
+      border-radius: 12px;
+      border: 1px solid #2c2c2c;
+    }
+
+    .file-item {
+      background: #1f1f1f;
+      padding: 0.8rem 1rem;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .file-item a {
+      color: #00aced;
+      text-decoration: none;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background: #1e1e1e;
+      font-size: 0.85rem;
+      color: #ccc;
+      border-top: 1px solid #333;
+    }
+
+    @media (max-width: 600px) {
+      main {
+        padding: 1rem;
+      }
+
+      .upload-section h2 {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>📚 StudySpace</h1>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </header>
+
+  <main>
+    <section class="upload-section" id="uploadSection">
+      <h2>📤 Upload a File (For Uploaders Only)</h2>
+      <input type="file" id="fileInput" />
+      <button class="logout-btn" style="margin-top: 1rem;" onclick="uploadFile()">Upload</button>
+    </section>
+
+    <section class="file-list">
+      <h2 style="color:#f1c40f; margin-bottom:1rem;">📂 Shared Files</h2>
+      <div id="fileContainer">
+        <!-- Dynamically list files here -->
+        <div class="file-item"><span>Notes.pdf</span> <a href="#">Download</a></div>
+        <!-- more will come from JS -->
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    &copy; 2025 StudySpace – Friends Study Hub
+  </footer>
+
+  <script>
+    function logout() {
+      localStorage.clear();
+      window.location.href = "index.html";
+    }
+
+    function uploadFile() {
+      const fileInput = document.getElementById('fileInput');
+      const file = fileInput.files[0];
+      if (!file) return alert("Please choose a file.");
+      
+      // Placeholder: Replace with Supabase logic
+      alert("Uploading: " + file.name);
+    }
+
+    // Optional: loadFilesFromSupabase();
+  </script>
+
+</body>
+</html>
