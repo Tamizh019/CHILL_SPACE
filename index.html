@@ -409,96 +409,37 @@ function toggleBackground() {
     }
 }
 
-document.getElementById('loginForm').addEventListener('submit', async function(e) {
+// Get DOM elements
+const loginForm = document.getElementById('loginForm');
+const emailEl = document.getElementById('email');
+const passwordEl = document.getElementById('password');
+const loginMessage = document.getElementById('loginMessage');
+
+loginForm.onsubmit = async e => {
     e.preventDefault();
-    
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    const messageDiv = document.getElementById('loginMessage');
-    
-    try {
-        // Get user by email
-        const { data: users, error } = await supabase
-            .from('users')
-            .select('*')
-            .eq('email', email)
-            .single();
-        
-        if (error || !users) {
-            showMessage('User not found', 'error');
-            return;
-        }
-        
-        // Check if email is verified
-        if (!users.email_verified) {
-            showMessage('Please verify your email before logging in. Check your inbox for verification email.', 'error');
-            return;
-        }
-        
-        // Verify password
-        let isValidPassword = false;
-        
-        if (typeof bcrypt !== 'undefined') {
-            // Use bcrypt if available
-            isValidPassword = await bcrypt.compare(password, users.password_hash);
-        } else {
-            // Fallback: simple comparison (NOT secure for production, just for testing)
-            const simpleHash = btoa(password); // Base64 encoding as simple fallback
-            isValidPassword = (simpleHash === users.password_hash);
-        }
-        
-        if (!isValidPassword) {
-            showMessage('Invalid password', 'error');
-            return;
-        }
-        
-        // Create session
-        const sessionToken = generateSessionToken();
-        const expiresAt = new Date();
-        expiresAt.setHours(expiresAt.getHours() + 24);
-        
-        const { error: sessionError } = await supabase
-            .from('user_sessions')
-            .insert([
-                {
-                    user_id: users.id,
-                    session_token: sessionToken,
-                    expires_at: expiresAt.toISOString()
-                }
-            ]);
-        
-        if (sessionError) throw sessionError;
-        
-        // Store session
-        localStorage.setItem('sessionToken', sessionToken);
-        localStorage.setItem('userId', users.id);
-        
-        showMessage('Login successful! Redirecting...', 'success');
-        
-        // Redirect to dashboard or LMS
-        setTimeout(() => {
-            window.location.href = 'Lms.html';
-        }, 1500);
-        
-    } catch (error) {
-        console.error('Login error:', error);
-        showMessage('Login failed. Please try again.', 'error');
+    showMsg('', '');
+
+    const email = emailEl.value.trim(), pw = passwordEl.value;
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password: pw });
+    if (error) {
+      showMsg(error.message, 'error');
+      return;
     }
-});
+    if (!data.user.email_confirmed_at) {
+      showMsg('Verify your email before logging in.', 'error');
+      return;
+    }
 
-function showMessage(message, type) {
-    const messageDiv = document.getElementById('loginMessage');
-    messageDiv.textContent = message;
-    messageDiv.style.display = 'block';
-    messageDiv.style.color = type === 'success' ? '#4CAF50' : '#f44336';
-    messageDiv.style.fontWeight = '500';
-}
+    showMsg('Login successful!', 'success');
+    setTimeout(() => location.href = 'Lms.html', 1000);
+  };
 
-function generateSessionToken() {
-    return Math.random().toString(36).substring(2, 15) + 
-           Math.random().toString(36).substring(2, 15);
-}
-
+  function showMsg(txt, type) {
+    const m = loginMessage;
+    m.textContent = txt;
+    m.style.display = txt ? 'block' : 'none';
+    m.style.color = type === 'success' ? '#4CAF50' : '#f44336';
+  }
 
 </script>
 
