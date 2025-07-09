@@ -1364,7 +1364,7 @@
   <!-- Tic Tac Toe Game Section -->
   <section class="card game-section">
     <div class="card-header">
-      <h2><i class="fas fa-gamepad"></i> Tic Tac Toe - Feel Bored? Play with your friends </h2>
+      <h2><i class="fas fa-gamepad"></i> Tic Tac Toe - Feel Bored? Play with your friends</h2>
       <button class="btn btn-outline btn-sm" onclick="resetGame()">
         <i class="fas fa-redo"></i> New Game
       </button>
@@ -1983,14 +1983,24 @@
             table: 'messages'
           },
           (payload) => {
+            console.log('DELETE event received for message:', payload.old.id);
             // Remove deleted message from UI
             const messageElement = document.querySelector(`[data-message-id="${payload.old.id}"]`);
             if (messageElement) {
-              messageElement.remove();
+              console.log('Removing message element from UI:', payload.old.id);
+              messageElement.style.opacity = '0';
+              messageElement.style.transform = 'translateX(20px)';
+              setTimeout(() => {
+                messageElement.remove();
+              }, 300);
+            } else {
+              console.log('Message element not found in DOM for deletion:', payload.old.id);
             }
           }
         )
-        .subscribe();
+        .subscribe((status) => {
+          console.log('Realtime chat subscription status:', status);
+        });
     }
 
     // Load initial messages
@@ -2511,13 +2521,13 @@
 
         console.log('Message found and belongs to user:', messageCheck);
 
-        // Delete message from database
+        // Delete message from database - remove the .select() to avoid issues
         const { data, error } = await supabaseClient
           .from('messages')
           .delete()
           .eq('id', messageId)
           .eq('user_id', user.id)
-          .select();
+          .select('id');
 
         if (error) {
           console.error('Error deleting message:', error);
@@ -2525,9 +2535,13 @@
           return;
         }
 
-        console.log('Message deleted successfully:', data);
+        if (data && data.length > 0) {
+          console.log('Message deleted successfully from database:', data[0].id);
+        } else {
+          console.log('No message was deleted - it may have already been deleted or does not exist');
+        }
         
-        // Manually remove the message from UI
+        // Manually remove the message from UI immediately
         const messageElement = document.querySelector(`[data-message-id="${messageId}"]`);
         if (messageElement) {
           messageElement.style.opacity = '0';
