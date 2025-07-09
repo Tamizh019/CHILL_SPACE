@@ -143,24 +143,31 @@
 
     main {
       flex: 1;
-      padding: 2rem;
+      padding: 1rem;
       display: grid;
-      grid-template-columns: 1fr 300px;
-      gap: 2rem;
+      grid-template-columns: 2.5fr 1fr; /* Make main area even bigger */
+      gap: 2.5rem;
+      max-width: 1600px;
+      margin: 0 auto;
     }
-
     .content-area {
       display: flex;
       flex-direction: column;
       gap: 2rem;
     }
-
+    .chat-container {
+      height: 800px; /* Make chat box even bigger */
+      min-height: 600px;
+      min-width: 0;
+      width: 100%;
+    }
     .sidebar {
+      max-width: 420px;
+      width: 100%;
       display: flex;
       flex-direction: column;
       gap: 2rem;
     }
-
     .card {
       background: var(--card-bg);
       padding: 1.5rem;
@@ -255,7 +262,8 @@
     .chat-container {
       display: flex;
       flex-direction: column;
-      height: 400px;
+      height: 600px; /* Make chat box bigger */
+      min-height: 500px;
     }
 
     .chat-messages {
@@ -434,9 +442,31 @@
       animation: fadeIn 0.3s ease forwards;
     }
 
+    @media (max-width: 1600px) {
+      main {
+        max-width: 100vw;
+        grid-template-columns: 2fr 1fr;
+      }
+      .chat-container {
+        height: 600px;
+        min-height: 400px;
+      }
+      .sidebar {
+        max-width: 350px;
+      }
+    }
     @media (max-width: 1024px) {
       main {
         grid-template-columns: 1fr;
+        max-width: 100vw;
+        padding: 0.5rem;
+      }
+      .chat-container {
+        height: 400px;
+        min-height: 300px;
+      }
+      .sidebar {
+        max-width: 100vw;
       }
     }
 
@@ -476,9 +506,28 @@
 
   <main>
     <div class="content-area">
+      <!-- Chat box is now the main content -->
+      <section class="card chat-container">
+        <div class="card-header">
+          <h2><i class="fas fa-comments"></i> Group Chat</h2>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+          <!-- Messages will appear here -->
+        </div>
+        <div class="chat-input">
+          <input type="text" id="chatInput" placeholder="Type your message..." />
+          <button class="btn btn-primary" onclick="sendMessage()">
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <div class="sidebar">
+      <!-- Upload and shared files go here -->
       <section class="card">
         <div class="card-header">
-          <h2><i class="fas fa-cloud-upload-alt"></i> Upload Study Materials</h2>
+          <h2><i class="fas fa-cloud-upload-alt"></i> Upload Anything</h2>
         </div>
         <div class="upload-area">
           <i class="fas fa-file-upload" style="font-size: 2rem; color: var(--primary);"></i>
@@ -506,27 +555,10 @@
           <!-- Files will be loaded here -->
         </div>
       </section>
-    </div>
-
-    <div class="sidebar">
-      <section class="card chat-container">
-        <div class="card-header">
-          <h2><i class="fas fa-comments"></i> Group Chat</h2>
-        </div>
-        <div class="chat-messages" id="chatMessages">
-          <!-- Messages will appear here -->
-        </div>
-        <div class="chat-input">
-          <input type="text" id="chatInput" placeholder="Type your message..." />
-          <button class="btn btn-primary" onclick="sendMessage()">
-            <i class="fas fa-paper-plane"></i>
-          </button>
-        </div>
-      </section>
 
       <section class="card">
         <div class="card-header">
-          <h2><i class="fas fa-users"></i> Study Group</h2>
+          <h2><i class="fas fa-users"></i> Group Members</h2>
           <span class="btn btn-outline btn-sm" id="onlineCount">0 Online</span>
         </div>
         <div class="members-list" id="membersList">
@@ -536,7 +568,7 @@
 
       <section class="card study-timer">
         <div class="card-header">
-          <h2><i class="fas fa-clock"></i> Study Timer</h2>
+          <h2><i class="fas fa-clock"></i> Timer</h2>
         </div>
         <div class="timer-display" id="timerDisplay">25:00</div>
         <div class="timer-controls">
@@ -564,7 +596,7 @@
   </main>
 
   <footer>
-    &copy; <span id="currentYear"></span> StudySpace – Collaborative Learning Hub
+    &copy; <span id="currentYear"></span> Chill Space – Tamizh & Co. @2025
   </footer>
 
   <script>
