@@ -604,44 +604,80 @@
         return;
       }
 
+      // Get current user
+      const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
+      if (userError || !user) {
+        alert("Please log in to upload files.");
+        return;
+      }
+
+      let uploadedCount = 0;
+      let errorCount = 0;
+
       for (const file of files) {
         try {
-          // Upload file to storage
+          console.log('Uploading file:', file.name, 'Size:', file.size, 'Type:', file.type);
+          
+          // Create a unique filename with user ID prefix
           const fileExt = file.name.split('.').pop();
-          const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`;
-          const filePath = `${fileName}`;
+          const timestamp = Date.now();
+          const randomId = Math.random().toString(36).substring(2);
+          const fileName = `${user.id}/${timestamp}_${randomId}.${fileExt}`;
 
-          const { error: uploadError } = await supabaseClient.storage
+          console.log('Generated file path:', fileName);
+
+          // Upload file to storage
+          const { data: uploadData, error: uploadError } = await supabaseClient.storage
             .from('files')
-            .upload(filePath, file);
+            .upload(fileName, file, {
+              cacheControl: '3600',
+              upsert: false
+            });
 
           if (uploadError) {
-            console.error('Error uploading file:', uploadError);
+            console.error('Error uploading file to storage:', uploadError);
+            errorCount++;
             continue;
           }
 
+          console.log('File uploaded to storage successfully:', uploadData);
+
           // Insert file record to database
-          const { data: { user } } = await supabaseClient.auth.getUser();
-          
-          const { error: dbError } = await supabaseClient
+          const { data: dbData, error: dbError } = await supabaseClient
             .from('files')
             .insert({
               user_id: user.id,
               filename: file.name,
               filetype: file.type,
-              filepath: filePath,
+              filepath: fileName,
               filesize: file.size
-            });
+            })
+            .select();
 
           if (dbError) {
-            console.error('Error saving file info:', dbError);
+            console.error('Error saving file info to database:', dbError);
+            errorCount++;
+            continue;
           }
+
+          console.log('File record saved to database:', dbData);
+          uploadedCount++;
+
         } catch (err) {
           console.error('Error processing file:', err);
+          errorCount++;
         }
       }
 
-      alert('Files uploaded successfully!');
+      if (uploadedCount > 0) {
+        alert(`Successfully uploaded ${uploadedCount} file(s)!`);
+        if (errorCount > 0) {
+          alert(`${errorCount} file(s) failed to upload. Check console for details.`);
+        }
+      } else {
+        alert('No files were uploaded successfully. Check console for error details.');
+      }
+
       fileInput.value = '';
       loadFiles();
     }
@@ -649,6 +685,8 @@
     // Load files from database
     async function loadFiles() {
       try {
+        console.log('Loading files from database...');
+        
         const { data: files, error } = await supabaseClient
           .from('files')
           .select('*')
@@ -656,13 +694,17 @@
 
         if (error) {
           console.error('Error loading files:', error);
+          const fileContainer = document.getElementById('fileContainer');
+          fileContainer.innerHTML = '<p style="color: var(--danger); text-align: center;">Error loading files. Please try again.</p>';
           return;
         }
+
+        console.log('Files loaded from database:', files);
 
         const fileContainer = document.getElementById('fileContainer');
         fileContainer.innerHTML = '';
 
-        if (files.length === 0) {
+        if (!files || files.length === 0) {
           fileContainer.innerHTML = '<p style="color: var(--gray); text-align: center;">No files shared yet</p>';
           return;
         }
@@ -674,6 +716,7 @@
             <div class="file-info">
               <i class="fas ${getFileIcon(file.filetype)} file-icon"></i>
               <span>${file.filename}</span>
+              <small style="color: var(--gray);">(${formatFileSize(file.filesize)})</small>
             </div>
             <div class="file-actions">
               <button class="btn btn-outline btn-sm" onclick="downloadFile('${file.filepath}', '${file.filename}')">
@@ -685,6 +728,8 @@
         });
       } catch (err) {
         console.error('Error in loadFiles:', err);
+        const fileContainer = document.getElementById('fileContainer');
+        fileContainer.innerHTML = '<p style="color: var(--danger); text-align: center;">Error loading files. Please try again.</p>';
       }
     }
 
@@ -756,11 +801,20 @@
           },
           async (payload) => {
             // Get user info for the message
-            const { data: user } = await supabaseClient
-              .from('profiles')
-              .select('email')
-              .eq('id', payload.new.user_id)
-              .single();
+            let senderName = 'Unknown';
+            try {
+              const { data: profile } = await supabaseClient
+                .from('profiles')
+                .select('username, email')
+                .eq('id', payload.new.user_id)
+                .single();
+              
+              if (profile) {
+                senderName = profile.username || profile.email || 'Unknown';
+              }
+            } catch (err) {
+              console.log('Could not fetch sender profile');
+            }
 
             const { data: currentUser } = await supabaseClient.auth.getUser();
             const isCurrentUser = payload.new.user_id === currentUser.user?.id;
@@ -770,8 +824,9 @@
               ? 'message message-sent fade-in' 
               : 'message message-received fade-in';
               
+            const displayName = isCurrentUser ? (currentUser.user?.email || 'You') : senderName;
             messageElement.innerHTML = `
-              <div class="message-sender">${isCurrentUser ? (currentUser.user?.email || 'You') : (user?.email || 'Unknown')}</div>
+              <div class="message-sender">${displayName}</div>
               <div>${payload.new.content}</div>
               <div class="message-time">${formatTime(new Date(payload.new.sent_at))}</div>
             `;
@@ -788,7 +843,7 @@
       try {
         const { data: messages, error } = await supabaseClient
           .from('messages')
-          .select('*, profiles:user_id(email)')
+          .select('*')
           .order('sent_at', { ascending: true })
           .limit(50);
 
@@ -802,6 +857,28 @@
 
         const { data: { user } } = await supabaseClient.auth.getUser();
 
+        // Get all unique user IDs from messages
+        const userIds = [...new Set(messages.map(msg => msg.user_id))];
+        
+        // Fetch user profiles in batch
+        let userProfiles = {};
+        if (userIds.length > 0) {
+          try {
+            const { data: profiles } = await supabaseClient
+              .from('profiles')
+              .select('id, username, email')
+              .in('id', userIds);
+            
+            if (profiles) {
+              profiles.forEach(profile => {
+                userProfiles[profile.id] = profile;
+              });
+            }
+          } catch (err) {
+            console.log('Could not fetch user profiles, using fallback');
+          }
+        }
+
         messages.forEach(msg => {
           const isCurrentUser = msg.user_id === user?.id;
           const messageElement = document.createElement('div');
@@ -810,9 +887,14 @@
             ? 'message message-sent fade-in' 
             : 'message message-received fade-in';
             
-          const senderName = isCurrentUser
-            ? (user.email || 'You')
-            : (msg.profiles?.email || 'Unknown');
+          let senderName = 'Unknown';
+          if (isCurrentUser) {
+            senderName = user.email || 'You';
+          } else {
+            const profile = userProfiles[msg.user_id];
+            senderName = profile?.username || profile?.email || 'Unknown';
+          }
+          
           messageElement.innerHTML = `
             <div class="message-sender">${senderName}</div>
             <div>${msg.content}</div>
@@ -895,6 +977,14 @@
       return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     }
 
+    function formatFileSize(bytes) {
+      if (bytes === 0) return '0 Bytes';
+      const k = 1024;
+      const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
     // Initialize the app
     document.addEventListener('DOMContentLoaded', async function() {
       // Set current year in footer
@@ -911,11 +1001,20 @@
       }
 
       // Set user info in header
-      const { data: profile } = await supabaseClient
-        .from('profiles')
-        .select('username')
-        .eq('id', user.id)
-        .single();
+      let profile = null;
+      try {
+        const { data: profileData, error: profileError } = await supabaseClient
+          .from('profiles')
+          .select('username')
+          .eq('id', user.id)
+          .single();
+        
+        if (!profileError) {
+          profile = profileData;
+        }
+      } catch (err) {
+        console.log('Profile not found, using email as fallback');
+      }
 
       const userAvatar = document.getElementById('userAvatar');
       const usernameSpan = document.getElementById('username');
@@ -991,3 +1090,4 @@
   </script>
 </body>
 </html>
+

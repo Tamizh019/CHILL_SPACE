@@ -104,4 +104,108 @@ BEGIN
     FROM users u
     WHERE u.email = user_email;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER; 
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- 13. Create files table for file uploads
+CREATE TABLE IF NOT EXISTS public.files (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+    filename TEXT NOT NULL,
+    filetype TEXT,
+    filepath TEXT NOT NULL,
+    filesize BIGINT,
+    uploaded_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Enable RLS for files table
+ALTER TABLE public.files ENABLE ROW LEVEL SECURITY;
+
+-- Create policies for files table
+CREATE POLICY "Users can view all files" 
+    ON public.files 
+    FOR SELECT 
+    USING (true);
+
+CREATE POLICY "Users can insert their own files" 
+    ON public.files 
+    FOR INSERT 
+    WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users can delete their own files" 
+    ON public.files 
+    FOR DELETE 
+    USING (auth.uid() = user_id);
+
+-- 14. Create messages table for chat functionality
+CREATE TABLE IF NOT EXISTS public.messages (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+    content TEXT NOT NULL,
+    sent_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Enable RLS for messages table
+ALTER TABLE public.messages ENABLE ROW LEVEL SECURITY;
+
+-- Create policies for messages table
+CREATE POLICY "Users can view all messages" 
+    ON public.messages 
+    FOR SELECT 
+    USING (true);
+
+CREATE POLICY "Users can insert their own messages" 
+    ON public.messages 
+    FOR INSERT 
+    WITH CHECK (auth.uid() = user_id);
+
+-- 15. Create profiles table if it doesn't exist
+CREATE TABLE IF NOT EXISTS public.profiles (
+    id UUID REFERENCES auth.users(id) ON DELETE CASCADE PRIMARY KEY,
+    username TEXT,
+    email TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Enable RLS for profiles table
+ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
+
+-- Create policies for profiles table
+CREATE POLICY "Users can view all profiles" 
+    ON public.profiles 
+    FOR SELECT 
+    USING (true);
+
+CREATE POLICY "Users can update their own profile" 
+    ON public.profiles 
+    FOR UPDATE 
+    USING (auth.uid() = id);
+
+CREATE POLICY "Users can insert their own profile" 
+    ON public.profiles 
+    FOR INSERT 
+    WITH CHECK (auth.uid() = id);
+
+-- 16. Create function to handle new user profile creation
+CREATE OR REPLACE FUNCTION public.handle_new_user_profile()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+SECURITY DEFINER SET search_path = ''
+AS $$
+BEGIN
+  INSERT INTO public.profiles (id, email, username)
+  VALUES (
+    NEW.id,
+    NEW.email,
+    COALESCE(NEW.raw_user_meta_data ->> 'username', split_part(NEW.email, '@', 1))
+  )
+  ON CONFLICT (id) DO NOTHING;
+  RETURN NEW;
+END;
+$$;
+
+-- 17. Create trigger to automatically create profile when user signs up
+DROP TRIGGER IF EXISTS on_auth_user_created_profile ON auth.users;
+CREATE TRIGGER on_auth_user_created_profile
+  AFTER INSERT ON auth.users
+  FOR EACH ROW EXECUTE FUNCTION public.handle_new_user_profile(); 
