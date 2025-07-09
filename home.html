@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>StudySpace – Collaborative Learning Hub</title>
+  <title>Chill Space</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -145,7 +145,7 @@
       flex: 1;
       padding: 1rem;
       display: grid;
-      grid-template-columns: 2.5fr 1fr; /* Make main area even bigger */
+      grid-template-columns: 2.5fr 1fr; 
       gap: 2.5rem;
       max-width: 1600px;
       margin: 0 auto;
@@ -156,7 +156,7 @@
       gap: 2rem;
     }
     .chat-container {
-      height: 800px; /* Make chat box even bigger */
+      height: 800px; 
       min-height: 600px;
       min-width: 0;
       width: 100%;
@@ -207,6 +207,9 @@
       justify-content: space-between;
       align-items: center;
       transition: all 0.2s ease;
+      cursor: pointer;
+      gap: 0.75rem;
+      min-height: 60px;
     }
 
     .file-item:hover {
@@ -218,15 +221,48 @@
       display: flex;
       align-items: center;
       gap: 0.75rem;
+      flex: 1;
+      min-width: 0; 
+      overflow: hidden;
     }
 
     .file-icon {
       color: var(--secondary);
+      flex-shrink: 0; 
+    }
+
+    .file-details {
+      flex: 1;
+      min-width: 0; 
+      overflow: hidden;
+    }
+
+    .file-name {
+      font-weight: 500;
+      color: var(--light);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+
+    .file-meta {
+      font-size: 0.75rem;
+      color: var(--gray);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .file-actions {
       display: flex;
       gap: 0.5rem;
+      flex-shrink: 0; 
+    }
+
+    .file-actions button {
+      cursor: pointer;
+      flex-shrink: 0;
     }
 
     .upload-area {
@@ -259,10 +295,220 @@
       font-size: 0.875rem;
     }
 
+    .file-preview {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: rgba(30, 41, 59, 0.5);
+      border-radius: 8px;
+      border: 1px solid var(--card-border);
+    }
+
+    .file-preview h4 {
+      color: var(--light);
+      margin-bottom: 0.75rem;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .preview-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.5rem;
+      background: rgba(15, 23, 42, 0.3);
+      border-radius: 6px;
+      margin-bottom: 0.5rem;
+    }
+
+    .preview-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .preview-icon {
+      color: var(--secondary);
+      font-size: 1.2rem;
+    }
+
+    .preview-info {
+      flex: 1;
+    }
+
+    .preview-name {
+      font-weight: 500;
+      color: var(--light);
+      font-size: 0.875rem;
+    }
+
+    .preview-size {
+      font-size: 0.75rem;
+      color: var(--gray);
+    }
+
+    .preview-image {
+      max-width: 60px;
+      max-height: 60px;
+      border-radius: 4px;
+      object-fit: cover;
+    }
+
+    .preview-remove {
+      background: var(--danger);
+      border: none;
+      color: white;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      transition: all 0.2s ease;
+    }
+
+    .preview-remove:hover {
+      background: #dc2626;
+      transform: scale(1.1);
+    }
+
+    .no-files {
+      color: var(--gray);
+      font-style: italic;
+      text-align: center;
+      padding: 1rem;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      backdrop-filter: blur(5px);
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: var(--dark);
+      border-radius: 12px;
+      border: 1px solid var(--card-border);
+      max-width: 90vw;
+      max-height: 90vh;
+      width: 800px;
+      overflow: hidden;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--card-border);
+      background: var(--card-bg);
+    }
+
+    .modal-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--light);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--gray);
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 0.25rem;
+      border-radius: 4px;
+      transition: all 0.2s ease;
+    }
+
+    .modal-close:hover {
+      color: var(--light);
+      background: rgba(148, 163, 184, 0.1);
+    }
+
+    .modal-body {
+      padding: 1.5rem;
+      max-height: 70vh;
+      overflow-y: auto;
+    }
+
+    .preview-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .preview-image {
+      max-width: 100%;
+      max-height: 60vh;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .preview-pdf {
+      width: 100%;
+      height: 60vh;
+      border: none;
+      border-radius: 8px;
+    }
+
+    .preview-text {
+      background: var(--darker);
+      padding: 1rem;
+      border-radius: 8px;
+      border: 1px solid var(--card-border);
+      width: 100%;
+      max-height: 60vh;
+      overflow-y: auto;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
+    }
+
+    .preview-unsupported {
+      text-align: center;
+      padding: 2rem;
+      color: var(--gray);
+    }
+
+    .preview-unsupported i {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      color: var(--secondary);
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+      padding: 1rem 1.5rem;
+      border-top: 1px solid var(--card-border);
+      background: var(--card-bg);
+    }
+
     .chat-container {
       display: flex;
       flex-direction: column;
-      height: 600px; /* Make chat box bigger */
+      height: 600px;
       min-height: 500px;
     }
 
@@ -297,6 +543,41 @@
       border-bottom-left-radius: 4px;
     }
 
+    .message-sent:hover .message-delete {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .message-delete {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: var(--danger);
+      border: none;
+      color: white;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.2s ease;
+      z-index: 10;
+    }
+
+    .message-delete:hover {
+      background: #dc2626;
+      transform: scale(1.1);
+    }
+
+    .message-content {
+      position: relative;
+    }
+
     .message-sender {
       font-weight: 600;
       font-size: 0.75rem;
@@ -328,6 +609,189 @@
     .chat-input input:focus {
       outline: none;
       border-color: var(--primary);
+    }
+
+    .chat-input textarea {
+      flex: 1;
+      background: var(--dark);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      color: var(--light);
+      font-family: 'Courier New', monospace;
+      font-size: 0.875rem;
+      line-height: 1.4;
+      resize: vertical;
+      min-height: 60px;
+      max-height: 200px;
+    }
+
+    .chat-input textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .chat-controls {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .code-toggle {
+      background: var(--secondary);
+      border: none;
+      color: white;
+      padding: 0.5rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.875rem;
+    }
+
+    .code-toggle:hover {
+      background: #e67e22;
+      transform: translateY(-1px);
+    }
+
+    .code-toggle.active {
+      background: var(--primary);
+    }
+
+    .language-select {
+      background: var(--dark);
+      border: 1px solid var(--card-border);
+      border-radius: 6px;
+      padding: 0.25rem 0.5rem;
+      color: var(--light);
+      font-size: 0.75rem;
+      cursor: pointer;
+    }
+
+    .language-select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    /* Full Screen Code Mode */
+    .fullscreen-code {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: var(--darker);
+      z-index: 2000;
+      display: none;
+      flex-direction: column;
+      backdrop-filter: blur(10px);
+    }
+
+    .fullscreen-code.active {
+      display: flex;
+    }
+
+    .fullscreen-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: var(--dark);
+      border-bottom: 1px solid var(--card-border);
+      flex-shrink: 0;
+    }
+
+    .fullscreen-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--light);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .fullscreen-controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .fullscreen-textarea {
+      flex: 1;
+      background: var(--darker);
+      border: none;
+      color: var(--light);
+      font-family: 'Courier New', monospace;
+      font-size: 1rem;
+      line-height: 1.6;
+      padding: 2rem;
+      resize: none;
+      outline: none;
+      min-height: 0;
+    }
+
+    .fullscreen-textarea::placeholder {
+      color: var(--gray);
+    }
+
+    .fullscreen-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: var(--dark);
+      border-top: 1px solid var(--card-border);
+      flex-shrink: 0;
+    }
+
+    .fullscreen-info {
+      color: var(--gray);
+      font-size: 0.875rem;
+    }
+
+    .fullscreen-actions {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .btn-fullscreen {
+      background: var(--primary);
+      border: none;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-fullscreen:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+
+    .btn-fullscreen-secondary {
+      background: var(--secondary);
+    }
+
+    .btn-fullscreen-secondary:hover {
+      background: #e67e22;
+    }
+
+    .btn-fullscreen-outline {
+      background: transparent;
+      border: 1px solid var(--gray);
+      color: var(--gray);
+    }
+
+    .btn-fullscreen-outline:hover {
+      border-color: var(--light);
+      color: var(--light);
     }
 
     .members-list {
@@ -442,6 +906,73 @@
       animation: fadeIn 0.3s ease forwards;
     }
 
+    .code-block {
+      background: var(--darker);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      margin: 0.5rem 0;
+      overflow: hidden;
+    }
+
+    .code-header {
+      background: rgba(30, 41, 59, 0.8);
+      padding: 0.5rem 1rem;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      color: var(--gray);
+    }
+
+    .code-language {
+      font-weight: 500;
+      color: var(--secondary);
+      text-transform: uppercase;
+    }
+
+    .code-copy {
+      background: none;
+      border: none;
+      color: var(--gray);
+      cursor: pointer;
+      padding: 0.25rem;
+      border-radius: 4px;
+      transition: all 0.2s ease;
+    }
+
+    .code-copy:hover {
+      color: var(--light);
+      background: rgba(148, 163, 184, 0.1);
+    }
+
+    .code-content {
+      padding: 1rem;
+      font-family: 'Courier New', monospace;
+      font-size: 0.875rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      overflow-x: auto;
+      color: var(--light);
+    }
+
+    .code-content::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .code-content::-webkit-scrollbar-track {
+      background: var(--darker);
+    }
+
+    .code-content::-webkit-scrollbar-thumb {
+      background: var(--gray);
+      border-radius: 3px;
+    }
+
+    .code-content::-webkit-scrollbar-thumb:hover {
+      background: var(--light);
+    }
+
     @media (max-width: 1600px) {
       main {
         max-width: 100vw;
@@ -483,6 +1014,133 @@
         display: none;
       }
     }
+
+    /* Tic Tac Toe Game */
+    .game-section {
+      margin-top: 2rem;
+      width: 90%;
+      margin-left: 5%;
+      margin-bottom: 2rem;
+    }
+
+    .game-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .game-status {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--light);
+    }
+
+    .game-status.waiting {
+      color: var(--secondary);
+    }
+
+    .game-status.your-turn {
+      color: var(--success);
+    }
+
+    .game-status.opponent-turn {
+      color: var(--danger);
+    }
+
+    .game-board {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      max-width: 300px;
+      margin: 0 auto;
+      background: var(--dark);
+      padding: 1rem;
+      border-radius: 12px;
+      border: 1px solid var(--card-border);
+    }
+
+    .game-cell {
+      aspect-ratio: 1;
+      background: var(--darker);
+      border: 2px solid var(--card-border);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: var(--light);
+    }
+
+    .game-cell:hover {
+      background: rgba(99, 102, 241, 0.2);
+      border-color: var(--primary);
+    }
+
+    .game-cell.x {
+      color: var(--primary);
+    }
+
+    .game-cell.o {
+      color: var(--secondary);
+    }
+
+    .game-cell.winning {
+      background: var(--success);
+      color: white;
+      animation: pulse 0.5s ease-in-out;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    .game-controls {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .game-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      font-size: 0.875rem;
+      color: var(--gray);
+    }
+
+    .player-info {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .player-symbol {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 0.75rem;
+    }
+
+    .player-symbol.x {
+      background: var(--primary);
+      color: white;
+    }
+
+    .player-symbol.o {
+      background: var(--secondary);
+      color: white;
+    }
   </style>
 </head>
 <body>
@@ -504,18 +1162,122 @@
     </div>
   </header>
 
+  <!-- File Preview Modal -->
+  <div class="modal-overlay" id="filePreviewModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">
+          <i class="fas fa-file" id="modalFileIcon"></i>
+          <span id="modalFileName"></span>
+        </div>
+        <button class="modal-close" onclick="closeFilePreview()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="preview-container" id="modalPreviewContent">
+          <!-- Preview content will be loaded here -->
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-outline" onclick="closeFilePreview()">
+          <i class="fas fa-times"></i> Close
+        </button>
+        <button class="btn btn-primary" id="modalDownloadBtn">
+          <i class="fas fa-download"></i> Download
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Full Screen Code Editor -->
+  <div class="fullscreen-code" id="fullscreenCode">
+    <div class="fullscreen-header">
+      <div class="fullscreen-title">
+        <i class="fas fa-code"></i>
+        <span>Code Editor</span>
+        <select class="language-select" id="fullscreenLanguageSelect">
+          <option value="javascript">JavaScript</option>
+          <option value="python">Python</option>
+          <option value="html">HTML</option>
+          <option value="css">CSS</option>
+          <option value="java">Java</option>
+          <option value="cpp">C++</option>
+          <option value="csharp">C#</option>
+          <option value="php">PHP</option>
+          <option value="sql">SQL</option>
+          <option value="bash">Bash</option>
+          <option value="json">JSON</option>
+          <option value="xml">XML</option>
+          <option value="markdown">Markdown</option>
+          <option value="plaintext">Plain Text</option>
+        </select>
+      </div>
+      <div class="fullscreen-controls">
+        <button class="btn-fullscreen btn-fullscreen-outline" onclick="exitFullscreenCode()">
+          <i class="fas fa-times"></i> Exit
+        </button>
+      </div>
+    </div>
+    <textarea 
+      class="fullscreen-textarea" 
+      id="fullscreenCodeInput" 
+      placeholder="Write your code here... Press Ctrl+Enter to send, Ctrl+S to save draft"
+    ></textarea>
+    <div class="fullscreen-footer">
+      <div class="fullscreen-info">
+        <span id="fullscreenCharCount">0 characters</span> • 
+        <span id="fullscreenLineCount">1 line</span> • 
+        Press <kbd>Ctrl+Enter</kbd> to send
+      </div>
+      <div class="fullscreen-actions">
+        <button class="btn-fullscreen btn-fullscreen-outline" onclick="clearFullscreenCode()">
+          <i class="fas fa-eraser"></i> Clear
+        </button>
+        <button class="btn-fullscreen btn-fullscreen-secondary" onclick="sendFullscreenCode()">
+          <i class="fas fa-paper-plane"></i> Send Code
+        </button>
+      </div>
+    </div>
+  </div>
+
   <main>
     <div class="content-area">
       <!-- Chat box is now the main content -->
       <section class="card chat-container">
         <div class="card-header">
-          <h2><i class="fas fa-comments"></i> Group Chat</h2>
+          <h2><i class="fas fa-comments"></i> Group Chat AI - A4</h2>
         </div>
         <div class="chat-messages" id="chatMessages">
           <!-- Messages will appear here -->
         </div>
         <div class="chat-input">
+          <div class="chat-controls">
+            <button class="code-toggle" id="codeToggle" title="Toggle Code Mode">
+              <i class="fas fa-code"></i>
+            </button>
+            <button class="code-toggle" id="fullscreenToggle" title="Full Screen Code Editor" style="display: none;">
+              <i class="fas fa-expand"></i>
+            </button>
+            <select class="language-select" id="languageSelect" style="display: none;">
+              <option value="javascript">JavaScript</option>
+              <option value="python">Python</option>
+              <option value="html">HTML</option>
+              <option value="css">CSS</option>
+              <option value="java">Java</option>
+              <option value="cpp">C++</option>
+              <option value="csharp">C#</option>
+              <option value="php">PHP</option>
+              <option value="sql">SQL</option>
+              <option value="bash">Bash</option>
+              <option value="json">JSON</option>
+              <option value="xml">XML</option>
+              <option value="markdown">Markdown</option>
+              <option value="plaintext">Plain Text</option>
+            </select>
+          </div>
           <input type="text" id="chatInput" placeholder="Type your message..." />
+          <textarea id="codeInput" placeholder="Write your code here..." style="display: none;"></textarea>
           <button class="btn btn-primary" onclick="sendMessage()">
             <i class="fas fa-paper-plane"></i>
           </button>
@@ -534,6 +1296,10 @@
           <h3>Drag & Drop files here</h3>
           <p>or click to browse (PDF, DOCX, PPT, IMAGES)</p>
           <input type="file" id="fileInput" multiple />
+        </div>
+        <div class="file-preview" id="filePreview">
+          <h4><i class="fas fa-eye"></i> Selected Files</h4>
+          <div class="no-files">No files selected</div>
         </div>
         <div style="margin-top: 1rem; display: flex; gap: 0.5rem; justify-content: flex-end;">
           <button class="btn btn-primary" onclick="uploadFile()">
@@ -594,6 +1360,50 @@
       </section>
     </div>
   </main>
+
+  <!-- Tic Tac Toe Game Section -->
+  <section class="card game-section">
+    <div class="card-header">
+      <h2><i class="fas fa-gamepad"></i> Tic Tac Toe</h2>
+      <button class="btn btn-outline btn-sm" onclick="resetGame()">
+        <i class="fas fa-redo"></i> New Game
+      </button>
+    </div>
+    
+    <div class="game-info">
+      <div class="player-info">
+        <div class="player-symbol x">X</div>
+        <span id="playerXName">Waiting...</span>
+      </div>
+      <div class="player-info">
+        <span id="playerOName">Waiting...</span>
+        <div class="player-symbol o">O</div>
+      </div>
+    </div>
+
+    <div class="game-status" id="gameStatus">Waiting for players...</div>
+    
+    <div class="game-board" id="gameBoard">
+      <div class="game-cell" data-index="0" onclick="makeMove(0)"></div>
+      <div class="game-cell" data-index="1" onclick="makeMove(1)"></div>
+      <div class="game-cell" data-index="2" onclick="makeMove(2)"></div>
+      <div class="game-cell" data-index="3" onclick="makeMove(3)"></div>
+      <div class="game-cell" data-index="4" onclick="makeMove(4)"></div>
+      <div class="game-cell" data-index="5" onclick="makeMove(5)"></div>
+      <div class="game-cell" data-index="6" onclick="makeMove(6)"></div>
+      <div class="game-cell" data-index="7" onclick="makeMove(7)"></div>
+      <div class="game-cell" data-index="8" onclick="makeMove(8)"></div>
+    </div>
+
+    <div class="game-controls">
+      <button class="btn btn-primary" onclick="joinGame()" id="joinGameBtn">
+        <i class="fas fa-play"></i> Join Game
+      </button>
+      <button class="btn btn-outline" onclick="leaveGame()" id="leaveGameBtn" style="display: none;">
+        <i class="fas fa-sign-out-alt"></i> Leave Game
+      </button>
+    </div>
+  </section>
 
   <footer>
     &copy; <span id="currentYear"></span> Chill Space – Tamizh & Co.
@@ -706,12 +1516,98 @@
         if (errorCount > 0) {
           alert(`${errorCount} file(s) failed to upload. Check console for details.`);
         }
+        // Clear file input and preview after successful upload
+        fileInput.value = '';
+        updateFilePreview();
       } else {
         alert('No files were uploaded successfully. Check console for error details.');
       }
 
-      fileInput.value = '';
       loadFiles();
+    }
+
+    // File preview functionality
+    function updateFilePreview() {
+      const fileInput = document.getElementById('fileInput');
+      const previewContainer = document.getElementById('filePreview');
+      const files = fileInput.files;
+
+      // Clear previous preview content
+      const previewContent = previewContainer.querySelector('h4').nextElementSibling;
+      if (previewContent) {
+        previewContent.remove();
+      }
+
+      if (!files || files.length === 0) {
+        const noFiles = document.createElement('div');
+        noFiles.className = 'no-files';
+        noFiles.textContent = 'No files selected';
+        previewContainer.appendChild(noFiles);
+        return;
+      }
+
+      const previewList = document.createElement('div');
+      previewList.className = 'preview-list';
+
+      Array.from(files).forEach((file, index) => {
+        const previewItem = document.createElement('div');
+        previewItem.className = 'preview-item fade-in';
+
+        const fileIcon = document.createElement('i');
+        fileIcon.className = `fas ${getFileIcon(file.type)} preview-icon`;
+
+        const previewInfo = document.createElement('div');
+        previewInfo.className = 'preview-info';
+
+        const fileName = document.createElement('div');
+        fileName.className = 'preview-name';
+        fileName.textContent = file.name;
+
+        const fileSize = document.createElement('div');
+        fileSize.className = 'preview-size';
+        fileSize.textContent = formatFileSize(file.size);
+
+        previewInfo.appendChild(fileName);
+        previewInfo.appendChild(fileSize);
+
+        const removeBtn = document.createElement('button');
+        removeBtn.className = 'preview-remove';
+        removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+        removeBtn.onclick = () => removeFile(index);
+
+        previewItem.appendChild(fileIcon);
+        previewItem.appendChild(previewInfo);
+
+        // Add image preview if it's an image file
+        if (file.type.startsWith('image/')) {
+          const img = document.createElement('img');
+          img.className = 'preview-image';
+          img.src = URL.createObjectURL(file);
+          img.alt = file.name;
+          previewItem.appendChild(img);
+        }
+
+        previewItem.appendChild(removeBtn);
+        previewList.appendChild(previewItem);
+      });
+
+      previewContainer.appendChild(previewList);
+    }
+
+    function removeFile(index) {
+      const fileInput = document.getElementById('fileInput');
+      const files = Array.from(fileInput.files);
+      
+      // Create a new FileList-like object without the removed file
+      const dt = new DataTransfer();
+      files.forEach((file, i) => {
+        if (i !== index) {
+          dt.items.add(file);
+        }
+      });
+      
+      fileInput.files = dt.files;
+      updateFilePreview();
     }
 
     // Load files from database
@@ -745,14 +1641,19 @@
           const fileItem = document.createElement('div');
           fileItem.className = 'file-item fade-in';
           fileItem.innerHTML = `
-            <div class="file-info">
+            <div class="file-info" onclick="previewFile('${file.id}', '${file.filepath}', '${file.filename}', '${file.filetype}')">
               <i class="fas ${getFileIcon(file.filetype)} file-icon"></i>
-              <span>${file.filename}</span>
-              <small style="color: var(--gray);">(${formatFileSize(file.filesize)})</small>
+              <div class="file-details">
+                <div class="file-name" title="${file.filename}">${file.filename}</div>
+                <div class="file-meta">${formatFileSize(file.filesize)}</div>
+              </div>
             </div>
             <div class="file-actions">
               <button class="btn btn-outline btn-sm" onclick="downloadFile('${file.filepath}', '${file.filename}')">
                 <i class="fas fa-download"></i>
+              </button>
+              <button class="btn btn-danger btn-sm" onclick="deleteFile('${file.id}', '${file.filepath}', '${file.filename}')">
+                <i class="fas fa-trash"></i>
               </button>
             </div>
           `;
@@ -790,12 +1691,76 @@
       }
     }
 
+    // Delete file
+    async function deleteFile(fileId, filepath, filename) {
+      if (!confirm(`Are you sure you want to delete "${filename}"?`)) {
+        return;
+      }
+
+      try {
+        // Get current user
+        const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
+        if (userError || !user) {
+          alert("Please log in to delete files.");
+          return;
+        }
+
+        // Delete from storage
+        const { error: storageError } = await supabaseClient.storage
+          .from('files')
+          .remove([filepath]);
+
+        if (storageError) {
+          console.error('Error deleting file from storage:', storageError);
+          alert('Error deleting file from storage. Please try again.');
+          return;
+        }
+
+        // Delete from database
+        const { error: dbError } = await supabaseClient
+          .from('files')
+          .delete()
+          .eq('id', fileId)
+          .eq('user_id', user.id); // Ensure user can only delete their own files
+
+        if (dbError) {
+          console.error('Error deleting file from database:', dbError);
+          alert('Error deleting file from database. Please try again.');
+          return;
+        }
+
+        console.log('File deleted successfully:', filename);
+        alert(`"${filename}" has been deleted successfully!`);
+        
+        // Reload the file list
+        loadFiles();
+      } catch (err) {
+        console.error('Error in deleteFile:', err);
+        alert('An error occurred while deleting the file. Please try again.');
+      }
+    }
+
     // Chat functionality
     async function sendMessage() {
       const chatInput = document.getElementById('chatInput');
-      const message = chatInput.value.trim();
+      const codeInput = document.getElementById('codeInput');
+      const codeToggle = document.getElementById('codeToggle');
+      const languageSelect = document.getElementById('languageSelect');
       
-      if (!message) return;
+      let message = '';
+      let isCode = codeToggle.classList.contains('active');
+      
+      if (isCode) {
+        message = codeInput.value.trim();
+        const language = languageSelect.value;
+        if (!message) return;
+        
+        // Format as code block
+        message = `\`\`\`${language}\n${message}\n\`\`\``;
+      } else {
+        message = chatInput.value.trim();
+        if (!message) return;
+      }
 
       try {
         const { data: { user } } = await supabaseClient.auth.getUser();
@@ -813,10 +1778,132 @@
           return;
         }
 
+        // Clear inputs
         chatInput.value = '';
+        codeInput.value = '';
       } catch (err) {
         console.error('Error in sendMessage:', err);
       }
+    }
+
+    // Toggle code mode
+    function toggleCodeMode() {
+      const chatInput = document.getElementById('chatInput');
+      const codeInput = document.getElementById('codeInput');
+      const codeToggle = document.getElementById('codeToggle');
+      const fullscreenToggle = document.getElementById('fullscreenToggle');
+      const languageSelect = document.getElementById('languageSelect');
+      
+      if (codeToggle.classList.contains('active')) {
+        // Switch to normal mode
+        codeToggle.classList.remove('active');
+        codeToggle.innerHTML = '<i class="fas fa-code"></i>';
+        fullscreenToggle.style.display = 'none';
+        chatInput.style.display = 'block';
+        codeInput.style.display = 'none';
+        languageSelect.style.display = 'none';
+        chatInput.focus();
+      } else {
+        // Switch to code mode
+        codeToggle.classList.add('active');
+        codeToggle.innerHTML = '<i class="fas fa-comment"></i>';
+        fullscreenToggle.style.display = 'block';
+        chatInput.style.display = 'none';
+        codeInput.style.display = 'block';
+        languageSelect.style.display = 'block';
+        codeInput.focus();
+      }
+    }
+
+    // Toggle fullscreen code mode
+    function toggleFullscreenCode() {
+      const fullscreenCode = document.getElementById('fullscreenCode');
+      const fullscreenInput = document.getElementById('fullscreenCodeInput');
+      const fullscreenLanguage = document.getElementById('fullscreenLanguageSelect');
+      const codeInput = document.getElementById('codeInput');
+      const languageSelect = document.getElementById('languageSelect');
+      
+      // Copy current code and language to fullscreen
+      fullscreenInput.value = codeInput.value;
+      fullscreenLanguage.value = languageSelect.value;
+      
+      // Show fullscreen
+      fullscreenCode.classList.add('active');
+      fullscreenInput.focus();
+      
+      // Update character and line count
+      updateFullscreenStats();
+    }
+
+    // Exit fullscreen code mode
+    function exitFullscreenCode() {
+      const fullscreenCode = document.getElementById('fullscreenCode');
+      const fullscreenInput = document.getElementById('fullscreenCodeInput');
+      const codeInput = document.getElementById('codeInput');
+      
+      // Copy code back to regular input
+      codeInput.value = fullscreenInput.value;
+      
+      // Hide fullscreen
+      fullscreenCode.classList.remove('active');
+    }
+
+    // Send code from fullscreen
+    function sendFullscreenCode() {
+      const fullscreenInput = document.getElementById('fullscreenCodeInput');
+      const fullscreenLanguage = document.getElementById('fullscreenLanguageSelect');
+      const codeInput = document.getElementById('codeInput');
+      const languageSelect = document.getElementById('languageSelect');
+      
+      // Copy values to regular inputs
+      codeInput.value = fullscreenInput.value;
+      languageSelect.value = fullscreenLanguage.value;
+      
+      // Send the message
+      sendMessage();
+      
+      // Exit fullscreen
+      exitFullscreenCode();
+    }
+
+    // Clear fullscreen code
+    function clearFullscreenCode() {
+      if (confirm('Are you sure you want to clear all code?')) {
+        document.getElementById('fullscreenCodeInput').value = '';
+        updateFullscreenStats();
+      }
+    }
+
+    // Update fullscreen statistics
+    function updateFullscreenStats() {
+      const textarea = document.getElementById('fullscreenCodeInput');
+      const charCount = document.getElementById('fullscreenCharCount');
+      const lineCount = document.getElementById('fullscreenLineCount');
+      
+      const text = textarea.value;
+      const chars = text.length;
+      const lines = text.split('\n').length;
+      
+      charCount.textContent = `${chars} characters`;
+      lineCount.textContent = `${lines} line${lines !== 1 ? 's' : ''}`;
+    }
+
+    // Copy code to clipboard
+    function copyCode(codeElement) {
+      const text = codeElement.textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        const copyBtn = codeElement.parentElement.querySelector('.code-copy');
+        const originalText = copyBtn.innerHTML;
+        copyBtn.innerHTML = '<i class="fas fa-check"></i>';
+        copyBtn.style.color = 'var(--success)';
+        
+        setTimeout(() => {
+          copyBtn.innerHTML = originalText;
+          copyBtn.style.color = 'var(--gray)';
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to copy code:', err);
+      });
     }
 
     // Real-time chat updates
@@ -842,7 +1929,7 @@
                 .single();
               
               if (profile) {
-                senderName = profile.username || profile.email || 'Unknown';
+                senderName = getUserDisplayName({ email: profile.email }, profile);
               }
             } catch (err) {
               console.log('Could not fetch sender profile');
@@ -855,16 +1942,52 @@
             messageElement.className = isCurrentUser 
               ? 'message message-sent fade-in' 
               : 'message message-received fade-in';
+            messageElement.setAttribute('data-message-id', payload.new.id);
               
-            const displayName = isCurrentUser ? (currentUser.user?.email || 'You') : senderName;
-            messageElement.innerHTML = `
-              <div class="message-sender">${displayName}</div>
-              <div>${payload.new.content}</div>
-              <div class="message-time">${formatTime(new Date(payload.new.sent_at))}</div>
-            `;
+            const displayName = isCurrentUser ? getUserDisplayName(currentUser.user) : senderName;
+            
+            // Check if message contains code blocks
+            if (payload.new.content.includes('```')) {
+              messageElement.innerHTML = `
+                <div class="message-sender">${displayName}</div>
+                <div class="message-content">
+                  ${formatCodeMessage(payload.new.content)}
+                  ${isCurrentUser ? `<button class="message-delete" onclick="deleteMessage('${payload.new.id}')" title="Delete message">
+                    <i class="fas fa-times"></i>
+                  </button>` : ''}
+                </div>
+                <div class="message-time">${formatTime(new Date(payload.new.sent_at))}</div>
+              `;
+            } else {
+              messageElement.innerHTML = `
+                <div class="message-sender">${displayName}</div>
+                <div class="message-content">
+                  ${payload.new.content}
+                  ${isCurrentUser ? `<button class="message-delete" onclick="deleteMessage('${payload.new.id}')" title="Delete message">
+                    <i class="fas fa-times"></i>
+                  </button>` : ''}
+                </div>
+                <div class="message-time">${formatTime(new Date(payload.new.sent_at))}</div>
+              `;
+            }
             
             messagesContainer.appendChild(messageElement);
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
+          }
+        )
+        .on(
+          'postgres_changes',
+          {
+            event: 'DELETE',
+            schema: 'public',
+            table: 'messages'
+          },
+          (payload) => {
+            // Remove deleted message from UI
+            const messageElement = document.querySelector(`[data-message-id="${payload.old.id}"]`);
+            if (messageElement) {
+              messageElement.remove();
+            }
           }
         )
         .subscribe();
@@ -918,20 +2041,40 @@
           messageElement.className = isCurrentUser 
             ? 'message message-sent fade-in' 
             : 'message message-received fade-in';
+          messageElement.setAttribute('data-message-id', msg.id);
             
           let senderName = 'Unknown';
           if (isCurrentUser) {
-            senderName = user.email || 'You';
+            senderName = getUserDisplayName(user);
           } else {
             const profile = userProfiles[msg.user_id];
-            senderName = profile?.username || profile?.email || 'Unknown';
+            senderName = getUserDisplayName({ email: profile?.email }, profile);
           }
           
-          messageElement.innerHTML = `
-            <div class="message-sender">${senderName}</div>
-            <div>${msg.content}</div>
-            <div class="message-time">${formatTime(new Date(msg.sent_at))}</div>
-          `;
+          // Check if message contains code blocks
+          if (msg.content.includes('```')) {
+            messageElement.innerHTML = `
+              <div class="message-sender">${senderName}</div>
+              <div class="message-content">
+                ${formatCodeMessage(msg.content)}
+                ${isCurrentUser ? `<button class="message-delete" onclick="deleteMessage('${msg.id}')" title="Delete message">
+                  <i class="fas fa-times"></i>
+                </button>` : ''}
+              </div>
+              <div class="message-time">${formatTime(new Date(msg.sent_at))}</div>
+            `;
+          } else {
+            messageElement.innerHTML = `
+              <div class="message-sender">${senderName}</div>
+              <div class="message-content">
+                ${msg.content}
+                ${isCurrentUser ? `<button class="message-delete" onclick="deleteMessage('${msg.id}')" title="Delete message">
+                  <i class="fas fa-times"></i>
+                </button>` : ''}
+              </div>
+              <div class="message-time">${formatTime(new Date(msg.sent_at))}</div>
+            `;
+          }
           
           messagesContainer.appendChild(messageElement);
         });
@@ -1017,6 +2160,42 @@
       return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
     }
 
+    // Get user display name (first name or username)
+    function getUserDisplayName(user, profile = null) {
+      if (profile?.username) {
+        return getFirstName(profile.username);
+      } else if (user?.email) {
+        return getFirstName(user.email);
+      }
+      return 'User';
+    }
+
+    // Extract first name from full name or email
+    function getFirstName(fullName) {
+      if (!fullName) return 'User';
+      
+      // Remove email domain if it's an email
+      let name = fullName.split('@')[0];
+      
+      // Split by common separators and get first part
+      const separators = ['.', '_', '-', ' '];
+      for (const separator of separators) {
+        if (name.includes(separator)) {
+          name = name.split(separator)[0];
+          break;
+        }
+      }
+      
+      // Capitalize first letter
+      return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+    }
+
+    // Get user avatar initial
+    function getUserAvatarInitial(user, profile = null) {
+      const displayName = getUserDisplayName(user, profile);
+      return displayName.charAt(0).toUpperCase();
+    }
+
     // Initialize the app
     document.addEventListener('DOMContentLoaded', async function() {
       // Set current year in footer
@@ -1051,17 +2230,47 @@
       const userAvatar = document.getElementById('userAvatar');
       const usernameSpan = document.getElementById('username');
       
-      if (profile?.username) {
-        userAvatar.textContent = profile.username.charAt(0).toUpperCase();
-        usernameSpan.textContent = profile.username;
-      } else {
-        userAvatar.textContent = user.email?.charAt(0).toUpperCase() || 'U';
-        usernameSpan.textContent = user.email || 'User';
-      }
+      const displayName = getUserDisplayName(user, profile);
+      const avatarInitial = getUserAvatarInitial(user, profile);
+      
+      userAvatar.textContent = avatarInitial;
+      usernameSpan.textContent = displayName;
 
       // Set up event listeners
       document.getElementById('chatInput').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') sendMessage();
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          sendMessage();
+        }
+      });
+
+      document.getElementById('codeInput').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && e.ctrlKey) {
+          e.preventDefault();
+          sendMessage();
+        }
+      });
+
+      // Add file input change listener for preview
+      document.getElementById('fileInput').addEventListener('change', updateFilePreview);
+
+      // Add code toggle listener
+      document.getElementById('codeToggle').addEventListener('click', toggleCodeMode);
+
+      // Add fullscreen toggle listener
+      document.getElementById('fullscreenToggle').addEventListener('click', toggleFullscreenCode);
+
+      // Add fullscreen textarea listeners
+      document.getElementById('fullscreenCodeInput').addEventListener('input', updateFullscreenStats);
+      document.getElementById('fullscreenCodeInput').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && e.ctrlKey) {
+          e.preventDefault();
+          sendFullscreenCode();
+        } else if (e.key === 's' && e.ctrlKey) {
+          e.preventDefault();
+          // Save draft functionality could be added here
+          console.log('Draft saved (placeholder)');
+        }
       });
 
       // Load initial data
@@ -1101,7 +2310,7 @@
       }
       supabaseClient
         .from('profiles')
-        .select('id, username')
+        .select('id, username, email')
         .in('id', onlineIds)
         .then(({ data }) => {
           const membersList = document.getElementById('membersList');
@@ -1109,15 +2318,521 @@
           data.forEach(profile => {
             const div = document.createElement('div');
             div.className = 'member';
+            const displayName = getUserDisplayName({ email: profile.email }, profile);
+            const avatarInitial = getUserAvatarInitial({ email: profile.email }, profile);
             div.innerHTML = `
-              <div class="member-avatar">${profile.username.charAt(0).toUpperCase()}</div>
-              <span class="member-name">${profile.username}</span>
+              <div class="member-avatar">${avatarInitial}</div>
+              <span class="member-name">${displayName}</span>
               <span class="member-status online"></span>
             `;
             membersList.appendChild(div);
           });
           document.getElementById('onlineCount').textContent = `${data.length} Online`;
         });
+    }
+
+    // File preview functionality
+    async function previewFile(fileId, filepath, filename, filetype) {
+      try {
+        const modal = document.getElementById('filePreviewModal');
+        const modalFileName = document.getElementById('modalFileName');
+        const modalFileIcon = document.getElementById('modalFileIcon');
+        const modalPreviewContent = document.getElementById('modalPreviewContent');
+        const modalDownloadBtn = document.getElementById('modalDownloadBtn');
+
+        // Set modal header
+        modalFileName.textContent = filename;
+        modalFileIcon.className = `fas ${getFileIcon(filetype)}`;
+
+        // Set download button
+        modalDownloadBtn.onclick = () => downloadFile(filepath, filename);
+
+        // Show loading
+        modalPreviewContent.innerHTML = `
+          <div class="preview-unsupported">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Loading preview...</p>
+          </div>
+        `;
+
+        // Show modal
+        modal.classList.add('active');
+
+        // Handle different file types
+        if (filetype.startsWith('image/')) {
+          // Image preview
+          const { data: imageUrl } = supabaseClient.storage
+            .from('files')
+            .getPublicUrl(filepath);
+
+          modalPreviewContent.innerHTML = `
+            <img src="${imageUrl.publicUrl}" alt="${filename}" class="preview-image">
+          `;
+        } else if (filetype === 'application/pdf') {
+          // PDF preview
+          const { data: pdfUrl } = supabaseClient.storage
+            .from('files')
+            .getPublicUrl(filepath);
+
+          modalPreviewContent.innerHTML = `
+            <iframe src="${pdfUrl.publicUrl}" class="preview-pdf"></iframe>
+          `;
+        } else if (filetype.startsWith('text/') || 
+                   filetype === 'application/json' || 
+                   filetype === 'application/javascript' ||
+                   filetype === 'text/css' ||
+                   filetype === 'text/html') {
+          // Text file preview
+          const { data, error } = await supabaseClient.storage
+            .from('files')
+            .download(filepath);
+
+          if (error) {
+            throw error;
+          }
+
+          const text = await data.text();
+          modalPreviewContent.innerHTML = `
+            <div class="preview-text">${text}</div>
+          `;
+        } else {
+          // Unsupported file type
+          modalPreviewContent.innerHTML = `
+            <div class="preview-unsupported">
+              <i class="fas ${getFileIcon(filetype)}"></i>
+              <h3>Preview Not Available</h3>
+              <p>This file type cannot be previewed in the browser.</p>
+              <p>Click "Download" to save the file to your device.</p>
+            </div>
+          `;
+        }
+      } catch (err) {
+        console.error('Error previewing file:', err);
+        const modalPreviewContent = document.getElementById('modalPreviewContent');
+        modalPreviewContent.innerHTML = `
+          <div class="preview-unsupported">
+            <i class="fas fa-exclamation-triangle"></i>
+            <h3>Error Loading Preview</h3>
+            <p>Unable to load file preview. Please try downloading the file instead.</p>
+          </div>
+        `;
+      }
+    }
+
+    function closeFilePreview() {
+      const modal = document.getElementById('filePreviewModal');
+      modal.classList.remove('active');
+    }
+
+    // Close modal when clicking outside
+    document.addEventListener('DOMContentLoaded', function() {
+      const modal = document.getElementById('filePreviewModal');
+      modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+          closeFilePreview();
+        }
+      });
+    });
+
+    // Format code messages
+    function formatCodeMessage(content) {
+      // Split content by code blocks
+      const parts = content.split(/(```[\s\S]*?```)/);
+      
+      return parts.map(part => {
+        if (part.startsWith('```') && part.endsWith('```')) {
+          // Extract language and code
+          const codeBlock = part.slice(3, -3);
+          const lines = codeBlock.split('\n');
+          const language = lines[0].trim();
+          const code = lines.slice(1).join('\n');
+          
+          return `
+            <div class="code-block">
+              <div class="code-header">
+                <span class="code-language">${language}</span>
+                <button class="code-copy" onclick="copyCode(this.nextElementSibling)">
+                  <i class="fas fa-copy"></i>
+                </button>
+              </div>
+              <div class="code-content">${escapeHtml(code)}</div>
+            </div>
+          `;
+        } else {
+          return escapeHtml(part);
+        }
+      }).join('');
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // Delete message
+    async function deleteMessage(messageId) {
+      if (!confirm('Are you sure you want to delete this message?')) {
+        return;
+      }
+
+      try {
+        // Get current user
+        const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
+        if (userError || !user) {
+          alert("Please log in to delete messages.");
+          return;
+        }
+
+        console.log('Attempting to delete message:', messageId, 'for user:', user.id);
+
+        // First, let's check if the message exists and belongs to the user
+        const { data: messageCheck, error: checkError } = await supabaseClient
+          .from('messages')
+          .select('id, user_id, content')
+          .eq('id', messageId)
+          .single();
+
+        if (checkError) {
+          console.error('Error checking message:', checkError);
+          alert('Error checking message: ' + checkError.message);
+          return;
+        }
+
+        if (!messageCheck) {
+          alert('Message not found.');
+          return;
+        }
+
+        if (messageCheck.user_id !== user.id) {
+          alert('You can only delete your own messages.');
+          return;
+        }
+
+        console.log('Message found and belongs to user:', messageCheck);
+
+        // Delete message from database
+        const { data, error } = await supabaseClient
+          .from('messages')
+          .delete()
+          .eq('id', messageId)
+          .eq('user_id', user.id)
+          .select();
+
+        if (error) {
+          console.error('Error deleting message:', error);
+          alert('Error deleting message: ' + error.message);
+          return;
+        }
+
+        console.log('Message deleted successfully:', data);
+        
+        // Manually remove the message from UI
+        const messageElement = document.querySelector(`[data-message-id="${messageId}"]`);
+        if (messageElement) {
+          messageElement.style.opacity = '0';
+          messageElement.style.transform = 'translateX(20px)';
+          setTimeout(() => {
+            messageElement.remove();
+          }, 300);
+        } else {
+          console.log('Message element not found in DOM, but deleted from database');
+        }
+      } catch (err) {
+        console.error('Error in deleteMessage:', err);
+        alert('An error occurred while deleting the message. Please try again.');
+      }
+    }
+
+    // Game variables
+    let currentGame = null;
+    let mySymbol = null;
+    let isMyTurn = false;
+    let gameBoard = ['', '', '', '', '', '', '', '', ''];
+    let gamePlayers = { x: null, o: null };
+
+    // Tic Tac Toe Game Functions
+    async function joinGame() {
+      try {
+        const { data: { user } } = await supabaseClient.auth.getUser();
+        if (!user) {
+          alert('Please log in to join the game.');
+          return;
+        }
+
+        // Check if there's an available game or create one
+        const { data: existingGame, error: findError } = await supabaseClient
+          .from('games')
+          .select('*')
+          .eq('status', 'waiting')
+          .limit(1)
+          .single();
+
+        if (findError && findError.code !== 'PGRST116') {
+          console.error('Error finding game:', findError);
+          return;
+        }
+
+        if (existingGame) {
+          // Join existing game as O
+          const { error: joinError } = await supabaseClient
+            .from('games')
+            .update({ 
+              player_o: user.id,
+              status: 'playing',
+              current_turn: existingGame.player_x
+            })
+            .eq('id', existingGame.id);
+
+          if (joinError) {
+            console.error('Error joining game:', joinError);
+            return;
+          }
+
+          currentGame = existingGame.id;
+          mySymbol = 'o';
+          gamePlayers.o = user.id;
+          gamePlayers.x = existingGame.player_x;
+        } else {
+          // Create new game as X
+          const { data: newGame, error: createError } = await supabaseClient
+            .from('games')
+            .insert({
+              player_x: user.id,
+              status: 'waiting',
+              board: gameBoard,
+              current_turn: user.id
+            })
+            .select()
+            .single();
+
+          if (createError) {
+            console.error('Error creating game:', createError);
+            return;
+          }
+
+          currentGame = newGame.id;
+          mySymbol = 'x';
+          gamePlayers.x = user.id;
+        }
+
+        updateGameUI();
+        setupGameRealtime();
+      } catch (err) {
+        console.error('Error joining game:', err);
+      }
+    }
+
+    async function leaveGame() {
+      if (!currentGame) return;
+
+      try {
+        const { error } = await supabaseClient
+          .from('games')
+          .update({ status: 'abandoned' })
+          .eq('id', currentGame);
+
+        if (error) {
+          console.error('Error leaving game:', error);
+          return;
+        }
+
+        resetGameState();
+      } catch (err) {
+        console.error('Error leaving game:', err);
+      }
+    }
+
+    async function makeMove(index) {
+      if (!currentGame || !isMyTurn || gameBoard[index] !== '') return;
+
+      try {
+        const { data: { user } } = await supabaseClient.auth.getUser();
+        
+        const newBoard = [...gameBoard];
+        newBoard[index] = mySymbol.toUpperCase();
+
+        const nextTurn = mySymbol === 'x' ? gamePlayers.o : gamePlayers.x;
+        const gameStatus = checkWinner(newBoard) ? 'finished' : 'playing';
+
+        const { error } = await supabaseClient
+          .from('games')
+          .update({
+            board: newBoard,
+            current_turn: nextTurn,
+            status: gameStatus,
+            winner: gameStatus === 'finished' ? user.id : null
+          })
+          .eq('id', currentGame);
+
+        if (error) {
+          console.error('Error making move:', error);
+          return;
+        }
+
+        gameBoard = newBoard;
+        updateGameBoard();
+      } catch (err) {
+        console.error('Error making move:', err);
+      }
+    }
+
+    function checkWinner(board) {
+      const lines = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
+        [0, 3, 6], [1, 4, 7], [2, 5, 8], // columns
+        [0, 4, 8], [2, 4, 6] // diagonals
+      ];
+
+      for (const line of lines) {
+        const [a, b, c] = line;
+        if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+          return board[a];
+        }
+      }
+
+      return board.every(cell => cell !== '') ? 'tie' : null;
+    }
+
+    function updateGameBoard() {
+      const cells = document.querySelectorAll('.game-cell');
+      cells.forEach((cell, index) => {
+        cell.textContent = gameBoard[index];
+        cell.className = `game-cell ${gameBoard[index].toLowerCase()}`;
+      });
+
+      const winner = checkWinner(gameBoard);
+      if (winner && winner !== 'tie') {
+        highlightWinningCells(winner);
+      }
+    }
+
+    function highlightWinningCells(winner) {
+      const lines = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8],
+        [0, 3, 6], [1, 4, 7], [2, 5, 8],
+        [0, 4, 8], [2, 4, 6]
+      ];
+
+      for (const line of lines) {
+        const [a, b, c] = line;
+        if (gameBoard[a] === winner && gameBoard[b] === winner && gameBoard[c] === winner) {
+          line.forEach(index => {
+            document.querySelector(`[data-index="${index}"]`).classList.add('winning');
+          });
+          break;
+        }
+      }
+    }
+
+    function updateGameUI() {
+      const joinBtn = document.getElementById('joinGameBtn');
+      const leaveBtn = document.getElementById('leaveGameBtn');
+      const status = document.getElementById('gameStatus');
+
+      if (currentGame) {
+        joinBtn.style.display = 'none';
+        leaveBtn.style.display = 'block';
+        
+        if (gamePlayers.x && gamePlayers.o) {
+          status.textContent = isMyTurn ? 'Your turn!' : 'Opponent\'s turn';
+          status.className = `game-status ${isMyTurn ? 'your-turn' : 'opponent-turn'}`;
+        } else {
+          status.textContent = 'Waiting for opponent...';
+          status.className = 'game-status waiting';
+        }
+      } else {
+        joinBtn.style.display = 'block';
+        leaveBtn.style.display = 'none';
+        status.textContent = 'Waiting for players...';
+        status.className = 'game-status';
+      }
+    }
+
+    function resetGameState() {
+      currentGame = null;
+      mySymbol = null;
+      isMyTurn = false;
+      gameBoard = ['', '', '', '', '', '', '', '', ''];
+      gamePlayers = { x: null, o: null };
+      
+      updateGameBoard();
+      updateGameUI();
+      
+      document.getElementById('gameStatus').textContent = 'Waiting for players...';
+      document.getElementById('playerXName').textContent = 'Waiting...';
+      document.getElementById('playerOName').textContent = 'Waiting...';
+    }
+
+    async function resetGame() {
+      if (currentGame) {
+        await leaveGame();
+      }
+      resetGameState();
+    }
+
+    function setupGameRealtime() {
+      if (!currentGame) return;
+
+      supabaseClient.channel(`game:${currentGame}`)
+        .on(
+          'postgres_changes',
+          {
+            event: '*',
+            schema: 'public',
+            table: 'games',
+            filter: `id=eq.${currentGame}`
+          },
+          async (payload) => {
+            if (payload.eventType === 'UPDATE') {
+              const game = payload.new;
+              gameBoard = game.board;
+              gamePlayers.x = game.player_x;
+              gamePlayers.o = game.player_o;
+              
+              const { data: { user } } = await supabaseClient.auth.getUser();
+              isMyTurn = game.current_turn === user.id;
+              
+              updateGameBoard();
+              updateGameUI();
+              
+              // Update player names
+              if (game.player_x) {
+                const { data: profileX } = await supabaseClient
+                  .from('profiles')
+                  .select('username, email')
+                  .eq('id', game.player_x)
+                  .single();
+                document.getElementById('playerXName').textContent = 
+                  getUserDisplayName({ email: profileX?.email }, profileX);
+              }
+              
+              if (game.player_o) {
+                const { data: profileO } = await supabaseClient
+                  .from('profiles')
+                  .select('username, email')
+                  .eq('id', game.player_o)
+                  .single();
+                document.getElementById('playerOName').textContent = 
+                  getUserDisplayName({ email: profileO?.email }, profileO);
+              }
+              
+              if (game.status === 'finished') {
+                const winner = checkWinner(gameBoard);
+                if (winner === 'tie') {
+                  document.getElementById('gameStatus').textContent = 'Game ended in a tie!';
+                } else {
+                  const winnerName = winner === 'X' ? 
+                    document.getElementById('playerXName').textContent :
+                    document.getElementById('playerOName').textContent;
+                  document.getElementById('gameStatus').textContent = `${winnerName} wins!`;
+                }
+                document.getElementById('gameStatus').className = 'game-status';
+              }
+            }
+          }
+        )
+        .subscribe();
     }
   </script>
 </body>
