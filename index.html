@@ -226,6 +226,140 @@
         pointer-events: auto; 
     }
     
+    /* Forgot Password Modal Styles */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(5px);
+        z-index: 2000;
+        display: none;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .modal-content {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 12px;
+        padding: 2rem;
+        max-width: 400px;
+        width: 90%;
+        position: relative;
+        color: #333;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .modal-header {
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+    
+    .modal-title {
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 0.5rem;
+    }
+    
+    .modal-description {
+        font-size: 0.9rem;
+        color: #666;
+        line-height: 1.5;
+    }
+    
+    .modal-close {
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: #666;
+        padding: 0;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+    }
+    
+    .modal-close:hover {
+        background: rgba(0, 0, 0, 0.1);
+        color: #333;
+    }
+    
+    .modal-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .modal-input {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        background: white;
+        transition: border-color 0.3s ease;
+    }
+    
+    .modal-input:focus {
+        outline: none;
+        border-color: #f39c12;
+        box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.1);
+    }
+    
+    .modal-btn {
+        width: 100%;
+        padding: 0.9rem;
+        border: none;
+        border-radius: 6px;
+        background-color: #f39c12;
+        color: white;
+        font-size: 0.9rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    
+    .modal-btn:hover {
+        background-color: #e67e22;
+    }
+    
+    .modal-btn:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+    }
+    
+    .modal-message {
+        margin-top: 1rem;
+        text-align: center;
+        font-size: 0.9rem;
+        padding: 0.5rem;
+        border-radius: 4px;
+        display: none;
+    }
+    
+    .modal-message.success {
+        background: rgba(76, 175, 80, 0.1);
+        color: #4CAF50;
+        border: 1px solid rgba(76, 175, 80, 0.3);
+    }
+    
+    .modal-message.error {
+        background: rgba(244, 67, 54, 0.1);
+        color: #f44336;
+        border: 1px solid rgba(244, 67, 54, 0.3);
+    }
+    
     @media (max-width: 768px) {
         .login {
             max-width: 90%;
@@ -328,8 +462,32 @@
             <button type="submit" class="btn">LOG IN</button>
             <div id="loginMessage" style="margin-top: 1rem; text-align: center; display: none;"></div>
         </form>
-        <a class="pass" href="mailto:ashwinkathir2006@gmail.com">Forget your Password?</a>
+        <a class="pass" href="#" onclick="showForgotPasswordModal()">Forget your Password?</a>
         <a href="register.html" class="new">New user ? Register</a> 
+        </div>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div id="forgotPasswordModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" onclick="hideForgotPasswordModal()">&times;</button>
+            <div class="modal-header">
+                <h2 class="modal-title">Reset Password</h2>
+                <p class="modal-description">Enter your email address and we'll send you a link to reset your password.</p>
+            </div>
+            <form id="forgotPasswordForm" class="modal-form">
+                <input 
+                    type="email" 
+                    id="resetEmail" 
+                    class="modal-input" 
+                    placeholder="Enter your email address" 
+                    required
+                >
+                <button type="submit" class="modal-btn" id="resetBtn">
+                    Send Reset Link
+                </button>
+                <div id="resetMessage" class="modal-message"></div>
+            </form>
         </div>
     </div>
 <footer>
@@ -437,6 +595,81 @@ loginForm.onsubmit = async e => {
     m.textContent = txt;
     m.style.display = txt ? 'block' : 'none';
     m.style.color = type === 'success' ? '#4CAF50' : '#f44336';
+  }
+
+  // Forgot Password Modal Functions
+  function showForgotPasswordModal() {
+    const modal = document.getElementById('forgotPasswordModal');
+    modal.style.display = 'flex';
+    document.getElementById('resetEmail').focus();
+  }
+
+  function hideForgotPasswordModal() {
+    const modal = document.getElementById('forgotPasswordModal');
+    modal.style.display = 'none';
+    // Clear form
+    document.getElementById('forgotPasswordForm').reset();
+    document.getElementById('resetMessage').style.display = 'none';
+  }
+
+  // Close modal when clicking outside
+  document.getElementById('forgotPasswordModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+      hideForgotPasswordModal();
+    }
+  });
+
+  // Handle forgot password form submission
+  document.getElementById('forgotPasswordForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const email = document.getElementById('resetEmail').value.trim();
+    const resetBtn = document.getElementById('resetBtn');
+    const resetMessage = document.getElementById('resetMessage');
+    
+    if (!email) {
+      showResetMessage('Please enter your email address.', 'error');
+      return;
+    }
+
+    // Disable button and show loading
+    resetBtn.disabled = true;
+    resetBtn.textContent = 'Sending...';
+    
+    try {
+      const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: window.location.origin + '/reset-password.html'
+      });
+      
+      if (error) {
+        showResetMessage(error.message, 'error');
+      } else {
+        showResetMessage('Password reset link sent! Check your email inbox.', 'success');
+        // Clear the form
+        document.getElementById('resetEmail').value = '';
+      }
+    } catch (error) {
+      showResetMessage('An error occurred. Please try again.', 'error');
+      console.error('Password reset error:', error);
+    } finally {
+      // Re-enable button
+      resetBtn.disabled = false;
+      resetBtn.textContent = 'Send Reset Link';
+    }
+  });
+
+  function showResetMessage(message, type) {
+    const resetMessage = document.getElementById('resetMessage');
+    resetMessage.textContent = message;
+    resetMessage.className = `modal-message ${type}`;
+    resetMessage.style.display = 'block';
+    
+    // Auto-hide success messages after 5 seconds
+    if (type === 'success') {
+      setTimeout(() => {
+        resetMessage.style.display = 'none';
+      }, 5000);
+    }
   }
 
 </script>
