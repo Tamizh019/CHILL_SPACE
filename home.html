@@ -6,7 +6,7 @@
   <title>Chill Space</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
   
   <style>
     :root {
@@ -182,10 +182,7 @@
       max-width: 100%;
     }
 
-    .admin-full-width {
-      width: 100%;
-      margin-top: 1rem;
-    }
+
     .content-area {
       display: flex;
       flex-direction: column;
@@ -1111,102 +1108,7 @@
       opacity: 0.8;
     }
 
-    /* Admin Role Management Styles */
-    .role-management-content {
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
-    }
 
-    .roles-table-section,
-    .user-roles-section {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .roles-table-section h3,
-    .user-roles-section h3 {
-      font-size: 1rem;
-      font-weight: 600;
-      color: var(--light);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .table-container {
-      background: rgba(30, 41, 59, 0.5);
-      border-radius: 8px;
-      border: 1px solid var(--card-border);
-      overflow: hidden;
-      width: 100%;
-      max-width: 100%;
-    }
-
-    .admin-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.875rem;
-      max-width: 100%;
-      overflow-x: auto;
-    }
-
-    .admin-table th {
-      background: rgba(15, 23, 42, 0.8);
-      color: var(--light);
-      font-weight: 600;
-      padding: 0.75rem;
-      text-align: left;
-      border-bottom: 1px solid var(--card-border);
-    }
-
-    .admin-table td {
-      padding: 0.75rem;
-      border-bottom: 1px solid var(--card-border);
-      color: var(--light);
-    }
-
-    .admin-table tr:hover {
-      background: rgba(30, 41, 59, 0.3);
-    }
-
-    .admin-table tr:last-child td {
-      border-bottom: none;
-    }
-
-    .role-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.25rem;
-      padding: 0.25rem 0.5rem;
-      border-radius: 4px;
-      font-size: 0.75rem;
-      font-weight: 500;
-    }
-
-    .admin-actions {
-      display: flex;
-      gap: 0.5rem;
-    }
-
-    .admin-actions button {
-      padding: 0.25rem 0.5rem;
-      font-size: 0.75rem;
-      min-height: auto;
-    }
-
-    .color-preview {
-      width: 20px;
-      height: 20px;
-      border-radius: 4px;
-      border: 1px solid var(--card-border);
-    }
-
-    .emoji-preview {
-      font-size: 1.2rem;
-    }
 
     .member-status {
       width: 10px;
@@ -1496,9 +1398,6 @@
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
       }
-      
-
-      
 
     }
 
@@ -2275,60 +2174,7 @@
       </div>
     </div>
 
-    <!-- Admin Role Management Section - Full Width Below Chat -->
-    <section class="card admin-full-width" id="adminSection" style="display: none;">
-      <div class="card-header">
-        <h2><i class="fas fa-user-shield"></i> Role Management</h2>
-        <button class="btn btn-outline btn-sm" onclick="loadRoleManagement()">
-          <i class="fas fa-sync-alt"></i>
-        </button>
-      </div>
-      <div class="role-management-content">
-        <!-- Roles Table -->
-        <div class="roles-table-section">
-          <h3><i class="fas fa-list"></i> Available Roles</h3>
-          <div class="table-container">
-            <table class="admin-table">
-              <thead>
-                <tr>
-                  <th>Role</th>
-                  <th>Display Name</th>
-                  <th>Color</th>
-                  <th>Emoji</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody id="rolesTableBody">
-                <!-- Roles will be loaded here -->
-              </tbody>
-            </table>
-          </div>
-          <button class="btn btn-primary btn-sm" onclick="showAddRoleModal()">
-            <i class="fas fa-plus"></i> Add New Role
-          </button>
-        </div>
 
-                  <!-- User Roles Table -->
-          <div class="user-roles-section">
-            <h3><i class="fas fa-users"></i> All Users</h3>
-            <div class="table-container">
-              <table class="admin-table">
-                <thead>
-                  <tr>
-                    <th>User</th>
-                    <th>Email</th>
-                    <th>Current Role</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody id="userRolesTableBody">
-                  <!-- All users will be loaded here -->
-                </tbody>
-              </table>
-            </div>
-          </div>
-      </div>
-    </section>
   </main>
 
 
@@ -2352,7 +2198,29 @@
     // Initialize Supabase
     const supabaseUrl = 'https://umcmifajtomyvwjzmvpm.supabase.co';
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVtY21pZmFqdG9teXZ3anptdnBtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE3MzQzNTMsImV4cCI6MjA2NzMxMDM1M30._SjFGJOINRe0LTljlcK1h392iu5B5VJaAqK6sD3HJYI';
-    const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+    
+    // Initialize Supabase
+    let supabaseClient;
+    function initializeSupabase() {
+      if (typeof supabase !== 'undefined') {
+        console.log('Supabase loaded, creating client...');
+        supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+        console.log('Supabase client created successfully');
+        return true;
+      } else {
+        console.log('Supabase not loaded yet, retrying...');
+        return false;
+      }
+    }
+    
+    // Try to initialize immediately, then retry if needed
+    if (!initializeSupabase()) {
+      const checkInterval = setInterval(() => {
+        if (initializeSupabase()) {
+          clearInterval(checkInterval);
+        }
+      }, 100);
+    }
 
 
 
@@ -2939,7 +2807,8 @@
     function setupRealtimeChat() {
       const messagesContainer = document.getElementById('chatMessages');
       
-      supabaseClient.channel('public:messages')
+      // Create channel with better error handling
+      const channel = supabaseClient.channel('public:messages')
         .on(
           'postgres_changes',
           {
@@ -2948,73 +2817,77 @@
             table: 'messages'
           },
           async (payload) => {
-            // Get user info for the message
-            let senderName = 'Unknown';
-            let senderRole = 'user';
             try {
-              const { data: profile } = await supabaseClient
-                .from('profiles')
-                .select('username, email, role')
-                .eq('id', payload.new.user_id)
-                .single();
-              
-              if (profile) {
-                senderName = getUserDisplayName({ email: profile.email }, profile);
-                senderRole = profile.role || 'user';
+              // Get user info for the message
+              let senderName = 'Unknown';
+              let senderRole = 'user';
+              try {
+                const { data: profile } = await supabaseClient
+                  .from('profiles')
+                  .select('username, email, role')
+                  .eq('id', payload.new.user_id)
+                  .single();
+                
+                if (profile) {
+                  senderName = getUserDisplayName({ email: profile.email }, profile);
+                  senderRole = profile.role || 'user';
+                }
+              } catch (err) {
+                console.log('Could not fetch sender profile:', err);
               }
-            } catch (err) {
-              console.log('Could not fetch sender profile');
-            }
 
-            const { data: currentUser } = await supabaseClient.auth.getUser();
-            const isCurrentUser = payload.new.user_id === currentUser.user?.id;
-            
-            const messageElement = document.createElement('div');
-            messageElement.className = isCurrentUser 
-              ? 'message message-sent fade-in' 
-              : 'message message-received fade-in';
-            messageElement.setAttribute('data-message-id', payload.new.id);
+              const { data: currentUser } = await supabaseClient.auth.getUser();
+              const isCurrentUser = payload.new.user_id === currentUser.user?.id;
               
-            const displayName = isCurrentUser ? getUserDisplayName(currentUser.user) : senderName;
-            const roleDisplay = getUserRoleDisplaySync(null, { role: senderRole });
-            
-            // Check if message contains code blocks
-            if (payload.new.content.includes('```')) {
-              messageElement.innerHTML = `
-                <div class="message-sender">
-                  ${displayName} 
-                  <span class="message-role" style="color: ${roleDisplay.color}; font-size: 0.7rem; margin-left: 0.5rem;">
-                    ${roleDisplay.emoji} ${roleDisplay.role}
-                  </span>
-                </div>
-                <div class="message-content">
-                  ${formatCodeMessage(payload.new.content)}
-                  ${isCurrentUser ? `<button class="message-delete" onclick="deleteMessage('${payload.new.id}')" title="Delete message">
-                    <i class="fas fa-times"></i>
-                  </button>` : ''}
-                </div>
-                <div class="message-time">${formatTime(new Date(payload.new.sent_at))}</div>
-              `;
-            } else {
-              messageElement.innerHTML = `
-                <div class="message-sender">
-                  ${displayName} 
-                  <span class="message-role" style="color: ${roleDisplay.color}; font-size: 0.7rem; margin-left: 0.5rem;">
-                    ${roleDisplay.emoji} ${roleDisplay.role}
-                  </span>
-                </div>
-                <div class="message-content">
-                  ${payload.new.content}
-                  ${isCurrentUser ? `<button class="message-delete" onclick="deleteMessage('${payload.new.id}')" title="Delete message">
-                    <i class="fas fa-times"></i>
-                  </button>` : ''}
-                </div>
-                <div class="message-time">${formatTime(new Date(payload.new.sent_at))}</div>
-              `;
+              const messageElement = document.createElement('div');
+              messageElement.className = isCurrentUser 
+                ? 'message message-sent fade-in' 
+                : 'message message-received fade-in';
+              messageElement.setAttribute('data-message-id', payload.new.id);
+                
+              const displayName = isCurrentUser ? getUserDisplayName(currentUser.user) : senderName;
+              const roleDisplay = getUserRoleDisplaySync(null, { role: senderRole });
+              
+              // Check if message contains code blocks
+              if (payload.new.content.includes('```')) {
+                messageElement.innerHTML = `
+                  <div class="message-sender">
+                    ${displayName} 
+                    <span class="message-role" style="color: ${roleDisplay.color}; font-size: 0.7rem; margin-left: 0.5rem;">
+                      ${roleDisplay.emoji} ${roleDisplay.role}
+                    </span>
+                  </div>
+                  <div class="message-content">
+                    ${formatCodeMessage(payload.new.content)}
+                    ${isCurrentUser || isUserAdmin ? `<button class="message-delete" onclick="deleteMessage('${payload.new.id}')" title="Delete message">
+                      <i class="fas fa-times"></i>
+                    </button>` : ''}
+                  </div>
+                  <div class="message-time">${formatTime(new Date(payload.new.sent_at))}</div>
+                `;
+              } else {
+                messageElement.innerHTML = `
+                  <div class="message-sender">
+                    ${displayName} 
+                    <span class="message-role" style="color: ${roleDisplay.color}; font-size: 0.7rem; margin-left: 0.5rem;">
+                      ${roleDisplay.emoji} ${roleDisplay.role}
+                    </span>
+                  </div>
+                  <div class="message-content">
+                    ${payload.new.content}
+                    ${isCurrentUser || isUserAdmin ? `<button class="message-delete" onclick="deleteMessage('${payload.new.id}')" title="Delete message">
+                      <i class="fas fa-times"></i>
+                    </button>` : ''}
+                  </div>
+                  <div class="message-time">${formatTime(new Date(payload.new.sent_at))}</div>
+                `;
+              }
+              
+              messagesContainer.appendChild(messageElement);
+              smoothScrollToBottom(messagesContainer);
+            } catch (err) {
+              console.error('Error handling realtime message:', err);
             }
-            
-            messagesContainer.appendChild(messageElement);
-            smoothScrollToBottom(messagesContainer);
           }
         )
         .on(
@@ -3025,25 +2898,57 @@
             table: 'messages'
           },
           (payload) => {
-            console.log('DELETE event received for message:', payload.old.id);
-            // Remove deleted message from UI
-            const messageElement = document.querySelector(`[data-message-id="${payload.old.id}"]`);
-            if (messageElement) {
-              console.log('Removing message element from UI:', payload.old.id);
-              messageElement.style.opacity = '0';
-              messageElement.style.transform = 'translateX(20px)';
-              setTimeout(() => {
-                messageElement.remove();
-              }, 300);
-            } else {
-              console.log('Message element not found in DOM for deletion:', payload.old.id);
+            try {
+              console.log('DELETE event received for message:', payload.old.id);
+              // Remove deleted message from UI
+              const messageElement = document.querySelector(`[data-message-id="${payload.old.id}"]`);
+              if (messageElement) {
+                console.log('Removing message element from UI:', payload.old.id);
+                messageElement.style.opacity = '0';
+                messageElement.style.transform = 'translateX(20px)';
+                setTimeout(() => {
+                  messageElement.remove();
+                }, 300);
+              } else {
+                console.log('Message element not found in DOM for deletion:', payload.old.id);
+              }
+            } catch (err) {
+              console.error('Error handling realtime delete:', err);
             }
           }
         )
         .subscribe((status) => {
           console.log('Realtime chat subscription status:', status);
+          
+          // Handle subscription errors
+          if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
+            console.log('Realtime subscription error, attempting to reconnect...');
+            setTimeout(() => {
+              console.log('Reconnecting to realtime...');
+              setupRealtimeChat();
+            }, 5000);
+          }
         });
+        
+      // Store channel reference for cleanup
+      window.chatChannel = channel;
     }
+    
+    // Cleanup realtime connections
+    function cleanupRealtime() {
+      try {
+        if (window.chatChannel) {
+          window.chatChannel.unsubscribe();
+        }
+        if (window.presenceChannel) {
+          window.presenceChannel.unsubscribe();
+        }
+      } catch (err) {
+        console.log('Error during cleanup:', err);
+      }
+    }
+    
+
 
     // Load initial messages
     async function loadMessages() {
@@ -3121,7 +3026,7 @@
               </div>
               <div class="message-content">
                 ${formatCodeMessage(msg.content)}
-                ${isCurrentUser ? `<button class="message-delete" onclick="deleteMessage('${msg.id}')" title="Delete message">
+                ${isCurrentUser || isUserAdmin ? `<button class="message-delete" onclick="deleteMessage('${msg.id}')" title="Delete message">
                   <i class="fas fa-times"></i>
                 </button>` : ''}
               </div>
@@ -3137,7 +3042,7 @@
               </div>
               <div class="message-content">
                 ${msg.content}
-                ${isCurrentUser ? `<button class="message-delete" onclick="deleteMessage('${msg.id}')" title="Delete message">
+                ${isCurrentUser || isUserAdmin ? `<button class="message-delete" onclick="deleteMessage('${msg.id}')" title="Delete message">
                   <i class="fas fa-times"></i>
                 </button>` : ''}
               </div>
@@ -3205,30 +3110,112 @@
       return 'User';
     }
 
-    // Get user role with styling (updated for new role system)
+    // Check if current user is admin
+    let isUserAdmin = false;
+    
+    // Add global function to check admin status
+    window.checkAdminStatus = function() {
+      console.log('=== ADMIN STATUS CHECK ===');
+      console.log('isUserAdmin variable:', isUserAdmin);
+      
+      // Try to get user from localStorage or session
+      const user = supabaseClient.auth.getUser();
+      console.log('Auth user object:', user);
+      
+      // Check if we can access the current user from the page
+      if (typeof currentUser !== 'undefined') {
+        console.log('Current user from page:', currentUser);
+      }
+      
+      // Check if we can access user from auth session
+      supabaseClient.auth.getSession().then(({ data, error }) => {
+        if (error) {
+          console.log('Session error:', error);
+        } else {
+          console.log('Session user:', data.session?.user);
+          console.log('User ID:', data.session?.user?.id);
+        }
+      }).catch(err => {
+        console.log('Session check failed:', err);
+      });
+      
+      // Simple check - look at your own messages to see if you have admin role
+      console.log('=== CHECKING YOUR MESSAGES FOR ROLE ===');
+      const messages = document.querySelectorAll('.message-sent');
+      if (messages.length > 0) {
+        const lastMessage = messages[messages.length - 1];
+        const roleElement = lastMessage.querySelector('.message-role');
+        if (roleElement) {
+          console.log('Your role from messages:', roleElement.textContent.trim());
+          console.log('Is admin based on message role:', roleElement.textContent.includes('👑'));
+        }
+      }
+      
+      return isUserAdmin;
+    };
+    
+    // Function to fix admin status based on current user's role
+    window.fixAdminStatus = function() {
+      console.log('=== FIXING ADMIN STATUS ===');
+      
+      // Get current user from session
+      supabaseClient.auth.getSession().then(({ data, error }) => {
+        if (error || !data.session?.user) {
+          console.log('No session found');
+          return;
+        }
+        
+        const userId = data.session.user.id;
+        console.log('Current user ID:', userId);
+        
+        // Check profiles table for admin role
+        supabaseClient
+          .from('profiles')
+          .select('role')
+          .eq('id', userId)
+          .single()
+          .then(({ data: profile, error: profileError }) => {
+            if (profileError) {
+              console.log('Profile error:', profileError);
+            } else {
+              console.log('Profile role:', profile?.role);
+              if (profile?.role === 'admin') {
+                isUserAdmin = true;
+                console.log('✅ Admin status fixed! isUserAdmin is now:', isUserAdmin);
+              } else {
+                console.log('❌ User is not admin in profiles table');
+              }
+            }
+          })
+          .catch(err => {
+            console.log('Profile check failed:', err);
+          });
+      });
+    };
+    
+    // Get user role with styling (simplified - no RPC calls)
     async function getUserRoleDisplay(user, profile = null) {
       let role = 'user';
-      let color = 'var(--gray)';
+      let color = '#6366f1';
       let emoji = '👤';
       
+      // Use profile role if available, otherwise use default
       if (profile?.role) {
-        // Use profile role if available
         role = profile.role;
-      } else if (user?.id) {
-        // Fetch role from database
-        try {
-          const { data: roleDetails, error } = await supabaseClient.rpc('get_user_role_details', {
-            user_uuid: user.id
-          });
-          
-          if (!error && roleDetails && roleDetails.length > 0) {
-            const details = roleDetails[0];
-            role = details.role_name;
-            color = details.color;
-            emoji = details.emoji;
+        // Set color and emoji based on role
+        if (role === 'admin') {
+          color = '#ef4444';
+          emoji = '👑';
+          // Set admin status for current user
+          if (user?.id === currentUser?.id) {
+            isUserAdmin = true;
           }
-        } catch (err) {
-          console.log('Could not fetch role details, using default');
+        } else if (role === 'moderator') {
+          color = '#10b981';
+          emoji = '🛡️';
+        } else if (role === 'vip') {
+          color = '#f59e0b';
+          emoji = '⭐';
         }
       }
       
@@ -3238,6 +3225,8 @@
         emoji: emoji
       };
     }
+    
+
 
     // Synchronous version for immediate use
     function getUserRoleDisplaySync(user, profile = null) {
@@ -3269,252 +3258,9 @@
       };
     }
 
-    // Check if user is admin
-    async function isUserAdmin(userId) {
-      try {
-        const { data: roleDetails, error } = await supabaseClient.rpc('get_user_role_details', {
-          user_uuid: userId
-        });
-        
-        if (!error && roleDetails && roleDetails.length > 0) {
-          return roleDetails[0].role_name === 'admin';
-        }
-      } catch (err) {
-        console.log('Could not check admin status');
-      }
-      return false;
-    }
 
-    // Load role management interface
-    async function loadRoleManagement() {
-      try {
-        console.log('Loading role management...');
-        
-        // Load roles
-        const { data: roles, error: rolesError } = await supabaseClient
-          .from('roles')
-          .select('*')
-          .order('id');
 
-        console.log('Roles query result:', { roles, rolesError });
 
-        if (rolesError) {
-          console.error('Roles query error:', rolesError);
-          throw rolesError;
-        }
-
-        if (!roles || roles.length === 0) {
-          console.log('No roles found in database');
-          const rolesTableBody = document.getElementById('rolesTableBody');
-          rolesTableBody.innerHTML = `
-            <tr>
-              <td colspan="5" style="text-align: center; color: var(--gray);">
-                No roles found. Please add some roles first.
-              </td>
-            </tr>
-          `;
-        } else {
-          console.log(`Found ${roles.length} roles:`, roles);
-          
-          const rolesTableBody = document.getElementById('rolesTableBody');
-          rolesTableBody.innerHTML = '';
-
-          roles.forEach(role => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-              <td><strong>${role.name || 'N/A'}</strong></td>
-              <td>${role.display_name || 'N/A'}</td>
-              <td>
-                <div class="color-preview" style="background-color: ${role.color || '#6366f1'}; width: 20px; height: 20px; border-radius: 4px; display: inline-block; margin-right: 8px;"></div>
-                ${role.color || '#6366f1'}
-              </td>
-              <td>
-                <span class="emoji-preview">${role.emoji || '👤'}</span>
-              </td>
-              <td>
-                <div class="admin-actions">
-                  <button class="btn btn-outline btn-sm" onclick="editRole(${role.id})">
-                    <i class="fas fa-edit"></i>
-                  </button>
-                  ${role.name !== 'admin' ? `
-                    <button class="btn btn-danger btn-sm" onclick="deleteRole(${role.id})">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  ` : ''}
-                </div>
-              </td>
-            `;
-            rolesTableBody.appendChild(row);
-          });
-        }
-
-        // Load ALL users with their role information
-        let allUsers = [];
-        let usersError = null;
-        
-        try {
-          // Get all users from profiles table (client-side approach)
-          const { data: profiles, error: profilesError } = await supabaseClient
-            .from('profiles')
-            .select('*')
-            .order('created_at', { ascending: false });
-          
-          if (profilesError) {
-            usersError = profilesError;
-          } else if (profiles) {
-            // Get all user roles with error handling
-            let roleMap = {};
-            try {
-              // Try the complex query first
-              const { data: userRoles, error: rolesError } = await supabaseClient
-                .from('user_roles')
-                .select(`
-                  user_id,
-                  roles(id, name, display_name, color, emoji)
-                `);
-              
-              if (!rolesError && userRoles) {
-                userRoles.forEach(userRole => {
-                  roleMap[userRole.user_id] = userRole.roles;
-                });
-                console.log('Successfully loaded user roles:', userRoles.length);
-              } else {
-                console.log('Complex query failed, trying simple approach:', rolesError);
-                // Fallback: Try simple queries
-                await loadUserRolesSimple();
-              }
-            } catch (roleErr) {
-              console.log('Complex query error, trying simple approach:', roleErr);
-              // Fallback: Try simple queries
-              await loadUserRolesSimple();
-            }
-            
-            // Fallback function for simple role loading
-            async function loadUserRolesSimple() {
-              try {
-                // Get user_roles and roles separately
-                const { data: userRoles, error: userRolesError } = await supabaseClient
-                  .from('user_roles')
-                  .select('user_id, role_id');
-                
-                const { data: roles, error: rolesError } = await supabaseClient
-                  .from('roles')
-                  .select('id, name, display_name, color, emoji');
-                
-                if (!userRolesError && !rolesError && userRoles && roles) {
-                  // Create a map of roles by ID
-                  const rolesById = {};
-                  roles.forEach(role => {
-                    rolesById[role.id] = role;
-                  });
-                  
-                  // Map user roles
-                  userRoles.forEach(userRole => {
-                    const role = rolesById[userRole.role_id];
-                    if (role) {
-                      roleMap[userRole.user_id] = role;
-                    }
-                  });
-                  
-                  console.log('Successfully loaded user roles (simple method):', userRoles.length);
-                } else {
-                  console.log('Simple method also failed, using default roles');
-                }
-              } catch (simpleErr) {
-                console.log('Simple method error, using default roles:', simpleErr);
-              }
-            }
-            
-            // Combine profiles with roles
-            allUsers = profiles.map(profile => {
-              const role = roleMap[profile.id];
-              
-              return {
-                id: profile.id,
-                email: profile.email,
-                username: profile.username || profile.email?.split('@')[0] || 'Unknown',
-                created_at: profile.created_at,
-                role_name: role?.name || 'user',
-                role_display_name: role?.display_name || 'User',
-                role_color: role?.color || '#6366f1',
-                role_emoji: role?.emoji || '👤',
-                has_assigned_role: !!role
-              };
-            });
-          }
-        } catch (err) {
-          console.error('Error loading users:', err);
-          usersError = err;
-        }
-
-        if (usersError) {
-          console.error('Users query error:', usersError);
-          throw usersError;
-        }
-
-        const userRolesTableBody = document.getElementById('userRolesTableBody');
-        userRolesTableBody.innerHTML = '';
-
-        if (allUsers && allUsers.length > 0) {
-          console.log(`Found ${allUsers.length} users:`, allUsers);
-          
-          allUsers.forEach(user => {
-            const row = document.createElement('tr');
-            const joinDate = user.created_at ? new Date(user.created_at).toLocaleDateString() : 'Unknown';
-            
-            row.innerHTML = `
-              <td>
-                <div style="display: flex; align-items: center; gap: 0.5rem;">
-                  <div class="user-avatar" style="width: 24px; height: 24px; font-size: 0.7rem;">
-                    ${user.username?.charAt(0).toUpperCase() || 'U'}
-                  </div>
-                  <div>
-                    <div style="font-weight: 500; color: var(--light);">${user.username || 'Unknown'}</div>
-                    <div style="font-size: 0.7rem; color: var(--gray);">Joined: ${joinDate}</div>
-                  </div>
-                </div>
-              </td>
-              <td>${user.email || 'No email'}</td>
-              <td>
-                <span class="role-badge" style="color: ${user.role_color}; background-color: ${user.role_color}20;">
-                  ${user.role_emoji} ${user.role_display_name}
-                </span>
-                ${!user.has_assigned_role ? '<span style="font-size: 0.7rem; color: var(--gray); margin-left: 0.5rem;">(default)</span>' : ''}
-              </td>
-              <td>
-                <div class="admin-actions">
-                  <button class="btn btn-outline btn-sm" onclick="changeUserRole('${user.id}')" title="Change Role">
-                    <i class="fas fa-user-edit"></i>
-                  </button>
-                  ${user.has_assigned_role ? `
-                    <button class="btn btn-danger btn-sm" onclick="removeUserRole('${user.id}')" title="Remove Role">
-                      <i class="fas fa-user-minus"></i>
-                    </button>
-                  ` : `
-                    <button class="btn btn-secondary btn-sm" onclick="assignDefaultRole('${user.id}')" title="Assign Default Role">
-                      <i class="fas fa-user-plus"></i>
-                    </button>
-                  `}
-                </div>
-              </td>
-            `;
-            userRolesTableBody.appendChild(row);
-          });
-        } else {
-          userRolesTableBody.innerHTML = `
-            <tr>
-              <td colspan="4" style="text-align: center; color: var(--gray);">
-                No users found
-              </td>
-            </tr>
-          `;
-        }
-
-      } catch (err) {
-        console.error('Error loading role management:', err);
-        showToast('error', 'Error', 'Failed to load role management data.');
-      }
-    }
 
     // Show add role modal
     function showAddRoleModal() {
@@ -3791,6 +3537,14 @@
 
     // Initialize the app
     document.addEventListener('DOMContentLoaded', async function() {
+      // Wait for Supabase client to be ready
+      while (!supabaseClient) {
+        console.log('Waiting for Supabase client...');
+        await new Promise(resolve => setTimeout(resolve, 100));
+      }
+      
+      console.log('Supabase client ready, initializing app...');
+      
       // Set current year in footer
       document.getElementById('currentYear').textContent = new Date().getFullYear();
 
@@ -3896,23 +3650,23 @@
         }
       });
 
+
+      
       // Load initial data
       loadFiles();
       loadMessages();
       setupRealtimeChat();
 
-      // Check if user is admin and show admin section
-      const isAdmin = await isUserAdmin(user.id);
-      if (isAdmin) {
-        document.getElementById('adminSection').style.display = 'block';
-        loadRoleManagement();
-      }
+
 
       // Show welcome toast
       showToast('success', 'Welcome to Chill Space! 🎉', `Hey ${displayName}! Ready to chat and share files?`, 5000);
 
       // --- Presence (Online Users) ---
       setupPresence(user, profile?.username || user.email || 'User');
+      
+      // Add cleanup on page unload
+      window.addEventListener('beforeunload', cleanupRealtime);
     });
 
     // --- Presence (Online Users) ---
@@ -3932,6 +3686,9 @@
             presenceChannel.track({ id: currentUser.id, username });
           }
         });
+        
+      // Store channel reference for cleanup
+      window.presenceChannel = presenceChannel;
     }
 
     function updateOnlineList(onlineIds) {

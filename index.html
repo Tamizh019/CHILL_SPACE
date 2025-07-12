@@ -301,6 +301,8 @@
         display: none;
         justify-content: center;
         align-items: center;
+        padding: 1rem;
+        box-sizing: border-box;
     }
     
     .modal-content {
@@ -309,7 +311,9 @@
         border-radius: 12px;
         padding: 2rem;
         max-width: 400px;
-        width: 90%;
+        width: 100%;
+        max-height: 90vh;
+        overflow-y: auto;
         position: relative;
         color: #333;
         border: 1px solid rgba(255, 255, 255, 0.2);
@@ -512,6 +516,17 @@
             width: 160px;
             height: auto;
         }
+        
+        .modal-overlay {
+            padding: 0.5rem;
+            align-items: flex-start;
+            padding-top: 10vh;
+        }
+        
+        .modal-content {
+            padding: 1.5rem;
+            max-height: 80vh;
+        }
     }
     
     @media (max-width: 480px) {
@@ -553,6 +568,25 @@
         .pass {
             bottom: 80px;
             font-size: 0.65rem;
+        }
+        
+        .modal-overlay {
+            padding: 0.25rem;
+            align-items: flex-start;
+            padding-top: 5vh;
+        }
+        
+        .modal-content {
+            padding: 1rem;
+            max-height: 85vh;
+        }
+        
+        .modal-title {
+            font-size: 1.2rem;
+        }
+        
+        .modal-description {
+            font-size: 0.8rem;
         }
     }
 </style>
