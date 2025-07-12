@@ -37,10 +37,30 @@
         padding: 2rem;
         display: flex;
         flex-direction: column;
-        border: 1px solid rgba(211, 208, 208, 0.432);
-        border-radius: 12px;
-        background-color: rgba(207, 207, 207, 0.1);
-        backdrop-filter: blur(3px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(20px);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .login::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.08) 0%,
+            rgba(255, 255, 255, 0.03) 50%,
+            rgba(255, 255, 255, 0.01) 100%
+        );
+        border-radius: 20px;
+        pointer-events: none;
     }
     .heading{
         font-size: 1.6rem;
@@ -58,6 +78,7 @@
         margin-bottom: 1.5rem;
         position: relative;
         margin-top: -0.2rem;
+        z-index: 1;
     }
     .group label{
         display: block;
@@ -116,7 +137,10 @@
     .btn:hover{
         background: linear-gradient(135deg, #e67e22, #d35400);
         transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(243, 156, 18, 0.4);
+        box-shadow: 
+            0 8px 25px rgba(243, 156, 18, 0.4),
+            0 0 10px #fbbf24,
+            0 0 20px #facc15;
     }
     
     .btn:active {
@@ -127,7 +151,8 @@
     .header{
         padding: 2rem;
         text-align: center;
-       
+        position: relative;
+        z-index: 1;
     }
     img{
         width: 150px;
@@ -151,6 +176,8 @@
         margin-top: 1rem;
         text-decoration: none;
         color: beige;
+        position: relative;
+        z-index: 1;
     }
     footer{
         position: fixed;
