@@ -7,6 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
   <style>
     :root {
       --primary: #6366f1;
@@ -37,6 +38,8 @@
       flex-direction: column;
       -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
       overflow-x: hidden; /* Prevent horizontal scroll */
+      width: 100%;
+      max-width: 100vw;
     }
 
     header {
@@ -47,6 +50,8 @@
       align-items: center;
       border-bottom: 1px solid var(--card-border);
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      min-height: 60px;
+      flex-shrink: 0;
     }
 
     .logo {
@@ -153,25 +158,49 @@
       font-size: 0.875rem;
     }
 
+    .desktop-only {
+      display: inline;
+    }
+
     main {
       flex: 1;
       padding: 1rem;
-      display: grid;
-      grid-template-columns: 2.5fr 1fr; 
-      gap: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
       max-width: 1600px;
       margin: 0 auto;
+      width: 100%;
+      overflow-x: hidden;
+    }
+
+    .main-content {
+      display: grid;
+      grid-template-columns: 2.5fr 1fr;
+      gap: 2.5rem;
+      width: 100%;
+      max-width: 100%;
+    }
+
+    .admin-full-width {
+      width: 100%;
+      margin-top: 1rem;
     }
     .content-area {
       display: flex;
       flex-direction: column;
       gap: 2rem;
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
     }
     .chat-container {
-      height: 800px; 
-      min-height: 600px;
+      height: 900px; 
+      min-height: 700px;
       min-width: 0;
       width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
     }
     .sidebar {
       max-width: 420px;
@@ -179,6 +208,7 @@
       display: flex;
       flex-direction: column;
       gap: 2rem;
+      overflow-x: hidden;
     }
     .card {
       background: var(--card-bg);
@@ -187,6 +217,9 @@
       border: 1px solid var(--card-border);
       backdrop-filter: blur(10px);
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
     }
 
     .card-header {
@@ -542,13 +575,14 @@
     .chat-container {
       display: flex;
       flex-direction: column;
-      height: 600px;
-      min-height: 500px;
+      height: 800px;
+      min-height: 600px;
     }
 
     .chat-messages {
       flex: 1;
       overflow-y: auto;
+      overflow-x: hidden;
       padding: 1rem;
       display: flex;
       flex-direction: column;
@@ -558,6 +592,30 @@
       margin-bottom: 1rem;
       -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
       scroll-behavior: smooth; /* Smooth scroll to bottom */
+      scrollbar-width: thin; /* Firefox */
+      scrollbar-color: var(--gray) transparent; /* Firefox */
+      width: 100%;
+      max-width: 100%;
+    }
+
+    /* Custom scrollbar for Webkit browsers */
+    .chat-messages::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .chat-messages::-webkit-scrollbar-track {
+      background: transparent;
+      border-radius: 4px;
+    }
+
+    .chat-messages::-webkit-scrollbar-thumb {
+      background: var(--gray);
+      border-radius: 4px;
+      transition: background 0.3s ease;
+    }
+
+    .chat-messages::-webkit-scrollbar-thumb:hover {
+      background: var(--light);
     }
 
     .message {
@@ -566,6 +624,9 @@
       border-radius: 16px;
       position: relative;
       animation: messageSlideIn 0.3s ease-out;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      word-break: break-word;
     }
 
     @keyframes messageSlideIn {
@@ -644,6 +705,8 @@
       display: flex;
       gap: 0.5rem;
       position: relative;
+      width: 100%;
+      max-width: 100%;
     }
 
     .chat-input input {
@@ -655,6 +718,9 @@
       color: var(--light);
       min-height: 44px; /* Touch-friendly minimum size */
       font-size: 16px; /* Prevent zoom on iOS */
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
     }
 
     .chat-input input:focus {
@@ -737,16 +803,16 @@
 
     /* Emoji Picker */
     .emoji-picker {
-      position: absolute;
-      top: calc(100% + 10px);
-      left: 0;
-      right: 0;
+      position: fixed;
+      bottom: 80px;
+      left: 1rem;
+      right: 1rem;
       background: var(--dark);
       border: 1px solid var(--card-border);
       border-radius: 12px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
       backdrop-filter: blur(15px);
-      z-index: 1000;
+      z-index: 10000;
       max-height: 400px;
       overflow: hidden;
       animation: emojiSlideDown 0.3s ease-out;
@@ -1030,8 +1096,116 @@
       font-weight: bold;
     }
 
+    .member-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      flex: 1;
+    }
+
     .member-name {
       font-weight: 500;
+    }
+
+    .member-role {
+      opacity: 0.8;
+    }
+
+    /* Admin Role Management Styles */
+    .role-management-content {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .roles-table-section,
+    .user-roles-section {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .roles-table-section h3,
+    .user-roles-section h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--light);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .table-container {
+      background: rgba(30, 41, 59, 0.5);
+      border-radius: 8px;
+      border: 1px solid var(--card-border);
+      overflow: hidden;
+      width: 100%;
+      max-width: 100%;
+    }
+
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+      max-width: 100%;
+      overflow-x: auto;
+    }
+
+    .admin-table th {
+      background: rgba(15, 23, 42, 0.8);
+      color: var(--light);
+      font-weight: 600;
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .admin-table td {
+      padding: 0.75rem;
+      border-bottom: 1px solid var(--card-border);
+      color: var(--light);
+    }
+
+    .admin-table tr:hover {
+      background: rgba(30, 41, 59, 0.3);
+    }
+
+    .admin-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .role-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+
+    .admin-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .admin-actions button {
+      padding: 0.25rem 0.5rem;
+      font-size: 0.75rem;
+      min-height: auto;
+    }
+
+    .color-preview {
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+      border: 1px solid var(--card-border);
+    }
+
+    .emoji-preview {
+      font-size: 1.2rem;
     }
 
     .member-status {
@@ -1049,50 +1223,7 @@
       background: var(--gray);
     }
 
-    .study-timer {
-      text-align: center;
-    }
 
-    .timer-display {
-      font-size: 2.5rem;
-      font-weight: 600;
-      margin: 1rem 0;
-      background: linear-gradient(to right, var(--primary), var(--secondary));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    .timer-controls {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-    }
-
-    .progress-container {
-      margin-top: 1.5rem;
-    }
-
-    .progress-label {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 0.5rem;
-      font-size: 0.875rem;
-    }
-
-    .progress-bar {
-      height: 8px;
-      background: rgba(148, 163, 184, 0.2);
-      border-radius: 4px;
-      overflow: hidden;
-    }
-
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(to right, var(--primary), var(--secondary));
-      border-radius: 4px;
-      width: 65%;
-    }
 
     footer {
       text-align: center;
@@ -1101,6 +1232,11 @@
       font-size: 0.85rem;
       color: var(--gray);
       border-top: 1px solid var(--card-border);
+      min-height: 50px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     @keyframes fadeIn {
@@ -1180,14 +1316,13 @@
     }
 
     @media (max-width: 1600px) {
-      main {
-        max-width: 100vw;
+      .main-content {
         grid-template-columns: 2fr 1fr;
         gap: 1.5rem;
       }
       .chat-container {
-        height: 600px;
-        min-height: 400px;
+        height: 700px;
+        min-height: 500px;
       }
       .sidebar {
         max-width: 350px;
@@ -1196,23 +1331,33 @@
     
     @media (max-width: 1024px) {
       main {
-        grid-template-columns: 1fr;
-        max-width: 100vw;
         padding: 1rem;
+        width: 100%;
+        max-width: 100vw;
+      }
+      .main-content {
+        grid-template-columns: 1fr;
         gap: 1.5rem;
+        width: 100%;
+        max-width: 100%;
       }
       .chat-container {
-        height: 450px;
-        min-height: 350px;
+        height: 550px;
+        min-height: 450px;
+        width: 100%;
+        max-width: 100%;
       }
       .sidebar {
         max-width: 100%;
+        width: 100%;
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         gap: 1rem;
       }
       .card {
         margin-bottom: 0;
+        width: 100%;
+        max-width: 100%;
       }
     }
 
@@ -1220,10 +1365,13 @@
       main {
         padding: 0.75rem;
         gap: 1rem;
+        width: 100%;
+        max-width: 100vw;
       }
       
       header {
         padding: 0.75rem 1rem;
+        min-height: 55px;
       }
       
       header h1 {
@@ -1236,6 +1384,26 @@
       
       .user-info span {
         display: none;
+      }
+      
+      .desktop-only {
+        display: none;
+      }
+      
+      .header-actions {
+        gap: 0.75rem;
+      }
+      
+      .btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+        min-height: 40px;
+      }
+      
+      footer {
+        padding: 0.75rem;
+        min-height: 45px;
+        font-size: 0.8rem;
       }
       
       .btn {
@@ -1262,8 +1430,8 @@
       }
       
       .chat-container {
-        height: 400px;
-        min-height: 300px;
+        height: 500px;
+        min-height: 400px;
       }
       
       .chat-messages {
@@ -1312,54 +1480,39 @@
         font-size: 0.8rem;
       }
       
-      .timer-display {
-        font-size: 2rem;
+      /* Admin table mobile fixes */
+      .admin-table {
+        font-size: 0.75rem;
       }
       
-      .timer-controls {
-        gap: 0.75rem;
+      .admin-table th,
+      .admin-table td {
+        padding: 0.5rem 0.4rem;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
       }
       
-      .game-section {
-        width: 100%;
-        margin-left: 0;
-        margin-top: 1.5rem;
-        margin-bottom: 1.5rem;
+      .table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
       }
       
-      .game-board {
-        max-width: 280px;
-        gap: 6px;
-        padding: 0.75rem;
-      }
+
       
-      .game-cell {
-        font-size: 1.5rem;
-      }
-      
-      .game-controls {
-        gap: 0.75rem;
-      }
-      
-      .game-info {
-        font-size: 0.8rem;
-      }
-      
-      .player-symbol {
-        width: 18px;
-        height: 18px;
-        font-size: 0.7rem;
-      }
+
     }
 
     @media (max-width: 480px) {
       main {
         padding: 0.5rem;
         gap: 0.75rem;
+        width: 100%;
+        max-width: 100vw;
       }
       
       header {
         padding: 0.5rem 0.75rem;
+        min-height: 50px;
       }
       
       header h1 {
@@ -1368,6 +1521,28 @@
       
       .logo {
         gap: 0.5rem;
+      }
+      
+      .header-actions {
+        gap: 0.5rem;
+      }
+      
+      .user-avatar {
+        width: 28px;
+        height: 28px;
+        font-size: 0.8rem;
+      }
+      
+      .btn {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.85rem;
+        min-height: 38px;
+      }
+      
+      footer {
+        padding: 0.5rem;
+        min-height: 40px;
+        font-size: 0.75rem;
       }
       
       .card {
@@ -1384,8 +1559,8 @@
       }
       
       .chat-container {
-        height: 350px;
-        min-height: 250px;
+        height: 450px;
+        min-height: 350px;
       }
       
       .chat-messages {
@@ -1481,6 +1656,29 @@
         margin-top: 0.3rem;
       }
       
+      /* Admin table mobile fixes for small screens */
+      .admin-table {
+        font-size: 0.7rem;
+      }
+      
+      .admin-table th,
+      .admin-table td {
+        padding: 0.4rem 0.3rem;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+      }
+      
+      .admin-actions {
+        flex-direction: column;
+        gap: 0.2rem;
+      }
+      
+      .admin-actions button {
+        padding: 0.2rem 0.4rem;
+        font-size: 0.65rem;
+        min-height: 30px;
+      }
+      
       .preview-item {
         padding: 0.4rem;
         gap: 0.5rem;
@@ -1529,66 +1727,9 @@
         height: 8px;
       }
       
-      .timer-display {
-        font-size: 1.75rem;
-        margin: 0.75rem 0;
-      }
+
       
-      .timer-controls {
-        gap: 0.5rem;
-      }
-      
-      .progress-label {
-        font-size: 0.8rem;
-      }
-      
-      .progress-bar {
-        height: 6px;
-      }
-      
-      .game-section {
-        margin-top: 1rem;
-        margin-bottom: 1rem;
-      }
-      
-      .game-header {
-        margin-bottom: 0.75rem;
-      }
-      
-      .game-status {
-        font-size: 1rem;
-      }
-      
-      .game-board {
-        max-width: 250px;
-        gap: 4px;
-        padding: 0.5rem;
-      }
-      
-      .game-cell {
-        font-size: 1.25rem;
-        border-width: 1px;
-      }
-      
-      .game-controls {
-        gap: 0.5rem;
-        margin-top: 0.75rem;
-      }
-      
-      .game-info {
-        font-size: 0.75rem;
-        margin-bottom: 0.75rem;
-      }
-      
-      .player-info {
-        gap: 0.3rem;
-      }
-      
-      .player-symbol {
-        width: 16px;
-        height: 16px;
-        font-size: 0.65rem;
-      }
+
       
       /* Modal improvements for mobile */
       .modal-content {
@@ -1637,7 +1778,9 @@
       /* Emoji picker mobile improvements */
       .emoji-picker {
         max-height: 350px;
-        top: calc(100% + 5px);
+        bottom: 70px;
+        left: 0.75rem;
+        right: 0.75rem;
       }
 
       .emoji-grid {
@@ -1672,137 +1815,13 @@
       }
 
       .emoji-picker {
-        top: calc(100% + 3px);
+        bottom: 60px;
+        left: 0.5rem;
+        right: 0.5rem;
         max-height: 300px;
       }
     }
-    .game-section {
-      margin-top: 2rem;
-      width: 90%;
-      margin-left: 5%;
-      margin-bottom: 2rem;
-    }
 
-    .game-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1rem;
-    }
-
-    .game-status {
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: var(--light);
-    }
-
-    .game-status.waiting {
-      color: var(--secondary);
-    }
-
-    .game-status.your-turn {
-      color: var(--success);
-    }
-
-    .game-status.opponent-turn {
-      color: var(--danger);
-    }
-
-    .game-board {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      max-width: 300px;
-      margin: 0 auto;
-      background: var(--dark);
-      padding: 1rem;
-      border-radius: 12px;
-      border: 1px solid var(--card-border);
-    }
-
-    .game-cell {
-      aspect-ratio: 1;
-      background: var(--darker);
-      border: 2px solid var(--card-border);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem;
-      font-weight: bold;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      color: var(--light);
-      min-height: 60px; /* Touch-friendly minimum size */
-      touch-action: manipulation; /* Optimize for touch */
-    }
-
-    .game-cell:hover {
-      background: rgba(99, 102, 241, 0.2);
-      border-color: var(--primary);
-    }
-
-    .game-cell.x {
-      color: var(--primary);
-    }
-
-    .game-cell.o {
-      color: var(--secondary);
-    }
-
-    .game-cell.winning {
-      background: var(--success);
-      color: white;
-      animation: pulse 0.5s ease-in-out;
-    }
-
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.1); }
-    }
-
-    .game-controls {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-
-    .game-info {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1rem;
-      font-size: 0.875rem;
-      color: var(--gray);
-    }
-
-    .player-info {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .player-symbol {
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      font-size: 0.75rem;
-    }
-
-    .player-symbol.x {
-      background: var(--primary);
-      color: white;
-    }
-
-    .player-symbol.o {
-      background: var(--secondary);
-      color: white;
-    }
 
     /* Toast Notification System */
     .toast-container {
@@ -2134,197 +2153,185 @@
   </div>
 
   <main>
-    <div class="content-area">
-      <!-- Chat box is now the main content -->
-      <section class="card chat-container">
-        <div class="card-header">
-          <h2><i class="fas fa-comments"></i> Group Chat AI - A4</h2>
-        </div>
-        <div class="chat-messages" id="chatMessages">
-          <!-- Messages will appear here -->
-        </div>
-        <div class="chat-input">
-          <div class="chat-controls">
-            <button class="code-toggle" id="codeToggle" title="Toggle Code Mode">
-              <i class="fas fa-code"></i>
-            </button>
-            <button class="code-toggle" id="fullscreenToggle" title="Full Screen Code Editor" style="display: none;">
-              <i class="fas fa-expand"></i>
-            </button>
-            <button class="emoji-toggle" id="emojiToggle" title="Emoji Picker">
-              <i class="fas fa-smile"></i>
-            </button>
-            <select class="language-select" id="languageSelect" style="display: none;">
-              <option value="javascript">JavaScript</option>
-              <option value="python">Python</option>
-              <option value="html">HTML</option>
-              <option value="css">CSS</option>
-              <option value="java">Java</option>
-              <option value="cpp">C++</option>
-              <option value="csharp">C#</option>
-              <option value="php">PHP</option>
-              <option value="sql">SQL</option>
-              <option value="bash">Bash</option>
-              <option value="json">JSON</option>
-              <option value="xml">XML</option>
-              <option value="markdown">Markdown</option>
-              <option value="plaintext">Plain Text</option>
-            </select>
+    <div class="main-content">
+      <div class="content-area">
+        <!-- Chat box is now the main content -->
+        <section class="card chat-container">
+          <div class="card-header">
+            <h2><i class="fas fa-comments"></i> Group Chat AI - A4</h2>
           </div>
-          <input type="text" id="chatInput" placeholder="Type your message..." />
-          <textarea id="codeInput" placeholder="Write your code here..." style="display: none;"></textarea>
-          <button class="btn btn-primary" onclick="sendMessage()">
-            <i class="fas fa-paper-plane"></i>
-          </button>
-        </div>
-        
-        <!-- Emoji Picker -->
-        <div class="emoji-picker" id="emojiPicker" style="display: none;">
-          <div class="emoji-picker-header">
-            <div class="emoji-search">
-              <input type="text" id="emojiSearch" placeholder="Search emojis..." />
+          <div class="chat-messages" id="chatMessages">
+            <!-- Messages will appear here -->
+          </div>
+          <div class="chat-input">
+            <div class="chat-controls">
+              <button class="code-toggle" id="codeToggle" title="Toggle Code Mode">
+                <i class="fas fa-code"></i>
+              </button>
+              <button class="code-toggle" id="fullscreenToggle" title="Full Screen Code Editor" style="display: none;">
+                <i class="fas fa-expand"></i>
+              </button>
+              <button class="emoji-toggle" id="emojiToggle" title="Emoji Picker">
+                <i class="fas fa-smile"></i>
+              </button>
+              <select class="language-select" id="languageSelect" style="display: none;">
+                <option value="javascript">JavaScript</option>
+                <option value="python">Python</option>
+                <option value="html">HTML</option>
+                <option value="css">CSS</option>
+                <option value="java">Java</option>
+                <option value="cpp">C++</option>
+                <option value="csharp">C#</option>
+                <option value="php">PHP</option>
+                <option value="sql">SQL</option>
+                <option value="bash">Bash</option>
+                <option value="json">JSON</option>
+                <option value="xml">XML</option>
+                <option value="markdown">Markdown</option>
+                <option value="plaintext">Plain Text</option>
+              </select>
             </div>
-            <button class="emoji-close" onclick="toggleEmojiPicker()">
-              <i class="fas fa-times"></i>
+            <input type="text" id="chatInput" placeholder="Type your message..." />
+            <textarea id="codeInput" placeholder="Write your code here..." style="display: none;"></textarea>
+            <button class="btn btn-primary" onclick="sendMessage()">
+              <i class="fas fa-paper-plane"></i>
             </button>
           </div>
-          <div class="emoji-categories">
-            <button class="emoji-category active" data-category="recent">🕒</button>
-            <button class="emoji-category" data-category="smileys">😊</button>
-            <button class="emoji-category" data-category="animals">🐱</button>
-            <button class="emoji-category" data-category="food">🍕</button>
-            <button class="emoji-category" data-category="activities">⚽</button>
-            <button class="emoji-category" data-category="travel">✈️</button>
-            <button class="emoji-category" data-category="objects">💡</button>
-            <button class="emoji-category" data-category="symbols">💕</button>
-            <button class="emoji-category" data-category="flags">🏁</button>
+          
+          <!-- Emoji Picker -->
+          <div class="emoji-picker" id="emojiPicker" style="display: none;">
+            <div class="emoji-picker-header">
+              <div class="emoji-search">
+                <input type="text" id="emojiSearch" placeholder="Search emojis..." />
+              </div>
+              <button class="emoji-close" onclick="toggleEmojiPicker()">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            <div class="emoji-categories">
+              <button class="emoji-category active" data-category="recent">🕒</button>
+              <button class="emoji-category" data-category="smileys">😊</button>
+              <button class="emoji-category" data-category="animals">🐱</button>
+              <button class="emoji-category" data-category="food">🍕</button>
+              <button class="emoji-category" data-category="activities">⚽</button>
+              <button class="emoji-category" data-category="travel">✈️</button>
+              <button class="emoji-category" data-category="objects">💡</button>
+              <button class="emoji-category" data-category="symbols">💕</button>
+              <button class="emoji-category" data-category="flags">🏁</button>
+            </div>
+            <div class="emoji-grid" id="emojiGrid">
+              <!-- Emojis will be loaded here -->
+            </div>
           </div>
-          <div class="emoji-grid" id="emojiGrid">
-            <!-- Emojis will be loaded here -->
+        </section>
+      </div>
+
+      <div class="sidebar">
+        <!-- Upload and shared files go here -->
+        <section class="card">
+          <div class="card-header">
+            <h2><i class="fas fa-cloud-upload-alt"></i> Upload Anything</h2>
           </div>
-        </div>
-      </section>
-    </div>
-
-    <div class="sidebar">
-      <!-- Upload and shared files go here -->
-      <section class="card">
-        <div class="card-header">
-          <h2><i class="fas fa-cloud-upload-alt"></i> Upload Anything</h2>
-        </div>
-        <div class="upload-area">
-          <i class="fas fa-file-upload" style="font-size: 2rem; color: var(--primary);"></i>
-          <h3>Drag & Drop files here</h3>
-          <p>or click to browse (PDF, DOCX, PPT, IMAGES)</p>
-          <input type="file" id="fileInput" multiple />
-        </div>
-        <div class="file-preview" id="filePreview">
-          <h4><i class="fas fa-eye"></i> Selected Files</h4>
-          <div class="no-files">No files selected</div>
-        </div>
-        <div style="margin-top: 1rem; display: flex; gap: 0.5rem; justify-content: flex-end;">
-          <button class="btn btn-primary" onclick="uploadFile()">
-            <i class="fas fa-upload"></i> Upload
-          </button>
-        </div>
-      </section>
-
-      <section class="card">
-        <div class="card-header">
-          <h2><i class="fas fa-folder-open"></i> Shared Files</h2>
-          <div style="display: flex; gap: 0.5rem;">
-            <button class="btn btn-outline btn-sm" onclick="loadFiles()">
-              <i class="fas fa-sync-alt"></i>
+          <div class="upload-area">
+            <i class="fas fa-file-upload" style="font-size: 2rem; color: var(--primary);"></i>
+            <h3>Drag & Drop files here</h3>
+            <p>or click to browse (PDF, DOCX, PPT, IMAGES)</p>
+            <input type="file" id="fileInput" multiple />
+          </div>
+          <div class="file-preview" id="filePreview">
+            <h4><i class="fas fa-eye"></i> Selected Files</h4>
+            <div class="no-files">No files selected</div>
+          </div>
+          <div style="margin-top: 1rem; display: flex; gap: 0.5rem; justify-content: flex-end;">
+            <button class="btn btn-primary" onclick="uploadFile()">
+              <i class="fas fa-upload"></i> Upload
             </button>
           </div>
-        </div>
-        <div class="file-list" id="fileContainer">
-          <!-- Files will be loaded here -->
-        </div>
-      </section>
+        </section>
 
-      <section class="card">
-        <div class="card-header">
-          <h2><i class="fas fa-users"></i> Group Members</h2>
-          <span class="btn btn-outline btn-sm" id="onlineCount">0 Online</span>
-        </div>
-        <div class="members-list" id="membersList">
-          <!-- Members will appear here -->
-        </div>
-      </section>
+        <section class="card">
+          <div class="card-header">
+            <h2><i class="fas fa-folder-open"></i> Shared Files</h2>
+            <div style="display: flex; gap: 0.5rem;">
+              <button class="btn btn-outline btn-sm" onclick="loadFiles()">
+                <i class="fas fa-sync-alt"></i>
+              </button>
+            </div>
+          </div>
+          <div class="file-list" id="fileContainer">
+            <!-- Files will be loaded here -->
+          </div>
+        </section>
 
-      <section class="card study-timer">
-        <div class="card-header">
-          <h2><i class="fas fa-clock"></i> Timer</h2>
-        </div>
-        <div class="timer-display" id="timerDisplay">25:00</div>
-        <div class="timer-controls">
-          <button class="btn btn-secondary" onclick="startTimer()">
-            <i class="fas fa-play"></i>
-          </button>
-          <button class="btn btn-outline" onclick="pauseTimer()">
-            <i class="fas fa-pause"></i>
-          </button>
-          <button class="btn btn-outline" onclick="resetTimer()">
-            <i class="fas fa-redo"></i>
-          </button>
-        </div>
-        <div class="progress-container">
-          <div class="progress-label">
-            <span>Today's Progress</span>
-            <span id="progressPercent">0%</span>
+        <section class="card">
+          <div class="card-header">
+            <h2><i class="fas fa-users"></i> Group Members</h2>
+            <span class="btn btn-outline btn-sm" id="onlineCount">0 Online</span>
           </div>
-          <div class="progress-bar">
-            <div class="progress-fill" id="progressFill"></div>
+          <div class="members-list" id="membersList">
+            <!-- Members will appear here -->
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
     </div>
+
+    <!-- Admin Role Management Section - Full Width Below Chat -->
+    <section class="card admin-full-width" id="adminSection" style="display: none;">
+      <div class="card-header">
+        <h2><i class="fas fa-user-shield"></i> Role Management</h2>
+        <button class="btn btn-outline btn-sm" onclick="loadRoleManagement()">
+          <i class="fas fa-sync-alt"></i>
+        </button>
+      </div>
+      <div class="role-management-content">
+        <!-- Roles Table -->
+        <div class="roles-table-section">
+          <h3><i class="fas fa-list"></i> Available Roles</h3>
+          <div class="table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Role</th>
+                  <th>Display Name</th>
+                  <th>Color</th>
+                  <th>Emoji</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="rolesTableBody">
+                <!-- Roles will be loaded here -->
+              </tbody>
+            </table>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="showAddRoleModal()">
+            <i class="fas fa-plus"></i> Add New Role
+          </button>
+        </div>
+
+                  <!-- User Roles Table -->
+          <div class="user-roles-section">
+            <h3><i class="fas fa-users"></i> All Users</h3>
+            <div class="table-container">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>User</th>
+                    <th>Email</th>
+                    <th>Current Role</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="userRolesTableBody">
+                  <!-- All users will be loaded here -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+      </div>
+    </section>
   </main>
 
-  <!-- Tic Tac Toe Game Section -->
-  <section class="card game-section">
-    <div class="card-header">
-      <h2><i class="fas fa-gamepad"></i> Tic Tac Toe - Feel Bored? Play with your friends</h2>
-      <button class="btn btn-outline btn-sm" onclick="resetGame()">
-        <i class="fas fa-redo"></i> New Game
-      </button>
-    </div>
-    
-    <div class="game-info">
-      <div class="player-info">
-        <div class="player-symbol x">X</div>
-        <span id="playerXName">Waiting...</span>
-      </div>
-      <div class="player-info">
-        <span id="playerOName">Waiting...</span>
-        <div class="player-symbol o">O</div>
-      </div>
-    </div>
 
-    <div class="game-status" id="gameStatus">Waiting for players...</div>
-    
-    <div class="game-board" id="gameBoard">
-      <div class="game-cell" data-index="0" onclick="makeMove(0)"></div>
-      <div class="game-cell" data-index="1" onclick="makeMove(1)"></div>
-      <div class="game-cell" data-index="2" onclick="makeMove(2)"></div>
-      <div class="game-cell" data-index="3" onclick="makeMove(3)"></div>
-      <div class="game-cell" data-index="4" onclick="makeMove(4)"></div>
-      <div class="game-cell" data-index="5" onclick="makeMove(5)"></div>
-      <div class="game-cell" data-index="6" onclick="makeMove(6)"></div>
-      <div class="game-cell" data-index="7" onclick="makeMove(7)"></div>
-      <div class="game-cell" data-index="8" onclick="makeMove(8)"></div>
-    </div>
-
-    <div class="game-controls">
-      <button class="btn btn-primary" onclick="joinGame()" id="joinGameBtn">
-        <i class="fas fa-play"></i> Join Game
-      </button>
-      <button class="btn btn-outline" onclick="leaveGame()" id="leaveGameBtn" style="display: none;">
-        <i class="fas fa-sign-out-alt"></i> Leave Game
-      </button>
-    </div>
-  </section>
 
   <!-- Toast Notification System -->
   <div id="toastContainer" class="toast-container"></div>
@@ -2347,10 +2354,7 @@
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVtY21pZmFqdG9teXZ3anptdnBtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE3MzQzNTMsImV4cCI6MjA2NzMxMDM1M30._SjFGJOINRe0LTljlcK1h392iu5B5VJaAqK6sD3HJYI';
     const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
-    // Timer variables
-    let timerInterval;
-    let timerSeconds = 1500; // 25 minutes
-    let isTimerRunning = false;
+
 
     // Authentication functions
     async function logout() {
@@ -2946,15 +2950,17 @@
           async (payload) => {
             // Get user info for the message
             let senderName = 'Unknown';
+            let senderRole = 'user';
             try {
               const { data: profile } = await supabaseClient
                 .from('profiles')
-                .select('username, email')
+                .select('username, email, role')
                 .eq('id', payload.new.user_id)
                 .single();
               
               if (profile) {
                 senderName = getUserDisplayName({ email: profile.email }, profile);
+                senderRole = profile.role || 'user';
               }
             } catch (err) {
               console.log('Could not fetch sender profile');
@@ -2970,11 +2976,17 @@
             messageElement.setAttribute('data-message-id', payload.new.id);
               
             const displayName = isCurrentUser ? getUserDisplayName(currentUser.user) : senderName;
+            const roleDisplay = getUserRoleDisplaySync(null, { role: senderRole });
             
             // Check if message contains code blocks
             if (payload.new.content.includes('```')) {
               messageElement.innerHTML = `
-                <div class="message-sender">${displayName}</div>
+                <div class="message-sender">
+                  ${displayName} 
+                  <span class="message-role" style="color: ${roleDisplay.color}; font-size: 0.7rem; margin-left: 0.5rem;">
+                    ${roleDisplay.emoji} ${roleDisplay.role}
+                  </span>
+                </div>
                 <div class="message-content">
                   ${formatCodeMessage(payload.new.content)}
                   ${isCurrentUser ? `<button class="message-delete" onclick="deleteMessage('${payload.new.id}')" title="Delete message">
@@ -2985,7 +2997,12 @@
               `;
             } else {
               messageElement.innerHTML = `
-                <div class="message-sender">${displayName}</div>
+                <div class="message-sender">
+                  ${displayName} 
+                  <span class="message-role" style="color: ${roleDisplay.color}; font-size: 0.7rem; margin-left: 0.5rem;">
+                    ${roleDisplay.emoji} ${roleDisplay.role}
+                  </span>
+                </div>
                 <div class="message-content">
                   ${payload.new.content}
                   ${isCurrentUser ? `<button class="message-delete" onclick="deleteMessage('${payload.new.id}')" title="Delete message">
@@ -3050,13 +3067,13 @@
         // Get all unique user IDs from messages
         const userIds = [...new Set(messages.map(msg => msg.user_id))];
         
-        // Fetch user profiles in batch
+        // Fetch user profiles in batch (including roles)
         let userProfiles = {};
         if (userIds.length > 0) {
           try {
             const { data: profiles } = await supabaseClient
               .from('profiles')
-              .select('id, username, email')
+              .select('id, username, email, role')
               .in('id', userIds);
             
             if (profiles) {
@@ -3079,17 +3096,29 @@
           messageElement.setAttribute('data-message-id', msg.id);
             
           let senderName = 'Unknown';
+          let senderRole = 'user';
           if (isCurrentUser) {
             senderName = getUserDisplayName(user);
+            // For current user, we'll get the role from the profile we already fetched
+            const currentProfile = userProfiles[user.id];
+            senderRole = currentProfile?.role || 'user';
           } else {
             const profile = userProfiles[msg.user_id];
             senderName = getUserDisplayName({ email: profile?.email }, profile);
+            senderRole = profile?.role || 'user';
           }
+          
+          const roleDisplay = getUserRoleDisplaySync(null, { role: senderRole });
           
           // Check if message contains code blocks
           if (msg.content.includes('```')) {
             messageElement.innerHTML = `
-              <div class="message-sender">${senderName}</div>
+              <div class="message-sender">
+                ${senderName} 
+                <span class="message-role" style="color: ${roleDisplay.color}; font-size: 0.7rem; margin-left: 0.5rem;">
+                  ${roleDisplay.emoji} ${roleDisplay.role}
+                </span>
+              </div>
               <div class="message-content">
                 ${formatCodeMessage(msg.content)}
                 ${isCurrentUser ? `<button class="message-delete" onclick="deleteMessage('${msg.id}')" title="Delete message">
@@ -3100,7 +3129,12 @@
             `;
           } else {
             messageElement.innerHTML = `
-              <div class="message-sender">${senderName}</div>
+              <div class="message-sender">
+                ${senderName} 
+                <span class="message-role" style="color: ${roleDisplay.color}; font-size: 0.7rem; margin-left: 0.5rem;">
+                  ${roleDisplay.emoji} ${roleDisplay.role}
+                </span>
+              </div>
               <div class="message-content">
                 ${msg.content}
                 ${isCurrentUser ? `<button class="message-delete" onclick="deleteMessage('${msg.id}')" title="Delete message">
@@ -3120,41 +3154,7 @@
       }
     }
 
-    // Timer functions
-    function startTimer() {
-      if (!isTimerRunning) {
-        isTimerRunning = true;
-        timerInterval = setInterval(updateTimer, 1000);
-      }
-    }
 
-    function pauseTimer() {
-      clearInterval(timerInterval);
-      isTimerRunning = false;
-    }
-
-    function resetTimer() {
-      pauseTimer();
-      timerSeconds = 1500;
-      updateTimerDisplay();
-    }
-
-    function updateTimer() {
-      if (timerSeconds > 0) {
-        timerSeconds--;
-        updateTimerDisplay();
-      } else {
-        pauseTimer();
-        alert('Timer completed! Take a break.');
-      }
-    }
-
-    function updateTimerDisplay() {
-      const minutes = Math.floor(timerSeconds / 60);
-      const seconds = timerSeconds % 60;
-      document.getElementById('timerDisplay').textContent = 
-        `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-    }
 
     // Helper functions
     function getFileIcon(filetype) {
@@ -3203,6 +3203,490 @@
         return getFirstName(user.email);
       }
       return 'User';
+    }
+
+    // Get user role with styling (updated for new role system)
+    async function getUserRoleDisplay(user, profile = null) {
+      let role = 'user';
+      let color = 'var(--gray)';
+      let emoji = '👤';
+      
+      if (profile?.role) {
+        // Use profile role if available
+        role = profile.role;
+      } else if (user?.id) {
+        // Fetch role from database
+        try {
+          const { data: roleDetails, error } = await supabaseClient.rpc('get_user_role_details', {
+            user_uuid: user.id
+          });
+          
+          if (!error && roleDetails && roleDetails.length > 0) {
+            const details = roleDetails[0];
+            role = details.role_name;
+            color = details.color;
+            emoji = details.emoji;
+          }
+        } catch (err) {
+          console.log('Could not fetch role details, using default');
+        }
+      }
+      
+      return {
+        role: role,
+        color: color,
+        emoji: emoji
+      };
+    }
+
+    // Synchronous version for immediate use
+    function getUserRoleDisplaySync(user, profile = null) {
+      let role = 'user';
+      let color = 'var(--gray)';
+      let emoji = '👤';
+      
+      if (profile?.role) {
+        role = profile.role;
+      }
+      
+      // Map role names to colors and emojis
+      const roleMap = {
+        'admin': { color: '#ef4444', emoji: '👑' },
+        'moderator': { color: '#f59e0b', emoji: '🛡️' },
+        'vip': { color: '#10b981', emoji: '⭐' },
+        'user': { color: '#6366f1', emoji: '👤' }
+      };
+      
+      if (roleMap[role]) {
+        color = roleMap[role].color;
+        emoji = roleMap[role].emoji;
+      }
+      
+      return {
+        role: role,
+        color: color,
+        emoji: emoji
+      };
+    }
+
+    // Check if user is admin
+    async function isUserAdmin(userId) {
+      try {
+        const { data: roleDetails, error } = await supabaseClient.rpc('get_user_role_details', {
+          user_uuid: userId
+        });
+        
+        if (!error && roleDetails && roleDetails.length > 0) {
+          return roleDetails[0].role_name === 'admin';
+        }
+      } catch (err) {
+        console.log('Could not check admin status');
+      }
+      return false;
+    }
+
+    // Load role management interface
+    async function loadRoleManagement() {
+      try {
+        console.log('Loading role management...');
+        
+        // Load roles
+        const { data: roles, error: rolesError } = await supabaseClient
+          .from('roles')
+          .select('*')
+          .order('id');
+
+        console.log('Roles query result:', { roles, rolesError });
+
+        if (rolesError) {
+          console.error('Roles query error:', rolesError);
+          throw rolesError;
+        }
+
+        if (!roles || roles.length === 0) {
+          console.log('No roles found in database');
+          const rolesTableBody = document.getElementById('rolesTableBody');
+          rolesTableBody.innerHTML = `
+            <tr>
+              <td colspan="5" style="text-align: center; color: var(--gray);">
+                No roles found. Please add some roles first.
+              </td>
+            </tr>
+          `;
+        } else {
+          console.log(`Found ${roles.length} roles:`, roles);
+          
+          const rolesTableBody = document.getElementById('rolesTableBody');
+          rolesTableBody.innerHTML = '';
+
+          roles.forEach(role => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td><strong>${role.name || 'N/A'}</strong></td>
+              <td>${role.display_name || 'N/A'}</td>
+              <td>
+                <div class="color-preview" style="background-color: ${role.color || '#6366f1'}; width: 20px; height: 20px; border-radius: 4px; display: inline-block; margin-right: 8px;"></div>
+                ${role.color || '#6366f1'}
+              </td>
+              <td>
+                <span class="emoji-preview">${role.emoji || '👤'}</span>
+              </td>
+              <td>
+                <div class="admin-actions">
+                  <button class="btn btn-outline btn-sm" onclick="editRole(${role.id})">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  ${role.name !== 'admin' ? `
+                    <button class="btn btn-danger btn-sm" onclick="deleteRole(${role.id})">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  ` : ''}
+                </div>
+              </td>
+            `;
+            rolesTableBody.appendChild(row);
+          });
+        }
+
+        // Load ALL users with their role information
+        let allUsers = [];
+        let usersError = null;
+        
+        try {
+          // Get all users from profiles table (client-side approach)
+          const { data: profiles, error: profilesError } = await supabaseClient
+            .from('profiles')
+            .select('*')
+            .order('created_at', { ascending: false });
+          
+          if (profilesError) {
+            usersError = profilesError;
+          } else if (profiles) {
+            // Get all user roles with error handling
+            let roleMap = {};
+            try {
+              // Try the complex query first
+              const { data: userRoles, error: rolesError } = await supabaseClient
+                .from('user_roles')
+                .select(`
+                  user_id,
+                  roles(id, name, display_name, color, emoji)
+                `);
+              
+              if (!rolesError && userRoles) {
+                userRoles.forEach(userRole => {
+                  roleMap[userRole.user_id] = userRole.roles;
+                });
+                console.log('Successfully loaded user roles:', userRoles.length);
+              } else {
+                console.log('Complex query failed, trying simple approach:', rolesError);
+                // Fallback: Try simple queries
+                await loadUserRolesSimple();
+              }
+            } catch (roleErr) {
+              console.log('Complex query error, trying simple approach:', roleErr);
+              // Fallback: Try simple queries
+              await loadUserRolesSimple();
+            }
+            
+            // Fallback function for simple role loading
+            async function loadUserRolesSimple() {
+              try {
+                // Get user_roles and roles separately
+                const { data: userRoles, error: userRolesError } = await supabaseClient
+                  .from('user_roles')
+                  .select('user_id, role_id');
+                
+                const { data: roles, error: rolesError } = await supabaseClient
+                  .from('roles')
+                  .select('id, name, display_name, color, emoji');
+                
+                if (!userRolesError && !rolesError && userRoles && roles) {
+                  // Create a map of roles by ID
+                  const rolesById = {};
+                  roles.forEach(role => {
+                    rolesById[role.id] = role;
+                  });
+                  
+                  // Map user roles
+                  userRoles.forEach(userRole => {
+                    const role = rolesById[userRole.role_id];
+                    if (role) {
+                      roleMap[userRole.user_id] = role;
+                    }
+                  });
+                  
+                  console.log('Successfully loaded user roles (simple method):', userRoles.length);
+                } else {
+                  console.log('Simple method also failed, using default roles');
+                }
+              } catch (simpleErr) {
+                console.log('Simple method error, using default roles:', simpleErr);
+              }
+            }
+            
+            // Combine profiles with roles
+            allUsers = profiles.map(profile => {
+              const role = roleMap[profile.id];
+              
+              return {
+                id: profile.id,
+                email: profile.email,
+                username: profile.username || profile.email?.split('@')[0] || 'Unknown',
+                created_at: profile.created_at,
+                role_name: role?.name || 'user',
+                role_display_name: role?.display_name || 'User',
+                role_color: role?.color || '#6366f1',
+                role_emoji: role?.emoji || '👤',
+                has_assigned_role: !!role
+              };
+            });
+          }
+        } catch (err) {
+          console.error('Error loading users:', err);
+          usersError = err;
+        }
+
+        if (usersError) {
+          console.error('Users query error:', usersError);
+          throw usersError;
+        }
+
+        const userRolesTableBody = document.getElementById('userRolesTableBody');
+        userRolesTableBody.innerHTML = '';
+
+        if (allUsers && allUsers.length > 0) {
+          console.log(`Found ${allUsers.length} users:`, allUsers);
+          
+          allUsers.forEach(user => {
+            const row = document.createElement('tr');
+            const joinDate = user.created_at ? new Date(user.created_at).toLocaleDateString() : 'Unknown';
+            
+            row.innerHTML = `
+              <td>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                  <div class="user-avatar" style="width: 24px; height: 24px; font-size: 0.7rem;">
+                    ${user.username?.charAt(0).toUpperCase() || 'U'}
+                  </div>
+                  <div>
+                    <div style="font-weight: 500; color: var(--light);">${user.username || 'Unknown'}</div>
+                    <div style="font-size: 0.7rem; color: var(--gray);">Joined: ${joinDate}</div>
+                  </div>
+                </div>
+              </td>
+              <td>${user.email || 'No email'}</td>
+              <td>
+                <span class="role-badge" style="color: ${user.role_color}; background-color: ${user.role_color}20;">
+                  ${user.role_emoji} ${user.role_display_name}
+                </span>
+                ${!user.has_assigned_role ? '<span style="font-size: 0.7rem; color: var(--gray); margin-left: 0.5rem;">(default)</span>' : ''}
+              </td>
+              <td>
+                <div class="admin-actions">
+                  <button class="btn btn-outline btn-sm" onclick="changeUserRole('${user.id}')" title="Change Role">
+                    <i class="fas fa-user-edit"></i>
+                  </button>
+                  ${user.has_assigned_role ? `
+                    <button class="btn btn-danger btn-sm" onclick="removeUserRole('${user.id}')" title="Remove Role">
+                      <i class="fas fa-user-minus"></i>
+                    </button>
+                  ` : `
+                    <button class="btn btn-secondary btn-sm" onclick="assignDefaultRole('${user.id}')" title="Assign Default Role">
+                      <i class="fas fa-user-plus"></i>
+                    </button>
+                  `}
+                </div>
+              </td>
+            `;
+            userRolesTableBody.appendChild(row);
+          });
+        } else {
+          userRolesTableBody.innerHTML = `
+            <tr>
+              <td colspan="4" style="text-align: center; color: var(--gray);">
+                No users found
+              </td>
+            </tr>
+          `;
+        }
+
+      } catch (err) {
+        console.error('Error loading role management:', err);
+        showToast('error', 'Error', 'Failed to load role management data.');
+      }
+    }
+
+    // Show add role modal
+    function showAddRoleModal() {
+      const roleName = prompt('Enter role name (e.g., "vip"):');
+      if (!roleName) return;
+
+      const displayName = prompt('Enter display name (e.g., "VIP Member"):');
+      if (!displayName) return;
+
+      const color = prompt('Enter color (hex code, e.g., "#10b981"):', '#10b981');
+      if (!color) return;
+
+      const emoji = prompt('Enter emoji (e.g., "⭐"):', '⭐');
+      if (!emoji) return;
+
+      addRole(roleName, displayName, color, emoji);
+    }
+
+    // Add new role
+    async function addRole(name, displayName, color, emoji) {
+      try {
+        const { error } = await supabaseClient
+          .from('roles')
+          .insert({
+            name: name.toLowerCase(),
+            display_name: displayName,
+            color: color,
+            emoji: emoji,
+            permissions: { "send_messages": true, "upload_files": true }
+          });
+
+        if (error) throw error;
+
+        showToast('success', 'Role Added', `Role "${displayName}" has been created successfully!`);
+        loadRoleManagement();
+      } catch (err) {
+        console.error('Error adding role:', err);
+        showToast('error', 'Error', 'Failed to add role.');
+      }
+    }
+
+    // Edit role
+    function editRole(roleId) {
+      // This would open a more sophisticated modal in a real app
+      showToast('info', 'Edit Role', 'Edit functionality would be implemented here.');
+    }
+
+    // Delete role
+    async function deleteRole(roleId) {
+      if (!confirm('Are you sure you want to delete this role? Users with this role will become regular users.')) {
+        return;
+      }
+
+      try {
+        const { error } = await supabaseClient
+          .from('roles')
+          .delete()
+          .eq('id', roleId);
+
+        if (error) throw error;
+
+        showToast('success', 'Role Deleted', 'Role has been deleted successfully!');
+        loadRoleManagement();
+      } catch (err) {
+        console.error('Error deleting role:', err);
+        showToast('error', 'Error', 'Failed to delete role.');
+      }
+    }
+
+    // Change user role
+    async function changeUserRole(userId) {
+      try {
+        // Get available roles
+        const { data: roles, error: rolesError } = await supabaseClient
+          .from('roles')
+          .select('id, name, display_name')
+          .order('id');
+
+        if (rolesError) throw rolesError;
+
+        const roleOptions = roles.map(role => `${role.id}: ${role.display_name}`).join('\n');
+        const selectedRole = prompt(`Select role ID:\n${roleOptions}`);
+
+        if (!selectedRole) return;
+
+        const roleId = parseInt(selectedRole.split(':')[0]);
+
+        // Remove existing role and assign new one
+        await supabaseClient
+          .from('user_roles')
+          .delete()
+          .eq('user_id', userId);
+
+        const { data: currentUser } = await supabaseClient.auth.getUser();
+        
+        await supabaseClient
+          .from('user_roles')
+          .insert({
+            user_id: userId,
+            role_id: roleId,
+            assigned_by: currentUser.user.id
+          });
+
+        showToast('success', 'Role Updated', 'User role has been updated successfully!');
+        loadRoleManagement();
+      } catch (err) {
+        console.error('Error changing user role:', err);
+        showToast('error', 'Error', 'Failed to change user role.');
+      }
+    }
+
+    // Remove user role
+    async function removeUserRole(userId) {
+      if (!confirm('Are you sure you want to remove this user\'s role? They will become a regular user.')) {
+        return;
+      }
+
+      try {
+        const { error } = await supabaseClient
+          .from('user_roles')
+          .delete()
+          .eq('user_id', userId);
+
+        if (error) throw error;
+
+        showToast('success', 'Role Removed', 'User role has been removed successfully!');
+        loadRoleManagement();
+      } catch (err) {
+        console.error('Error removing user role:', err);
+        showToast('error', 'Error', 'Failed to remove user role.');
+      }
+    }
+
+    // Assign default role to user
+    async function assignDefaultRole(userId) {
+      try {
+        // Get the default 'user' role
+        const { data: defaultRole, error: roleError } = await supabaseClient
+          .from('roles')
+          .select('id')
+          .eq('name', 'user')
+          .single();
+
+        if (roleError || !defaultRole) {
+          showToast('error', 'Error', 'Default role not found.');
+          return;
+        }
+
+        // Get current user for assigned_by
+        const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
+        if (error || !user) {
+          showToast('error', 'Error', 'Authentication error.');
+          return;
+        }
+
+        // Assign the default role
+        const { error } = await supabaseClient
+          .from('user_roles')
+          .insert({
+            user_id: userId,
+            role_id: defaultRole.id,
+            assigned_by: user.id
+          });
+
+        if (error) throw error;
+
+        showToast('success', 'Role Assigned', 'Default role has been assigned successfully!');
+        loadRoleManagement();
+      } catch (err) {
+        console.error('Error assigning default role:', err);
+        showToast('error', 'Error', 'Failed to assign default role.');
+      }
     }
 
     // Extract first name from full name or email
@@ -3416,7 +3900,13 @@
       loadFiles();
       loadMessages();
       setupRealtimeChat();
-      updateTimerDisplay();
+
+      // Check if user is admin and show admin section
+      const isAdmin = await isUserAdmin(user.id);
+      if (isAdmin) {
+        document.getElementById('adminSection').style.display = 'block';
+        loadRoleManagement();
+      }
 
       // Show welcome toast
       showToast('success', 'Welcome to Chill Space! 🎉', `Hey ${displayName}! Ready to chat and share files?`, 5000);
@@ -3450,27 +3940,105 @@
         document.getElementById('onlineCount').textContent = '0 Online';
         return;
       }
+      
+      // Try to get user roles from the view first
       supabaseClient
-        .from('profiles')
-        .select('id, username, email')
-        .in('id', onlineIds)
-        .then(({ data }) => {
-          const membersList = document.getElementById('membersList');
-          membersList.innerHTML = '';
-          data.forEach(profile => {
-            const div = document.createElement('div');
-            div.className = 'member';
-            const displayName = getUserDisplayName({ email: profile.email }, profile);
-            const avatarInitial = getUserAvatarInitial({ email: profile.email }, profile);
-            div.innerHTML = `
-              <div class="member-avatar">${avatarInitial}</div>
-              <span class="member-name">${displayName}</span>
-              <span class="member-status online"></span>
-            `;
-            membersList.appendChild(div);
-          });
-          document.getElementById('onlineCount').textContent = `${data.length} Online`;
+        .from('user_role_details')
+        .select('user_id, username, email, role_name, role_display_name, role_color, role_emoji')
+        .in('user_id', onlineIds)
+        .then(({ data: roleData, error: roleError }) => {
+          if (roleError) {
+            console.log('Could not fetch role details, falling back to profiles');
+            // Fallback to profiles table
+            supabaseClient
+              .from('profiles')
+              .select('id, username, email, role')
+              .in('id', onlineIds)
+              .then(({ data }) => {
+                updateMembersList(data, onlineIds);
+              });
+            return;
+          }
+          
+          // Create a map of user roles
+          const userRoles = {};
+          if (roleData) {
+            roleData.forEach(item => {
+              userRoles[item.user_id] = {
+                username: item.username,
+                email: item.email,
+                role: item.role_name,
+                roleDisplayName: item.role_display_name,
+                roleColor: item.role_color,
+                roleEmoji: item.role_emoji
+              };
+            });
+          }
+          
+          // For users without roles, fetch from profiles
+          const usersWithoutRoles = onlineIds.filter(id => !userRoles[id]);
+          if (usersWithoutRoles.length > 0) {
+            supabaseClient
+              .from('profiles')
+              .select('id, username, email, role')
+              .in('id', usersWithoutRoles)
+              .then(({ data: profileData }) => {
+                if (profileData) {
+                  profileData.forEach(profile => {
+                    userRoles[profile.id] = {
+                      username: profile.username,
+                      email: profile.email,
+                      role: profile.role || 'user'
+                    };
+                  });
+                }
+                updateMembersList(userRoles, onlineIds);
+              });
+          } else {
+            updateMembersList(userRoles, onlineIds);
+          }
         });
+    }
+    
+    function updateMembersList(userRoles, onlineIds) {
+      const membersList = document.getElementById('membersList');
+      membersList.innerHTML = '';
+      
+      onlineIds.forEach(userId => {
+        const userData = userRoles[userId];
+        if (userData) {
+          const div = document.createElement('div');
+          div.className = 'member';
+          const displayName = getUserDisplayName({ email: userData.email }, userData);
+          const avatarInitial = getUserAvatarInitial({ email: userData.email }, userData);
+          
+          // Use role data if available, otherwise use sync function
+          let roleDisplay;
+          if (userData.roleColor && userData.roleEmoji) {
+            roleDisplay = {
+              role: userData.roleDisplayName || userData.role,
+              color: userData.roleColor,
+              emoji: userData.roleEmoji
+            };
+          } else {
+            roleDisplay = getUserRoleDisplaySync(null, userData);
+          }
+          
+          div.innerHTML = `
+            <div class="member-avatar">${avatarInitial}</div>
+            <div class="member-info">
+              <span class="member-name">${displayName}</span>
+              <span class="member-role" style="color: ${roleDisplay.color}; font-size: 0.7rem;">
+                ${roleDisplay.emoji} ${roleDisplay.role}
+              </span>
+            </div>
+            <span class="member-status online"></span>
+          `;
+          membersList.appendChild(div);
+        }
+      });
+      
+      document.getElementById('onlineCount').textContent = `${onlineIds.length} Online`;
     }
 
     // File preview functionality
@@ -3622,364 +4190,72 @@
         // Get current user
         const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
         if (userError || !user) {
-          alert("Please log in to delete messages.");
+          showToast('error', 'Authentication Error', 'Please log in to delete messages.');
           return;
         }
 
         console.log('Attempting to delete message:', messageId, 'for user:', user.id);
 
-        // First, let's check if the message exists and belongs to the user
-        const { data: messageCheck, error: checkError } = await supabaseClient
-          .from('messages')
-          .select('id, user_id, content')
-          .eq('id', messageId)
-          .single();
+        // Show loading toast
+        showToast('info', 'Deleting...', 'Removing message...');
 
-        if (checkError) {
-          console.error('Error checking message:', checkError);
-          alert('Error checking message: ' + checkError.message);
+        // Delete message from database directly
+        console.log('Sending delete request for message:', messageId, 'user:', user.id);
+        
+        // Convert messageId to number since database uses bigint
+        const messageIdNum = parseInt(messageId, 10);
+        if (isNaN(messageIdNum)) {
+          console.error('Invalid message ID:', messageId);
+          showToast('error', 'Delete Failed', 'Invalid message ID.');
           return;
         }
-
-        if (!messageCheck) {
-          alert('Message not found.');
-          return;
-        }
-
-        if (messageCheck.user_id !== user.id) {
-          alert('You can only delete your own messages.');
-          return;
-        }
-
-        console.log('Message found and belongs to user:', messageCheck);
-
-        // Delete message from database - remove the .select() to avoid issues
+        
         const { data, error } = await supabaseClient
           .from('messages')
           .delete()
-          .eq('id', messageId)
-          .eq('user_id', user.id)
-          .select('id');
+          .eq('id', messageIdNum)
+          .eq('user_id', user.id);
+        
+        console.log('Delete response - data:', data, 'error:', error);
 
         if (error) {
           console.error('Error deleting message:', error);
-          alert('Error deleting message: ' + error.message);
+          console.error('Error details:', {
+            message: error.message,
+            details: error.details,
+            hint: error.hint,
+            code: error.code
+          });
+          showToast('error', 'Delete Failed', 'Error deleting message: ' + error.message);
           return;
         }
 
         if (data && data.length > 0) {
           console.log('Message deleted successfully from database:', data[0].id);
+          showToast('success', 'Message Deleted', 'Message has been removed successfully!');
+          
+          // Remove the message from UI immediately
+          const messageElement = document.querySelector(`[data-message-id="${messageId}"]`);
+          if (messageElement) {
+            messageElement.style.opacity = '0';
+            messageElement.style.transform = 'translateX(20px)';
+            setTimeout(() => {
+              messageElement.remove();
+            }, 300);
+          }
         } else {
           console.log('No message was deleted - it may have already been deleted or does not exist');
-        }
-        
-        // Manually remove the message from UI immediately
-        const messageElement = document.querySelector(`[data-message-id="${messageId}"]`);
-        if (messageElement) {
-          messageElement.style.opacity = '0';
-          messageElement.style.transform = 'translateX(20px)';
-          setTimeout(() => {
-            messageElement.remove();
-          }, 300);
-        } else {
-          console.log('Message element not found in DOM, but deleted from database');
+          showToast('error', 'Delete Failed', 'Message not found or already deleted.');
         }
       } catch (err) {
         console.error('Error in deleteMessage:', err);
-        alert('An error occurred while deleting the message. Please try again.');
+        showToast('error', 'Delete Error', 'An error occurred while deleting the message. Please try again.');
       }
     }
 
-    // Game variables
-    let currentGame = null;
-    let mySymbol = null;
-    let isMyTurn = false;
-    let gameBoard = ['', '', '', '', '', '', '', '', ''];
-    let gamePlayers = { x: null, o: null };
 
-    // Tic Tac Toe Game Functions
-    async function joinGame() {
-      try {
-        const { data: { user } } = await supabaseClient.auth.getUser();
-        if (!user) {
-          alert('Please log in to join the game.');
-          return;
-        }
 
-        // Check if there's an available game or create one
-        const { data: existingGame, error: findError } = await supabaseClient
-          .from('games')
-          .select('*')
-          .eq('status', 'waiting')
-          .limit(1)
-          .single();
 
-        if (findError && findError.code !== 'PGRST116') {
-          console.error('Error finding game:', findError);
-          return;
-        }
-
-        if (existingGame) {
-          // Join existing game as O
-          const { error: joinError } = await supabaseClient
-            .from('games')
-            .update({ 
-              player_o: user.id,
-              status: 'playing',
-              current_turn: existingGame.player_x
-            })
-            .eq('id', existingGame.id);
-
-          if (joinError) {
-            console.error('Error joining game:', joinError);
-            return;
-          }
-
-          currentGame = existingGame.id;
-          mySymbol = 'o';
-          gamePlayers.o = user.id;
-          gamePlayers.x = existingGame.player_x;
-        } else {
-          // Create new game as X
-          const { data: newGame, error: createError } = await supabaseClient
-            .from('games')
-            .insert({
-              player_x: user.id,
-              status: 'waiting',
-              board: gameBoard,
-              current_turn: user.id
-            })
-            .select()
-            .single();
-
-          if (createError) {
-            console.error('Error creating game:', createError);
-            return;
-          }
-
-          currentGame = newGame.id;
-          mySymbol = 'x';
-          gamePlayers.x = user.id;
-        }
-
-        updateGameUI();
-        setupGameRealtime();
-      } catch (err) {
-        console.error('Error joining game:', err);
-      }
-    }
-
-    async function leaveGame() {
-      if (!currentGame) return;
-
-      try {
-        const { error } = await supabaseClient
-          .from('games')
-          .update({ status: 'abandoned' })
-          .eq('id', currentGame);
-
-        if (error) {
-          console.error('Error leaving game:', error);
-          return;
-        }
-
-        resetGameState();
-      } catch (err) {
-        console.error('Error leaving game:', err);
-      }
-    }
-
-    async function makeMove(index) {
-      if (!currentGame || !isMyTurn || gameBoard[index] !== '') return;
-
-      try {
-        const { data: { user } } = await supabaseClient.auth.getUser();
-        
-        const newBoard = [...gameBoard];
-        newBoard[index] = mySymbol.toUpperCase();
-
-        const nextTurn = mySymbol === 'x' ? gamePlayers.o : gamePlayers.x;
-        const gameStatus = checkWinner(newBoard) ? 'finished' : 'playing';
-
-        const { error } = await supabaseClient
-          .from('games')
-          .update({
-            board: newBoard,
-            current_turn: nextTurn,
-            status: gameStatus,
-            winner: gameStatus === 'finished' ? user.id : null
-          })
-          .eq('id', currentGame);
-
-        if (error) {
-          console.error('Error making move:', error);
-          return;
-        }
-
-        gameBoard = newBoard;
-        updateGameBoard();
-      } catch (err) {
-        console.error('Error making move:', err);
-      }
-    }
-
-    function checkWinner(board) {
-      const lines = [
-        [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
-        [0, 3, 6], [1, 4, 7], [2, 5, 8], // columns
-        [0, 4, 8], [2, 4, 6] // diagonals
-      ];
-
-      for (const line of lines) {
-        const [a, b, c] = line;
-        if (board[a] && board[a] === board[b] && board[a] === board[c]) {
-          return board[a];
-        }
-      }
-
-      return board.every(cell => cell !== '') ? 'tie' : null;
-    }
-
-    function updateGameBoard() {
-      const cells = document.querySelectorAll('.game-cell');
-      cells.forEach((cell, index) => {
-        cell.textContent = gameBoard[index];
-        cell.className = `game-cell ${gameBoard[index].toLowerCase()}`;
-      });
-
-      const winner = checkWinner(gameBoard);
-      if (winner && winner !== 'tie') {
-        highlightWinningCells(winner);
-      }
-    }
-
-    function highlightWinningCells(winner) {
-      const lines = [
-        [0, 1, 2], [3, 4, 5], [6, 7, 8],
-        [0, 3, 6], [1, 4, 7], [2, 5, 8],
-        [0, 4, 8], [2, 4, 6]
-      ];
-
-      for (const line of lines) {
-        const [a, b, c] = line;
-        if (gameBoard[a] === winner && gameBoard[b] === winner && gameBoard[c] === winner) {
-          line.forEach(index => {
-            document.querySelector(`[data-index="${index}"]`).classList.add('winning');
-          });
-          break;
-        }
-      }
-    }
-
-    function updateGameUI() {
-      const joinBtn = document.getElementById('joinGameBtn');
-      const leaveBtn = document.getElementById('leaveGameBtn');
-      const status = document.getElementById('gameStatus');
-
-      if (currentGame) {
-        joinBtn.style.display = 'none';
-        leaveBtn.style.display = 'block';
-        
-        if (gamePlayers.x && gamePlayers.o) {
-          status.textContent = isMyTurn ? 'Your turn!' : 'Opponent\'s turn';
-          status.className = `game-status ${isMyTurn ? 'your-turn' : 'opponent-turn'}`;
-        } else {
-          status.textContent = 'Waiting for opponent...';
-          status.className = 'game-status waiting';
-        }
-      } else {
-        joinBtn.style.display = 'block';
-        leaveBtn.style.display = 'none';
-        status.textContent = 'Waiting for players...';
-        status.className = 'game-status';
-      }
-    }
-
-    function resetGameState() {
-      currentGame = null;
-      mySymbol = null;
-      isMyTurn = false;
-      gameBoard = ['', '', '', '', '', '', '', '', ''];
-      gamePlayers = { x: null, o: null };
-      
-      updateGameBoard();
-      updateGameUI();
-      
-      document.getElementById('gameStatus').textContent = 'Waiting for players...';
-      document.getElementById('playerXName').textContent = 'Waiting...';
-      document.getElementById('playerOName').textContent = 'Waiting...';
-    }
-
-    async function resetGame() {
-      if (currentGame) {
-        await leaveGame();
-      }
-      resetGameState();
-    }
-
-    function setupGameRealtime() {
-      if (!currentGame) return;
-
-      supabaseClient.channel(`game:${currentGame}`)
-        .on(
-          'postgres_changes',
-          {
-            event: '*',
-            schema: 'public',
-            table: 'games',
-            filter: `id=eq.${currentGame}`
-          },
-          async (payload) => {
-            if (payload.eventType === 'UPDATE') {
-              const game = payload.new;
-              gameBoard = game.board;
-              gamePlayers.x = game.player_x;
-              gamePlayers.o = game.player_o;
-              
-              const { data: { user } } = await supabaseClient.auth.getUser();
-              isMyTurn = game.current_turn === user.id;
-              
-              updateGameBoard();
-              updateGameUI();
-              
-              // Update player names
-              if (game.player_x) {
-                const { data: profileX } = await supabaseClient
-                  .from('profiles')
-                  .select('username, email')
-                  .eq('id', game.player_x)
-                  .single();
-                document.getElementById('playerXName').textContent = 
-                  getUserDisplayName({ email: profileX?.email }, profileX);
-              }
-              
-              if (game.player_o) {
-                const { data: profileO } = await supabaseClient
-                  .from('profiles')
-                  .select('username, email')
-                  .eq('id', game.player_o)
-                  .single();
-                document.getElementById('playerOName').textContent = 
-                  getUserDisplayName({ email: profileO?.email }, profileO);
-              }
-              
-              if (game.status === 'finished') {
-                const winner = checkWinner(gameBoard);
-                if (winner === 'tie') {
-                  document.getElementById('gameStatus').textContent = 'Game ended in a tie!';
-                } else {
-                  const winnerName = winner === 'X' ? 
-                    document.getElementById('playerXName').textContent :
-                    document.getElementById('playerOName').textContent;
-                  document.getElementById('gameStatus').textContent = `${winnerName} wins!`;
-                }
-                document.getElementById('gameStatus').className = 'game-status';
-              }
-            }
-          }
-        )
-        .subscribe();
-    }
   </script>
 </body>
 </html>
