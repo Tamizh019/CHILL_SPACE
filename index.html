@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sathyabama ERP</title>
+    <title>Chill Space</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -78,31 +78,60 @@
     }
     .inp{
         width: 100%;
-        padding: 0.8rem 1rem;
-        font-size: 0.9rem;
-        border: none;
-        background: rgba(255, 255, 255, 0.9);
-        font-size: 0.86rem;
-        border-radius: 6px;
-
+        padding: 1rem 1.2rem;
+        font-size: 0.95rem;
+        border: 2px solid transparent;
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
     }
-    .inp :focus{
+    .inp:focus{
         outline: none;
-        box-shadow: 0 0 0 3px rgba(216, 139, 15, 0.3);
+        border: 2px solid #f39c12;
+        box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.1);
+        transform: translateY(-1px);
     }
     .btn{
         width: 100%;
-        padding: 0.9rem;
+        padding: 1rem;
         border: none;
-        border-radius: 6px;
-        background-color: #f39c12;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #f39c12, #e67e22);
         color: white;
-        font-size: 0.9rem;
-        font-weight: 500;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
+        position: relative;
+        overflow: hidden;
     }
+    
+    .btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s;
+    }
+    
+    .btn:hover::before {
+        left: 100%;
+    }
+    
     .btn:hover{
-        background-color: #e67e22;
-
+        background: linear-gradient(135deg, #e67e22, #d35400);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(243, 156, 18, 0.4);
+    }
+    
+    .btn:active {
+        transform: translateY(0);
+        box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
     }
     
     .header{
@@ -111,10 +140,16 @@
        
     }
     img{
-        width: 230px;
+        width: 150px;
+        height: auto;
         margin-bottom: 1.2rem;
         border-radius: 10px;
         margin-top: -2.4rem;
+        object-fit: contain;
+        max-width: 100%;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
     }
     .pass{
         text-decoration: none;
@@ -226,7 +261,6 @@
         pointer-events: auto; 
     }
     
-    /* Forgot Password Modal Styles */
     .modal-overlay {
         position: fixed;
         top: 0;
@@ -360,6 +394,62 @@
         border: 1px solid rgba(244, 67, 54, 0.3);
     }
     
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes chillSpaceGlow {
+        0% {
+            color: #f39c12;
+            text-shadow: 0 0 5px #f39c12;
+        }
+        50% {
+            color: #e67e22;
+            text-shadow: 0 0 20px #f39c12, 0 0 40px #e67e22;
+        }
+        100% {
+            color: #f39c12;
+            text-shadow: 0 0 5px #f39c12;
+        }
+    }
+    
+    @keyframes typewriter {
+        from {
+            width: 0;
+        }
+        to {
+            width: 100%;
+        }
+    }
+    
+    .typewriter {
+        overflow: hidden;
+        border-right: 2px solid #f39c12;
+        white-space: nowrap;
+        animation: blink 0.75s step-end infinite;
+    }
+    
+    @keyframes blink {
+        from, to { border-color: transparent }
+        50% { border-color: #f39c12; }
+    }
+    
+    .chill-space-animated {
+        animation: chillSpaceGlow 2s ease-in-out infinite;
+        font-weight: 700;
+    }
+    
+    .fade-in-up {
+        animation: fadeInUp 0.8s ease-out forwards;
+    }
+    
     @media (max-width: 768px) {
         .login {
             max-width: 90%;
@@ -391,7 +481,8 @@
         }
         
         img {
-            width: 180px;
+            width: 160px;
+            height: auto;
         }
     }
     
@@ -427,7 +518,8 @@
         }
         
         img {
-            width: 150px;
+            width: 140px;
+            height: auto;
         }
         
         .pass {
@@ -446,24 +538,27 @@
     <div class="login-wrapper">
         <div class="login">
         <div class="header">
-                <img src="Assets/header.jpg">
-                <h1 class="heading">SATHYABAMA ERP</h1>
-                <p class="desc">Enter your RegNo and DOB to access <br> student panel.</p>
+                <img src="Assets/chill3.jpg">
+                <h2 class="heading" id="animatedHeading">
+                    <span id="welcomeText"></span><br>
+                    <span id="chillSpace" style="display: none;">Chill Space</span>
+                </h2>
+                <p class="desc" id="animatedDesc" style="display: none;">– where the vibes log in too ✨🗺️</p>
         </div>
         <form id="loginForm">
             <div class="group">
-                <label>Email</label>
-                <input class="inp" type="email" id="email" placeholder="Enter your email" required>
+                <label>Your Email</label>
+                <input class="inp" type="email" id="email" placeholder="What's your email?" required>
             </div>
             <div class="group">
-                <label>Password</label>
-                <input class="inp" type="password" id="password" placeholder="Enter Password" required>
+                <label>Your Password</label>
+                <input class="inp" type="password" id="password" placeholder="Your secret password 🔒" required>
             </div>
-            <button type="submit" class="btn">LOG IN</button>
+            <button type="submit" class="btn">Let's Go! 🚀</button>
             <div id="loginMessage" style="margin-top: 1rem; text-align: center; display: none;"></div>
         </form>
-        <a class="pass" href="#" onclick="showForgotPasswordModal()">Forget your Password?</a>
-        <a href="register.html" class="new">New user ? Register</a> 
+        <a class="pass" href="#" onclick="showForgotPasswordModal()">Forgot your password? 😅</a>
+        <a href="register.html" class="new">New here? Join the crew! ✨</a> 
         </div>
     </div>
 
@@ -472,26 +567,26 @@
         <div class="modal-content">
             <button class="modal-close" onclick="hideForgotPasswordModal()">&times;</button>
             <div class="modal-header">
-                <h2 class="modal-title">Reset Password</h2>
-                <p class="modal-description">Enter your email address and we'll send you a link to reset your password.</p>
+                <h2 class="modal-title">Reset Your Password</h2>
+                <p class="modal-description">No worries! Drop your email below and we'll send you a magic link to reset your password ✨</p>
             </div>
             <form id="forgotPasswordForm" class="modal-form">
                 <input 
                     type="email" 
                     id="resetEmail" 
                     class="modal-input" 
-                    placeholder="Enter your email address" 
+                    placeholder="What's your email?" 
                     required
                 >
                 <button type="submit" class="modal-btn" id="resetBtn">
-                    Send Reset Link
+                    Send Magic Link ✨
                 </button>
                 <div id="resetMessage" class="modal-message"></div>
             </form>
         </div>
     </div>
 <footer>
-    2021 © Sathyabama ERP
+    2025 © Chill Space - Tamizh 
 </footer>   
 
 <script>
@@ -538,6 +633,48 @@ particlesJS("particles-js", {
 
 // Global variables
 let isParticlesMode = true;
+
+// Animation sequence
+function typeWriter(element, text, speed = 100) {
+    let i = 0;
+    element.innerHTML = '';
+    element.classList.add('typewriter');
+    
+    function type() {
+        if (i < text.length) {
+            element.innerHTML += text.charAt(i);
+            i++;
+            setTimeout(type, speed);
+        } else {
+            element.classList.remove('typewriter');
+        }
+    }
+    type();
+}
+
+function startWelcomeAnimation() {
+    const welcomeText = document.getElementById('welcomeText');
+    const chillSpace = document.getElementById('chillSpace');
+    const animatedDesc = document.getElementById('animatedDesc');
+    
+    // Step 1: Type "Welcome to" with typewriter effect
+    typeWriter(welcomeText, 'Welcome to', 150);
+    
+    // Step 2: Show "Chill Space" with glow animation after typing completes
+    setTimeout(() => {
+        chillSpace.style.display = 'inline';
+        chillSpace.classList.add('chill-space-animated');
+    }, 2000);
+    
+    // Step 3: Show the description with fade-in animation
+    setTimeout(() => {
+        animatedDesc.style.display = 'block';
+        animatedDesc.classList.add('fade-in-up');
+    }, 4000);
+}
+
+// Start animation when page loads
+document.addEventListener('DOMContentLoaded', startWelcomeAnimation);
 
 const supabaseUrl = 'https://umcmifajtomyvwjzmvpm.supabase.co'
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVtY21pZmFqdG9teXZ3anptdnBtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE3MzQzNTMsImV4cCI6MjA2NzMxMDM1M30._SjFGJOINRe0LTljlcK1h392iu5B5VJaAqK6sD3HJYI'
@@ -586,7 +723,7 @@ loginForm.onsubmit = async e => {
       return;
     }
 
-    showMsg('Login successful!', 'success');
+            showMsg('Squad access granted – welcome back 😎', 'success');
     setTimeout(() => location.href = 'home.html', 1000);
   };
 
@@ -638,13 +775,13 @@ loginForm.onsubmit = async e => {
     
     try {
       const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: window.location.origin + '/reset-password.html'
+        redirectTo: 'https://tamizh-loginpage.netlify.app/reset-password.html'
       });
       
       if (error) {
         showResetMessage(error.message, 'error');
       } else {
-        showResetMessage('Password reset link sent! Check your email inbox.', 'success');
+        showResetMessage('Magic link sent! Check your email inbox 📧', 'success');
         // Clear the form
         document.getElementById('resetEmail').value = '';
       }
