@@ -434,6 +434,7 @@
       white-space: normal;
       display: -webkit-box;
       -webkit-line-clamp: 2;
+      line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
@@ -2226,8 +2227,33 @@
     <div class="upload-progress-text" id="uploadProgressText">Uploading...</div>
   </div>
 
-  <footer>
-    &copy; <span id="currentYear"></span> Chill Space – Tamizh & Co.
+  <footer style="background: var(--dark); border-top: 1.5px solid var(--card-border); box-shadow: 0 -4px 24px -8px rgba(0,0,0,0.10), 0 -1px 0 0 rgba(148,163,184,0.10); padding: 2rem 0 1.2rem 0;">
+    <div style="max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 1.1em;">
+      <div style="font-size: 1.15rem; font-weight: 600; color: var(--primary); display: flex; align-items: center; gap: 0.5em; letter-spacing: 0.01em;">
+        <i class="fas fa-meteor"></i>
+        Chill Space – Tamizh & Co.
+      </div>
+      <div style="width: 100%; height: 1px; background: var(--card-border); margin: 0.5em 0 0.2em 0;"></div>
+      <div style="display: flex; flex-direction: row; gap: 1.5em; flex-wrap: wrap; justify-content: center; align-items: center;">
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeZq1r-dkj_B6La2_owrnof10yGgF4AWWfqYHktguRD9Tfe7g/viewform?usp=dialog" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 500; display: flex; align-items: center; gap: 0.4em; transition: color 0.2s;">
+          <i class="fas fa-bug"></i>
+          <span>Report a bug / Suggest a feature</span>
+        </a>
+        <span style="color: var(--gray); font-size: 1.1em;">|</span>
+        <a href="mailto:jefftamizh01@gmail.com" style="color: var(--secondary); text-decoration: none; font-weight: 500; display: flex; align-items: center; gap: 0.4em; transition: color 0.2s;">
+          <i class="fas fa-envelope"></i>
+          <span>Contact: jefftamizh01@gmail.com</span>
+        </a>
+      </div>
+      <div style="display: flex; flex-direction: row; gap: 1.2em; margin-top: 0.2em; justify-content: center; align-items: center;">
+        <a href="https://github.com/Tamizh019" target="_blank" aria-label="GitHub" style="color: var(--gray); font-size: 1.35em; margin: 0 0.1em; transition: color 0.2s;"><i class="fab fa-github"></i></a>
+        <a href="https://www.linkedin.com/in/tamizharasan-r-a6931828a/" target="_blank" aria-label="LinkedIn" style="color: #0A66C2; font-size: 1.35em; margin: 0 0.1em; transition: color 0.2s;"><i class="fab fa-linkedin"></i></a>
+      </div>
+      <div style="width: 100%; height: 1px; background: var(--card-border); margin: 0.7em 0 0.2em 0;"></div>
+      <div style="font-size: 0.97rem; color: var(--gray); letter-spacing: 0.01em; display: flex; align-items: center; gap: 0.5em;">
+        <span>For educational purposes only 💀<span>
+      </div>
+    </div>
   </footer>
 
   <script>
@@ -3582,7 +3608,10 @@
       console.log('Supabase client ready, initializing app...');
       
       // Set current year in footer
-      document.getElementById('currentYear').textContent = new Date().getFullYear();
+      const yearElem = document.getElementById('currentYear');
+      if (yearElem) {
+        yearElem.textContent = new Date().getFullYear();
+      }
 
       // Attach logout event listener
       document.getElementById('logoutBtn').addEventListener('click', logout);
