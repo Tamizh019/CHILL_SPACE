@@ -36,8 +36,7 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-      overflow-x: hidden; /* Prevent horizontal scroll */
+      overflow-x: hidden;
       width: 100%;
       max-width: 100vw;
     }
@@ -111,8 +110,8 @@
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      min-height: 44px; /* Touch-friendly minimum size */
-      touch-action: manipulation; /* Optimize for touch */
+      min-height: 44px;
+      touch-action: manipulation;
     }
 
     .btn-primary {
@@ -182,7 +181,6 @@
       max-width: 100%;
     }
 
-
     .content-area {
       display: flex;
       flex-direction: column;
@@ -191,14 +189,16 @@
       max-width: 100%;
       overflow-x: hidden;
     }
+
     .chat-container {
-      height: 900px; 
-      min-height: 700px;
+      height: 800px; 
+      min-height: 600px;
       min-width: 0;
       width: 100%;
       max-width: 100%;
       overflow-x: hidden;
     }
+
     .sidebar {
       max-width: 420px;
       width: 100%;
@@ -207,6 +207,7 @@
       gap: 2rem;
       overflow-x: hidden;
     }
+
     .card {
       background: var(--card-bg);
       padding: 1.5rem;
@@ -359,7 +360,6 @@
       border: 1px solid var(--card-border);
       max-height: 300px;
       overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
     }
 
     .file-preview h4 {
@@ -401,26 +401,6 @@
       flex-direction: column;
       gap: 0.25rem;
       max-width: calc(100% - 80px);
-    }
-    
-    @media (max-width: 768px) {
-      .preview-name {
-        max-width: 100px;
-        font-size: 0.8rem;
-      }
-      
-      .preview-item {
-        gap: 0.5rem;
-        padding: 0.5rem;
-      }
-      
-      .preview-remove {
-        width: 28px;
-        height: 28px;
-        min-width: 28px;
-        min-height: 28px;
-        font-size: 0.8rem;
-      }
     }
 
     .preview-name {
@@ -481,131 +461,6 @@
       padding: 1rem;
     }
 
-    .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.8);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-      backdrop-filter: blur(5px);
-    }
-
-    .modal-overlay.active {
-      display: flex;
-    }
-
-    .modal-content {
-      background: var(--dark);
-      border-radius: 12px;
-      border: 1px solid var(--card-border);
-      max-width: 90vw;
-      max-height: 90vh;
-      width: 800px;
-      overflow: hidden;
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
-    }
-
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 1.5rem;
-      border-bottom: 1px solid var(--card-border);
-      background: var(--card-bg);
-    }
-
-    .modal-title {
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: var(--light);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .modal-close {
-      background: none;
-      border: none;
-      color: var(--gray);
-      font-size: 1.5rem;
-      cursor: pointer;
-      padding: 0.25rem;
-      border-radius: 4px;
-      transition: all 0.2s ease;
-    }
-
-    .modal-close:hover {
-      color: var(--light);
-      background: rgba(148, 163, 184, 0.1);
-    }
-
-    .modal-body {
-      padding: 1.5rem;
-      max-height: 70vh;
-      overflow-y: auto;
-    }
-
-    .preview-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .preview-image {
-      max-width: 100%;
-      max-height: 60vh;
-      border-radius: 8px;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    }
-
-    .preview-pdf {
-      width: 100%;
-      height: 60vh;
-      border: none;
-      border-radius: 8px;
-    }
-
-    .preview-text {
-      background: var(--darker);
-      padding: 1rem;
-      border-radius: 8px;
-      border: 1px solid var(--card-border);
-      width: 100%;
-      max-height: 60vh;
-      overflow-y: auto;
-      font-family: 'Courier New', monospace;
-      font-size: 0.9rem;
-      line-height: 1.5;
-      white-space: pre-wrap;
-    }
-
-    .preview-unsupported {
-      text-align: center;
-      padding: 2rem;
-      color: var(--gray);
-    }
-
-    .preview-unsupported i {
-      font-size: 3rem;
-      margin-bottom: 1rem;
-      color: var(--secondary);
-    }
-
-    .modal-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 0.75rem;
-      padding: 1rem 1.5rem;
-      border-top: 1px solid var(--card-border);
-      background: var(--card-bg);
-    }
-
     .chat-container {
       display: flex;
       flex-direction: column;
@@ -624,15 +479,14 @@
       background: rgba(2, 6, 23, 0.5);
       border-radius: 8px;
       margin-bottom: 1rem;
-      -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-      scroll-behavior: smooth; /* Smooth scroll to bottom */
-      scrollbar-width: thin; /* Firefox */
-      scrollbar-color: var(--gray) transparent; /* Firefox */
+      -webkit-overflow-scrolling: touch;
+      scroll-behavior: smooth;
+      scrollbar-width: thin;
+      scrollbar-color: var(--gray) transparent;
       width: 100%;
       max-width: 100%;
     }
 
-    /* Custom scrollbar for Webkit browsers */
     .chat-messages::-webkit-scrollbar {
       width: 8px;
     }
@@ -726,6 +580,42 @@
       font-size: 0.75rem;
       margin-bottom: 0.25rem;
       color: var(--secondary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .user-role {
+      font-size: 0.7rem;
+      padding: 0.1rem 0.4rem;
+      border-radius: 12px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .role-admin {
+      background: rgba(239, 68, 68, 0.2);
+      color: #ef4444;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .role-moderator {
+      background: rgba(16, 185, 129, 0.2);
+      color: #10b981;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .role-vip {
+      background: rgba(245, 158, 11, 0.2);
+      color: #f59e0b;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .role-user {
+      background: rgba(99, 102, 241, 0.2);
+      color: #6366f1;
+      border: 1px solid rgba(99, 102, 241, 0.3);
     }
 
     .message-time {
@@ -750,8 +640,8 @@
       border-radius: 8px;
       padding: 0.75rem 1rem;
       color: var(--light);
-      min-height: 44px; /* Touch-friendly minimum size */
-      font-size: 16px; /* Prevent zoom on iOS */
+      min-height: 44px;
+      font-size: 16px;
       width: 100%;
       max-width: 100%;
       box-sizing: border-box;
@@ -775,7 +665,7 @@
       resize: vertical;
       min-height: 60px;
       max-height: 200px;
-      font-size: 16px; /* Prevent zoom on iOS */
+      font-size: 16px;
     }
 
     .chat-input textarea:focus {
@@ -835,10 +725,117 @@
       background: var(--primary);
     }
 
+    .fullscreen-toggle {
+      background: var(--secondary);
+      border: none;
+      color: white;
+      padding: 0.5rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.875rem;
+    }
+
+    .fullscreen-toggle:hover {
+      background: #e67e22;
+      transform: translateY(-1px);
+    }
+
+    .fullscreen-toggle.active {
+      background: var(--primary);
+    }
+
+    .language-select {
+      background: var(--dark);
+      border: 1px solid var(--card-border);
+      border-radius: 6px;
+      padding: 0.25rem 0.5rem;
+      color: var(--light);
+      font-size: 0.75rem;
+      cursor: pointer;
+    }
+
+    .language-select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    /* Fullscreen Code Editor */
+    .fullscreen-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 10000;
+      display: none;
+      backdrop-filter: blur(5px);
+    }
+
+    .fullscreen-editor {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      padding: 2rem;
+      box-sizing: border-box;
+    }
+
+    .fullscreen-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .fullscreen-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--light);
+    }
+
+    .fullscreen-controls {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .fullscreen-textarea {
+      flex: 1;
+      background: var(--dark);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      color: var(--light);
+      font-family: 'Courier New', monospace;
+      font-size: 1rem;
+      line-height: 1.6;
+      resize: none;
+      outline: none;
+      margin-bottom: 1rem;
+    }
+
+    .fullscreen-textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+
+    .fullscreen-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: flex-end;
+    }
+
     /* Emoji Picker */
     .emoji-picker {
       position: fixed;
-      bottom: 80px;
+      bottom: 100px;
       left: 1rem;
       right: 1rem;
       background: var(--dark);
@@ -944,7 +941,6 @@
       padding: 0.75rem;
       max-height: 280px;
       overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
     }
 
     .emoji-item {
@@ -966,227 +962,7 @@
       transform: scale(1.1);
     }
 
-    .language-select {
-      background: var(--dark);
-      border: 1px solid var(--card-border);
-      border-radius: 6px;
-      padding: 0.25rem 0.5rem;
-      color: var(--light);
-      font-size: 0.75rem;
-      cursor: pointer;
-    }
-
-    .language-select:focus {
-      outline: none;
-      border-color: var(--primary);
-    }
-
-    /* Full Screen Code Mode */
-    .fullscreen-code {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: var(--darker);
-      z-index: 2000;
-      display: none;
-      flex-direction: column;
-      backdrop-filter: blur(10px);
-    }
-
-    .fullscreen-code.active {
-      display: flex;
-    }
-
-    .fullscreen-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 2rem;
-      background: var(--dark);
-      border-bottom: 1px solid var(--card-border);
-      flex-shrink: 0;
-    }
-
-    .fullscreen-title {
-      font-size: 1.2rem;
-      font-weight: 600;
-      color: var(--light);
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-
-    .fullscreen-controls {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .fullscreen-textarea {
-      flex: 1;
-      background: var(--darker);
-      border: none;
-      color: var(--light);
-      font-family: 'Courier New', monospace;
-      font-size: 1rem;
-      line-height: 1.6;
-      padding: 2rem;
-      resize: none;
-      outline: none;
-      min-height: 0;
-    }
-
-    .fullscreen-textarea::placeholder {
-      color: var(--gray);
-    }
-
-    .fullscreen-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 2rem;
-      background: var(--dark);
-      border-top: 1px solid var(--card-border);
-      flex-shrink: 0;
-    }
-
-    .fullscreen-info {
-      color: var(--gray);
-      font-size: 0.875rem;
-    }
-
-    .fullscreen-actions {
-      display: flex;
-      gap: 0.75rem;
-    }
-
-    .btn-fullscreen {
-      background: var(--primary);
-      border: none;
-      color: white;
-      padding: 0.5rem 1rem;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .btn-fullscreen:hover {
-      background: var(--primary-dark);
-      transform: translateY(-1px);
-    }
-
-    .btn-fullscreen-secondary {
-      background: var(--secondary);
-    }
-
-    .btn-fullscreen-secondary:hover {
-      background: #e67e22;
-    }
-
-    .btn-fullscreen-outline {
-      background: transparent;
-      border: 1px solid var(--gray);
-      color: var(--gray);
-    }
-
-    .btn-fullscreen-outline:hover {
-      border-color: var(--light);
-      color: var(--light);
-    }
-
-    .members-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-
-    .member {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 0.5rem;
-      border-radius: 8px;
-      transition: all 0.2s ease;
-    }
-
-    .member:hover {
-      background: rgba(30, 41, 59, 0.5);
-    }
-
-    .member-avatar {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: var(--primary-dark);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-    }
-
-    .member-info {
-      display: flex;
-      flex-direction: column;
-      gap: 0.2rem;
-      flex: 1;
-    }
-
-    .member-name {
-      font-weight: 500;
-    }
-
-    .member-role {
-      opacity: 0.8;
-    }
-
-
-
-    .member-status {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      margin-left: auto;
-    }
-
-    .online {
-      background: var(--success);
-    }
-
-    .offline {
-      background: var(--gray);
-    }
-
-
-
-    footer {
-      text-align: center;
-      padding: 1rem;
-      background: var(--dark);
-      font-size: 0.85rem;
-      color: var(--gray);
-      border-top: 1px solid var(--card-border);
-      min-height: 50px;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .fade-in {
-      animation: fadeIn 0.3s ease forwards;
-    }
-
+    /* Code Editor */
     .code-block {
       background: var(--darker);
       border: 1px solid var(--card-border);
@@ -1237,527 +1013,91 @@
       color: var(--light);
     }
 
-    .code-content::-webkit-scrollbar {
-      height: 6px;
+    .members-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
     }
 
-    .code-content::-webkit-scrollbar-track {
-      background: var(--darker);
+    .member {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.5rem;
+      border-radius: 8px;
+      transition: all 0.2s ease;
     }
 
-    .code-content::-webkit-scrollbar-thumb {
+    .member:hover {
+      background: rgba(30, 41, 59, 0.5);
+    }
+
+    .member-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--primary-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      position: relative;
+    }
+
+    .member-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      flex: 1;
+    }
+
+    .member-name {
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .member-role {
+      opacity: 0.8;
+      font-size: 0.8rem;
+    }
+
+    .member-status {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--success);
+      border: 2px solid var(--dark);
+      position: absolute;
+      bottom: -2px;
+      right: -2px;
+      box-shadow: 0 0 0 2px var(--success);
+    }
+
+    .online {
+      background: var(--success);
+      box-shadow: 0 0 0 2px var(--success);
+    }
+
+    .offline {
       background: var(--gray);
-      border-radius: 3px;
+      box-shadow: 0 0 0 2px var(--gray);
     }
 
-    .code-content::-webkit-scrollbar-thumb:hover {
-      background: var(--light);
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background: var(--dark);
+      font-size: 0.85rem;
+      color: var(--gray);
+      border-top: 1px solid var(--card-border);
+      min-height: 50px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-
-    @media (max-width: 1600px) {
-      .main-content {
-        grid-template-columns: 2fr 1fr;
-        gap: 1.5rem;
-      }
-      .chat-container {
-        height: 700px;
-        min-height: 500px;
-      }
-      .sidebar {
-        max-width: 350px;
-      }
-    }
-    
-    @media (max-width: 1024px) {
-      main {
-        padding: 1rem;
-        width: 100%;
-        max-width: 100vw;
-      }
-      .main-content {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-        width: 100%;
-        max-width: 100%;
-      }
-      .chat-container {
-        height: 550px;
-        min-height: 450px;
-        width: 100%;
-        max-width: 100%;
-      }
-      .sidebar {
-        max-width: 100%;
-        width: 100%;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 1rem;
-      }
-      .card {
-        margin-bottom: 0;
-        width: 100%;
-        max-width: 100%;
-      }
-    }
-
-    @media (max-width: 768px) {
-      main {
-        padding: 0.75rem;
-        gap: 1rem;
-        width: 100%;
-        max-width: 100vw;
-      }
-      
-      header {
-        padding: 0.75rem 1rem;
-        min-height: 55px;
-      }
-      
-      header h1 {
-        font-size: 1.25rem;
-      }
-      
-      .logo i {
-        font-size: 1.1rem;
-      }
-      
-      .user-info span {
-        display: none;
-      }
-      
-      .desktop-only {
-        display: none;
-      }
-      
-      .header-actions {
-        gap: 0.75rem;
-      }
-      
-      .btn {
-        padding: 0.6rem 1rem;
-        font-size: 0.9rem;
-        min-height: 40px;
-      }
-      
-      footer {
-        padding: 0.75rem;
-        min-height: 45px;
-        font-size: 0.8rem;
-      }
-      
-      .btn {
-        padding: 0.6rem 1rem;
-        font-size: 0.9rem;
-      }
-      
-      .btn-sm {
-        padding: 0.4rem 0.8rem;
-        font-size: 0.8rem;
-      }
-      
-      .card {
-        padding: 1rem;
-        border-radius: 10px;
-      }
-      
-      .card-header {
-        margin-bottom: 0.75rem;
-      }
-      
-      .card h2 {
-        font-size: 1.1rem;
-      }
-      
-      .chat-container {
-        height: 500px;
-        min-height: 400px;
-      }
-      
-      .chat-messages {
-        padding: 0.75rem;
-        gap: 0.75rem;
-      }
-      
-      .message {
-        max-width: 85%;
-        padding: 0.6rem 0.8rem;
-        font-size: 0.9rem;
-      }
-      
-      .chat-input {
-        gap: 0.4rem;
-      }
-      
-      .chat-input input,
-      .chat-input textarea {
-        padding: 0.6rem 0.8rem;
-        font-size: 0.9rem;
-      }
-      
-      .file-item {
-        padding: 0.6rem 0.8rem;
-        min-height: 50px;
-      }
-      
-      .file-name {
-        font-size: 0.85rem;
-      }
-      
-      .file-meta {
-        font-size: 0.7rem;
-      }
-      
-      .upload-area {
-        padding: 1.5rem;
-      }
-      
-      .upload-area h3 {
-        font-size: 1rem;
-      }
-      
-      .upload-area p {
-        font-size: 0.8rem;
-      }
-      
-      /* Admin table mobile fixes */
-      .admin-table {
-        font-size: 0.75rem;
-      }
-      
-      .admin-table th,
-      .admin-table td {
-        padding: 0.5rem 0.4rem;
-        word-wrap: break-word;
-        overflow-wrap: break-word;
-      }
-      
-      .table-container {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-      }
-
-    }
-
-    @media (max-width: 480px) {
-      main {
-        padding: 0.5rem;
-        gap: 0.75rem;
-        width: 100%;
-        max-width: 100vw;
-      }
-      
-      header {
-        padding: 0.5rem 0.75rem;
-        min-height: 50px;
-      }
-      
-      header h1 {
-        font-size: 1.1rem;
-      }
-      
-      .logo {
-        gap: 0.5rem;
-      }
-      
-      .header-actions {
-        gap: 0.5rem;
-      }
-      
-      .user-avatar {
-        width: 28px;
-        height: 28px;
-        font-size: 0.8rem;
-      }
-      
-      .btn {
-        padding: 0.5rem 0.75rem;
-        font-size: 0.85rem;
-        min-height: 38px;
-      }
-      
-      footer {
-        padding: 0.5rem;
-        min-height: 40px;
-        font-size: 0.75rem;
-      }
-      
-      .card {
-        padding: 0.75rem;
-        border-radius: 8px;
-      }
-      
-      .card-header {
-        margin-bottom: 0.5rem;
-      }
-      
-      .card h2 {
-        font-size: 1rem;
-      }
-      
-      .chat-container {
-        height: 450px;
-        min-height: 350px;
-      }
-      
-      .chat-messages {
-        padding: 0.5rem;
-        gap: 0.5rem;
-      }
-      
-      .message {
-        max-width: 90%;
-        padding: 0.5rem 0.6rem;
-        font-size: 0.85rem;
-      }
-      
-      .message-sender {
-        font-size: 0.7rem;
-      }
-      
-      .message-time {
-        font-size: 0.6rem;
-      }
-      
-      .chat-input {
-        gap: 0.3rem;
-      }
-      
-      .chat-input input,
-      .chat-input textarea {
-        padding: 0.5rem 0.6rem;
-        font-size: 0.85rem;
-        min-height: 45px;
-      }
-      
-      .chat-controls {
-        gap: 0.3rem;
-      }
-      
-      .code-toggle {
-        padding: 0.4rem;
-        font-size: 0.8rem;
-      }
-      
-      .language-select {
-        padding: 0.2rem 0.4rem;
-        font-size: 0.7rem;
-      }
-      
-      .file-item {
-        padding: 0.5rem 0.6rem;
-        min-height: 45px;
-        gap: 0.5rem;
-      }
-      
-      .file-info {
-        gap: 0.5rem;
-      }
-      
-      .file-icon {
-        font-size: 0.9rem;
-      }
-      
-      .file-name {
-        font-size: 0.8rem;
-      }
-      
-      .file-meta {
-        font-size: 0.65rem;
-      }
-      
-      .file-actions {
-        gap: 0.3rem;
-      }
-      
-      .file-actions button {
-        padding: 0.3rem 0.5rem;
-        font-size: 0.75rem;
-      }
-      
-      .upload-area {
-        padding: 1rem;
-      }
-      
-      .upload-area i {
-        font-size: 1.5rem;
-      }
-      
-      .upload-area h3 {
-        font-size: 0.9rem;
-        margin: 0.5rem 0;
-      }
-      
-      .upload-area p {
-        font-size: 0.75rem;
-        margin-top: 0.3rem;
-      }
-      
-      /* Admin table mobile fixes for small screens */
-      .admin-table {
-        font-size: 0.7rem;
-      }
-      
-      .admin-table th,
-      .admin-table td {
-        padding: 0.4rem 0.3rem;
-        word-wrap: break-word;
-        overflow-wrap: break-word;
-      }
-      
-      .admin-actions {
-        flex-direction: column;
-        gap: 0.2rem;
-      }
-      
-      .admin-actions button {
-        padding: 0.2rem 0.4rem;
-        font-size: 0.65rem;
-        min-height: 30px;
-      }
-      
-      .preview-item {
-        padding: 0.4rem;
-        gap: 0.5rem;
-      }
-      
-      .preview-name {
-        font-size: 0.8rem;
-      }
-      
-      .preview-size {
-        font-size: 0.65rem;
-      }
-      
-      .preview-image {
-        max-width: 50px;
-        max-height: 50px;
-      }
-      
-      .preview-remove {
-        width: 20px;
-        height: 20px;
-        font-size: 0.65rem;
-      }
-      
-      .members-list {
-        gap: 0.5rem;
-      }
-      
-      .member {
-        padding: 0.4rem;
-        gap: 0.5rem;
-      }
-      
-      .member-avatar {
-        width: 30px;
-        height: 30px;
-        font-size: 0.8rem;
-      }
-      
-      .member-name {
-        font-size: 0.85rem;
-      }
-      
-      .member-status {
-        width: 8px;
-        height: 8px;
-      }
-      
-
-      
-
-      
-      /* Modal improvements for mobile */
-      .modal-content {
-        max-width: 95vw;
-        max-height: 95vh;
-        margin: 1rem;
-      }
-      
-      .modal-header,
-      .modal-body,
-      .modal-actions {
-        padding: 0.75rem;
-      }
-      
-      .modal-title {
-        font-size: 1rem;
-      }
-      
-      .modal-close {
-        font-size: 1.25rem;
-      }
-      
-      .fullscreen-header,
-      .fullscreen-footer {
-        padding: 0.75rem 1rem;
-      }
-      
-      .fullscreen-title {
-        font-size: 1rem;
-      }
-      
-      .fullscreen-textarea {
-        padding: 1rem;
-        font-size: 0.9rem;
-      }
-      
-      .fullscreen-info {
-        font-size: 0.8rem;
-      }
-      
-      .btn-fullscreen {
-        padding: 0.4rem 0.8rem;
-        font-size: 0.85rem;
-      }
-
-      /* Emoji picker mobile improvements */
-      .emoji-picker {
-        max-height: 350px;
-        bottom: 70px;
-        left: 0.75rem;
-        right: 0.75rem;
-      }
-
-      .emoji-grid {
-        grid-template-columns: repeat(6, 1fr);
-        gap: 0.2rem;
-        padding: 0.5rem;
-        max-height: 220px;
-      }
-
-      .emoji-item {
-        padding: 0.4rem;
-        font-size: 1.1rem;
-      }
-
-      .emoji-categories {
-        gap: 0.2rem;
-        padding: 0.4rem;
-      }
-
-      .emoji-category {
-        padding: 0.4rem;
-        font-size: 1rem;
-      }
-
-      .emoji-picker-header {
-        padding: 0.5rem;
-      }
-
-      .emoji-search input {
-        padding: 0.4rem 0.6rem;
-        font-size: 0.8rem;
-      }
-
-      .emoji-picker {
-        bottom: 60px;
-        left: 0.5rem;
-        right: 0.5rem;
-        max-height: 300px;
-      }
-    }
-
 
     /* Toast Notification System */
     .toast-container {
@@ -1870,146 +1210,112 @@
       }
     }
 
-    /* Upload Progress Bar */
-    .upload-progress {
+    /* Confirmation Dialog */
+    .confirm-dialog {
       position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(5px);
+      z-index: 10000;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    .confirm-content {
       background: var(--dark);
       border: 1px solid var(--card-border);
       border-radius: 12px;
-      padding: 1.5rem;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(15px);
-      z-index: 10001;
-      min-width: 300px;
+      padding: 2rem;
+      max-width: 400px;
+      width: 100%;
       text-align: center;
-      animation: progressSlideIn 0.3s ease-out;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     }
 
-    .upload-progress-bar {
-      width: 100%;
-      height: 8px;
-      background: rgba(148, 163, 184, 0.2);
-      border-radius: 4px;
-      overflow: hidden;
+    .confirm-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--light);
       margin-bottom: 1rem;
     }
 
-    .upload-progress-fill {
-      height: 100%;
-      background: linear-gradient(to right, var(--primary), var(--secondary));
-      border-radius: 4px;
-      width: 0%;
-      transition: width 0.3s ease;
-      position: relative;
-    }
-
-    .upload-progress-fill::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-      animation: progressShimmer 1.5s infinite;
-    }
-
-    @keyframes progressShimmer {
-      0% { transform: translateX(-100%); }
-      100% { transform: translateX(100%); }
-    }
-
-    .upload-progress-text {
-      color: var(--light);
-      font-weight: 500;
+    .confirm-message {
       font-size: 0.9rem;
+      color: var(--gray);
+      margin-bottom: 2rem;
+      line-height: 1.5;
     }
 
-    @keyframes progressSlideIn {
-      from {
-        opacity: 0;
-        transform: translate(-50%, -50%) scale(0.9);
+    .confirm-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      .main-content {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
       }
-      to {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
+      
+      .sidebar {
+        max-width: 100%;
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1rem;
       }
     }
 
-    /* Mobile responsive for toasts and progress */
     @media (max-width: 768px) {
-      .toast-container {
-        top: 10px;
-        right: 10px;
-        left: 10px;
-      }
-
-      .toast {
-        max-width: none;
+      header {
         padding: 0.75rem 1rem;
       }
-
-      .upload-progress {
-        min-width: 280px;
-        margin: 1rem;
-        padding: 1.25rem;
+      
+      .user-info span {
+        display: none;
+      }
+      
+      .desktop-only {
+        display: none;
+      }
+      
+      .chat-container {
+        height: 500px;
+        min-height: 400px;
+      }
+      
+      .message {
+        max-width: 85%;
+        font-size: 0.9rem;
       }
     }
 
     @media (max-width: 480px) {
-      .toast-container {
-        top: 5px;
-        right: 5px;
-        left: 5px;
+      .emoji-picker {
+        bottom: 80px;
+        left: 0.5rem;
+        right: 0.5rem;
+        max-height: 300px;
       }
 
-      .toast {
-        padding: 0.6rem 0.8rem;
-        font-size: 0.85rem;
+      .emoji-grid {
+        grid-template-columns: repeat(6, 1fr);
+        gap: 0.2rem;
+        padding: 0.5rem;
+        max-height: 220px;
       }
 
-      .toast-title {
-        font-size: 0.85rem;
+      .emoji-item {
+        padding: 0.4rem;
+        font-size: 1.1rem;
       }
-
-      .toast-message {
-        font-size: 0.75rem;
-      }
-
-      .upload-progress {
-        min-width: 260px;
-        padding: 1rem;
-      }
-
-      .upload-progress-text {
-        font-size: 0.85rem;
-      }
-    }
-
-    /* --- Modern Footer Link Effects --- */
-    footer a {
-      transition: color 0.2s, text-decoration 0.2s, transform 0.18s, box-shadow 0.18s;
-      text-decoration: none;
-      position: relative;
-      z-index: 1;
-    }
-    footer a:hover, footer a:focus {
-      color: var(--primary-dark) !important;
-      text-decoration: underline;
-      text-underline-offset: 3px;
-      transform: translateY(-2px) scale(1.06);
-      box-shadow: 0 2px 8px 0 rgba(99,102,241,0.10);
-    }
-    footer a[aria-label="LinkedIn"]:hover, footer a[aria-label="LinkedIn"]:focus {
-      color: #004182 !important;
-    }
-    footer a[aria-label="GitHub"]:hover, footer a[aria-label="GitHub"]:focus {
-      color: #fff !important;
-      background: #24292f;
-      border-radius: 50%;
     }
   </style>
 </head>
@@ -2032,92 +1338,12 @@
     </div>
   </header>
 
-  <!-- File Preview Modal -->
-  <div class="modal-overlay" id="filePreviewModal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <div class="modal-title">
-          <i class="fas fa-file" id="modalFileIcon"></i>
-          <span id="modalFileName"></span>
-        </div>
-        <button class="modal-close" onclick="closeFilePreview()">
-          <i class="fas fa-times"></i>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="preview-container" id="modalPreviewContent">
-          <!-- Preview content will be loaded here -->
-        </div>
-      </div>
-      <div class="modal-actions">
-        <button class="btn btn-outline" onclick="closeFilePreview()">
-          <i class="fas fa-times"></i> Close
-        </button>
-        <button class="btn btn-primary" id="modalDownloadBtn">
-          <i class="fas fa-download"></i> Download
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Full Screen Code Editor -->
-  <div class="fullscreen-code" id="fullscreenCode">
-    <div class="fullscreen-header">
-      <div class="fullscreen-title">
-        <i class="fas fa-code"></i>
-        <span>Code Editor</span>
-        <select class="language-select" id="fullscreenLanguageSelect">
-          <option value="javascript">JavaScript</option>
-          <option value="python">Python</option>
-          <option value="html">HTML</option>
-          <option value="css">CSS</option>
-          <option value="java">Java</option>
-          <option value="cpp">C++</option>
-          <option value="csharp">C#</option>
-          <option value="php">PHP</option>
-          <option value="sql">SQL</option>
-          <option value="bash">Bash</option>
-          <option value="json">JSON</option>
-          <option value="xml">XML</option>
-          <option value="markdown">Markdown</option>
-          <option value="plaintext">Plain Text</option>
-        </select>
-      </div>
-      <div class="fullscreen-controls">
-        <button class="btn-fullscreen btn-fullscreen-outline" onclick="exitFullscreenCode()">
-          <i class="fas fa-times"></i> Exit
-        </button>
-      </div>
-    </div>
-    <textarea 
-      class="fullscreen-textarea" 
-      id="fullscreenCodeInput" 
-      placeholder="Write your code here... Press Ctrl+Enter to send, Ctrl+S to save draft"
-    ></textarea>
-    <div class="fullscreen-footer">
-      <div class="fullscreen-info">
-        <span id="fullscreenCharCount">0 characters</span> • 
-        <span id="fullscreenLineCount">1 line</span> • 
-        Press <kbd>Ctrl+Enter</kbd> to send
-      </div>
-      <div class="fullscreen-actions">
-        <button class="btn-fullscreen btn-fullscreen-outline" onclick="clearFullscreenCode()">
-          <i class="fas fa-eraser"></i> Clear
-        </button>
-        <button class="btn-fullscreen btn-fullscreen-secondary" onclick="sendFullscreenCode()">
-          <i class="fas fa-paper-plane"></i> Send Code
-        </button>
-      </div>
-    </div>
-  </div>
-
   <main>
     <div class="main-content">
       <div class="content-area">
-        <!-- Chat box is now the main content -->
         <section class="card chat-container">
           <div class="card-header">
-            <h2><i class="fas fa-comments"></i> Group Chat AI - A4</h2>
+            <h2><i class="fas fa-comments"></i> Group Chat AI-A4 </h2>
           </div>
           <div class="chat-messages" id="chatMessages">
             <!-- Messages will appear here -->
@@ -2127,11 +1353,11 @@
               <button class="code-toggle" id="codeToggle" title="Toggle Code Mode">
                 <i class="fas fa-code"></i>
               </button>
-              <button class="code-toggle" id="fullscreenToggle" title="Full Screen Code Editor" style="display: none;">
-                <i class="fas fa-expand"></i>
-              </button>
               <button class="emoji-toggle" id="emojiToggle" title="Emoji Picker">
                 <i class="fas fa-smile"></i>
+              </button>
+              <button class="fullscreen-toggle" id="fullscreenToggle" title="Fullscreen Code Editor" style="display: none;">
+                <i class="fas fa-expand"></i>
               </button>
               <select class="language-select" id="languageSelect" style="display: none;">
                 <option value="javascript">JavaScript</option>
@@ -2186,22 +1412,21 @@
       </div>
 
       <div class="sidebar">
-        <!-- Upload and shared files go here -->
         <section class="card">
           <div class="card-header">
-            <h2><i class="fas fa-cloud-upload-alt"></i> Upload Anything</h2>
+            <h2><i class="fas fa-cloud-upload-alt"></i> Upload Files</h2>
           </div>
           <div class="upload-area">
             <i class="fas fa-file-upload" style="font-size: 2rem; color: var(--primary);"></i>
             <h3>Drag & Drop files here</h3>
-            <p>or click to browse (PDF, DOCX, PPT, IMAGES)</p>
+            <p>or click to browse</p>
             <input type="file" id="fileInput" multiple />
           </div>
           <div class="file-preview" id="filePreview">
             <h4><i class="fas fa-eye"></i> Selected Files</h4>
             <div class="no-files">No files selected</div>
           </div>
-          <div style="margin-top: 1rem; display: flex; gap: 0.5rem; justify-content: flex-end;">
+          <div style="margin-top: 1rem;">
             <button class="btn btn-primary" onclick="uploadFile()">
               <i class="fas fa-upload"></i> Upload
             </button>
@@ -2211,11 +1436,9 @@
         <section class="card">
           <div class="card-header">
             <h2><i class="fas fa-folder-open"></i> Shared Files</h2>
-            <div style="display: flex; gap: 0.5rem;">
-              <button class="btn btn-outline btn-sm" onclick="loadFiles()">
-                <i class="fas fa-sync-alt"></i>
-              </button>
-            </div>
+            <button class="btn btn-outline btn-sm" onclick="loadFiles()">
+              <i class="fas fa-sync-alt"></i>
+            </button>
           </div>
           <div class="file-list" id="fileContainer">
             <!-- Files will be loaded here -->
@@ -2224,31 +1447,72 @@
 
         <section class="card">
           <div class="card-header">
-            <h2><i class="fas fa-users"></i> Group Members</h2>
+            <h2><i class="fas fa-users"></i> Online Members</h2>
             <span class="btn btn-outline btn-sm" id="onlineCount">0 Online</span>
           </div>
           <div class="members-list" id="membersList">
-            <!-- Members will appear here -->
+            <!-- Online members will appear here -->
           </div>
         </section>
       </div>
     </div>
-
-
   </main>
 
+  <!-- Fullscreen Code Editor -->
+  <div class="fullscreen-overlay" id="fullscreenOverlay">
+    <div class="fullscreen-editor">
+      <div class="fullscreen-header">
+        <div class="fullscreen-title">
+          <i class="fas fa-code"></i> Code Editor
+        </div>
+        <div class="fullscreen-controls">
+          <select class="language-select" id="fullscreenLanguageSelect">
+            <option value="javascript">JavaScript</option>
+            <option value="python">Python</option>
+            <option value="html">HTML</option>
+            <option value="css">CSS</option>
+            <option value="java">Java</option>
+            <option value="cpp">C++</option>
+            <option value="csharp">C#</option>
+            <option value="php">PHP</option>
+            <option value="sql">SQL</option>
+            <option value="bash">Bash</option>
+            <option value="json">JSON</option>
+            <option value="xml">XML</option>
+            <option value="markdown">Markdown</option>
+            <option value="plaintext">Plain Text</option>
+          </select>
+          <button class="btn btn-secondary" onclick="closeFullscreenEditor()">
+            <i class="fas fa-times"></i> Close
+          </button>
+        </div>
+      </div>
+      <textarea class="fullscreen-textarea" id="fullscreenTextarea" placeholder="Write your code here..."></textarea>
+      <div class="fullscreen-actions">
+        <button class="btn btn-outline" onclick="clearFullscreenEditor()">
+          <i class="fas fa-trash"></i> Clear
+        </button>
+        <button class="btn btn-primary" onclick="sendFullscreenCode()">
+          <i class="fas fa-paper-plane"></i> Send Code
+        </button>
+      </div>
+    </div>
+  </div>
 
+  <!-- Confirmation Dialog -->
+  <div class="confirm-dialog" id="confirmDialog">
+    <div class="confirm-content">
+      <div class="confirm-title">Confirm Delete</div>
+      <div class="confirm-message">Are you sure you want to delete this message? This action cannot be undone.</div>
+      <div class="confirm-actions">
+        <button class="btn btn-outline" onclick="hideConfirmDialog()">Cancel</button>
+        <button class="btn btn-danger" onclick="confirmDelete()">Delete</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Toast Notification System -->
   <div id="toastContainer" class="toast-container"></div>
-
-  <!-- Upload Progress Bar -->
-  <div id="uploadProgress" class="upload-progress" style="display: none;">
-    <div class="upload-progress-bar">
-      <div class="upload-progress-fill" id="uploadProgressFill"></div>
-    </div>
-    <div class="upload-progress-text" id="uploadProgressText">Uploading...</div>
-  </div>
 
   <footer style="background: var(--dark); border-top: 1.5px solid var(--card-border); box-shadow: 0 -4px 24px -8px rgba(0,0,0,0.10), 0 -1px 0 0 rgba(148,163,184,0.10); padding: 2rem 0 1.2rem 0;">
     <div style="max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 1.1em;">
@@ -2274,380 +1538,260 @@
       </div>
       <div style="width: 100%; height: 1px; background: var(--card-border); margin: 0.7em 0 0.2em 0;"></div>
       <div style="font-size: 0.97rem; color: var(--gray); letter-spacing: 0.01em; display: flex; align-items: center; gap: 0.5em;">
-        <span>For educational purposes only 💀<span>
+        <span>For educational purposes only 💀</span>
       </div>
     </div>
   </footer>
 
   <script>
     // Initialize Supabase
-    const supabaseUrl = 'https://umcmifajtomyvwjzmvpm.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVtY21pZmFqdG9teXZ3anptdnBtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE3MzQzNTMsImV4cCI6MjA2NzMxMDM1M30._SjFGJOINRe0LTljlcK1h392iu5B5VJaAqK6sD3HJYI';
+    const supabaseUrl = 'https://cmriyjrqkvpdchvbpnne.supabase.co'
+    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNtcml5anJxa3ZwZGNodmJwbm5lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI4MzcyODYsImV4cCI6MjA2ODQxMzI4Nn0.wWRO5jZuUfrMPV8A3J7j36yweLe4o-uIcSZYaMhY4O8'
     
-    // Initialize Supabase
     let supabaseClient;
+    let currentUser = null;
+    let currentProfile = null;
+    let chatChannel = null;
+    let presenceChannel = null;
+    let onlineUsers = new Set();
+    let isUserAdmin = false;
+    let messageToDelete = null;
+
+    // Initialize Supabase
     function initializeSupabase() {
       if (typeof supabase !== 'undefined') {
-        console.log('Supabase loaded, creating client...');
-        supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
-        console.log('Supabase client created successfully');
+        supabaseClient = supabase.createClient(supabaseUrl, supabaseAnonKey);
         return true;
-      } else {
-        console.log('Supabase not loaded yet, retrying...');
-        return false;
       }
+      return false;
     }
-    
-    // Try to initialize immediately, then retry if needed
+
+    // Initialize app
     if (!initializeSupabase()) {
       const checkInterval = setInterval(() => {
         if (initializeSupabase()) {
           clearInterval(checkInterval);
+          initializeApp();
         }
       }, 100);
-    }
-
-
-
-    // Authentication functions
-    async function logout() {
-  try {
-    const { error } = await supabaseClient.auth.signOut();
-    if (!error) {
-      console.log('Sign out successful, redirecting...');
-      window.location.href = "index.html";
     } else {
-      console.error('Logout error:', error);
-    }
-  } catch (err) {
-    console.error('Error during logout:', err);
-  }
-}
-
-
-    // File upload functionality
-    async function uploadFile() {
-      const fileInput = document.getElementById('fileInput');
-      const files = fileInput.files;
-      
-      // Client-side validation
-      if (!files || files.length === 0) {
-        showToast('error', 'No Files Selected', 'Please select at least one file to upload.');
-        return;
-      }
-
-      // Check file sizes (max 10MB per file)
-      const maxSize = 10 * 1024 * 1024; // 10MB
-      for (const file of files) {
-        if (file.size > maxSize) {
-          showToast('error', 'File Too Large', `${file.name} is too large. Maximum size is 10MB.`);
-          return;
-        }
-      }
-
-      // Get current user
-      const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
-      if (userError || !user) {
-        showToast('error', 'Authentication Error', 'Please log in to upload files.');
-        return;
-      }
-
-      // Show upload progress
-      showUploadProgress();
-
-      let uploadedCount = 0;
-      let errorCount = 0;
-
-      for (const file of files) {
-        try {
-          console.log('Uploading file:', file.name, 'Size:', file.size, 'Type:', file.type);
-          
-          // Create a unique filename with user ID prefix
-          const fileExt = file.name.split('.').pop();
-          const timestamp = Date.now();
-          const randomId = Math.random().toString(36).substring(2);
-          const fileName = `${user.id}/${timestamp}_${randomId}.${fileExt}`;
-
-          console.log('Generated file path:', fileName);
-
-          // Upload file to storage
-          const { data: uploadData, error: uploadError } = await supabaseClient.storage
-            .from('files')
-            .upload(fileName, file, {
-              cacheControl: '3600',
-              upsert: false
-            });
-
-          if (uploadError) {
-            console.error('Error uploading file to storage:', uploadError);
-            errorCount++;
-            continue;
-          }
-
-          console.log('File uploaded to storage successfully:', uploadData);
-
-          // Insert file record to database
-          const { data: dbData, error: dbError } = await supabaseClient
-            .from('files')
-            .insert({
-              user_id: user.id,
-              filename: file.name,
-              filetype: file.type,
-              filepath: fileName,
-              filesize: file.size
-            })
-            .select();
-
-          if (dbError) {
-            console.error('Error saving file info to database:', dbError);
-            errorCount++;
-            continue;
-          }
-
-          console.log('File record saved to database:', dbData);
-          uploadedCount++;
-
-        } catch (err) {
-          console.error('Error processing file:', err);
-          errorCount++;
-        }
-      }
-
-      // Show results
-      if (uploadedCount > 0) {
-        showToast('success', 'Upload Successful!', `Successfully uploaded ${uploadedCount} file(s)!`);
-        if (errorCount > 0) {
-          showToast('error', 'Partial Upload', `${errorCount} file(s) failed to upload.`);
-        }
-        // Clear file input and preview after successful upload
-        fileInput.value = '';
-        updateFilePreview();
-      } else {
-        showToast('error', 'Upload Failed', 'No files were uploaded successfully. Please try again.');
-      }
-
-      loadFiles();
+      initializeApp();
     }
 
-    // File preview functionality
-    function updateFilePreview() {
-      const fileInput = document.getElementById('fileInput');
-      const previewContainer = document.getElementById('filePreview');
-      const files = fileInput.files;
-
-      // Clear previous preview content
-      const previewContent = previewContainer.querySelector('h4').nextElementSibling;
-      if (previewContent) {
-        previewContent.remove();
-      }
-
-      if (!files || files.length === 0) {
-        const noFiles = document.createElement('div');
-        noFiles.className = 'no-files';
-        noFiles.textContent = 'No files selected';
-        previewContainer.appendChild(noFiles);
-        return;
-      }
-
-      const previewList = document.createElement('div');
-      previewList.className = 'preview-list';
-
-      Array.from(files).forEach((file, index) => {
-        const previewItem = document.createElement('div');
-        previewItem.className = 'preview-item fade-in';
-
-        const fileIcon = document.createElement('i');
-        fileIcon.className = `fas ${getFileIcon(file.type)} preview-icon`;
-
-        const previewInfo = document.createElement('div');
-        previewInfo.className = 'preview-info';
-
-        const fileName = document.createElement('div');
-        fileName.className = 'preview-name';
-        fileName.textContent = file.name;
-
-        const fileSize = document.createElement('div');
-        fileSize.className = 'preview-size';
-        fileSize.textContent = formatFileSize(file.size);
-
-        previewInfo.appendChild(fileName);
-        previewInfo.appendChild(fileSize);
-
-        const removeBtn = document.createElement('button');
-        removeBtn.className = 'preview-remove';
-        removeBtn.innerHTML = '<i class="fas fa-times"></i>';
-        removeBtn.onclick = () => removeFile(index);
-
-        previewItem.appendChild(fileIcon);
-        previewItem.appendChild(previewInfo);
-
-        // Add image preview if it's an image file
-        if (file.type.startsWith('image/')) {
-          const img = document.createElement('img');
-          img.className = 'preview-image';
-          img.src = URL.createObjectURL(file);
-          img.alt = file.name;
-          previewItem.appendChild(img);
-        }
-
-        previewItem.appendChild(removeBtn);
-        previewList.appendChild(previewItem);
-      });
-
-      previewContainer.appendChild(previewList);
-    }
-
-    function removeFile(index) {
-      const fileInput = document.getElementById('fileInput');
-      const files = Array.from(fileInput.files);
-      
-      // Create a new FileList-like object without the removed file
-      const dt = new DataTransfer();
-      files.forEach((file, i) => {
-        if (i !== index) {
-          dt.items.add(file);
-        }
-      });
-      
-      fileInput.files = dt.files;
-      updateFilePreview();
-    }
-
-    // Load files from database
-    async function loadFiles() {
-      try {
-        console.log('Loading files from database...');
-        
-        const { data: files, error } = await supabaseClient
-          .from('files')
-          .select('*')
-          .order('uploaded_at', { ascending: false });
-
-        if (error) {
-          console.error('Error loading files:', error);
-          const fileContainer = document.getElementById('fileContainer');
-          fileContainer.innerHTML = '<p style="color: var(--danger); text-align: center;">Error loading files. Please try again.</p>';
-          return;
-        }
-
-        console.log('Files loaded from database:', files);
-
-        const fileContainer = document.getElementById('fileContainer');
-        fileContainer.innerHTML = '';
-
-        if (!files || files.length === 0) {
-          fileContainer.innerHTML = '<p style="color: var(--gray); text-align: center;">No files shared yet</p>';
-          return;
-        }
-
-        files.forEach(file => {
-          const fileItem = document.createElement('div');
-          fileItem.className = 'file-item fade-in';
-          fileItem.innerHTML = `
-            <div class="file-info" onclick="previewFile('${file.id}', '${file.filepath}', '${file.filename}', '${file.filetype}')">
-              <i class="fas ${getFileIcon(file.filetype)} file-icon"></i>
-              <div class="file-details">
-                <div class="file-name" title="${file.filename}">${file.filename}</div>
-                <div class="file-meta">${formatFileSize(file.filesize)}</div>
-              </div>
-            </div>
-            <div class="file-actions">
-              <button class="btn btn-outline btn-sm" onclick="downloadFile('${file.filepath}', '${file.filename}')">
-                <i class="fas fa-download"></i>
-              </button>
-              <button class="btn btn-danger btn-sm" onclick="deleteFile('${file.id}', '${file.filepath}', '${file.filename}')">
-                <i class="fas fa-trash"></i>
-              </button>
-            </div>
-          `;
-          fileContainer.appendChild(fileItem);
-        });
-      } catch (err) {
-        console.error('Error in loadFiles:', err);
-        const fileContainer = document.getElementById('fileContainer');
-        fileContainer.innerHTML = '<p style="color: var(--danger); text-align: center;">Error loading files. Please try again.</p>';
-      }
-    }
-
-    // Download file
-    async function downloadFile(filepath, filename) {
-      try {
-        showToast('info', 'Downloading...', `Preparing ${filename} for download...`);
-        
-        const { data, error } = await supabaseClient.storage
-          .from('files')
-          .download(filepath);
-
-        if (error) {
-          showToast('error', 'Download Failed', 'Error downloading file: ' + error.message);
-          return;
-        }
-
-        const url = URL.createObjectURL(data);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-        
-        showToast('success', 'Download Started', `${filename} download has begun!`);
-      } catch (err) {
-        console.error('Error in downloadFile:', err);
-        showToast('error', 'Download Error', 'An error occurred while downloading the file.');
-      }
-    }
-
-    // Delete file
-    async function deleteFile(fileId, filepath, filename) {
-      if (!confirm(`Are you sure you want to delete "${filename}"?`)) {
-        return;
-      }
-
+    async function initializeApp() {
       try {
         // Get current user
-        const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
-        if (userError || !user) {
-          showToast('error', 'Authentication Error', 'Please log in to delete files.');
+        const { data: { user }, error } = await supabaseClient.auth.getUser();
+        if (error || !user) {
+          window.location.href = 'index.html';
           return;
         }
 
-        showToast('info', 'Deleting...', `Removing ${filename}...`);
-
-        // Delete from storage
-        const { error: storageError } = await supabaseClient.storage
-          .from('files')
-          .remove([filepath]);
-
-        if (storageError) {
-          console.error('Error deleting file from storage:', storageError);
-          showToast('error', 'Delete Failed', 'Error deleting file from storage. Please try again.');
-          return;
-        }
-
-        // Delete from database
-        const { error: dbError } = await supabaseClient
-          .from('files')
-          .delete()
-          .eq('id', fileId)
-          .eq('user_id', user.id); // Ensure user can only delete their own files
-
-        if (dbError) {
-          console.error('Error deleting file from database:', dbError);
-          showToast('error', 'Delete Failed', 'Error deleting file from database. Please try again.');
-          return;
-        }
-
-        console.log('File deleted successfully:', filename);
-        showToast('success', 'File Deleted', `"${filename}" has been deleted successfully!`);
+        currentUser = user;
         
-        // Reload the file list
-        loadFiles();
-      } catch (err) {
-        console.error('Error in deleteFile:', err);
-        showToast('error', 'Delete Error', 'An error occurred while deleting the file. Please try again.');
+        // Get user profile
+        const { data: profile } = await supabaseClient
+          .from('users')
+          .select('username, role')
+          .eq('id', user.id)
+          .single();
+        
+        currentProfile = profile;
+        
+        // Check admin status
+        if (profile?.role === 'admin') {
+          isUserAdmin = true;
+        }
+
+        // Update UI with user info
+        updateUserInfo();
+        
+        // Show welcome message with cancel button
+        showWelcomeToast();
+
+        // Load initial data
+        await loadMessages();
+        await loadFiles();
+        await loadOnlineMembers();
+
+        // Setup realtime
+        setupRealtimeChat();
+        setupPresenceTracking();
+
+        // Setup event listeners
+        setupEventListeners();
+
+      } catch (error) {
+        console.error('Error initializing app:', error);
+        showToast('error', 'Initialization Error', 'Failed to load the application');
       }
+    }
+
+    function updateUserInfo() {
+      const userAvatar = document.getElementById('userAvatar');
+      const username = document.getElementById('username');
+      
+      const displayName = getUserDisplayName(currentUser, currentProfile);
+      userAvatar.textContent = displayName.charAt(0).toUpperCase();
+      username.textContent = displayName;
+    }
+
+    function showWelcomeToast() {
+    const displayName = getUserDisplayName(currentUser, currentProfile);
+    const toastId = showToast(
+      'success', 
+      `Welcome To chill Space ! ${displayName}!`, 
+      'Ready to chill? 🎉', 
+      4000 
+    );
+  }
+
+    function getUserDisplayName(user, profile = null) {
+      if (profile?.username) {
+        return profile.username;
+      }
+      if (user?.user_metadata?.username) {
+        return user.user_metadata.username;
+      }
+      if (user?.email) {
+        return user.email.split('@')[0];
+      }
+      return 'User';
+    }
+
+    function setupEventListeners() {
+      // Logout button
+      document.getElementById('logoutBtn').addEventListener('click', logout);
+
+      // Code toggle
+      document.getElementById('codeToggle').addEventListener('click', toggleCodeMode);
+
+      // Emoji toggle
+      document.getElementById('emojiToggle').addEventListener('click', toggleEmojiPicker);
+
+      // Fullscreen toggle
+      document.getElementById('fullscreenToggle').addEventListener('click', openFullscreenEditor);
+
+      // Chat input enter key
+      document.getElementById('chatInput').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          sendMessage();
+        }
+      });
+
+      // Code input enter key
+      document.getElementById('codeInput').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' && e.ctrlKey) {
+          e.preventDefault();
+          sendMessage();
+        }
+      });
+
+      // File input change
+      document.getElementById('fileInput').addEventListener('change', updateFilePreview);
+
+      // Emoji category buttons
+      document.querySelectorAll('.emoji-category').forEach(button => {
+        button.addEventListener('click', (e) => {
+          document.querySelectorAll('.emoji-category').forEach(b => b.classList.remove('active'));
+          e.target.classList.add('active');
+          loadEmojis(e.target.dataset.category);
+        });
+      });
+
+      // Emoji search
+      document.getElementById('emojiSearch').addEventListener('input', (e) => {
+        searchEmojis(e.target.value);
+      });
+
+      // Close emoji picker when clicking outside
+      document.addEventListener('click', (e) => {
+        const emojiPicker = document.getElementById('emojiPicker');
+        const emojiToggle = document.getElementById('emojiToggle');
+        
+        if (!emojiPicker.contains(e.target) && !emojiToggle.contains(e.target)) {
+          emojiPicker.style.display = 'none';
+          emojiToggle.classList.remove('active');
+        }
+      });
+
+      // Confirm dialog close on click outside
+      document.getElementById('confirmDialog').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('confirmDialog')) {
+          hideConfirmDialog();
+        }
+      });
+
+      // Fullscreen editor close on escape
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          if (document.getElementById('fullscreenOverlay').style.display === 'flex') {
+            closeFullscreenEditor();
+          }
+          if (document.getElementById('emojiPicker').style.display === 'block') {
+            toggleEmojiPicker();
+          }
+        }
+      });
+    }
+
+    async function logout() {
+      try {
+        const { error } = await supabaseClient.auth.signOut();
+        if (!error) {
+          showToast('success', 'Goodbye!', 'See you Soon !☹️');
+          setTimeout(() => {
+            window.location.href = "index.html";
+          }, 1000);
+        }
+      } catch (err) {
+        console.error('Error during logout:', err);
+        showToast('error', 'Logout Error', 'Failed to logout');
+      }
+    }
+
+    // Setup online presence tracking
+    function setupPresenceTracking() {
+      presenceChannel = supabaseClient.channel('online-users', {
+        config: {
+          presence: {
+            key: currentUser.id,
+          },
+        },
+      });
+
+      presenceChannel.on('presence', { event: 'sync' }, () => {
+        const newState = presenceChannel.presenceState();
+        onlineUsers.clear();
+        
+        Object.keys(newState).forEach(userId => {
+          onlineUsers.add(userId);
+        });
+        
+        updateOnlineMembers();
+      });
+
+      presenceChannel.on('presence', { event: 'join' }, ({ key, newPresences }) => {
+        onlineUsers.add(key);
+        updateOnlineMembers();
+      });
+
+      presenceChannel.on('presence', { event: 'leave' }, ({ key, leftPresences }) => {
+        onlineUsers.delete(key);
+        updateOnlineMembers();
+      });
+
+      presenceChannel.subscribe(async (status) => {
+        if (status === 'SUBSCRIBED') {
+          await presenceChannel.track({
+            user_id: currentUser.id,
+            username: getUserDisplayName(currentUser, currentProfile),
+            role: currentProfile?.role || 'user',
+            online_at: new Date().toISOString(),
+          });
+        }
+      });
     }
 
     // Chat functionality
@@ -2655,45 +1799,94 @@
       const chatInput = document.getElementById('chatInput');
       const codeInput = document.getElementById('codeInput');
       const codeToggle = document.getElementById('codeToggle');
-      const languageSelect = document.getElementById('languageSelect');
       
-      let message = '';
-      let isCode = codeToggle.classList.contains('active');
-      
-      if (isCode) {
-        message = codeInput.value.trim();
-        const language = languageSelect.value;
-        if (!message) return;
-        
-        // Format as code block
-        message = `\`\`\`${language}\n${message}\n\`\`\``;
+      let messageText;
+      if (codeToggle.classList.contains('active')) {
+        messageText = codeInput.value.trim();
+        if (messageText) {
+          const languageSelect = document.getElementById('languageSelect');
+          const language = languageSelect ? languageSelect.value : 'javascript';
+          messageText = `\`\`\`${language}\n${messageText}\n\`\`\``;
+        }
       } else {
-        message = chatInput.value.trim();
-        if (!message) return;
+        messageText = chatInput.value.trim();
+      }
+
+      if (!messageText) return;
+
+      // Clear input immediately
+      if (codeToggle.classList.contains('active')) {
+        codeInput.value = '';
+      } else {
+        chatInput.value = '';
       }
 
       try {
-        const { data: { user } } = await supabaseClient.auth.getUser();
-        
-        // Insert message to database
+        // Send message to database
         const { error } = await supabaseClient
           .from('messages')
           .insert({
-            user_id: user.id,
-            content: message
+            user_id: currentUser.id,
+            content: messageText,
+            sent_at: new Date().toISOString()
           });
 
         if (error) {
-          console.error('Error sending message:', error);
-          return;
+          throw error;
         }
 
-        // Clear inputs
-        chatInput.value = '';
-        codeInput.value = '';
-      } catch (err) {
-        console.error('Error in sendMessage:', err);
+      } catch (error) {
+        console.error('Error sending message:', error);
+        showToast('error', 'Send Failed', 'Could not send message');
+        // Restore message to input on error
+        if (codeToggle.classList.contains('active')) {
+          codeInput.value = messageText.replace(/``````$/g, '');
+        } else {
+          chatInput.value = messageText;
+        }
       }
+    }
+
+    // Show delete confirmation dialog
+    function showDeleteConfirmation(messageId) {
+      messageToDelete = messageId;
+      document.getElementById('confirmDialog').style.display = 'flex';
+    }
+
+    // Hide confirmation dialog
+    function hideConfirmDialog() {
+      document.getElementById('confirmDialog').style.display = 'none';
+      messageToDelete = null;
+    }
+
+    // Confirm delete
+    async function confirmDelete() {
+      if (!messageToDelete) return;
+
+      try {
+        const { error } = await supabaseClient
+          .from('messages')
+          .delete()
+          .eq('id', messageToDelete)
+          .eq('user_id', currentUser.id);
+
+        if (error) {
+          throw error;
+        }
+
+        showToast('success', 'Message Deleted', 'Message has been removed');
+        
+      } catch (error) {
+        console.error('Error deleting message:', error);
+        showToast('error', 'Delete Failed', 'Could not delete message');
+      }
+
+      hideConfirmDialog();
+    }
+
+    // Delete message function
+    function deleteMessage(messageId) {
+      showDeleteConfirmation(messageId);
     }
 
     // Toggle code mode
@@ -2701,40 +1894,108 @@
       const chatInput = document.getElementById('chatInput');
       const codeInput = document.getElementById('codeInput');
       const codeToggle = document.getElementById('codeToggle');
-      const fullscreenToggle = document.getElementById('fullscreenToggle');
       const languageSelect = document.getElementById('languageSelect');
+      const fullscreenToggle = document.getElementById('fullscreenToggle');
       
       if (codeToggle.classList.contains('active')) {
         // Switch to normal mode
         codeToggle.classList.remove('active');
         codeToggle.innerHTML = '<i class="fas fa-code"></i>';
-        fullscreenToggle.style.display = 'none';
         chatInput.style.display = 'block';
         codeInput.style.display = 'none';
         languageSelect.style.display = 'none';
+        fullscreenToggle.style.display = 'none';
         chatInput.focus();
       } else {
         // Switch to code mode
         codeToggle.classList.add('active');
         codeToggle.innerHTML = '<i class="fas fa-comment"></i>';
-        fullscreenToggle.style.display = 'block';
         chatInput.style.display = 'none';
         codeInput.style.display = 'block';
         languageSelect.style.display = 'block';
+        fullscreenToggle.style.display = 'block';
         codeInput.focus();
       }
     }
 
-    // Emoji data
+    // Fullscreen code editor
+    function openFullscreenEditor() {
+      const fullscreenOverlay = document.getElementById('fullscreenOverlay');
+      const fullscreenTextarea = document.getElementById('fullscreenTextarea');
+      const codeInput = document.getElementById('codeInput');
+      const languageSelect = document.getElementById('languageSelect');
+      const fullscreenLanguageSelect = document.getElementById('fullscreenLanguageSelect');
+      
+      // Copy current code to fullscreen editor
+      fullscreenTextarea.value = codeInput.value;
+      fullscreenLanguageSelect.value = languageSelect.value;
+      
+      fullscreenOverlay.style.display = 'flex';
+      fullscreenTextarea.focus();
+    }
+
+    function closeFullscreenEditor() {
+      const fullscreenOverlay = document.getElementById('fullscreenOverlay');
+      const fullscreenTextarea = document.getElementById('fullscreenTextarea');
+      const codeInput = document.getElementById('codeInput');
+      const languageSelect = document.getElementById('languageSelect');
+      const fullscreenLanguageSelect = document.getElementById('fullscreenLanguageSelect');
+      
+      // Copy fullscreen content back to normal editor
+      codeInput.value = fullscreenTextarea.value;
+      languageSelect.value = fullscreenLanguageSelect.value;
+      
+      fullscreenOverlay.style.display = 'none';
+      codeInput.focus();
+    }
+
+    function clearFullscreenEditor() {
+      document.getElementById('fullscreenTextarea').value = '';
+    }
+
+    async function sendFullscreenCode() {
+      const fullscreenTextarea = document.getElementById('fullscreenTextarea');
+      const fullscreenLanguageSelect = document.getElementById('fullscreenLanguageSelect');
+      
+      const code = fullscreenTextarea.value.trim();
+      if (!code) return;
+
+      const language = fullscreenLanguageSelect.value;
+      const messageText = `\`\`\`${language}\n${code}\n\`\`\``;
+
+      try {
+        const { error } = await supabaseClient
+          .from('messages')
+          .insert({
+            user_id: currentUser.id,
+            content: messageText,
+            sent_at: new Date().toISOString()
+          });
+
+        if (error) {
+          throw error;
+        }
+
+        // Clear and close fullscreen editor
+        fullscreenTextarea.value = '';
+        closeFullscreenEditor();
+
+      } catch (error) {
+        console.error('Error sending code:', error);
+        showToast('error', 'Send Failed', 'Could not send code');
+      }
+    }
+
+    // Emoji data and functions
     const emojiData = {
       recent: ['😊', '👍', '❤️', '😂', '🎉', '🔥', '💯', '👏', '🙏', '✨'],
       smileys: ['😀', '😃', '😄', '😁', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '🥳', '😏', '😒', '😞', '😔', '😟', '😕', '🙁', '☹️', '😣', '😖', '😫', '😩', '🥺', '😢', '😭', '😤', '😠', '😡', '🤬', '🤯', '😳', '🥵', '🥶', '😱', '😨', '😰', '😥', '😓', '🤗', '🤔', '🤭', '🤫', '🤥', '😶', '😐', '😑', '😯', '😦', '😧', '😮', '😲', '🥱', '😴', '🤤', '😪', '😵', '🤐', '🥴', '🤢', '🤮', '🤧', '😷', '🤒', '🤕', '🤑', '🤠'],
       animals: ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼', '🐨', '🐯', '🦁', '🐮', '🐷', '🐸', '🐵', '🐔', '🐧', '🐦', '🐤', '🐣', '🦆', '🦅', '🦉', '🦇', '🐺', '🐗', '🐴', '🦄', '🐝', '🐛', '🦋', '🐌', '🐞', '🐜', '🦟', '🦗', '🕷️', '🕸️', '🦂', '🐢', '🐍', '🦎', '🦖', '🦕', '🐙', '🦑', '🦐', '🦞', '🦀', '🐡', '🐠', '🐟', '🐬', '🐳', '🐋', '🦈', '🐊', '🐅', '🐆', '🦓', '🦍', '🦧', '🐘', '🦛', '🦏', '🐪', '🐫', '🦒', '🦘', '🐃', '🐂', '🐄', '🐎', '🐖', '🐏', '🐑', '🦙', '🐐', '🦌', '🐕', '🐩', '🦮', '🐕‍🦺', '🐈', '🐈‍⬛', '🐓', '🦃', '🦚', '🦜', '🦢', '🦩', '🕊️', '🐇', '🦝', '🦨', '🦡', '🦫', '🦦', '🦥', '🐁', '🐀', '🐿️', '🦔'],
       food: ['🍎', '🍐', '🍊', '🍋', '🍌', '🍉', '🍇', '🍓', '🫐', '🍈', '🍒', '🍑', '🥭', '🍍', '🥥', '🥝', '🍅', '🥑', '🥦', '🥬', '🥒', '🌶️', '🫑', '🌽', '🥕', '🫒', '🧄', '🧅', '🥔', '🍠', '🥐', '🥯', '🍞', '🥖', '🥨', '🧀', '🥚', '🍳', '🧈', '🥞', '🧇', '🥓', '🥩', '🍗', '🍖', '🦴', '🌭', '🍔', '🍟', '🍕', '🥪', '🥙', '🧆', '🌮', '🌯', '🫔', '🥗', '🥘', '🫕', '🥫', '🍝', '🍜', '🍲', '🍛', '🍣', '🍱', '🥟', '🦪', '🍤', '🍙', '🍚', '🍘', '🍥', '🥠', '🥮', '🍢', '🍡', '🍧', '🍨', '🍦', '🥧', '🧁', '🍰', '🎂', '🍮', '🍭', '🍬', '🍫', '🍿', '🍪', '🌰', '🥜', '🍯', '🥛', '🍼', '🫖', '☕', '🍵', '🧃', '🥤', '🧋', '🍶', '🍺', '🍷', '🥂', '🥃', '🍸', '🍹', '🧉', '🍾', '🥄', '🍴', '🍽️', '🥣', '🥡', '🥢', '🧂'],
-      activities: ['⚽', '🏀', '🏈', '⚾', '🥎', '🎾', '🏐', '🏉', '🥏', '🎱', '🪀', '🏓', '🏸', '🏒', '🏑', '🥍', '🏏', '🥅', '⛳', '🪁', '🏹', '🎣', '🤿', '🥊', '🥋', '🎽', '🛹', '🛷', '⛸️', '🥌', '🎿', '⛷️', '🏂', '🪂', '🏋️‍♀️', '🏋️', '🏋️‍♂️', '🤼‍♀️', '🤼', '🤼‍♂️', '🤸‍♀️', '🤸', '🤸‍♂️', '⛹️‍♀️', '⛹️', '⛹️‍♂️', '🤺', '🤾‍♀️', '🤾', '🤾‍♂️', '🏊‍♀️', '🏊', '🏊‍♂️', '🚣‍♀️', '🚣', '🚣‍♂️', '🏄‍♀️', '🏄', '🏄‍♂️', '🚴‍♀️', '🚴', '🚴‍♂️', '🚵‍♀️', '🚵', '🚵‍♂️', '🤽‍♀️', '🤽', '🤽‍♂️', '🏇', '🧘‍♀️', '🧘', '🧘‍♂️', '🏆', '🥇', '🥈', '🥉', '🏅', '🎖️', '🏵️', '🎗️', '🎫', '🎟️', '🎪', '🤹‍♀️', '🤹', '🤹‍♂️', '🎭', '🩰', '🎨', '🎬', '🎤', '🎧', '🎼', '🎹', '🥁', '🪘', '🎷', '🎺', '🎸', '🪕', '🎻', '🎲', '♟️', '🎯', '🎳', '🎮', '🎰', '🧩', '🎨', '📱', '📲', '💻', '⌨️', '🖥️', '🖨️', '🖱️', '🖲️', '💽', '💾', '💿', '📀', '🧮', '🎥', '📺', '📻', '📷', '📸', '📹', '📼', '🔋', '🔌', '💡', '🔦', '🕯️', '🪔', '🧯', '🛢️', '💸', '💵', '💴', '💶', '💷', '🪙', '💰', '💳', '💎', '⚖️', '🪜', '🧰', '🪛', '🔧', '🔨', '⚒️', '🛠️', '⛏️', '🪚', '🔩', '⚙️', '🪤', '🧱', '⛓️', '🪝', '🧲', '🔫', '💣', '🪃', '🏹', '🛡️', '🪄', '🔮', '🧿', '🪬', '📿', '🧸', '🪆', '🪅', '🪩', '🪞', '🪟', '🪠', '🪡', '🪢', '🧶', '🪣', '🪤', '🪥', '🪦', '🪧', '⚰️', '🪨', '🪩', '🪪', '🪫', '🪬', '🪭', '🪮', '🪯', '🪰', '🪱', '🪲', '🪳', '🪴', '🪵', '🪶', '🪷', '🪸', '🪹', '🪺', '🪻', '🪼', '🪽', '🪾', '🪿', '🫀', '🫁', '🧠', '🫂', '🫃', '🫄', '🫅', '🫆', '🫇', '🫈', '🫉', '🫊', '🫋', '🫌', '🫍', '🫎', '🫏', '🫐', '🫑', '🫒', '🫓', '🫔', '🫕', '🫖'],
-      travel: ['✈️', '🛩️', '🛫', '🛬', '🪂', '💺', '🚁', '🚟', '🚠', '🚡', '🛰️', '🚀', '🛸', '🛎️', '🧳', '⌛', '⏰', '⏱️', '⏲️', '🕰️', '🕛', '🕧', '🕐', '🕜', '🕑', '🕝', '🕒', '🕞', '🕓', '🕟', '🕔', '🕠', '🕕', '🕡', '🕖', '🕢', '🕗', '🕣', '🕘', '🕤', '🕙', '🕥', '🕚', '🕦', '🕙', '🕥', '🕚', '🕦', '🕛', '🕧', '🌍', '🌎', '🌏', '🌐', '🗺️', '🗾', '🧭', '🏔️', '⛰️', '🌋', '🗻', '🏕️', '🏖️', '🏜️', '🏝️', '🏞️', '🏟️', '🏛️', '🏗️', '🧱', '🪨', '🪵', '🛖', '🏘️', '🏚️', '🏠', '🏡', '🏢', '🏣', '🏤', '🏥', '🏦', '🏨', '🏩', '🏪', '🏫', '🏬', '🏭', '🏯', '🏰', '💒', '🗼', '🗽', '⛪', '🕌', '🛕', '🕍', '⛩️', '🕋', '⛲', '⛺', '🌁', '🌃', '🏙️', '🌄', '🌅', '🌆', '🌇', '🌉', '♨️', '🎠', '🎡', '🎢', '💈', '🎪', '🚂', '🚃', '🚄', '🚅', '🚆', '🚇', '🚈', '🚉', '🚊', '🚝', '🚞', '🚋', '🚌', '🚍', '🚎', '🚐', '🚑', '🚒', '🚓', '🚔', '🚕', '🚖', '🚗', '🚘', '🚙', '🛻', '🚚', '🚛', '🚜', '🏎️', '🏍️', '🛵', '🦽', '🦼', '🛴', '🚲', '🛶', '🛥️', '🚁', '🛩️', '✈️', '🛫', '🛬', '🪂', '💺', '🚀', '🛸', '🚁', '🛩️', '✈️', '🛫', '🛬', '🪂', '💺', '🚀', '🛸'],
-      objects: ['💡', '🔦', '🕯️', '🪔', '🧯', '🛢️', '💸', '💵', '💴', '💶', '💷', '🪙', '💰', '💳', '💎', '⚖️', '🪜', '🧰', '🪛', '🔧', '🔨', '⚒️', '🛠️', '⛏️', '🪚', '🔩', '⚙️', '🪤', '🧱', '⛓️', '🪝', '🧲', '🔫', '💣', '🪃', '🏹', '🛡️', '🪄', '🔮', '🧿', '🪬', '📿', '🧸', '🪆', '🪅', '🪩', '🪞', '🪟', '🪠', '🪡', '🪢', '🧶', '🪣', '🪤', '🪥', '🪦', '🪧', '⚰️', '🪨', '🪩', '🪪', '🪫', '🪬', '🪭', '🪮', '🪯', '🪰', '🪱', '🪲', '🪳', '🪴', '🪵', '🪶', '🪷', '🪸', '🪹', '🪺', '🪻', '🪼', '🪽', '🪾', '🪿', '🫀', '🫁', '🧠', '🫂', '🫃', '🫄', '🫅', '🫆', '🫇', '🫈', '🫉', '🫊', '🫋', '🫌', '🫍', '🫎', '🫏', '🫐', '🫑', '🫒', '🫓', '🫔', '🫕', '🫖'],
-      symbols: ['❤️', '🧡', '💛', '💚', '💙', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '💕', '💞', '💓', '💗', '💖', '💘', '💝', '💟', '☮️', '✝️', '☪️', '🕉️', '☸️', '✡️', '🔯', '🕎', '☯️', '☦️', '🛐', '⛎', '♈', '♉', '♊', '♋', '♌', '♍', '♎', '♏', '♐', '♑', '♒', '♓', '🆔', '⚛️', '🉑', '☢️', '☣️', '📴', '📳', '🈶', '🈚', '🈸', '🈺', '🈷️', '✴️', '🆚', '💮', '🉐', '㊙️', '㊗️', '🈴', '🈵', '🈹', '🈲', '🅰️', '🅱️', '🆎', '🆑', '🅾️', '🆘', '❌', '⭕', '🛑', '⛔', '📛', '🚫', '💯', '💢', '♨️', '🚷', '🚯', '🚳', '🚱', '🔞', '📵', '🚭', '❗', '❕', '❓', '❔', '‼️', '⁉️', '🔅', '🔆', '〽️', '⚠️', '🚸', '🔱', '⚜️', '🔰', '♻️', '✅', '🈯', '💹', '❇️', '✳️', '❎', '🌐', '💠', 'Ⓜ️', '🌀', '💤', '🏧', '🚾', '♿', '🅿️', '🛗', '🛂', '🛃', '🛄', '🛅', '🚹', '🚺', '🚼', '🚻', '🚮', '🎦', '📶', '🈁', '🔣', 'ℹ️', '🔤', '🔡', '🔠', '🆖', '🆗', '🆙', '🆒', '🆕', '🆓', '0️⃣', '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟', '🔢', '#️⃣', '*️⃣', '⏏️', '▶️', '⏸️', '⏯️', '⏹️', '⏺️', '⏭️', '⏮️', '⏩', '⏪', '⏫', '⏬', '◀️', '🔼', '🔽', '➡️', '⬅️', '⬆️', '⬇️', '↗️', '↘️', '↙️', '↖️', '↕️', '↔️', '↪️', '↩️', '⤴️', '⤵️', '🔀', '🔁', '🔂', '🔄', '🔃', '🎵', '🎶', '➕', '➖', '➗', '✖️', '♾️', '💲', '💱', '™️', '©️', '®️', '👁️‍🗨️', '🔚', '🔙', '🔛', '🔝', '🔜', '〰️', '➰', '➿', '✔️', '☑️', '🔘', '🔴', '🟠', '🟡', '🟢', '🔵', '🟣', '⚫', '⚪', '🟤', '🔺', '🔻', '🔸', '🔹', '🔶', '🔷', '🔳', '🔲', '▪️', '▫️', '◾', '◽', '◼️', '◻️', '🟥', '🟧', '🟨', '🟩', '🟦', '🟪', '⬛', '⬜', '🟫', '🔈', '🔇', '🔉', '🔊', '🔔', '🔕', '📣', '📢', '💬', '💭', '🗯️', '♠️', '♣️', '♥️', '♦️', '🃏', '🎴', '🀄', '🕐', '🕑', '🕒', '🕓', '🕔', '🕕', '🕖', '🕗', '🕘', '🕙', '🕚', '🕛', '🕜', '🕝', '🕞', '🕟', '🕠', '🕡', '🕢', '🕣', '🕤', '🕥', '🕦', '🕧'],
+      activities: ['⚽', '🏀', '🏈', '⚾', '🥎', '🎾', '🏐', '🏉', '🥏', '🎱', '🪀', '🏓', '🏸', '🏒', '🏑', '🥍', '🏏', '🥅', '⛳', '🪁', '🏹', '🎣', '🤿', '🥊', '🥋', '🎽', '🛹', '🛷', '⛸️', '🥌', '🎿', '⛷️', '🏂', '🪂', '🏋️‍♀️', '🏋️', '🏋️‍♂️', '🤼‍♀️', '🤼', '🤼‍♂️', '🤸‍♀️', '🤸', '🤸‍♂️', '⛹️‍♀️', '⛹️', '⛹️‍♂️', '🤺', '🤾‍♀️', '🤾', '🤾‍♂️', '🏊‍♀️', '🏊', '🏊‍♂️', '🚣‍♀️', '🚣', '🚣‍♂️', '🏄‍♀️', '🏄', '🏄‍♂️', '🚴‍♀️', '🚴', '🚴‍♂️', '🚵‍♀️', '🚵', '🚵‍♂️', '🤽‍♀️', '🤽', '🤽‍♂️', '🏇', '🧘‍♀️', '🧘', '🧘‍♂️', '🏆', '🥇', '🥈', '🥉', '🏅', '🎖️', '🏵️', '🎗️', '🎫', '🎟️', '🎪', '🤹‍♀️', '🤹', '🤹‍♂️', '🎭', '🩰', '🎨', '🎬', '🎤', '🎧', '🎼', '🎹', '🥁', '🪘', '🎷', '🎺', '🎸', '🪕', '🎻', '🎲', '♟️', '🎯', '🎳', '🎮', '🎰', '🧩'],
+      travel: ['✈️', '🛩️', '🛫', '🛬', '🪂', '💺', '🚁', '🚟', '🚠', '🚡', '🛰️', '🚀', '🛸', '🛎️', '🧳', '⌛', '⏰', '⏱️', '⏲️', '🕰️', '🌍', '🌎', '🌏', '🌐', '🗺️', '🗾', '🧭', '🏔️', '⛰️', '🌋', '🗻', '🏕️', '🏖️', '🏜️', '🏝️', '🏞️', '🏟️', '🏛️', '🏗️', '🧱', '🪨', '🪵', '🛖', '🏘️', '🏚️', '🏠', '🏡', '🏢', '🏣', '🏤', '🏥', '🏦', '🏨', '🏩', '🏪', '🏫', '🏬', '🏭', '🏯', '🏰', '💒', '🗼', '🗽', '⛪', '🕌', '🛕', '🕍', '⛩️', '🕋', '⛲', '⛺', '🌁', '🌃', '🏙️', '🌄', '🌅', '🌆', '🌇', '🌉', '♨️', '🎠', '🎡', '🎢', '💈', '🎪', '🚂', '🚃', '🚄', '🚅', '🚆', '🚇', '🚈', '🚉', '🚊', '🚝', '🚞', '🚋', '🚌', '🚍', '🚎', '🚐', '🚑', '🚒', '🚓', '🚔', '🚕', '🚖', '🚗', '🚘', '🚙', '🛻', '🚚', '🚛', '🚜', '🏎️', '🏍️', '🛵', '🦽', '🦼', '🛴', '🚲', '🛶', '🛥️', '🚁', '🛩️', '✈️', '🛫', '🛬', '🪂', '💺', '🚀', '🛸'],
+      objects: ['💡', '🔦', '🕯️', '🪔', '🧯', '🛢️', '💸', '💵', '💴', '💶', '💷', '🪙', '💰', '💳', '💎', '⚖️', '🪜', '🧰', '🪛', '🔧', '🔨', '⚒️', '🛠️', '⛏️', '🪚', '🔩', '⚙️', '🪤', '🧱', '⛓️', '🪝', '🧲', '🔫', '💣', '🪃', '🏹', '🛡️', '🪄', '🔮', '🧿', '🪬', '📿', '🧸', '🪆', '🪅', '🪩', '🪞', '🪟', '🪠', '🪡', '🪢', '🧶', '🪣', '🪤', '🪥', '🪦', '🪧', '⚰️', '🪨', '📱', '📲', '💻', '⌨️', '🖥️', '🖨️', '🖱️', '🖲️', '💽', '💾', '💿', '📀', '🧮', '🎥', '📺', '📻', '📷', '📸', '📹', '📼', '🔋', '🔌', '💡', '🔦', '🕯️', '🪔', '🧯', '🛢️'],
+      symbols: ['❤️', '🧡', '💛', '💚', '💙', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '💕', '💞', '💓', '💗', '💖', '💘', '💝', '💟', '☮️', '✝️', '☪️', '🕉️', '☸️', '✡️', '🔯', '🕎', '☯️', '☦️', '🛐', '⛎', '♈', '♉', '♊', '♋', '♌', '♍', '♎', '♏', '♐', '♑', '♒', '♓', '🆔', '⚛️', '🉑', '☢️', '☣️', '📴', '📳', '🈶', '🈚', '🈸', '🈺', '🈷️', '✴️', '🆚', '💮', '🉐', '㊙️', '㊗️', '🈴', '🈵', '🈹', '🈲', '🅰️', '🅱️', '🆎', '🆑', '🅾️', '🆘', '❌', '⭕', '🛑', '⛔', '📛', '🚫', '💯', '💢', '♨️', '🚷', '🚯', '🚳', '🚱', '🔞', '📵', '🚭', '❗', '❕', '❓', '❔', '‼️', '⁉️', '🔅', '🔆', '〽️', '⚠️', '🚸', '🔱', '⚜️', '🔰', '♻️', '✅', '🈯', '💹', '❇️', '✳️', '❎', '🌐', '💠', 'Ⓜ️', '🌀', '💤', '🏧', '🚾', '♿', '🅿️', '🛗', '🛂', '🛃', '🛄', '🛅', '🚹', '🚺', '🚼', '🚻', '🚮', '🎦', '📶', '🈁', '🔣', 'ℹ️', '🔤', '🔡', '🔠', '🆖', '🆗', '🆙', '🆒', '🆕', '🆓'],
       flags: ['🏁', '🚩', '🎌', '🏴', '🏳️', '🏳️‍🌈', '🏴‍☠️', '🇦🇨', '🇦🇩', '🇦🇫', '🇦🇬', '🇦🇷', '🇦🇲', '🇦🇼', '🇦🇺', '🇦🇹', '🇦🇿', '🇧🇸', '🇧🇭', '🇧🇩', '🇧🇯', '🇧🇲', '🇧🇳', '🇧🇴', '🇧🇶', '🇧🇷', '🇧🇸', '🇧🇹', '🇧🇻', '🇧🇼', '🇧🇾', '🇧🇿', '🇨🇦', '🇨🇨', '🇨🇩', '🇨🇫', '🇨🇬', '🇨🇭', '🇨🇮', '🇨🇰', '🇨🇱', '🇨🇲', '🇨🇳', '🇨🇴', '🇨🇵', '🇨🇷', '🇨🇺', '🇨🇻', '🇨🇼', '🇨🇽', '🇨🇾', '🇨🇿', '🇩🇪', '🇩🇯', '🇩🇰', '🇩🇲', '🇩🇴', '🇩🇿', '🇪🇨', '🇪🇪', '🇪🇬', '🇪🇭', '🇪🇷', '🇪🇸', '🇪🇹', '🇪🇺', '🇫🇮', '🇫🇯', '🇫🇰', '🇫🇲', '🇫🇴', '🇫🇷', '🇬🇦', '🇬🇧', '🇬🇩', '🇬🇪', '🇬🇫', '🇬🇬', '🇬🇭', '🇬🇮', '🇬🇱', '🇬🇲', '🇬🇳', '🇬🇵', '🇬🇶', '🇬🇷', '🇬🇸', '🇬🇹', '🇬🇺', '🇬🇼', '🇬🇾', '🇭🇰', '🇭🇲', '🇭🇳', '🇭🇷', '🇭🇹', '🇭🇺', '🇮🇩', '🇮🇪', '🇮🇱', '🇮🇲', '🇮🇳', '🇮🇴', '🇮🇶', '🇮🇷', '🇮🇸', '🇮🇹', '🇯🇪', '🇯🇲', '🇯🇴', '🇯🇵', '🇰🇪', '🇰🇬', '🇰🇭', '🇰🇮', '🇰🇲', '🇰🇳', '🇰🇵', '🇰🇷', '🇰🇼', '🇰🇾', '🇰🇿', '🇱🇦', '🇱🇧', '🇱🇨', '🇱🇮', '🇱🇰', '🇱🇷', '🇱🇸', '🇱🇹', '🇱🇺', '🇱🇻', '🇱🇾', '🇲🇦', '🇲🇨', '🇲🇩', '🇲🇪', '🇲🇫', '🇲🇬', '🇲🇭', '🇲🇰', '🇲🇱', '🇲🇲', '🇲🇳', '🇲🇴', '🇲🇵', '🇲🇶', '🇲🇷', '🇲🇸', '🇲🇹', '🇲🇺', '🇲🇻', '🇲🇼', '🇲🇽', '🇲🇾', '🇲🇿', '🇳🇦', '🇳🇨', '🇳🇪', '🇳🇫', '🇳🇬', '🇳🇮', '🇳🇱', '🇳🇴', '🇳🇵', '🇳🇷', '🇳🇺', '🇳🇿', '🇴🇲', '🇵🇦', '🇵🇪', '🇵🇫', '🇵🇬', '🇵🇭', '🇵🇰', '🇵🇱', '🇵🇲', '🇵🇳', '🇵🇷', '🇵🇸', '🇵🇹', '🇵🇼', '🇵🇾', '🇶🇦', '🇷🇪', '🇷🇴', '🇷🇸', '🇷🇺', '🇷🇼', '🇸🇦', '🇸🇧', '🇸🇨', '🇸🇩', '🇸🇪', '🇸🇬', '🇸🇭', '🇸🇮', '🇸🇯', '🇸🇰', '🇸🇱', '🇸🇲', '🇸🇳', '🇸🇴', '🇸🇷', '🇸🇸', '🇸🇹', '🇸🇻', '🇸🇽', '🇸🇾', '🇸🇿', '🇹🇦', '🇹🇨', '🇹🇩', '🇹🇯', '🇹🇰', '🇹🇱', '🇹🇲', '🇹🇳', '🇹🇴', '🇹🇷', '🇹🇹', '🇹🇻', '🇹🇼', '🇹🇿', '🇺🇦', '🇺🇬', '🇺🇲', '🇺🇳', '🇺🇸', '🇺🇾', '🇺🇿', '🇻🇦', '🇻🇨', '🇻🇪', '🇻🇬', '🇻🇮', '🇻🇳', '🇻🇺', '🇼🇫', '🇼🇸', '🇾🇪', '🇾🇹', '🇿🇦', '🇿🇲', '🇿🇼']
     };
 
@@ -2742,8 +2003,6 @@
     function toggleEmojiPicker() {
       const emojiPicker = document.getElementById('emojiPicker');
       const emojiToggle = document.getElementById('emojiToggle');
-      const chatInput = document.getElementById('chatInput');
-      const codeInput = document.getElementById('codeInput');
       
       if (emojiPicker.style.display === 'none') {
         emojiPicker.style.display = 'block';
@@ -2753,7 +2012,7 @@
       } else {
         emojiPicker.style.display = 'none';
         emojiToggle.classList.remove('active');
-        chatInput.focus();
+        document.getElementById('chatInput').focus();
       }
     }
 
@@ -2797,243 +2056,122 @@
       }
     }
 
-    // Toggle fullscreen code mode
-    function toggleFullscreenCode() {
-      const fullscreenCode = document.getElementById('fullscreenCode');
-      const fullscreenInput = document.getElementById('fullscreenCodeInput');
-      const fullscreenLanguage = document.getElementById('fullscreenLanguageSelect');
-      const codeInput = document.getElementById('codeInput');
-      const languageSelect = document.getElementById('languageSelect');
-      
-      // Copy current code and language to fullscreen
-      fullscreenInput.value = codeInput.value;
-      fullscreenLanguage.value = languageSelect.value;
-      
-      // Show fullscreen
-      fullscreenCode.classList.add('active');
-      fullscreenInput.focus();
-      
-      // Update character and line count
-      updateFullscreenStats();
-    }
-
-    // Exit fullscreen code mode
-    function exitFullscreenCode() {
-      const fullscreenCode = document.getElementById('fullscreenCode');
-      const fullscreenInput = document.getElementById('fullscreenCodeInput');
-      const codeInput = document.getElementById('codeInput');
-      
-      // Copy code back to regular input
-      codeInput.value = fullscreenInput.value;
-      
-      // Hide fullscreen
-      fullscreenCode.classList.remove('active');
-    }
-
-    // Send code from fullscreen
-    function sendFullscreenCode() {
-      const fullscreenInput = document.getElementById('fullscreenCodeInput');
-      const fullscreenLanguage = document.getElementById('fullscreenLanguageSelect');
-      const codeInput = document.getElementById('codeInput');
-      const languageSelect = document.getElementById('languageSelect');
-      
-      // Copy values to regular inputs
-      codeInput.value = fullscreenInput.value;
-      languageSelect.value = fullscreenLanguage.value;
-      
-      // Send the message
-      sendMessage();
-      
-      // Exit fullscreen
-      exitFullscreenCode();
-    }
-
-    // Clear fullscreen code
-    function clearFullscreenCode() {
-      if (confirm('Are you sure you want to clear all code?')) {
-        document.getElementById('fullscreenCodeInput').value = '';
-        updateFullscreenStats();
+    // Search emojis
+    function searchEmojis(query) {
+      if (!query) {
+        loadEmojis('recent');
+        return;
       }
-    }
 
-    // Update fullscreen statistics
-    function updateFullscreenStats() {
-      const textarea = document.getElementById('fullscreenCodeInput');
-      const charCount = document.getElementById('fullscreenCharCount');
-      const lineCount = document.getElementById('fullscreenLineCount');
-      
-      const text = textarea.value;
-      const chars = text.length;
-      const lines = text.split('\n').length;
-      
-      charCount.textContent = `${chars} characters`;
-      lineCount.textContent = `${lines} line${lines !== 1 ? 's' : ''}`;
-    }
+      const emojiGrid = document.getElementById('emojiGrid');
+      const allEmojis = Object.values(emojiData).flat();
+      const filteredEmojis = allEmojis.filter(emoji => {
+        // Simple emoji search - you could enhance this with emoji names
+        return true; // For now, show all emojis
+      }).slice(0, 64); // Limit results
 
-    // Copy code to clipboard
-    function copyCode(codeElement) {
-      const text = codeElement.textContent;
-      navigator.clipboard.writeText(text).then(() => {
-        const copyBtn = codeElement.parentElement.querySelector('.code-copy');
-        const originalText = copyBtn.innerHTML;
-        copyBtn.innerHTML = '<i class="fas fa-check"></i>';
-        copyBtn.style.color = 'var(--success)';
-        
-        setTimeout(() => {
-          copyBtn.innerHTML = originalText;
-          copyBtn.style.color = 'var(--gray)';
-        }, 2000);
-      }).catch(err => {
-        console.error('Failed to copy code:', err);
+      emojiGrid.innerHTML = '';
+      filteredEmojis.forEach(emoji => {
+        const button = document.createElement('button');
+        button.className = 'emoji-item';
+        button.textContent = emoji;
+        button.onclick = () => insertEmoji(emoji);
+        emojiGrid.appendChild(button);
       });
     }
 
-    // Real-time chat updates
+    // Real-time chat setup
     function setupRealtimeChat() {
-      const messagesContainer = document.getElementById('chatMessages');
-      
-      // Create channel with better error handling
-      const channel = supabaseClient.channel('public:messages')
-        .on(
-          'postgres_changes',
-          {
-            event: 'INSERT',
-            schema: 'public',
-            table: 'messages'
-          },
-          async (payload) => {
-            try {
-              // Get user info for the message
-              let senderName = 'Unknown';
-              let senderRole = 'user';
-              try {
-                const { data: profile } = await supabaseClient
-                  .from('profiles')
-                  .select('username, email, role')
-                  .eq('id', payload.new.user_id)
-                  .single();
-                
-                if (profile) {
-                  senderName = getUserDisplayName({ email: profile.email }, profile);
-                  senderRole = profile.role || 'user';
-                }
-              } catch (err) {
-                console.log('Could not fetch sender profile:', err);
-              }
-
-              const { data: currentUser } = await supabaseClient.auth.getUser();
-              const isCurrentUser = payload.new.user_id === currentUser.user?.id;
-              
-              const messageElement = document.createElement('div');
-              messageElement.className = isCurrentUser 
-                ? 'message message-sent fade-in' 
-                : 'message message-received fade-in';
-              messageElement.setAttribute('data-message-id', payload.new.id);
-                
-              const displayName = isCurrentUser ? getUserDisplayName(currentUser.user) : senderName;
-              const roleDisplay = getUserRoleDisplaySync(null, { role: senderRole });
-              
-              // Check if message contains code blocks
-              if (payload.new.content.includes('```')) {
-                messageElement.innerHTML = `
-                  <div class="message-sender">
-                    ${displayName} 
-                    <span class="message-role" style="color: ${roleDisplay.color}; font-size: 0.7rem; margin-left: 0.5rem;">
-                      ${roleDisplay.emoji} ${roleDisplay.role}
-                    </span>
-                  </div>
-                  <div class="message-content">
-                    ${formatCodeMessage(payload.new.content)}
-                    ${isCurrentUser || isUserAdmin ? `<button class="message-delete" onclick="deleteMessage('${payload.new.id}')" title="Delete message">
-                      <i class="fas fa-times"></i>
-                    </button>` : ''}
-                  </div>
-                  <div class="message-time">${formatTime(new Date(payload.new.sent_at))}</div>
-                `;
-              } else {
-                messageElement.innerHTML = `
-                  <div class="message-sender">
-                    ${displayName} 
-                    <span class="message-role" style="color: ${roleDisplay.color}; font-size: 0.7rem; margin-left: 0.5rem;">
-                      ${roleDisplay.emoji} ${roleDisplay.role}
-                    </span>
-                  </div>
-                  <div class="message-content">
-                    ${payload.new.content}
-                    ${isCurrentUser || isUserAdmin ? `<button class="message-delete" onclick="deleteMessage('${payload.new.id}')" title="Delete message">
-                      <i class="fas fa-times"></i>
-                    </button>` : ''}
-                  </div>
-                  <div class="message-time">${formatTime(new Date(payload.new.sent_at))}</div>
-                `;
-              }
-              
-              messagesContainer.appendChild(messageElement);
-              smoothScrollToBottom(messagesContainer);
-            } catch (err) {
-              console.error('Error handling realtime message:', err);
-            }
-          }
-        )
-        .on(
-          'postgres_changes',
-          {
-            event: 'DELETE',
-            schema: 'public',
-            table: 'messages'
-          },
-          (payload) => {
-            try {
-              console.log('DELETE event received for message:', payload.old.id);
-              // Remove deleted message from UI
-              const messageElement = document.querySelector(`[data-message-id="${payload.old.id}"]`);
-              if (messageElement) {
-                console.log('Removing message element from UI:', payload.old.id);
-                messageElement.style.opacity = '0';
-                messageElement.style.transform = 'translateX(20px)';
-                setTimeout(() => {
-                  messageElement.remove();
-                }, 300);
-              } else {
-                console.log('Message element not found in DOM for deletion:', payload.old.id);
-              }
-            } catch (err) {
-              console.error('Error handling realtime delete:', err);
-            }
-          }
-        )
-        .subscribe((status) => {
-          console.log('Realtime chat subscription status:', status);
-          
-          // Handle subscription errors
-          if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
-            console.log('Realtime subscription error, attempting to reconnect...');
-            setTimeout(() => {
-              console.log('Reconnecting to realtime...');
-              setupRealtimeChat();
-            }, 5000);
-          }
-        });
-        
-      // Store channel reference for cleanup
-      window.chatChannel = channel;
+      chatChannel = supabaseClient.channel('public:messages')
+        .on('postgres_changes', {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'messages'
+        }, async (payload) => {
+          await handleNewMessage(payload.new);
+        })
+        .on('postgres_changes', {
+          event: 'DELETE',
+          schema: 'public',
+          table: 'messages'
+        }, (payload) => {
+          handleDeletedMessage(payload.old.id);
+        })
+        .subscribe();
     }
-    
-    // Cleanup realtime connections
-    function cleanupRealtime() {
-      try {
-        if (window.chatChannel) {
-          window.chatChannel.unsubscribe();
+
+    async function handleNewMessage(message) {
+      const messagesContainer = document.getElementById('chatMessages');
+      const isCurrentUser = message.user_id === currentUser.id;
+      
+      // Get sender info
+      let senderName = 'Unknown';
+      let senderRole = 'user';
+      if (isCurrentUser) {
+        senderName = getUserDisplayName(currentUser, currentProfile);
+        senderRole = currentProfile?.role || 'user';
+      } else {
+        try {
+          const { data: profile } = await supabaseClient
+            .from('users')
+            .select('username, email, role')
+            .eq('id', message.user_id)
+            .single();
+          
+          if (profile) {
+            senderName = profile.username || profile.email.split('@')[0];
+            senderRole = profile.role || 'user';
+          }
+        } catch (err) {
+          console.log('Could not fetch sender info:', err);
         }
-        if (window.presenceChannel) {
-          window.presenceChannel.unsubscribe();
-        }
-      } catch (err) {
-        console.log('Error during cleanup:', err);
+      }
+
+      const messageElement = document.createElement('div');
+      messageElement.className = isCurrentUser ? 'message message-sent fade-in' : 'message message-received fade-in';
+      messageElement.setAttribute('data-message-id', message.id);
+      
+      const roleClass = `role-${senderRole}`;
+      const roleDisplay = getRoleEmoji(senderRole);
+      
+      messageElement.innerHTML = `
+        <div class="message-sender">
+          ${senderName}
+          <span class="user-role ${roleClass}">${roleDisplay} ${senderRole}</span>
+        </div>
+        <div class="message-content">
+          ${formatMessage(message.content)}
+          ${isCurrentUser || isUserAdmin ? `<button class="message-delete" onclick="deleteMessage('${message.id}')" title="Delete message">
+            <i class="fas fa-times"></i>
+          </button>` : ''}
+        </div>
+        <div class="message-time">${formatTime(new Date(message.sent_at))}</div>
+      `;
+      
+      messagesContainer.appendChild(messageElement);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    function handleDeletedMessage(messageId) {
+      const messageElement = document.querySelector(`[data-message-id="${messageId}"]`);
+      if (messageElement) {
+        messageElement.style.opacity = '0';
+        messageElement.style.transform = 'translateX(20px)';
+        setTimeout(() => {
+          messageElement.remove();
+        }, 300);
       }
     }
-    
 
+    function getRoleEmoji(role) {
+      const roleEmojis = {
+        admin: '👑',
+        moderator: '🛡️',
+        vip: '⭐',
+        user: '👤'
+      };
+      return roleEmojis[role] || '👤';
+    }
 
     // Load initial messages
     async function loadMessages() {
@@ -3052,126 +2190,360 @@
         const messagesContainer = document.getElementById('chatMessages');
         messagesContainer.innerHTML = '';
 
-        const { data: { user } } = await supabaseClient.auth.getUser();
+        if (!messages || messages.length === 0) {
+          messagesContainer.innerHTML = '<p style="color: var(--gray); text-align: center; padding: 2rem;">No messages yet. Be the first to say hello! 👋</p>';
+          return;
+        }
 
-        // Get all unique user IDs from messages
+        // Get all unique user IDs
         const userIds = [...new Set(messages.map(msg => msg.user_id))];
         
-        // Fetch user profiles in batch (including roles)
+        // Fetch user profiles in batch
         let userProfiles = {};
         if (userIds.length > 0) {
-          try {
-            const { data: profiles } = await supabaseClient
-              .from('profiles')
-              .select('id, username, email, role')
-              .in('id', userIds);
-            
-            if (profiles) {
-              profiles.forEach(profile => {
-                userProfiles[profile.id] = profile;
-              });
-            }
-          } catch (err) {
-            console.log('Could not fetch user profiles, using fallback');
+          const { data: profiles } = await supabaseClient
+            .from('users')
+            .select('id, username, email, role')
+            .in('id', userIds);
+          
+          if (profiles) {
+            profiles.forEach(profile => {
+              userProfiles[profile.id] = profile;
+            });
           }
         }
 
         messages.forEach(msg => {
-          const isCurrentUser = msg.user_id === user?.id;
+          const isCurrentUser = msg.user_id === currentUser.id;
           const messageElement = document.createElement('div');
           
-          messageElement.className = isCurrentUser 
-            ? 'message message-sent fade-in' 
-            : 'message message-received fade-in';
+          messageElement.className = isCurrentUser ? 'message message-sent fade-in' : 'message message-received fade-in';
           messageElement.setAttribute('data-message-id', msg.id);
-            
+          
           let senderName = 'Unknown';
           let senderRole = 'user';
           if (isCurrentUser) {
-            senderName = getUserDisplayName(user);
-            // For current user, we'll get the role from the profile we already fetched
-            const currentProfile = userProfiles[user.id];
+            senderName = getUserDisplayName(currentUser, currentProfile);
             senderRole = currentProfile?.role || 'user';
           } else {
             const profile = userProfiles[msg.user_id];
-            senderName = getUserDisplayName({ email: profile?.email }, profile);
-            senderRole = profile?.role || 'user';
+            if (profile) {
+              senderName = profile.username || profile.email.split('@')[0];
+              senderRole = profile.role || 'user';
+            }
           }
+
+          const roleClass = `role-${senderRole}`;
+          const roleDisplay = getRoleEmoji(senderRole);
           
-          const roleDisplay = getUserRoleDisplaySync(null, { role: senderRole });
-          
-          // Check if message contains code blocks
-          if (msg.content.includes('```')) {
-            messageElement.innerHTML = `
-              <div class="message-sender">
-                ${senderName} 
-                <span class="message-role" style="color: ${roleDisplay.color}; font-size: 0.7rem; margin-left: 0.5rem;">
-                  ${roleDisplay.emoji} ${roleDisplay.role}
-                </span>
-              </div>
-              <div class="message-content">
-                ${formatCodeMessage(msg.content)}
-                ${isCurrentUser || isUserAdmin ? `<button class="message-delete" onclick="deleteMessage('${msg.id}')" title="Delete message">
-                  <i class="fas fa-times"></i>
-                </button>` : ''}
-              </div>
-              <div class="message-time">${formatTime(new Date(msg.sent_at))}</div>
-            `;
-          } else {
-            messageElement.innerHTML = `
-              <div class="message-sender">
-                ${senderName} 
-                <span class="message-role" style="color: ${roleDisplay.color}; font-size: 0.7rem; margin-left: 0.5rem;">
-                  ${roleDisplay.emoji} ${roleDisplay.role}
-                </span>
-              </div>
-              <div class="message-content">
-                ${msg.content}
-                ${isCurrentUser || isUserAdmin ? `<button class="message-delete" onclick="deleteMessage('${msg.id}')" title="Delete message">
-                  <i class="fas fa-times"></i>
-                </button>` : ''}
-              </div>
-              <div class="message-time">${formatTime(new Date(msg.sent_at))}</div>
-            `;
-          }
+          messageElement.innerHTML = `
+            <div class="message-sender">
+              ${senderName}
+              <span class="user-role ${roleClass}">${roleDisplay} ${senderRole}</span>
+            </div>
+            <div class="message-content">
+              ${formatMessage(msg.content)}
+              ${isCurrentUser || isUserAdmin ? `<button class="message-delete" onclick="deleteMessage('${msg.id}')" title="Delete message">
+                <i class="fas fa-times"></i>
+              </button>` : ''}
+            </div>
+            <div class="message-time">${formatTime(new Date(msg.sent_at))}</div>
+          `;
           
           messagesContainer.appendChild(messageElement);
         });
 
-        smoothScrollToBottom(messagesContainer);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
       } catch (err) {
         console.error('Error in loadMessages:', err);
       }
     }
 
+    // File upload functionality
+    function updateFilePreview() {
+      const fileInput = document.getElementById('fileInput');
+      const filePreview = document.getElementById('filePreview');
+      const files = fileInput.files;
+      
+      if (files.length === 0) {
+        filePreview.innerHTML = '<h4><i class="fas fa-eye"></i> Selected Files</h4><div class="no-files">No files selected</div>';
+        return;
+      }
 
+      let previewHTML = '<h4><i class="fas fa-eye"></i> Selected Files</h4>';
+      
+      Array.from(files).forEach((file, index) => {
+        const isImage = file.type.startsWith('image/');
+        const fileIcon = getFileIcon(file.type);
+        
+        previewHTML += `
+          <div class="preview-item">
+            <div class="preview-icon">
+              ${isImage ? `<img src="${URL.createObjectURL(file)}" alt="${file.name}" class="preview-image">` : `<i class="fas ${fileIcon}"></i>`}
+            </div>
+            <div class="preview-info">
+              <div class="preview-name">${file.name}</div>
+              <div class="preview-size">${formatFileSize(file.size)}</div>
+            </div>
+            <button class="preview-remove" onclick="removeFileFromPreview(${index})">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        `;
+      });
+      
+      filePreview.innerHTML = previewHTML;
+    }
+
+    function removeFileFromPreview(index) {
+      const fileInput = document.getElementById('fileInput');
+      const dt = new DataTransfer();
+      const files = fileInput.files;
+      
+      Array.from(files).forEach((file, i) => {
+        if (i !== index) {
+          dt.items.add(file);
+        }
+      });
+      
+      fileInput.files = dt.files;
+      updateFilePreview();
+    }
+
+    async function uploadFile() {
+      const fileInput = document.getElementById('fileInput');
+      const files = fileInput.files;
+      
+      if (!files || files.length === 0) {
+        showToast('error', 'No Files Selected', 'Please select files to upload.');
+        return;
+      }
+
+      showToast('info', 'Uploading Files', `Uploading ${files.length} file(s)...`);
+
+      let uploadedCount = 0;
+      for (const file of files) {
+        try {
+          const fileExt = file.name.split('.').pop();
+          const fileName = `${currentUser.id}/${Date.now()}_${Math.random().toString(36).substring(2)}.${fileExt}`;
+
+          const { error: uploadError } = await supabaseClient.storage
+            .from('files')
+            .upload(fileName, file);
+
+          if (uploadError) throw uploadError;
+
+          const { error: dbError } = await supabaseClient
+            .from('files')
+            .insert({
+              user_id: currentUser.id,
+              filename: file.name,
+              filetype: file.type,
+              filepath: fileName,
+              filesize: file.size
+            });
+
+          if (dbError) throw dbError;
+          uploadedCount++;
+
+        } catch (err) {
+          console.error('Error uploading file:', err);
+        }
+      }
+
+      if (uploadedCount > 0) {
+        showToast('success', 'Upload Complete!', `Successfully uploaded ${uploadedCount} file(s)!`);
+        fileInput.value = '';
+        updateFilePreview();
+        loadFiles();
+      } else {
+        showToast('error', 'Upload Failed', 'No files were uploaded successfully.');
+      }
+    }
+
+    // Load files
+    async function loadFiles() {
+      try {
+        const { data: files, error } = await supabaseClient
+          .from('files')
+          .select('*')
+          .order('uploaded_at', { ascending: false });
+
+        if (error) {
+          console.error('Error loading files:', error);
+          return;
+        }
+
+        const fileContainer = document.getElementById('fileContainer');
+        fileContainer.innerHTML = '';
+
+        if (!files || files.length === 0) {
+          fileContainer.innerHTML = '<p style="color: var(--gray); text-align: center;">No files shared yet</p>';
+          return;
+        }
+
+        files.forEach(file => {
+          const fileItem = document.createElement('div');
+          fileItem.className = 'file-item fade-in';
+          fileItem.innerHTML = `
+            <div class="file-info">
+              <i class="fas ${getFileIcon(file.filetype)} file-icon"></i>
+              <div class="file-details">
+                <div class="file-name" title="${file.filename}">${file.filename}</div>
+                <div class="file-meta">${formatFileSize(file.filesize)}</div>
+              </div>
+            </div>
+            <div class="file-actions">
+              <button class="btn btn-outline btn-sm" onclick="downloadFile('${file.filepath}', '${file.filename}')">
+                <i class="fas fa-download"></i>
+              </button>
+              <button class="btn btn-danger btn-sm" onclick="deleteFile('${file.id}', '${file.filepath}', '${file.filename}')">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          `;
+          fileContainer.appendChild(fileItem);
+        });
+      } catch (err) {
+        console.error('Error in loadFiles:', err);
+      }
+    }
+
+    // Download file
+    async function downloadFile(filepath, filename) {
+      try {
+        const { data, error } = await supabaseClient.storage
+          .from('files')
+          .download(filepath);
+
+        if (error) throw error;
+
+        const url = URL.createObjectURL(data);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        
+        showToast('success', 'Download Started', `${filename} download began!`);
+      } catch (err) {
+        console.error('Error downloading file:', err);
+        showToast('error', 'Download Failed', 'Could not download file.');
+      }
+    }
+
+    // Delete file
+    async function deleteFile(fileId, filepath, filename) {
+      if (!confirm(`Delete "${filename}"?`)) return;
+
+      try {
+        await supabaseClient.storage
+          .from('files')
+          .remove([filepath]);
+
+        await supabaseClient
+          .from('files')
+          .delete()
+          .eq('id', fileId)
+          .eq('user_id', currentUser.id);
+
+        showToast('success', 'File Deleted', `"${filename}" deleted successfully!`);
+        loadFiles();
+      } catch (err) {
+        console.error('Error deleting file:', err);
+        showToast('error', 'Delete Failed', 'Could not delete file.');
+      }
+    }
+
+    // Load online members
+    async function loadOnlineMembers() {
+      try {
+        const { data: allMembers, error } = await supabaseClient
+          .from('users')
+          .select('id, username, email, role')
+          .order('username', { ascending: true });
+
+        if (error) {
+          console.error('Error loading members:', error);
+          return;
+        }
+
+        updateOnlineMembers(allMembers);
+        
+      } catch (err) {
+        console.error('Error in loadOnlineMembers:', err);
+      }
+    }
+
+    function updateOnlineMembers(allMembers = null) {
+      const membersList = document.getElementById('membersList');
+      const onlineCount = document.getElementById('onlineCount');
+      
+      if (!allMembers) {
+        // If not provided, we need to fetch them
+        loadOnlineMembers();
+        return;
+      }
+
+      // Filter to only show online members
+      const onlineMembers = allMembers.filter(member => onlineUsers.has(member.id));
+      
+      membersList.innerHTML = '';
+      
+      if (onlineMembers.length === 0) {
+        membersList.innerHTML = '<p style="color: var(--gray); text-align: center;">No members online</p>';
+        onlineCount.textContent = '0 Online';
+        return;
+      }
+
+      onlineMembers.forEach(member => {
+        const memberElement = document.createElement('div');
+        memberElement.className = 'member';
+        
+        const displayName = member.username || member.email.split('@')[0];
+        const avatarInitial = displayName.charAt(0).toUpperCase();
+        const roleEmoji = getRoleEmoji(member.role || 'user');
+        
+        memberElement.innerHTML = `
+          <div class="member-avatar">
+            ${avatarInitial}
+            <div class="member-status online"></div>
+          </div>
+          <div class="member-info">
+            <div class="member-name">
+              ${displayName}
+              <span class="user-role role-${member.role || 'user'}">${roleEmoji} ${member.role || 'user'}</span>
+            </div>
+            <div class="member-role">Online now</div>
+          </div>
+        `;
+        
+        membersList.appendChild(memberElement);
+      });
+
+      onlineCount.textContent = `${onlineMembers.length} Online`;
+    }
 
     // Helper functions
-    function getFileIcon(filetype) {
-      const typeMap = {
-        'pdf': 'fa-file-pdf',
-        'doc': 'fa-file-word',
-        'docx': 'fa-file-word',
-        'ppt': 'fa-file-powerpoint',
-        'pptx': 'fa-file-powerpoint',
-        'xls': 'fa-file-excel',
-        'xlsx': 'fa-file-excel',
-        'jpg': 'fa-file-image',
-        'jpeg': 'fa-file-image',
-        'png': 'fa-file-image',
-        'gif': 'fa-file-image',
-        'mp4': 'fa-file-video',
-        'mov': 'fa-file-video',
-        'mp3': 'fa-file-audio',
-        'wav': 'fa-file-audio',
-        'zip': 'fa-file-archive',
-        'rar': 'fa-file-archive'
-      };
+    function formatMessage(content) {
+  if (content.includes('```')) {
+    return content.replace(/```(\w*)\n([\s\S]*?)```/g, (match, language, code) => {
+      return `<div class="code-block">
+        <div class="code-header">
+          <span class="code-language">${language || 'code'}</span>
+          <button class="code-copy" onclick="copyCode(this.nextElementSibling)">
+            <i class="fas fa-copy"></i>
+          </button>
+        </div>
+        <div class="code-content">${code.trim()}</div>
+      </div>`;
+    });
+  }
+  return content;
+}
 
-      if (!filetype) return 'fa-file';
-      const ext = filetype.split('/').pop();
-      return typeMap[ext] || 'fa-file';
-    }
 
     function formatTime(date) {
       return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -3185,923 +2557,112 @@
       return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
     }
 
-    // Get user display name (first name or username)
-    function getUserDisplayName(user, profile = null) {
-      if (profile?.username) {
-        return getFirstName(profile.username);
-      } else if (user?.email) {
-        return getFirstName(user.email);
-      }
-      return 'User';
+    function getFileIcon(filetype) {
+      const typeMap = {
+        'pdf': 'fa-file-pdf',
+        'doc': 'fa-file-word',
+        'docx': 'fa-file-word',
+        'ppt': 'fa-file-powerpoint',
+        'pptx': 'fa-file-powerpoint',
+        'jpg': 'fa-file-image',
+        'jpeg': 'fa-file-image',
+        'png': 'fa-file-image',
+        'gif': 'fa-file-image',
+        'mp4': 'fa-file-video',
+        'mp3': 'fa-file-audio',
+        'zip': 'fa-file-archive'
+      };
+
+      if (!filetype) return 'fa-file';
+      const ext = filetype.split('/').pop();
+      return typeMap[ext] || 'fa-file';
     }
 
-    // Check if current user is admin
-    let isUserAdmin = false;
-    
-    // Add global function to check admin status
-    window.checkAdminStatus = function() {
-      console.log('=== ADMIN STATUS CHECK ===');
-      console.log('isUserAdmin variable:', isUserAdmin);
-      
-      // Try to get user from localStorage or session
-      const user = supabaseClient.auth.getUser();
-      console.log('Auth user object:', user);
-      
-      // Check if we can access the current user from the page
-      if (typeof currentUser !== 'undefined') {
-        console.log('Current user from page:', currentUser);
-      }
-      
-      // Check if we can access user from auth session
-      supabaseClient.auth.getSession().then(({ data, error }) => {
-        if (error) {
-          console.log('Session error:', error);
-        } else {
-          console.log('Session user:', data.session?.user);
-          console.log('User ID:', data.session?.user?.id);
-        }
-      }).catch(err => {
-        console.log('Session check failed:', err);
+    function copyCode(codeElement) {
+      const text = codeElement.textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        const copyBtn = codeElement.parentElement.querySelector('.code-copy');
+        const originalText = copyBtn.innerHTML;
+        copyBtn.innerHTML = '<i class="fas fa-check"></i>';
+        copyBtn.style.color = 'var(--success)';
+        
+        setTimeout(() => {
+          copyBtn.innerHTML = originalText;
+          copyBtn.style.color = 'var(--gray)';
+        }, 2000);
+
+        showToast('success', 'Code Copied', 'Code copied to clipboard!');
+      }).catch(() => {
+        showToast('error', 'Copy Failed', 'Could not copy code to clipboard');
       });
-      
-      // Simple check - look at your own messages to see if you have admin role
-      console.log('=== CHECKING YOUR MESSAGES FOR ROLE ===');
-      const messages = document.querySelectorAll('.message-sent');
-      if (messages.length > 0) {
-        const lastMessage = messages[messages.length - 1];
-        const roleElement = lastMessage.querySelector('.message-role');
-        if (roleElement) {
-          console.log('Your role from messages:', roleElement.textContent.trim());
-          console.log('Is admin based on message role:', roleElement.textContent.includes('👑'));
-        }
-      }
-      
-      return isUserAdmin;
-    };
-    
-    // Function to fix admin status based on current user's role
-    window.fixAdminStatus = function() {
-      console.log('=== FIXING ADMIN STATUS ===');
-      
-      // Get current user from session
-      supabaseClient.auth.getSession().then(({ data, error }) => {
-        if (error || !data.session?.user) {
-          console.log('No session found');
-          return;
-        }
-        
-        const userId = data.session.user.id;
-        console.log('Current user ID:', userId);
-        
-        // Check profiles table for admin role
-        supabaseClient
-          .from('profiles')
-          .select('role')
-          .eq('id', userId)
-          .single()
-          .then(({ data: profile, error: profileError }) => {
-            if (profileError) {
-              console.log('Profile error:', profileError);
-            } else {
-              console.log('Profile role:', profile?.role);
-              if (profile?.role === 'admin') {
-                isUserAdmin = true;
-                console.log('✅ Admin status fixed! isUserAdmin is now:', isUserAdmin);
-              } else {
-                console.log('❌ User is not admin in profiles table');
-              }
-            }
-          })
-          .catch(err => {
-            console.log('Profile check failed:', err);
-          });
-      });
-    };
-    
-    // Get user role with styling (simplified - no RPC calls)
-    async function getUserRoleDisplay(user, profile = null) {
-      let role = 'user';
-      let color = '#6366f1';
-      let emoji = '👤';
-      
-      // Use profile role if available, otherwise use default
-      if (profile?.role) {
-        role = profile.role;
-        // Set color and emoji based on role
-        if (role === 'admin') {
-          color = '#ef4444';
-          emoji = '👑';
-          // Set admin status for current user
-          if (user?.id === currentUser?.id) {
-            isUserAdmin = true;
-          }
-        } else if (role === 'moderator') {
-          color = '#10b981';
-          emoji = '🛡️';
-        } else if (role === 'vip') {
-          color = '#f59e0b';
-          emoji = '⭐';
-        }
-      }
-      
-      return {
-        role: role,
-        color: color,
-        emoji: emoji
-      };
-    }
-    
-
-
-    // Synchronous version for immediate use
-    function getUserRoleDisplaySync(user, profile = null) {
-      let role = 'user';
-      let color = 'var(--gray)';
-      let emoji = '👤';
-      
-      if (profile?.role) {
-        role = profile.role;
-      }
-      
-      // Map role names to colors and emojis
-      const roleMap = {
-        'admin': { color: '#ef4444', emoji: '👑' },
-        'moderator': { color: '#f59e0b', emoji: '🛡️' },
-        'vip': { color: '#10b981', emoji: '⭐' },
-        'user': { color: '#6366f1', emoji: '👤' }
-      };
-      
-      if (roleMap[role]) {
-        color = roleMap[role].color;
-        emoji = roleMap[role].emoji;
-      }
-      
-      return {
-        role: role,
-        color: color,
-        emoji: emoji
-      };
     }
 
-
-
-
-
-    // Show add role modal
-    function showAddRoleModal() {
-      const roleName = prompt('Enter role name (e.g., "vip"):');
-      if (!roleName) return;
-
-      const displayName = prompt('Enter display name (e.g., "VIP Member"):');
-      if (!displayName) return;
-
-      const color = prompt('Enter color (hex code, e.g., "#10b981"):', '#10b981');
-      if (!color) return;
-
-      const emoji = prompt('Enter emoji (e.g., "⭐"):', '⭐');
-      if (!emoji) return;
-
-      addRole(roleName, displayName, color, emoji);
-    }
-
-    // Add new role
-    async function addRole(name, displayName, color, emoji) {
-      try {
-        const { error } = await supabaseClient
-          .from('roles')
-          .insert({
-            name: name.toLowerCase(),
-            display_name: displayName,
-            color: color,
-            emoji: emoji,
-            permissions: { "send_messages": true, "upload_files": true }
-          });
-
-        if (error) throw error;
-
-        showToast('success', 'Role Added', `Role "${displayName}" has been created successfully!`);
-        loadRoleManagement();
-      } catch (err) {
-        console.error('Error adding role:', err);
-        showToast('error', 'Error', 'Failed to add role.');
-      }
-    }
-
-    // Edit role
-    function editRole(roleId) {
-      // This would open a more sophisticated modal in a real app
-      showToast('info', 'Edit Role', 'Edit functionality would be implemented here.');
-    }
-
-    // Delete role
-    async function deleteRole(roleId) {
-      if (!confirm('Are you sure you want to delete this role? Users with this role will become regular users.')) {
-        return;
-      }
-
-      try {
-        const { error } = await supabaseClient
-          .from('roles')
-          .delete()
-          .eq('id', roleId);
-
-        if (error) throw error;
-
-        showToast('success', 'Role Deleted', 'Role has been deleted successfully!');
-        loadRoleManagement();
-      } catch (err) {
-        console.error('Error deleting role:', err);
-        showToast('error', 'Error', 'Failed to delete role.');
-      }
-    }
-
-    // Change user role
-    async function changeUserRole(userId) {
-      try {
-        // Get available roles
-        const { data: roles, error: rolesError } = await supabaseClient
-          .from('roles')
-          .select('id, name, display_name')
-          .order('id');
-
-        if (rolesError) throw rolesError;
-
-        const roleOptions = roles.map(role => `${role.id}: ${role.display_name}`).join('\n');
-        const selectedRole = prompt(`Select role ID:\n${roleOptions}`);
-
-        if (!selectedRole) return;
-
-        const roleId = parseInt(selectedRole.split(':')[0]);
-
-        // Remove existing role and assign new one
-        await supabaseClient
-          .from('user_roles')
-          .delete()
-          .eq('user_id', userId);
-
-        const { data: currentUser } = await supabaseClient.auth.getUser();
-        
-        await supabaseClient
-          .from('user_roles')
-          .insert({
-            user_id: userId,
-            role_id: roleId,
-            assigned_by: currentUser.user.id
-          });
-
-        showToast('success', 'Role Updated', 'User role has been updated successfully!');
-        loadRoleManagement();
-      } catch (err) {
-        console.error('Error changing user role:', err);
-        showToast('error', 'Error', 'Failed to change user role.');
-      }
-    }
-
-    // Remove user role
-    async function removeUserRole(userId) {
-      if (!confirm('Are you sure you want to remove this user\'s role? They will become a regular user.')) {
-        return;
-      }
-
-      try {
-        const { error } = await supabaseClient
-          .from('user_roles')
-          .delete()
-          .eq('user_id', userId);
-
-        if (error) throw error;
-
-        showToast('success', 'Role Removed', 'User role has been removed successfully!');
-        loadRoleManagement();
-      } catch (err) {
-        console.error('Error removing user role:', err);
-        showToast('error', 'Error', 'Failed to remove user role.');
-      }
-    }
-
-    // Assign default role to user
-    async function assignDefaultRole(userId) {
-      try {
-        // Get the default 'user' role
-        const { data: defaultRole, error: roleError } = await supabaseClient
-          .from('roles')
-          .select('id')
-          .eq('name', 'user')
-          .single();
-
-        if (roleError || !defaultRole) {
-          showToast('error', 'Error', 'Default role not found.');
-          return;
-        }
-
-        // Get current user for assigned_by
-        const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
-        if (error || !user) {
-          showToast('error', 'Error', 'Authentication error.');
-          return;
-        }
-
-        // Assign the default role
-        const { error } = await supabaseClient
-          .from('user_roles')
-          .insert({
-            user_id: userId,
-            role_id: defaultRole.id,
-            assigned_by: user.id
-          });
-
-        if (error) throw error;
-
-        showToast('success', 'Role Assigned', 'Default role has been assigned successfully!');
-        loadRoleManagement();
-      } catch (err) {
-        console.error('Error assigning default role:', err);
-        showToast('error', 'Error', 'Failed to assign default role.');
-      }
-    }
-
-    // Extract first name from full name or email
-    function getFirstName(fullName) {
-      if (!fullName) return 'User';
-      
-      // Remove email domain if it's an email
-      let name = fullName.split('@')[0];
-      
-      // Split by common separators and get first part
-      const separators = ['.', '_', '-', ' '];
-      for (const separator of separators) {
-        if (name.includes(separator)) {
-          name = name.split(separator)[0];
-          break;
-        }
-      }
-      
-      // Capitalize first letter
-      return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
-    }
-
-    // Get user avatar initial
-    function getUserAvatarInitial(user, profile = null) {
-      const displayName = getUserDisplayName(user, profile);
-      return displayName.charAt(0).toUpperCase();
-    }
-
-    // Toast Notification System
+    // Toast notification system
     function showToast(type, title, message, duration = 4000) {
       const toastContainer = document.getElementById('toastContainer');
+      
       const toast = document.createElement('div');
       toast.className = `toast ${type}`;
+      toast.id = `toast-${Date.now()}`;
       
-      const icons = {
+      const iconMap = {
         success: 'fas fa-check-circle',
         error: 'fas fa-exclamation-circle',
         info: 'fas fa-info-circle'
       };
       
       toast.innerHTML = `
-        <i class="${icons[type]} toast-icon"></i>
+        <div class="toast-icon">
+          <i class="${iconMap[type]}"></i>
+        </div>
         <div class="toast-content">
           <div class="toast-title">${title}</div>
           <div class="toast-message">${message}</div>
         </div>
-        <button class="toast-close" onclick="this.parentElement.remove()">
+        <button class="toast-close" onclick="closeToast('${toast.id}')" style="position:absolute;top:8px;right:8px;background:none;border:none;color:inherit;font-size:1.1em;cursor:pointer;">
           <i class="fas fa-times"></i>
         </button>
       `;
       
       toastContainer.appendChild(toast);
       
-      // Auto remove after duration
       setTimeout(() => {
-        if (toast.parentElement) {
-          toast.style.animation = 'toastSlideOut 0.3s ease-out forwards';
-          setTimeout(() => {
-            if (toast.parentElement) {
-              toast.remove();
-            }
-          }, 300);
-        }
-      }, duration);
-    }
-
-    // Upload Progress System
-    function showUploadProgress() {
-      const progressContainer = document.getElementById('uploadProgress');
-      const progressFill = document.getElementById('uploadProgressFill');
-      const progressText = document.getElementById('uploadProgressText');
-      
-      progressContainer.style.display = 'block';
-      progressFill.style.width = '0%';
-      progressText.textContent = 'Preparing upload...';
-      
-      // Simulate progress (you can replace this with real progress tracking)
-      let progress = 0;
-      const interval = setInterval(() => {
-        progress += Math.random() * 15;
-        if (progress >= 100) {
-          progress = 100;
-          clearInterval(interval);
-          progressText.textContent = 'Upload complete!';
-          setTimeout(() => {
-            progressContainer.style.display = 'none';
-          }, 1000);
-        } else {
-          progressFill.style.width = progress + '%';
-          progressText.textContent = `Uploading... ${Math.round(progress)}%`;
-        }
-      }, 200);
-    }
-
-    // Smooth scroll to bottom
-    function smoothScrollToBottom(element) {
-      element.scrollTo({
-        top: element.scrollHeight,
-        behavior: 'smooth'
-      });
-    }
-
-    // Initialize the app
-    document.addEventListener('DOMContentLoaded', async function() {
-      // Wait for Supabase client to be ready
-      while (!supabaseClient) {
-        console.log('Waiting for Supabase client...');
-        await new Promise(resolve => setTimeout(resolve, 100));
-      }
-      
-      console.log('Supabase client ready, initializing app...');
-      
-      // Set current year in footer
-      const yearElem = document.getElementById('currentYear');
-      if (yearElem) {
-        yearElem.textContent = new Date().getFullYear();
-      }
-
-      // Attach logout event listener
-      document.getElementById('logoutBtn').addEventListener('click', logout);
-
-      // Check auth status
-      const { data: { user }, error: authError } = await supabaseClient.auth.getUser();
-      if (authError || !user) {
-        window.location.href = "login.html";
-        return;
-      }
-
-      // Set user info in header
-      let profile = null;
-      try {
-        const { data: profileData, error: profileError } = await supabaseClient
-          .from('profiles')
-          .select('username')
-          .eq('id', user.id)
-          .single();
-        
-        if (!profileError) {
-          profile = profileData;
-        }
-      } catch (err) {
-        console.log('Profile not found, using email as fallback');
-      }
-
-      const userAvatar = document.getElementById('userAvatar');
-      const usernameSpan = document.getElementById('username');
-      
-      const displayName = getUserDisplayName(user, profile);
-      const avatarInitial = getUserAvatarInitial(user, profile);
-      
-      userAvatar.textContent = avatarInitial;
-      usernameSpan.textContent = displayName;
-
-      // Set up event listeners
-      document.getElementById('chatInput').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter' && !e.shiftKey) {
-          e.preventDefault();
-          sendMessage();
-        }
-      });
-
-      document.getElementById('codeInput').addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' && e.ctrlKey) {
-          e.preventDefault();
-          sendMessage();
-        }
-      });
-
-      // Add file input change listener for preview
-      document.getElementById('fileInput').addEventListener('change', updateFilePreview);
-
-      // Add code toggle listener
-      document.getElementById('codeToggle').addEventListener('click', toggleCodeMode);
-
-      // Add fullscreen toggle listener
-      document.getElementById('fullscreenToggle').addEventListener('click', toggleFullscreenCode);
-
-      // Add emoji picker listeners
-      document.getElementById('emojiToggle').addEventListener('click', toggleEmojiPicker);
-      
-      // Emoji category switching
-      document.querySelectorAll('.emoji-category').forEach(button => {
-        button.addEventListener('click', function() {
-          // Remove active class from all categories
-          document.querySelectorAll('.emoji-category').forEach(btn => btn.classList.remove('active'));
-          // Add active class to clicked category
-          this.classList.add('active');
-          // Load emojis for selected category
-          loadEmojis(this.dataset.category);
-        });
-      });
-
-      // Emoji search functionality
-      document.getElementById('emojiSearch').addEventListener('input', function() {
-        const searchTerm = this.value.toLowerCase();
-        const emojiItems = document.querySelectorAll('.emoji-item');
-        
-        emojiItems.forEach(item => {
-          const emoji = item.textContent;
-          if (emoji.includes(searchTerm) || searchTerm === '') {
-            item.style.display = 'flex';
-          } else {
-            item.style.display = 'none';
+      if (toast.parentElement) {
+        toast.style.animation = 'toastSlideOut 0.3s ease-out forwards';
+        setTimeout(() => {
+          if (toast.parentElement) {
+            toast.remove();
           }
-        });
-      });
-
-      // Add fullscreen textarea listeners
-      document.getElementById('fullscreenCodeInput').addEventListener('input', updateFullscreenStats);
-      document.getElementById('fullscreenCodeInput').addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' && e.ctrlKey) {
-          e.preventDefault();
-          sendFullscreenCode();
-        } else if (e.key === 's' && e.ctrlKey) {
-          e.preventDefault();
-          // Save draft functionality could be added here
-          console.log('Draft saved (placeholder)');
-        }
-      });
-
-
-      
-      // Load initial data
-      loadFiles();
-      loadMessages();
-      setupRealtimeChat();
-
-
-
-      // Show welcome toast
-      showToast('success', 'Welcome to Chill Space! 🎉', `Hey ${displayName}! Ready to chat and share files?`, 5000);
-
-      // --- Presence (Online Users) ---
-      setupPresence(user, profile?.username || user.email || 'User');
-      
-      // Add cleanup on page unload
-      window.addEventListener('beforeunload', cleanupRealtime);
-    });
-
-    // --- Presence (Online Users) ---
-    function setupPresence(currentUser, username) {
-      const presenceChannel = supabaseClient.channel('online-users', {
-        config: { presence: { key: currentUser.id } }
-      });
-
-      presenceChannel
-        .on('presence', { event: 'sync' }, () => {
-          const state = presenceChannel.presenceState();
-          const onlineIds = Object.keys(state);
-          updateOnlineList(onlineIds);
-        })
-        .subscribe(async (status) => {
-          if (status === 'SUBSCRIBED') {
-            presenceChannel.track({ id: currentUser.id, username });
-          }
-        });
-        
-      // Store channel reference for cleanup
-      window.presenceChannel = presenceChannel;
-    }
-
-    function updateOnlineList(onlineIds) {
-      if (!onlineIds.length) {
-        document.getElementById('membersList').innerHTML = '';
-        document.getElementById('onlineCount').textContent = '0 Online';
-        return;
+        }, 300);
       }
-      
-      // Try to get user roles from the view first
-      supabaseClient
-        .from('user_role_details')
-        .select('user_id, username, email, role_name, role_display_name, role_color, role_emoji')
-        .in('user_id', onlineIds)
-        .then(({ data: roleData, error: roleError }) => {
-          if (roleError) {
-            console.log('Could not fetch role details, falling back to profiles');
-            // Fallback to profiles table
-            supabaseClient
-              .from('profiles')
-              .select('id, username, email, role')
-              .in('id', onlineIds)
-              .then(({ data }) => {
-                updateMembersList(data, onlineIds);
-              });
-            return;
-          }
-          
-          // Create a map of user roles
-          const userRoles = {};
-          if (roleData) {
-            roleData.forEach(item => {
-              userRoles[item.user_id] = {
-                username: item.username,
-                email: item.email,
-                role: item.role_name,
-                roleDisplayName: item.role_display_name,
-                roleColor: item.role_color,
-                roleEmoji: item.role_emoji
-              };
-            });
-          }
-          
-          // For users without roles, fetch from profiles
-          const usersWithoutRoles = onlineIds.filter(id => !userRoles[id]);
-          if (usersWithoutRoles.length > 0) {
-            supabaseClient
-              .from('profiles')
-              .select('id, username, email, role')
-              .in('id', usersWithoutRoles)
-              .then(({ data: profileData }) => {
-                if (profileData) {
-                  profileData.forEach(profile => {
-                    userRoles[profile.id] = {
-                      username: profile.username,
-                      email: profile.email,
-                      role: profile.role || 'user'
-                    };
-                  });
-                }
-                updateMembersList(userRoles, onlineIds);
-              });
-          } else {
-            updateMembersList(userRoles, onlineIds);
-          }
-        });
-    }
+    }, duration);
     
-    function updateMembersList(userRoles, onlineIds) {
-      const membersList = document.getElementById('membersList');
-      membersList.innerHTML = '';
-      
-      onlineIds.forEach(userId => {
-        const userData = userRoles[userId];
-        if (userData) {
-          const div = document.createElement('div');
-          div.className = 'member';
-          const displayName = getUserDisplayName({ email: userData.email }, userData);
-          const avatarInitial = getUserAvatarInitial({ email: userData.email }, userData);
-          
-          // Use role data if available, otherwise use sync function
-          let roleDisplay;
-          if (userData.roleColor && userData.roleEmoji) {
-            roleDisplay = {
-              role: userData.roleDisplayName || userData.role,
-              color: userData.roleColor,
-              emoji: userData.roleEmoji
-            };
-          } else {
-            roleDisplay = getUserRoleDisplaySync(null, userData);
+    return toast.id;
+  }
+    
+
+    function closeToast(toastId) {
+      const toast = document.getElementById(toastId);
+      if (toast) {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+          if (toast.parentNode) {
+            toast.parentNode.removeChild(toast);
           }
-          
-          div.innerHTML = `
-            <div class="member-avatar">${avatarInitial}</div>
-            <div class="member-info">
-              <span class="member-name">${displayName}</span>
-              <span class="member-role" style="color: ${roleDisplay.color}; font-size: 0.7rem;">
-                ${roleDisplay.emoji} ${roleDisplay.role}
-              </span>
-            </div>
-            <span class="member-status online"></span>
-          `;
-          membersList.appendChild(div);
-        }
-      });
-      
-      document.getElementById('onlineCount').textContent = `${onlineIds.length} Online`;
-    }
-
-    // File preview functionality
-    async function previewFile(fileId, filepath, filename, filetype) {
-      try {
-        const modal = document.getElementById('filePreviewModal');
-        const modalFileName = document.getElementById('modalFileName');
-        const modalFileIcon = document.getElementById('modalFileIcon');
-        const modalPreviewContent = document.getElementById('modalPreviewContent');
-        const modalDownloadBtn = document.getElementById('modalDownloadBtn');
-
-        // Set modal header
-        modalFileName.textContent = filename;
-        modalFileIcon.className = `fas ${getFileIcon(filetype)}`;
-
-        // Set download button
-        modalDownloadBtn.onclick = () => downloadFile(filepath, filename);
-
-        // Show loading
-        modalPreviewContent.innerHTML = `
-          <div class="preview-unsupported">
-            <i class="fas fa-spinner fa-spin"></i>
-            <p>Loading preview...</p>
-          </div>
-        `;
-
-        // Show modal
-        modal.classList.add('active');
-
-        // Handle different file types
-        if (filetype.startsWith('image/')) {
-          // Image preview
-          const { data: imageUrl } = supabaseClient.storage
-            .from('files')
-            .getPublicUrl(filepath);
-
-          modalPreviewContent.innerHTML = `
-            <img src="${imageUrl.publicUrl}" alt="${filename}" class="preview-image">
-          `;
-        } else if (filetype === 'application/pdf') {
-          // PDF preview
-          const { data: pdfUrl } = supabaseClient.storage
-            .from('files')
-            .getPublicUrl(filepath);
-
-          modalPreviewContent.innerHTML = `
-            <iframe src="${pdfUrl.publicUrl}" class="preview-pdf"></iframe>
-          `;
-        } else if (filetype.startsWith('text/') || 
-                   filetype === 'application/json' || 
-                   filetype === 'application/javascript' ||
-                   filetype === 'text/css' ||
-                   filetype === 'text/html') {
-          // Text file preview
-          const { data, error } = await supabaseClient.storage
-            .from('files')
-            .download(filepath);
-
-          if (error) {
-            throw error;
-          }
-
-          const text = await data.text();
-          modalPreviewContent.innerHTML = `
-            <div class="preview-text">${text}</div>
-          `;
-        } else {
-          // Unsupported file type
-          modalPreviewContent.innerHTML = `
-            <div class="preview-unsupported">
-              <i class="fas ${getFileIcon(filetype)}"></i>
-              <h3>Preview Not Available</h3>
-              <p>This file type cannot be previewed in the browser.</p>
-              <p>Click "Download" to save the file to your device.</p>
-            </div>
-          `;
-        }
-      } catch (err) {
-        console.error('Error previewing file:', err);
-        const modalPreviewContent = document.getElementById('modalPreviewContent');
-        modalPreviewContent.innerHTML = `
-          <div class="preview-unsupported">
-            <i class="fas fa-exclamation-triangle"></i>
-            <h3>Error Loading Preview</h3>
-            <p>Unable to load file preview. Please try downloading the file instead.</p>
-          </div>
-        `;
+        }, 300);
       }
     }
 
-    function closeFilePreview() {
-      const modal = document.getElementById('filePreviewModal');
-      modal.classList.remove('active');
-    }
-
-    // Close modal when clicking outside
-    document.addEventListener('DOMContentLoaded', function() {
-      const modal = document.getElementById('filePreviewModal');
-      modal.addEventListener('click', function(e) {
-        if (e.target === modal) {
-          closeFilePreview();
-        }
-      });
+    // Cleanup on page unload
+    window.addEventListener('beforeunload', () => {
+      if (chatChannel) {
+        chatChannel.unsubscribe();
+      }
+      if (presenceChannel) {
+        presenceChannel.unsubscribe();
+      }
     });
-
-    // Format code messages
-    function formatCodeMessage(content) {
-      // Split content by code blocks
-      const parts = content.split(/(```[\s\S]*?```)/);
-      
-      return parts.map(part => {
-        if (part.startsWith('```') && part.endsWith('```')) {
-          // Extract language and code
-          const codeBlock = part.slice(3, -3);
-          const lines = codeBlock.split('\n');
-          const language = lines[0].trim();
-          const code = lines.slice(1).join('\n');
-          
-          return `
-            <div class="code-block">
-              <div class="code-header">
-                <span class="code-language">${language}</span>
-                <button class="code-copy" onclick="copyCode(this.nextElementSibling)">
-                  <i class="fas fa-copy"></i>
-                </button>
-              </div>
-              <div class="code-content">${escapeHtml(code)}</div>
-            </div>
-          `;
-        } else {
-          return escapeHtml(part);
-        }
-      }).join('');
-    }
-
-    function escapeHtml(text) {
-      const div = document.createElement('div');
-      div.textContent = text;
-      return div.innerHTML;
-    }
-
-    // Delete message
-    async function deleteMessage(messageId) {
-      if (!confirm('Are you sure you want to delete this message?')) {
-        return;
-      }
-
-      try {
-        // Get current user
-        const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
-        if (userError || !user) {
-          showToast('error', 'Authentication Error', 'Please log in to delete messages.');
-          return;
-        }
-
-        console.log('Attempting to delete message:', messageId, 'for user:', user.id);
-
-        // Show loading toast
-        showToast('info', 'Deleting...', 'Removing message...');
-
-        // Delete message from database directly
-        console.log('Sending delete request for message:', messageId, 'user:', user.id);
-        
-        // Convert messageId to number since database uses bigint
-        const messageIdNum = parseInt(messageId, 10);
-        if (isNaN(messageIdNum)) {
-          console.error('Invalid message ID:', messageId);
-          showToast('error', 'Delete Failed', 'Invalid message ID.');
-          return;
-        }
-        
-        const { data, error } = await supabaseClient
-          .from('messages')
-          .delete()
-          .eq('id', messageIdNum)
-          .eq('user_id', user.id);
-        
-        console.log('Delete response - data:', data, 'error:', error);
-
-        if (error) {
-          console.error('Error deleting message:', error);
-          console.error('Error details:', {
-            message: error.message,
-            details: error.details,
-            hint: error.hint,
-            code: error.code
-          });
-          showToast('error', 'Delete Failed', 'Error deleting message: ' + error.message);
-          return;
-        }
-
-        if (data && data.length > 0) {
-          console.log('Message deleted successfully from database:', data[0].id);
-          showToast('success', 'Message Deleted', 'Message has been removed successfully!');
-          
-          // Remove the message from UI immediately
-          const messageElement = document.querySelector(`[data-message-id="${messageId}"]`);
-          if (messageElement) {
-            messageElement.style.opacity = '0';
-            messageElement.style.transform = 'translateX(20px)';
-            setTimeout(() => {
-              messageElement.remove();
-            }, 300);
-          }
-        } else {
-          console.log('No message was deleted - it may have already been deleted or does not exist');
-          showToast('error', 'Delete Failed', 'Message not found or already deleted.');
-        }
-      } catch (err) {
-        console.error('Error in deleteMessage:', err);
-        showToast('error', 'Delete Error', 'An error occurred while deleting the message. Please try again.');
-      }
-    }
-
-
-
-
   </script>
 </body>
 </html>
-

@@ -1,7 +1,7 @@
 {
-  "name": "sathyabama-erp",
+  "name": "chill-space-chat-app",
   "version": "1.0.0",
-  "description": "Sathyabama ERP System with Supabase Integration",
+  "description": "Chill Space - Real-time Group Chat & File Sharing App with Supabase Integration",
   "main": "index.html",
   "scripts": {
     "dev": "live-server",
@@ -15,7 +15,7 @@
   "devDependencies": {
     "live-server": "^1.2.2"
   },
-  "keywords": ["erp", "supabase", "sathyabama", "education"],
-  "author": "Your Name",
+  "keywords": ["chill space", "chat", "supabase", "realtime", "education", "file sharing"],
+  "author": "Chill Space Team",
   "license": "MIT"
 } 
