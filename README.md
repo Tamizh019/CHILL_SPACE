@@ -77,16 +77,18 @@ As a 19-year-old developer and AI student from Chennai, I created Chill Space to
 
 ## 📦 Project Structure
 
+```
 LOGIN_PAGE/
-├── home.html # Main app (chat, files, members)
-├── index.html # Login page
-├── register.html # Registration page
-├── reset-password.html # Password reset page
-├── supabase-config.js # Supabase client config
-├── SMTP_SETUP_GUIDE.md # Email setup guide
-├── package.json # Project metadata & scripts
-├── package-lock.json # Dependency lockfile
-└── Assets/ # Images and static assets
+  ├── home.html              # Main app (chat, files, members)
+  ├── index.html             # Login page
+  ├── register.html          # Registration page
+  ├── reset-password.html    # Password reset page
+  ├── supabase-config.js     # Supabase client config
+  ├── SMTP_SETUP_GUIDE.md    # Email setup guide
+  ├── package.json           # Project metadata & scripts
+  ├── package-lock.json      # Dependency lockfile
+  └── Assets/                # Images and static assets
+```
 
 ---
 
@@ -94,20 +96,23 @@ LOGIN_PAGE/
 
 ### 1. Clone the Repo
 
+```
 git clone <your-repo-url>
 cd LOGIN_PAGE
-
+```
 ### 2. Install Dependencies
+```
 npm install
-
+```
 ### 3. Configure Supabase
-- Update your Supabase URL and Anon Key in `ho.html`, `index.html`, `register.html`, and `reset-password.html` if needed.
+- Update your Supabase URL and Anon Key in `home.html`, `index.html`, `register.html`, and `reset-password.html` if needed.
 - Set up your Supabase tables: `users`, `messages`, `files` (see schema in code or ask for SQL).
 - (Optional) Configure SMTP for email in Supabase dashboard (see `SMTP_SETUP_GUIDE.md`).
 
 ### 4. Run Locally
+```
 npm run dev
-
+```
 - Visit [http://localhost:8080](http://localhost:8080) (or the port shown) in your browser.
 
 ---
