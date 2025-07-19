@@ -98,7 +98,7 @@ LOGIN_PAGE/
 
 ```
 git clone <your-repo-url>
-cd LOGIN_PAGE
+cd CHILL_SPACE
 ```
 ### 2. Install Dependencies
 ```
