@@ -47,7 +47,7 @@ What began as a workaround for network restrictions evolved into a feature-rich 
 
 - **Frontend**: HTML5, CSS3 (Poppins font, custom styles), Vanilla JS
 - **Backend/Realtime**: [Supabase](https://supabase.com/) (Auth, Database, Storage, Realtime)
-- **Live Development**: [live-server](https://www.npmjs.com/package/live-server)
+- **Live Development**: [live-server](https://www.netlify.com/)
 
 ---
 
