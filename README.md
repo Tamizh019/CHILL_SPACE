@@ -155,7 +155,7 @@ npm run dev
 ## 📝 Customization
 - **Roles**: Assign roles (admin, moderator, etc.) in the Supabase `users` table
 - **Email Templates**: Customize emails in Supabase Auth settings (see `SMTP_SETUP_GUIDE.md`)
-- **Styling**: Tweak CSS in `ho.html` for your own look and feel
+- **Styling**: Tweak CSS in `home.html` for your own look and feel
 
 ---
 
