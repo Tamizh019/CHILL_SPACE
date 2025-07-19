@@ -52,8 +52,83 @@
             height: 100%;
             top: 0;
             left: 0;
-            z-index: -1;
-            background: radial-gradient(circle at center, var(--darker) 0%, #000 70%);
+            z-index: 1;
+            background: radial-gradient(circle at center, #0a0a1a 0%, #000 70%);
+            pointer-events: auto;
+        }
+
+        /* Moon */
+        .moon {
+            position: fixed;
+            top: 80px;
+            right: 80px;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            z-index: 10;
+            cursor: pointer;
+            transition: all 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #333;
+            text-align: center;
+            line-height: 1.2;
+            background: radial-gradient(circle, #f4f4f4 0%, #e6e6e6 70%, #d4d4d4 100%);
+            box-shadow: 
+                0 0 20px rgba(244, 244, 244, 0.3),
+                0 0 40px rgba(244, 244, 244, 0.1),
+                inset -5px -5px 15px rgba(0, 0, 0, 0.2);
+            animation: moonFloat 20s ease-in-out infinite;
+        }
+
+        .moon:hover {
+            transform: scale(1.1);
+            box-shadow: 
+                0 0 30px rgba(244, 244, 244, 0.6),
+                0 0 60px rgba(244, 244, 244, 0.3),
+                0 0 90px rgba(244, 244, 244, 0.1),
+                inset -5px -5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .moon .chill-text {
+            transition: all 0.5s ease;
+            color: #fff;
+            text-shadow: 
+                0 0 10px rgba(255, 255, 255, 0.8),
+                0 0 20px rgba(255, 255, 255, 0.4),
+                0 0 30px rgba(255, 255, 255, 0.2);
+        }
+
+        .moon:hover .chill-text {
+            color: #333;
+            text-shadow: 
+                0 0 5px rgba(0, 0, 0, 0.3),
+                0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes moonFloat {
+            0%, 100% { 
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% { 
+                transform: translate(-20px, -10px) rotate(2deg);
+            }
+            50% { 
+                transform: translate(-10px, -20px) rotate(-1deg);
+            }
+            75% { 
+                transform: translate(10px, -15px) rotate(1deg);
+            }
+        }
+
+        /* Mobile moon adjustment */
+        @media (max-width: 768px) {
+            .moon {
+                display: none;
+            }
         }
 
         /* Login container with glass effect */
@@ -71,10 +146,11 @@
                 0 0 40px rgba(43, 226, 215, 0.05);
             position: relative;
             overflow: hidden;
-            z-index: 10;
+            z-index: 2;
             transform: translateY(20px);
             opacity: 0;
             animation: floatIn 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards 0.3s;
+            pointer-events: none;
         }
         .floating-element {
             position: absolute;
@@ -173,6 +249,7 @@
         .form-group {
             margin-bottom: 1.4rem;
             position: relative;
+            pointer-events: auto;
         }
 
         .input-label {
@@ -220,6 +297,7 @@
             position: relative;
             overflow: hidden;
             box-shadow: 0 6px 20px rgba(138, 43, 226, 0.3);
+            pointer-events: auto;
         }
 
         .submit-btn::after {
@@ -260,6 +338,7 @@
             flex-direction: column;
             margin-top: 1rem;
             gap:-12px; /* Added gap for mobile */
+            pointer-events: auto;
         }
 
         .form-link {
@@ -534,6 +613,9 @@
 </head>
 <body> 
     <div id="particles-js"></div>
+    <div class="moon">
+        <div class="chill-text">Chill<br>Space</div>
+    </div>
     
     <div class="login-container">
         <div class="header">
@@ -602,61 +684,77 @@
     </footer>   
 
     <script>
-        // Particle.js configuration
-        particlesJS("particles-js", {
-            particles: {
-                number: { 
-                    value: window.innerWidth < 768 ? 70 : 150,
-                    density: { enable: true, value_area: 800 } 
+                // Particle.js configuration
+        window.addEventListener('load', function() {
+            particlesJS("particles-js", {
+                particles: {
+                    number: { 
+                        value: window.innerWidth < 768 ? 80 : 150,
+                        density: { enable: true, value_area: 1200 } 
+                    },
+                    color: { value: ["#ffffff", "#f0f8ff", "#e6f3ff", "#ffd700"] },
+                    shape: { 
+                        type: "star",
+                        stroke: { width: 0, color: "#000000" },
+                        polygon: { nb_sides: 5 }
+                    },
+                    opacity: {
+                        value: 0.8,
+                        random: true,
+                        anim: { enable: true, speed: 2, opacity_min: 0.1, sync: false }
+                    },
+                    size: {
+                        value: 2,
+                        random: true,
+                        anim: { enable: true, speed: 3, size_min: 0.5, sync: false }
+                    },
+                    line_linked: {
+                        enable: false
+                    },
+                    move: {
+                        enable: true,
+                        speed: 0.3,
+                        direction: "none",
+                        random: true,
+                        straight: false,
+                        out_mode: "out",
+                        bounce: false,
+                        attract: { enable: false }
+                    }
                 },
-                color: { value: "#8a2be2" },
-                shape: { 
-                    type: "circle",
-                    stroke: { width: 0, color: "#000000" },
-                    polygon: { nb_sides: 5 }
+                interactivity: {
+                    detect_on: "canvas",
+                    events: {
+                        onhover: { enable: true, mode: "bubble" },
+                        onclick: { enable: true, mode: "push" },
+                        resize: true
+                    },
+                    modes: {
+                        bubble: { 
+                            distance: 150, 
+                            size: 8, 
+                            duration: 1.5, 
+                            opacity: 1, 
+                            speed: 2 
+                        },
+                        repulse: { 
+                            distance: 100, 
+                            duration: 0.4 
+                        },
+                        push: { 
+                            particles_nb: 3 
+                        },
+                        grab: { 
+                            distance: 200, 
+                            line_linked: { opacity: 0.8 } 
+                        }
+                    }
                 },
-                opacity: {
-                    value: 0.5,
-                    random: true,
-                    anim: { enable: true, speed: 1, opacity_min: 0.1, sync: false }
-                },
-                size: {
-                    value: 4,
-                    random: true,
-                    anim: { enable: true, speed: 2, size_min: 0.1, sync: false }
-                },
-                line_linked: {
-                    enable: true,
-                    distance: 150,
-                    color: "#2be2d7",
-                    opacity: window.innerWidth < 768 ? 0.1 : 0.3,
-                    width: 1
-                },
-                move: {
-                    enable: true,
-                    speed: 3,
-                    direction: "none",
-                    random: true,
-                    straight: false,
-                    out_mode: "out",
-                    bounce: false,
-                    attract: { enable: true, rotateX: 600, rotateY: 1200 }
-                }
-            },
-            interactivity: {
-                detect_on: "canvas",
-                events: {
-                    onhover: { enable: true, mode: "grab" },
-                    onclick: { enable: true, mode: "push" },
-                    resize: true
-                },
-                modes: {
-                    grab: { distance: 200, line_linked: { opacity: 1 } },
-                    push: { particles_nb: 4 }
-                }
-            },
-            retina_detect: true
+                retina_detect: true
+            });
         });
+
+
 
         // Initialize Supabase
         const supabaseUrl = 'https://cmriyjrqkvpdchvbpnne.supabase.co';
@@ -775,6 +873,13 @@
                     element.style.display = 'none';
                 }, 5500);
             }
+        }
+        const params = new URLSearchParams(window.location.hash.slice(1));
+        const type = params.get("type");
+
+        if (type === "invite" || type === "signup") {
+        // Redirect to register.html
+        window.location.href = "register.html" + window.location.hash;
         }
     </script>
 </body>

@@ -27,10 +27,19 @@
         body {
             height:100vh; background:var(--darker); color:var(--light);
             display:flex; align-items:center; justify-content:center; overflow:hidden;
+            position: fixed;
+            width: 100%;
+            max-width: 100vw;
         }
         #particles-js {
-            position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1;
-            background:radial-gradient(circle at center,var(--darker) 0%,#000 70%);
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            background: radial-gradient(circle at center, #0a0a1a 0%, #000 70%);
+            pointer-events: auto;
         }
         .floating-elements {
             position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:-1;
@@ -43,12 +52,14 @@
             background:radial-gradient(circle, var(--primary), transparent 70%);
         }
         .register-container {
-            width:100%; max-width:480px; padding:2.5rem;
+            width:100%; max-width:420px; padding:2rem;
             background:var(--card-bg); border:1px solid var(--glass-border);
             border-radius:24px; backdrop-filter:blur(12px) saturate(180%);
             box-shadow:0 16px 40px rgba(0,0,0,0.4),0 0 20px rgba(138,43,226,0.1);
             position:relative; overflow:hidden; opacity:0; transform:translateY(20px);
             animation:fadeInUp 0.8s ease-out forwards 0.3s;
+            z-index: 2;
+            pointer-events: none;
         }
         @keyframes fadeInUp {
             from { opacity:0; transform:translateY(20px); } 
@@ -74,7 +85,10 @@
         .subtitle {
             color:rgba(255,255,255,0.7); font-weight:300; font-size:0.95rem; margin-top:0.4rem;
         }
-        .form-group { margin-bottom:1.4rem; }
+        .form-group { 
+            margin-bottom:1.4rem; 
+            pointer-events: auto;
+        }
         .form-group label {
             display:block; font-size:0.9rem; font-weight:500; color:rgba(255,255,255,0.85);
             margin-bottom:0.6rem;
@@ -100,6 +114,7 @@
             background:linear-gradient(135deg,var(--primary),var(--secondary));
             color:#fff; font-size:1rem; font-weight:600; cursor:pointer; position:relative;
             overflow:hidden; transition:all .4s; box-shadow:0 6px 20px rgba(138,43,226,0.3);
+            pointer-events: auto;
         }
         .submit-btn::after {
             content:''; position:absolute; top:-150%; left:-50%; width:200%; height:200%;
@@ -111,11 +126,13 @@
         .pass, .new {
             display:block; text-align:center; margin-top:1rem; font-size:0.9rem;
             color:rgba(255,255,255,0.7); text-decoration:none; transition:color .3s;
+            pointer-events: auto;
         }
         .pass:hover, .new:hover { color:var(--accent); }
         footer {
             position:fixed; bottom:0; width:100%; text-align:center; padding:1rem;
             font-size:0.8rem; color:rgba(255,255,255,0.6); background:rgba(0,0,0,0.2);
+            z-index: 10;
         }
         #registerMessage {
             padding:1rem; border-radius:8px; margin:1rem 0; text-align:center; display:none;
@@ -129,80 +146,150 @@
 
         /* Mobile-specific enhancements */
         @media (max-width: 768px) {
-
+            body {
+                padding: 8px;
+                overflow-x: hidden;
+                overflow-y: auto;
+            }
             
             .register-container {
-                padding: 2rem;
-                max-width: 90%;
+                padding: 1.2rem;
+                max-width: 92%;
+                margin: 10px auto;
+                min-height: auto;
             }
             
             .logo-wrapper {
-                width: 85px;
-                height: 85px;
+                width: 70px;
+                height: 70px;
             }
             
             .title {
-                font-size: 1.8rem;
+                font-size: 1.5rem;
             }
             
             .subtitle {
-                font-size: 0.9rem;
+                font-size: 0.85rem;
+            }
+            
+            .form-group {
+                margin-bottom: 1rem;
             }
             
             .form-group input {
-                padding: 0.95rem;
-                font-size: 1rem;
+                padding: 0.8rem 1rem;
+                font-size: 16px;
+                min-height: 44px;
             }
             
             .submit-btn {
-                padding: 1.05rem;
-                font-size: 1.05rem;
+                padding: 0.9rem;
+                font-size: 0.95rem;
+                min-height: 44px;
             }
             
             .new {
-                margin-top: 1.5rem;
-                padding: 0.8rem;
+                margin-top: 1rem;
+                font-size: 0.8rem;
             }
+            
             footer {
                 display: none;
             }
         }
 
         @media (max-width: 480px) {
-    body { position: fixed; overflow-x: hidden; }
-    .login-container {
-        width: 90%;
-        padding: 1.5rem;
-        max-width: none;
-    }
-    
-    .inp {
-        width: 90%;
-        max-width: 300px;
-        margin: 0 auto;
-        font-size: 0.9rem;
-    }
-    
-    .btn {
-        width: 90%;
-        max-width: 320px;
-        font-size: 0.95rem;
-        margin: 0 auto 1rem;
-        min-height: 44px;
-    }
-    
-    .back-link a { margin-top: 1.2rem; }
-    
-    footer { display: none;}
-    
-    .toggle-btn { padding: 6px 12px; }
-    @media (min-width: 769px) {
-    .login-container {
-        box-shadow: 0 0 40px rgba(138,43,226,0.3);
-        border: 1px solid rgba(255,255,255,0.15);
-    }
-}
-}
+            body {
+                padding: 5px;
+                overflow-x: hidden;
+            }
+            
+            .register-container {
+                padding: 1rem;
+                max-width: 96%;
+                margin: 5px auto;
+                border-radius: 18px;
+            }
+            
+            .logo-wrapper {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .title {
+                font-size: 1.3rem;
+            }
+            
+            .subtitle {
+                font-size: 0.8rem;
+            }
+            
+            .form-group {
+                margin-bottom: 0.8rem;
+            }
+            
+            .form-group input {
+                padding: 0.75rem;
+                font-size: 16px;
+            }
+            
+            .submit-btn {
+                padding: 0.8rem;
+                font-size: 0.9rem;
+            }
+            
+            .new {
+                font-size: 0.75rem;
+                margin-top: 0.8rem;
+            }
+            
+            footer {
+                display: none;
+            }
+        }
+
+        @media (max-height: 600px) {
+            body {
+                padding: 2px;
+            }
+            
+            .register-container {
+                padding: 0.8rem;
+                margin: 2px auto;
+            }
+            
+            .logo-wrapper {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .title {
+                font-size: 1.2rem;
+            }
+            
+            .subtitle {
+                font-size: 0.75rem;
+            }
+            
+            .form-group {
+                margin-bottom: 0.7rem;
+            }
+            
+            .form-group input {
+                padding: 0.7rem;
+            }
+            
+            .submit-btn {
+                padding: 0.75rem;
+            }
+        }
+
+        /* Desktop footer */
+        @media (min-width: 769px) {
+            footer {
+                display: block;
+            }
+        }
 
     </style>
 </head>
@@ -257,13 +344,74 @@
     <footer>2025 © Chill Space - Tamizh</footer>   
     
     <script>
-        particlesJS('particles-js',{
-            particles:{number:{value:120},color:{value:'#8a2be2'},shape:{type:'circle'},opacity:{value:0.5,random:true},
-                size:{value:3,random:true},line_linked:{enable:true,distance:150,color:'#2be2d7',opacity:0.3,width:1},
-                move:{enable:true,speed:3,random:true}},
-            interactivity:{detect_on:'canvas',events:{onhover:{enable:true,mode:'grab'},onclick:{enable:true,mode:'push'}},
-                modes:{grab:{distance:200,line_linked:{opacity:1}},push:{particles_nb:4}}},
-            retina_detect:true
+        // Particle.js configuration for stars
+        window.addEventListener('load', function() {
+            particlesJS("particles-js", {
+                particles: {
+                    number: { 
+                        value: window.innerWidth < 768 ? 80 : 150,
+                        density: { enable: true, value_area: 1200 } 
+                    },
+                    color: { value: ["#ffffff", "#f0f8ff", "#e6f3ff", "#ffd700"] },
+                    shape: { 
+                        type: "star",
+                        stroke: { width: 0, color: "#000000" },
+                        polygon: { nb_sides: 5 }
+                    },
+                    opacity: {
+                        value: 0.8,
+                        random: true,
+                        anim: { enable: true, speed: 2, opacity_min: 0.1, sync: false }
+                    },
+                    size: {
+                        value: 2,
+                        random: true,
+                        anim: { enable: true, speed: 3, size_min: 0.5, sync: false }
+                    },
+                    line_linked: {
+                        enable: false
+                    },
+                    move: {
+                        enable: true,
+                        speed: 0.3,
+                        direction: "none",
+                        random: true,
+                        straight: false,
+                        out_mode: "out",
+                        bounce: false,
+                        attract: { enable: false }
+                    }
+                },
+                interactivity: {
+                    detect_on: "canvas",
+                    events: {
+                        onhover: { enable: true, mode: "bubble" },
+                        onclick: { enable: true, mode: "push" },
+                        resize: true
+                    },
+                    modes: {
+                        bubble: { 
+                            distance: 150, 
+                            size: 8, 
+                            duration: 1.5, 
+                            opacity: 1, 
+                            speed: 2 
+                        },
+                        repulse: { 
+                            distance: 100, 
+                            duration: 0.4 
+                        },
+                        push: { 
+                            particles_nb: 3 
+                        },
+                        grab: { 
+                            distance: 200, 
+                            line_linked: { opacity: 0.8 } 
+                        }
+                    }
+                },
+                retina_detect: true
+            });
         });
 
         // Disable unwanted swipe gestures
