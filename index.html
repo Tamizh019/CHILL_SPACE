@@ -877,10 +877,6 @@
         const params = new URLSearchParams(window.location.hash.slice(1));
         const type = params.get("type");
 
-        if (type === "invite" || type === "signup") {
-        // Redirect to register.html
-        window.location.href = "register.html" + window.location.hash;
-        }
     </script>
 </body>
 </html>
