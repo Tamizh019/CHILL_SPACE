@@ -666,9 +666,7 @@
   </div>
 
   <script>
-// Initialize Supabase with your credentials
-// Initialize Supabase with your credentials
-// Initialize Supabase with your credentials
+/// Initialize Supabase with your credentials
 const SUPABASE_URL = 'https://cmriyjrqkvpdchvbpnne.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNtcml5anJxa3ZwZGNodmJwbm5lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI4MzcyODYsImV4cCI6MjA2ODQxMzI4Nn0.wWRO5jZuUfrMPV8A3J7j36yweLe4o-uIcSZYaMhY4O8';
 const supabase = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
@@ -905,8 +903,6 @@ class FuturisticChess {
     this.isMatchmaking = false;
     console.log('Joining existing game:', gameData);
 
-    // ===== FIXED COLOR ASSIGNMENT =====
-    // Determine our color based on database record
     if (gameData.white_player_id === this.userId) {
       this.playerColor = 'white';
       this.opponentName = gameData.black_player_name;
@@ -933,8 +929,6 @@ class FuturisticChess {
 
   async tryCreateGameWithOpponent(opponent) {
     try {
-      // ===== FIXED DETERMINISTIC COLOR ASSIGNMENT =====
-      // Use player IDs to determine colors consistently
       const isWhite = this.userId.localeCompare(opponent.player_id) < 0;
       this.playerColor = isWhite ? 'white' : 'black';
       this.opponentName = opponent.player_name;
@@ -1050,14 +1044,17 @@ class FuturisticChess {
     document.querySelector('.game-container').style.display = 'block';
     
     this.loadGameState(gameData.game_state);
-    this.currentPlayer = gameData.current_turn; // Always 'white' initially
-    
-    // ===== FIXED TURN LOGIC =====
-    // Set isMyTurn correctly based on current turn and player color
+    this.currentPlayer = gameData.current_turn;
     this.isMyTurn = (this.currentPlayer === this.playerColor);
     this.gameActive = true;
     
     console.log(`Game started: currentPlayer=${this.currentPlayer}, myColor=${this.playerColor}, isMyTurn=${this.isMyTurn}`);
+    
+    // ===== FIXED: AUTO-FLIP BOARD FOR BLACK PLAYER =====
+    if (this.playerColor === 'black') {
+      console.log('Flipping board for black player');
+      this.flipBoard();
+    }
     
     this.subscribeToGame();
     
@@ -1088,9 +1085,9 @@ class FuturisticChess {
       )
       .on('broadcast', 
         { event: 'move' }, 
-        (payload) => {
-          console.log('Move received:', payload);
-          this.handleOpponentMove(payload);
+        (broadcastData) => {
+          console.log('Move received:', broadcastData);
+          this.handleOpponentMove(broadcastData);
         }
       )
       .subscribe((status) => {
@@ -1122,8 +1119,6 @@ class FuturisticChess {
     
     this.backToModeSelection();
   }
-
-  // ===== CHESS GAME LOGIC =====
 
   createEmptyBoard() {
     return Array(8).fill(null).map(() => Array(8).fill(null));
@@ -1514,115 +1509,111 @@ class FuturisticChess {
   }
 
   async makeMultiplayerMove(fromRow, fromCol, toRow, toCol) {
-  try {
-    // ===== IMPROVED PAYLOAD STRUCTURE =====
-    const moveData = {
-      from: { 
-        row: parseInt(fromRow), 
-        col: parseInt(fromCol) 
-      },
-      to: { 
-        row: parseInt(toRow), 
-        col: parseInt(toCol) 
-      },
-      piece: this.board[fromRow][fromCol],
-      player: this.playerColor,
-      timestamp: Date.now(),
-      gameId: this.gameId // Add game ID for validation
-    };
-
-    console.log('Making multiplayer move:', moveData);
-
-    // Validate our own payload before sending
-    if (!moveData.from || !moveData.to || 
-        typeof moveData.from.row !== 'number' || 
-        typeof moveData.to.row !== 'number') {
-      console.error('Invalid move data created:', moveData);
-      return;
-    }
-
-    this.makeMove(fromRow, fromCol, toRow, toCol);
-    this.currentPlayer = this.currentPlayer === 'white' ? 'black' : 'white';
-    this.isMyTurn = false;
-
-    await this.gameChannel.send({
-      type: 'broadcast',
-      event: 'move',
-      payload: moveData
-    });
-
-    const gameState = this.serializeGameState();
-    await supabase
-      .from('chess_games')
-      .update({
-        game_state: gameState,
-        current_turn: this.currentPlayer,
-        updated_at: new Date().toISOString()
-      })
-      .eq('id', this.gameId);
-
-    this.selectedSquare = null;
-    this.validMoves = [];
-    this.renderBoard();
-    this.updateGameState();
-    
-    await this.checkGameEnd();
-  } catch (error) {
-    console.error('Error making multiplayer move:', error);
-    alert('Failed to make move. Please try again.');
-  }
-}
-
-
-  handleOpponentMove(payload) {
-  console.log(`Received move from ${payload.player}, I am ${this.playerColor}`);
-  
-  // ===== ADDED ERROR CHECKING =====
-  // Validate payload structure
-  if (!payload || !payload.from || !payload.to) {
-    console.error('Invalid move payload received:', payload);
-    return;
-  }
-
-  // Validate move data
-  if (typeof payload.from.row !== 'number' || 
-      typeof payload.from.col !== 'number' || 
-      typeof payload.to.row !== 'number' || 
-      typeof payload.to.col !== 'number') {
-    console.error('Invalid move coordinates:', payload);
-    return;
-  }
-
-  // Only apply move if it's from the opponent
-  if (payload.player !== this.playerColor) {
-    console.log('Applying opponent move:', payload);
-    
-    const { from, to } = payload;
-    
-    // ===== ADDITIONAL BOUNDS CHECKING =====
-    if (from.row < 0 || from.row > 7 || from.col < 0 || from.col > 7 ||
-        to.row < 0 || to.row > 7 || to.col < 0 || to.col > 7) {
-      console.error('Move coordinates out of bounds:', payload);
-      return;
-    }
-    
     try {
-      this.makeMove(from.row, from.col, to.row, to.col);
+      const moveData = {
+        from: { 
+          row: parseInt(fromRow), 
+          col: parseInt(fromCol) 
+        },
+        to: { 
+          row: parseInt(toRow), 
+          col: parseInt(toCol) 
+        },
+        piece: this.board[fromRow][fromCol],
+        player: this.playerColor,
+        timestamp: Date.now(),
+        gameId: this.gameId
+      };
+
+      console.log('Making multiplayer move:', moveData);
+
+      this.makeMove(fromRow, fromCol, toRow, toCol);
       this.currentPlayer = this.currentPlayer === 'white' ? 'black' : 'white';
-      this.isMyTurn = (this.currentPlayer === this.playerColor);
-      
+      this.isMyTurn = false;
+
+      await this.gameChannel.send({
+        type: 'broadcast',
+        event: 'move',
+        payload: moveData
+      });
+
+      const gameState = this.serializeGameState();
+      await supabase
+        .from('chess_games')
+        .update({
+          game_state: gameState,
+          current_turn: this.currentPlayer,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', this.gameId);
+
       this.selectedSquare = null;
       this.validMoves = [];
       this.renderBoard();
       this.updateGameState();
+      
+      await this.checkGameEnd();
     } catch (error) {
-      console.error('Error applying opponent move:', error);
+      console.error('Error making multiplayer move:', error);
+      alert('Failed to make move. Please try again.');
     }
-  } else {
-    console.log('Ignoring my own move broadcast');
   }
-}
 
+  // ===== FIXED: OPPONENT MOVE HANDLER =====
+  handleOpponentMove(broadcastData) {
+    console.log('Raw broadcast data:', broadcastData);
+    
+    // Extract the actual payload - it's nested!
+    const payload = broadcastData.payload || broadcastData;
+    
+    console.log(`Received move from ${payload.player}, I am ${this.playerColor}`);
+    
+    // Validate payload structure
+    if (!payload || !payload.from || !payload.to) {
+      console.error('Invalid move payload received:', broadcastData);
+      return;
+    }
+
+    // Validate move data
+    if (typeof payload.from.row !== 'number' || 
+        typeof payload.from.col !== 'number' || 
+        typeof payload.to.row !== 'number' || 
+        typeof payload.to.col !== 'number') {
+      console.error('Invalid move coordinates:', payload);
+      return;
+    }
+
+    // Only apply move if it's from the opponent
+    if (payload.player !== this.playerColor) {
+      console.log('Applying opponent move:', payload);
+      
+      const { from, to } = payload;
+      
+      // Bounds checking
+      if (from.row < 0 || from.row > 7 || from.col < 0 || from.col > 7 ||
+          to.row < 0 || to.row > 7 || to.col < 0 || to.col > 7) {
+        console.error('Move coordinates out of bounds:', payload);
+        return;
+      }
+      
+      try {
+        this.makeMove(from.row, from.col, to.row, to.col);
+        this.currentPlayer = this.currentPlayer === 'white' ? 'black' : 'white';
+        this.isMyTurn = (this.currentPlayer === this.playerColor);
+        
+        this.selectedSquare = null;
+        this.validMoves = [];
+        this.renderBoard();
+        this.updateGameState();
+        
+        console.log(`After opponent move: currentPlayer=${this.currentPlayer}, isMyTurn=${this.isMyTurn}`);
+      } catch (error) {
+        console.error('Error applying opponent move:', error);
+      }
+    } else {
+      console.log('Ignoring my own move broadcast');
+    }
+  }
 
   handleGameUpdate(gameData) {
     if (gameData.status === 'completed') {
@@ -1801,13 +1792,13 @@ class FuturisticChess {
     const boardElement = document.getElementById('chess-board');
     this.isFlipped = !this.isFlipped;
     boardElement.classList.toggle('flipped', this.isFlipped);
+    console.log(`Board flipped: isFlipped=${this.isFlipped}`);
   }
 
   toggleBoardFlip() {
     this.flipBoard();
   }
 
-  // ===== FIXED UPDATE GAME STATE =====
   updateGameState() {
     const turnText = document.getElementById('turn-text');
     const turnIndicator = document.getElementById('turn-indicator');
@@ -1829,7 +1820,6 @@ class FuturisticChess {
     
     turnText.textContent = statusText;
     
-    // Update border color based on current turn
     const isCurrentPlayerWhite = this.currentPlayer === 'white';
     turnIndicator.className = `turn-indicator ${!isCurrentPlayerWhite ? 'black-turn' : ''}${this.inCheck[this.currentPlayer] ? ' in-check' : ''}`;
   }
@@ -1982,10 +1972,6 @@ class FuturisticChess {
       this.gameActive = false;
     }
   }
-
-  // =================
-  // UTILITY METHODS
-  // =================
 
   hideAllScreens() {
     document.getElementById('mode-selection').classList.add('hidden');
