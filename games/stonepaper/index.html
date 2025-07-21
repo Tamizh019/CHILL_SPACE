@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Rock • Paper • Scissors</title>
+
+  <!-- Google font -->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --grad-1:#7f7fd5;
+      --grad-2:#86a8e7;
+      --grad-3:#91eae4;
+      --glass-bg:rgba(255,255,255,.15);
+      --glass-br:rgba(255,255,255,.25);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      background:linear-gradient(135deg,var(--grad-1),var(--grad-2),var(--grad-3));
+      font-family:Poppins,sans-serif;
+      color:#fff;
+      overflow:hidden;
+      padding:20px;
+    }
+    /* card */
+    .card{
+      width:clamp(300px,90vw,420px);
+      backdrop-filter:blur(20px);
+      background:var(--glass-bg);
+      border:1px solid var(--glass-br);
+      border-radius:20px;
+      padding:30px 25px 40px;
+      box-shadow:0 15px 40px rgba(0,0,0,.25);
+      text-align:center;
+    }
+    h1{
+      font-size:clamp(1.4rem,5vw,2rem);
+      margin-bottom:25px;
+      letter-spacing:1px;
+    }
+    /* scoreboard */
+    .scoreboard{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:12px;
+      margin-bottom:28px;
+    }
+    .score{
+      background:rgba(255,255,255,.08);
+      padding:14px 10px 10px;
+      border-radius:14px;
+      position:relative;
+    }
+    .score span{
+      font-size:1.8rem;
+      font-weight:700;
+      display:block;
+      line-height:1;
+    }
+    .score small{
+      font-size:.75rem;
+      text-transform:uppercase;
+      opacity:.8
+    }
+    /* choice buttons */
+    .choices{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:25px;
+    }
+    .choice{
+      flex:1;
+      background:rgba(255,255,255,.1);
+      border:1px solid var(--glass-br);
+      border-radius:14px;
+      padding:12px 8px;
+      cursor:pointer;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      transition:transform .25s ease,box-shadow .25s ease;
+    }
+    .choice img{
+      width:48px;height:48px;margin-bottom:4px;pointer-events:none;
+    }
+    .choice span{font-size:.9rem}
+    .choice:hover{
+      transform:translateY(-6px);
+      box-shadow:0 10px 25px rgba(0,0,0,.3);
+    }
+    /* result area */
+    .result{
+      margin-bottom:28px;
+      min-height:112px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
+    }
+    #computer-img{
+      width:75px;height:75px;opacity:.8;transition:opacity .3s ease;
+    }
+    #result-text{font-size:1.1rem;font-weight:600}
+    /* restart */
+    #restart{
+      background:#fff;
+      color:#111;
+      border:none;
+      padding:10px 18px;
+      border-radius:25px;
+      font-weight:600;
+      cursor:pointer;
+      transition:background .25s;
+    }
+    #restart:hover{background:#f0f0f0}
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h1>Rock • Paper • Scissors</h1>
+
+    <div class="scoreboard">
+      <div class="score"><span id="winCnt">0</span><small>wins</small></div>
+      <div class="score"><span id="drawCnt">0</span><small>draws</small></div>
+      <div class="score"><span id="loseCnt">0</span><small>losses</small></div>
+    </div>
+
+    <div class="choices">
+      <button class="choice" data-choice="STONE"><img src="img/rock.png"><span>Rock</span></button>
+      <button class="choice" data-choice="PAPER"><img src="img/paper.png"><span>Paper</span></button>
+      <button class="choice" data-choice="SCISSOR"><img src="img/scissor.png"><span>Scissor</span></button>
+    </div>
+
+    <div class="result">
+      <p id="result-text">Make your move!</p>
+      <img id="computer-img" src="img/robot.png" alt="computer choice">
+      <p id="computer-choice">Computer waits…</p>
+    </div>
+
+    <button id="restart">Restart</button>
+  </div>
+
+  <script>
+    /* ---------- GAME SCRIPT ---------- */
+    const choices = ["STONE","PAPER","SCISSOR"];
+    const winCnt   = document.getElementById('winCnt');
+    const drawCnt  = document.getElementById('drawCnt');
+    const loseCnt  = document.getElementById('loseCnt');
+    const resultT  = document.getElementById('result-text');
+    const compTxt  = document.getElementById('computer-choice');
+    const compImg  = document.getElementById('computer-img');
+
+    let score = {w:0,d:0,l:0};
+
+    document.querySelectorAll('.choice').forEach(btn=>{
+      btn.addEventListener('click', ()=> play(btn.dataset.choice));
+    });
+    document.getElementById('restart').onclick = reset;
+
+    function play(player){
+      const computer = choices[Math.floor(Math.random()*3)];
+      showComp(computer);
+      const outcome = judge(player,computer);
+      updateScore(outcome);
+    }
+
+    function judge(p,c){
+      if(p===c) return 'd';
+      if( (p==="STONE"   && c==="SCISSOR") ||
+          (p==="PAPER"   && c==="STONE")   ||
+          (p==="SCISSOR" && c==="PAPER")) return 'w';
+      return 'l';
+    }
+
+    function updateScore(o){
+      if(o==='w'){ score.w++; resultT.textContent="You Win 🎉"; }
+      else if(o==='l'){ score.l++; resultT.textContent="You Lose 😥"; }
+      else { score.d++; resultT.textContent="It’s a Draw 🤝"; }
+      winCnt.textContent  = score.w;
+      drawCnt.textContent = score.d;
+      loseCnt.textContent = score.l;
+    }
+
+    function showComp(choice){
+      compTxt.textContent = 'Computer chose: ' + choice.charAt(0)+choice.slice(1).toLowerCase();
+      compImg.style.opacity = 0;
+      setTimeout(()=>{
+        compImg.src = choice==="STONE"   ? "img/rock.png" :
+                      choice==="PAPER"   ? "img/paper.png" :
+                                           "img/scissor.png";
+        compImg.style.opacity = 1;
+      },200);
+    }
+
+    function reset(){
+      score={w:0,d:0,l:0};
+      winCnt.textContent=drawCnt.textContent=loseCnt.textContent=0;
+      resultT.textContent="Make your move!";
+      compTxt.textContent="Computer waits…";
+      compImg.src="img/robot.png";
+    }
+  </script>
+
+</body>
+</html>

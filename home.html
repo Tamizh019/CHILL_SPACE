@@ -173,30 +173,22 @@
       overflow-x: hidden;
     }
 
+    /* Update main-content to be single column */
     .main-content {
-      display: grid;
-      grid-template-columns: 2.5fr 1fr;
-      gap: 2.5rem;
-      width: 100%;
-      max-width: 100%;
-    }
-
-    .content-area {
       display: flex;
       flex-direction: column;
       gap: 2rem;
       width: 100%;
-      max-width: 100%;
+      max-width: 1600px;
+      margin: 0 auto;
       overflow-x: hidden;
     }
 
+    /* Chat container stays full width */
     .chat-container {
+      width: 100%;
       height: 800px; 
       min-height: 600px;
-      min-width: 0;
-      width: 100%;
-      max-width: 100%;
-      overflow-x: hidden;
     }
 
     .sidebar {
@@ -1259,16 +1251,13 @@
 
     /* Responsive Design */
     @media (max-width: 1024px) {
-      .main-content {
-        grid-template-columns: 1fr;
+      .sidebar-grid {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         gap: 1.5rem;
       }
       
-      .sidebar {
-        max-width: 100%;
-        width: 100%;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      .games-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         gap: 1rem;
       }
     }
@@ -1317,6 +1306,234 @@
         font-size: 1.1rem;
       }
     }
+
+    /* Games Section Styles */
+    .games-section {
+      width: 100%;
+    }
+
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .game-card {
+      background: rgba(30, 41, 59, 0.3);
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 1px solid var(--card-border);
+      position: relative;
+      backdrop-filter: blur(10px);
+    }
+
+    .game-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+      border-color: var(--primary);
+    }
+
+    .game-image {
+      position: relative;
+      height: 160px;
+      overflow: hidden;
+    }
+
+    .game-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .game-card:hover .game-image img {
+      transform: scale(1.05);
+    }
+
+    .game-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+
+    .game-card:hover .game-overlay {
+      opacity: 1;
+    }
+
+    .game-overlay i {
+      color: var(--primary);
+      font-size: 2rem;
+      transform: scale(0.8);
+      transition: transform 0.3s ease;
+    }
+
+    .game-card:hover .game-overlay i {
+      transform: scale(1);
+    }
+
+    .game-info {
+      padding: 1.25rem;
+    }
+
+    .game-name {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--light);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .game-description {
+      color: var(--gray);
+      font-size: 0.875rem;
+      line-height: 1.4;
+      margin-bottom: 1rem;
+    }
+
+    .game-details {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      gap: 1rem;
+    }
+
+    .game-players,
+    .game-difficulty {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      color: var(--gray);
+    }
+
+    .game-difficulty i {
+      color: var(--secondary);
+    }
+
+    .game-players i {
+      color: var(--primary);
+    }
+
+    .game-tags {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      background: var(--primary);
+      color: white;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.7rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .tag:nth-child(even) {
+      background: var(--secondary);
+    }
+
+    /* Sidebar Grid for 3 column layout */
+    .sidebar-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+      width: 100%;
+    }
+
+    /* Remove old sidebar styles */
+    .sidebar {
+      display: unset;
+      max-width: unset;
+      width: unset;
+      flex-direction: unset;
+      gap: unset;
+      overflow-x: unset;
+    }
+
+    /* Game Modal Styles */
+    .game-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 10000;
+      display: none;
+      backdrop-filter: blur(10px);
+    }
+
+    .game-modal-content {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .game-modal-header {
+      background: var(--dark);
+      padding: 1rem 2rem;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .game-modal-title {
+      color: var(--light);
+      font-size: 1.2rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .game-modal-close {
+      background: var(--danger);
+      border: none;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .game-modal-close:hover {
+      background: #dc2626;
+      transform: translateY(-1px);
+    }
+
+    .game-iframe {
+      flex: 1;
+      border: none;
+      background: var(--darker);
+    }
+  </style>
+  <style>
+    body.modal-open {
+      overflow: hidden !important;
+      touch-action: none;
+    }
   </style>
 </head>
 <body>
@@ -1340,78 +1557,78 @@
 
   <main>
     <div class="main-content">
-      <div class="content-area">
-        <section class="card chat-container">
-          <div class="card-header">
-            <h2><i class="fas fa-comments"></i> Group Chat AI-A4 </h2>
+      <!-- Chat Container (Full Width) -->
+      <section class="card chat-container">
+        <div class="card-header">
+          <h2><i class="fas fa-comments"></i> Group Chat AI-A4 </h2>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+          <!-- Messages will appear here -->
+        </div>
+        <div class="chat-input">
+          <div class="chat-controls">
+            <button class="code-toggle" id="codeToggle" title="Toggle Code Mode">
+              <i class="fas fa-code"></i>
+            </button>
+            <button class="emoji-toggle" id="emojiToggle" title="Emoji Picker">
+              <i class="fas fa-smile"></i>
+            </button>
+            <button class="fullscreen-toggle" id="fullscreenToggle" title="Fullscreen Code Editor" style="display: none;">
+              <i class="fas fa-expand"></i>
+            </button>
+            <select class="language-select" id="languageSelect" style="display: none;">
+              <option value="javascript">JavaScript</option>
+              <option value="python">Python</option>
+              <option value="html">HTML</option>
+              <option value="css">CSS</option>
+              <option value="java">Java</option>
+              <option value="cpp">C++</option>
+              <option value="csharp">C#</option>
+              <option value="php">PHP</option>
+              <option value="sql">SQL</option>
+              <option value="bash">Bash</option>
+              <option value="json">JSON</option>
+              <option value="xml">XML</option>
+              <option value="markdown">Markdown</option>
+              <option value="plaintext">Plain Text</option>
+            </select>
           </div>
-          <div class="chat-messages" id="chatMessages">
-            <!-- Messages will appear here -->
-          </div>
-          <div class="chat-input">
-            <div class="chat-controls">
-              <button class="code-toggle" id="codeToggle" title="Toggle Code Mode">
-                <i class="fas fa-code"></i>
-              </button>
-              <button class="emoji-toggle" id="emojiToggle" title="Emoji Picker">
-                <i class="fas fa-smile"></i>
-              </button>
-              <button class="fullscreen-toggle" id="fullscreenToggle" title="Fullscreen Code Editor" style="display: none;">
-                <i class="fas fa-expand"></i>
-              </button>
-              <select class="language-select" id="languageSelect" style="display: none;">
-                <option value="javascript">JavaScript</option>
-                <option value="python">Python</option>
-                <option value="html">HTML</option>
-                <option value="css">CSS</option>
-                <option value="java">Java</option>
-                <option value="cpp">C++</option>
-                <option value="csharp">C#</option>
-                <option value="php">PHP</option>
-                <option value="sql">SQL</option>
-                <option value="bash">Bash</option>
-                <option value="json">JSON</option>
-                <option value="xml">XML</option>
-                <option value="markdown">Markdown</option>
-                <option value="plaintext">Plain Text</option>
-              </select>
+          <input type="text" id="chatInput" placeholder="Type your message..." />
+          <textarea id="codeInput" placeholder="Write your code here..." style="display: none;"></textarea>
+          <button class="btn btn-primary" onclick="sendMessage()">
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </div>
+        
+        <!-- Emoji Picker -->
+        <div class="emoji-picker" id="emojiPicker" style="display: none;">
+          <div class="emoji-picker-header">
+            <div class="emoji-search">
+              <input type="text" id="emojiSearch" placeholder="Search emojis..." />
             </div>
-            <input type="text" id="chatInput" placeholder="Type your message..." />
-            <textarea id="codeInput" placeholder="Write your code here..." style="display: none;"></textarea>
-            <button class="btn btn-primary" onclick="sendMessage()">
-              <i class="fas fa-paper-plane"></i>
+            <button class="emoji-close" onclick="toggleEmojiPicker()">
+              <i class="fas fa-times"></i>
             </button>
           </div>
-          
-          <!-- Emoji Picker -->
-          <div class="emoji-picker" id="emojiPicker" style="display: none;">
-            <div class="emoji-picker-header">
-              <div class="emoji-search">
-                <input type="text" id="emojiSearch" placeholder="Search emojis..." />
-              </div>
-              <button class="emoji-close" onclick="toggleEmojiPicker()">
-                <i class="fas fa-times"></i>
-              </button>
-            </div>
-            <div class="emoji-categories">
-              <button class="emoji-category active" data-category="recent">🕒</button>
-              <button class="emoji-category" data-category="smileys">😊</button>
-              <button class="emoji-category" data-category="animals">🐱</button>
-              <button class="emoji-category" data-category="food">🍕</button>
-              <button class="emoji-category" data-category="activities">⚽</button>
-              <button class="emoji-category" data-category="travel">✈️</button>
-              <button class="emoji-category" data-category="objects">💡</button>
-              <button class="emoji-category" data-category="symbols">💕</button>
-              <button class="emoji-category" data-category="flags">🏁</button>
-            </div>
-            <div class="emoji-grid" id="emojiGrid">
-              <!-- Emojis will be loaded here -->
-            </div>
+          <div class="emoji-categories">
+            <button class="emoji-category active" data-category="recent">🕒</button>
+            <button class="emoji-category" data-category="smileys">😊</button>
+            <button class="emoji-category" data-category="animals">🐱</button>
+            <button class="emoji-category" data-category="food">🍕</button>
+            <button class="emoji-category" data-category="activities">⚽</button>
+            <button class="emoji-category" data-category="travel">✈️</button>
+            <button class="emoji-category" data-category="objects">💡</button>
+            <button class="emoji-category" data-category="symbols">💕</button>
+            <button class="emoji-category" data-category="flags">🏁</button>
           </div>
-        </section>
-      </div>
-
-      <div class="sidebar">
+          <div class="emoji-grid" id="emojiGrid">
+            <!-- Emojis will be loaded here -->
+          </div>
+        </div>
+      </section>
+  
+      <!-- Three Column Layout for Upload, Files, Members -->
+      <div class="sidebar-grid">
         <section class="card">
           <div class="card-header">
             <h2><i class="fas fa-cloud-upload-alt"></i> Upload Files</h2>
@@ -1432,7 +1649,7 @@
             </button>
           </div>
         </section>
-
+  
         <section class="card">
           <div class="card-header">
             <h2><i class="fas fa-folder-open"></i> Shared Files</h2>
@@ -1444,7 +1661,7 @@
             <!-- Files will be loaded here -->
           </div>
         </section>
-
+  
         <section class="card">
           <div class="card-header">
             <h2><i class="fas fa-users"></i> Online Members</h2>
@@ -1455,8 +1672,195 @@
           </div>
         </section>
       </div>
+      
+      <!-- Games Section (Full Width, now below sidebar-grid) -->
+      <section class="card games-section">
+        <div class="card-header">
+          <h2><i class="fas fa-gamepad"></i> Feel bored? No worries...</h2>
+          <span class="btn btn-outline btn-sm" id="gamesCount"></span>
+        </div>
+        <div class="games-grid">
+          <!-- Game Card 1 -->
+          <div class="game-card" onclick="openGame('chess')">
+            <div class="game-image">
+              <img src="Assets/chess2.jpg" alt="Chess Game" />
+              <div class="game-overlay">
+                <i class="fas fa-play"></i>
+              </div>
+            </div>
+            <div class="game-info">
+              <h3 class="game-name">Chess Master</h3>
+              <p class="game-description">Classic chess game with multiplayer mode</p>
+              <div class="game-details">
+                <span class="game-players"><i class="fas fa-users"></i> 2 Players</span>
+                <span class="game-difficulty"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> Hard </span>
+              </div>
+              <div class="game-tags">
+                <span class="tag">Strategy</span>
+                <span class="tag">Turn-based</span>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Game Card 2 -->
+          <div class="game-card" onclick="openGame('tic-tac-toe')">
+            <div class="game-image">
+              <img src="Assets/Human Tic-Tac-Toe.jpg" alt="Tic Tac Toe" />
+              <div class="game-overlay">
+                <i class="fas fa-play"></i>
+              </div>
+            </div>
+            <div class="game-info">
+              <h3 class="game-name">Tic Tac Toe</h3>
+              <p class="game-description">Quick and fun classic game for two players</p>
+              <div class="game-details">
+                <span class="game-players"><i class="fas fa-users"></i> 2 Players</span>
+                <span class="game-difficulty"><i class="fas fa-star"></i><i class="fas fa-star"></i> Medium  </span>
+              </div>
+              <div class="game-tags">
+                <span class="tag">Quick</span>
+                <span class="tag">Classic</span>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Game Card 3 -->
+          <div class="game-card" onclick="openGame('typemaster')">
+            <div class="game-image">
+              <img src="Assets/key.jpg" alt="Type Master" />
+              <div class="game-overlay">
+                <i class="fas fa-play"></i>
+              </div>
+            </div>
+            <div class="game-info">
+              <h3 class="game-name">Type Master</h3>
+              <p class="game-description">Improve your typing speed in this fun and addictive word shooter.</p>
+              <div class="game-details">
+                <span class="game-players"><i class="fas fa-users"></i> 1 Player</span>
+                <span class="game-difficulty"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> Hard </span>
+              </div>
+              <div class="game-tags">
+                <span class="tag">Typing</span>
+                <span class="tag">Skill</span>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Game Card 4 -->
+          <div class="game-card" onclick="openGame('stone')">
+            <div class="game-image">
+              <img src="Assets/rps1.png" alt="stonepaperscissor" />
+              <div class="game-overlay">
+                <i class="fas fa-play"></i>
+              </div>
+            </div>
+            <div class="game-info">
+              <h3 class="game-name">Rock Paper Scissor (AI)</h3>
+              <p class="game-description">Classic hand game with fast-paced decision making with AI.</p>
+              <div class="game-details">
+                <span class="game-players"><i class="fas fa-users"></i> 1 Player</span>
+                <span class="game-difficulty"><i class="fas fa-star"></i> Easy </span>
+              </div>
+              <div class="game-tags">
+                <span class="tag">Strategic</span>
+                <span class="tag">Decision</span>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Game Card 5 -->
+          <div class="game-card" onclick="openGame('advice')">
+            <div class="game-image">
+              <img src="Assets/advice.jpg" alt="Advice" />
+              <div class="game-overlay">
+                <i class="fas fa-play"></i>
+              </div>
+            </div>
+            <div class="game-info">
+              <h3 class="game-name">Free Advice</h3>
+              <p class="game-description">Not a GAME ! Get a random life tip or motivational quote with a click.</p>
+              <div class="game-details">
+                <span class="game-players"><i class="fas fa-users"></i> 1 Player</span>
+                <span class="game-difficulty"><i class="fas fa-star"></i> Easy</span>
+              </div>
+              <div class="game-tags">
+                <span class="tag">Motivation</span>
+                <span class="tag">Fun</span>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Game Card 6 -->
+          <div class="game-card" onclick="openGame('whiteboard')">
+            <div class="game-image">
+              <img src="Assets/white.jpg" alt="whiteboard" />
+              <div class="game-overlay">
+                <i class="fas fa-play"></i>
+              </div>
+            </div>
+            <div class="game-info">
+              <h3 class="game-name">White Board</h3>
+              <p class="game-description">Just a normal White Board !</p>
+              <div class="game-details">
+                <span class="game-players"><i class="fas fa-users"></i> 1 Player</span>
+                <span class="game-difficulty"><i class="fas fa-star"></i> Easy</span>
+              </div>
+              <div class="game-tags">
+                <span class="tag">Single</span>
+                <span class="tag">Creative</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Game Card 7 -->
+          <div class="game-card" onclick="openGame('dsasolver')">
+            <div class="game-image">
+              <img src="Assets/dsa.jpg" alt="DSA" />
+              <div class="game-overlay">
+                <i class="fas fa-play"></i>
+              </div>
+            </div>
+            <div class="game-info">
+              <h3 class="game-name">DSA Solver (ONLINE)</h3>
+              <p class="game-description">Practice and solve Data Structures & Algorithms problems interactively online</p>
+              <div class="game-details">
+                <span class="game-players"><i class="fas fa-users"></i> 1 Player</span>
+                <span class="game-difficulty" > ☠️☠️☠️ Extreme  </span>
+              </div>
+              <div class="game-tags">
+                <span class="tag">DSA</span>
+                <span class="tag">Coding</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Game Card 8 -->
+          <div class="game-card" onclick="openGame('quiz')">
+            <div class="game-image">
+              <img src="Assets/quiz.jpg" alt="quiz" />
+              <div class="game-overlay">
+                <i class="fas fa-play"></i>
+              </div>
+            </div>
+            <div class="game-info">
+              <h3 class="game-name">Take a QUIZ</h3>
+              <p class="game-description">Challenge your knowledge with high-intensity quizzes across various topics</p>
+              <div class="game-details">
+                <span class="game-players"><i class="fas fa-users"></i> 1 Player</span>
+                <span class="game-difficulty" ><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> Hard  </span>
+              </div>
+              <div class="game-tags">
+                <span class="tag">Quiz</span>
+                <span class="tag">Trivia</span>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </section>
     </div>
   </main>
+  
 
   <!-- Fullscreen Code Editor -->
   <div class="fullscreen-overlay" id="fullscreenOverlay">
@@ -1750,6 +2154,103 @@
         showToast('error', 'Logout Error', 'Failed to logout');
       }
     }
+
+    //games
+    // Game Functions
+    function openGame(gameType) {
+      const gameUrls = {
+        'chess': 'games/chess/chess.html',
+        'tic-tac-toe': 'games/ttt/index.html',
+        'typemaster': 'games/typemaster/index.html',
+        'stone': 'games/stonepaper/index.html',
+        'advice': 'games/advice/index.html',
+        'whiteboard': 'games/white/index.html',
+        'dsasolver': 'games/dsasolver/index.html',
+        'quiz': 'games/Quiz/quiz.html',
+      };
+      
+      const gameNames = {
+        'chess': 'Chess Master',
+        'tic-tac-toe': 'Tic Tac Toe',
+        'typemaster': 'Type Master',
+        'stone': 'Stone Paper Scissor',
+        'advice': 'Free Advice',
+        'whiteboard': 'White Board',
+        'dsasolver': 'DSA Solver',
+        'quiz': 'Take a QUIZ'
+      };
+      
+      // Create modal if it doesn't exist
+      let gameModal = document.getElementById('gameModal');
+      if (!gameModal) {
+        gameModal = document.createElement('div');
+        gameModal.id = 'gameModal';
+        gameModal.className = 'game-modal';
+        gameModal.innerHTML = `
+          <div class="game-modal-content">
+            <div class="game-modal-header">
+              <div class="game-modal-title">
+                <i class="fas fa-gamepad"></i>
+                <span id="gameModalTitle">Game</span>
+              </div>
+              <button class="game-modal-close" onclick="closeGame()">
+                <i class="fas fa-times"></i>
+                Close Game
+              </button>
+            </div>
+            <iframe id="gameIframe" class="game-iframe" src=""></iframe>
+          </div>
+        `;
+        document.body.appendChild(gameModal);
+      }
+      
+      // Set game details
+      document.getElementById('gameModalTitle').textContent = gameNames[gameType] || 'Game';
+      var iframe = document.getElementById('gameIframe');
+      iframe.src = gameUrls[gameType] || 'games/default.html';
+      // Set special attributes for chess only
+      if (gameType === 'chess') {
+        iframe.setAttribute('scrolling', 'no');
+        iframe.style.overflow = 'hidden';
+        iframe.style.background = 'var(--darker)';
+      } else {
+        iframe.removeAttribute('scrolling');
+        iframe.style.overflow = '';
+        iframe.style.background = '';
+      }
+      
+      // Show modal
+      gameModal.style.display = 'flex';
+      
+      // Prevent body scroll
+      document.body.classList.add('modal-open');
+      
+      // Add escape key listener
+      document.addEventListener('keydown', handleGameEscape);
+      
+      showToast('success', 'Game Loading', `Loading ${gameNames[gameType]}...`);
+    }
+
+    function closeGame() {
+      const gameModal = document.getElementById('gameModal');
+      if (gameModal) {
+        gameModal.style.display = 'none';
+        document.getElementById('gameIframe').src = '';
+      }
+      
+      // Restore body scroll
+      document.body.classList.remove('modal-open');
+      
+      // Remove escape key listener
+      document.removeEventListener('keydown', handleGameEscape);
+    }
+
+    function handleGameEscape(e) {
+      if (e.key === 'Escape') {
+        closeGame();
+      }
+    }
+
 
     // Setup online presence tracking
     function setupPresenceTracking() {
@@ -2690,6 +3191,18 @@
         presenceChannel.unsubscribe();
       }
     });
+
+    // Dynamically update the games count in the games section
+    function updateGamesCount() {
+      const gamesGrid = document.querySelector('.games-grid');
+      const count = gamesGrid ? gamesGrid.querySelectorAll('.game-card').length : 0;
+      const gamesCount = document.getElementById('gamesCount');
+      if (gamesCount) {
+        gamesCount.textContent = count + (count === 1 ? ' Content Available' : ' Content Available');
+      }
+    }
+    // Call on page load
+    document.addEventListener('DOMContentLoaded', updateGamesCount);
   </script>
 </body>
 </html>

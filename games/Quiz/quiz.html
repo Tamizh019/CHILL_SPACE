@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>General Knowledge Quiz</title>
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      --success-color: #4ade80;
+      --error-color: #ef4444;
+      --glass-bg: rgba(255, 255, 255, 0.1);
+      --glass-border: rgba(255, 255, 255, 0.2);
+      --text-primary: #ffffff;
+      --text-secondary: rgba(255, 255, 255, 0.8);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--primary-gradient);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-primary);
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 800px;
+      backdrop-filter: blur(20px);
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .quiz-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .quiz-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      background: var(--secondary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .quiz-subtitle {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+    }
+
+    .progress-container {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 50px;
+      height: 8px;
+      margin-bottom: 30px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: var(--secondary-gradient);
+      border-radius: 50px;
+      transition: width 0.3s ease;
+      width: 0%;
+    }
+
+    .question-counter {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .question-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 30px;
+      margin-bottom: 30px;
+    }
+
+    .question-text {
+      font-size: 1.3rem;
+      font-weight: 500;
+      margin-bottom: 25px;
+      line-height: 1.4;
+    }
+
+    .options-container {
+      display: grid;
+      gap: 12px;
+    }
+
+    .option {
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid transparent;
+      border-radius: 12px;
+      padding: 16px 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+      color: var(--text-primary);
+    }
+
+    .option:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .option.selected {
+      border-color: var(--success-color);
+      background: rgba(74, 222, 128, 0.1);
+    }
+
+    .option.correct {
+      border-color: var(--success-color);
+      background: rgba(74, 222, 128, 0.2);
+    }
+
+    .option.incorrect {
+      border-color: var(--error-color);
+      background: rgba(239, 68, 68, 0.2);
+    }
+
+    .quiz-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 30px;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 50px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.95rem;
+    }
+
+    .btn-primary {
+      background: var(--secondary-gradient);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-primary);
+      border: 1px solid var(--glass-border);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    .results-container {
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .score-display {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      background: var(--secondary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .score-text {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+      color: var(--text-secondary);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 20px;
+      margin: 30px 0;
+    }
+
+    .stat-item {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 20px 15px;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .stat-label {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 30px 20px;
+      }
+      
+      .quiz-title {
+        font-size: 2rem;
+      }
+      
+      .question-text {
+        font-size: 1.1rem;
+      }
+      
+      .quiz-controls {
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Quiz Start Screen -->
+    <div id="start-screen">
+      <div class="quiz-header">
+        <h1 class="quiz-title">General Knowledge Quiz</h1>
+        <p class="quiz-subtitle">Test your knowledge with 30 challenging questions!</p>
+        <button class="btn btn-primary" onclick="startQuiz()">Start Quiz</button>
+      </div>
+    </div>
+
+    <!-- Quiz Screen -->
+    <div id="quiz-screen" class="hidden">
+      <div class="progress-container">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+      
+      <div class="question-counter">
+        Question <span id="current-question">1</span> of <span id="total-questions">30</span>
+      </div>
+
+      <div class="question-card">
+        <div class="question-text" id="question-text"></div>
+        <div class="options-container" id="options-container"></div>
+      </div>
+
+      <div class="quiz-controls">
+        <button class="btn btn-secondary" id="prev-btn" onclick="previousQuestion()" disabled>Previous</button>
+        <button class="btn btn-primary" id="next-btn" onclick="nextQuestion()" disabled>Next</button>
+      </div>
+    </div>
+
+    <!-- Results Screen -->
+    <div id="results-screen" class="hidden">
+      <div class="results-container">
+        <div class="quiz-header">
+          <h2 class="quiz-title">Quiz Complete!</h2>
+        </div>
+        
+        <div class="score-display" id="final-score">0/30</div>
+        <div class="score-text" id="score-message"></div>
+        
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-number" id="correct-answers">0</div>
+            <div class="stat-label">Correct</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number" id="incorrect-answers">0</div>
+            <div class="stat-label">Incorrect</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number" id="accuracy-percentage">0%</div>
+            <div class="stat-label">Accuracy</div>
+          </div>
+        </div>
+        
+        <button class="btn btn-primary" onclick="restartQuiz()">Take Quiz Again</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "What is the capital of Australia?",
+        options: ["Sydney", "Melbourne", "Canberra", "Perth"],
+        correct: 2
+      },
+      {
+        question: "Which planet is known as the Red Planet?",
+        options: ["Venus", "Mars", "Jupiter", "Saturn"],
+        correct: 1
+      },
+      {
+        question: "Who painted the Mona Lisa?",
+        options: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Michelangelo"],
+        correct: 1
+      },
+      {
+        question: "What is the largest ocean on Earth?",
+        options: ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean", "Pacific Ocean"],
+        correct: 3
+      },
+      {
+        question: "In which year did World War II end?",
+        options: ["1944", "1945", "1946", "1947"],
+        correct: 1
+      },
+      {
+        question: "What is the chemical symbol for gold?",
+        options: ["Go", "Gd", "Au", "Ag"],
+        correct: 2
+      },
+      {
+        question: "Which country has the most time zones?",
+        options: ["Russia", "United States", "China", "Canada"],
+        correct: 0
+      },
+      {
+        question: "What is the smallest country in the world?",
+        options: ["Monaco", "Nauru", "Vatican City", "San Marino"],
+        correct: 2
+      },
+      {
+        question: "Who wrote 'Romeo and Juliet'?",
+        options: ["Charles Dickens", "William Shakespeare", "Jane Austen", "Mark Twain"],
+        correct: 1
+      },
+      {
+        question: "What is the hardest natural substance on Earth?",
+        options: ["Gold", "Iron", "Diamond", "Platinum"],
+        correct: 2
+      },
+      {
+        question: "Which river is the longest in the world?",
+        options: ["Amazon River", "Nile River", "Mississippi River", "Yangtze River"],
+        correct: 1
+      },
+      {
+        question: "What is the currency of Japan?",
+        options: ["Yuan", "Won", "Yen", "Ringgit"],
+        correct: 2
+      },
+      {
+        question: "How many bones are in the adult human body?",
+        options: ["206", "208", "210", "212"],
+        correct: 0
+      },
+      {
+        question: "Which gas makes up about 78% of Earth's atmosphere?",
+        options: ["Oxygen", "Carbon Dioxide", "Nitrogen", "Hydrogen"],
+        correct: 2
+      },
+      {
+        question: "In Greek mythology, who is the king of the gods?",
+        options: ["Apollo", "Zeus", "Poseidon", "Hades"],
+        correct: 1
+      },
+      {
+        question: "What is the largest mammal in the world?",
+        options: ["African Elephant", "Blue Whale", "Giraffe", "Polar Bear"],
+        correct: 1
+      },
+      {
+        question: "Which country gifted the Statue of Liberty to the United States?",
+        options: ["United Kingdom", "Spain", "France", "Italy"],
+        correct: 2
+      },
+      {
+        question: "What is the speed of light in vacuum?",
+        options: ["299,792,458 m/s", "300,000,000 m/s", "299,000,000 m/s", "298,792,458 m/s"],
+        correct: 0
+      },
+      {
+        question: "Which instrument is used to measure atmospheric pressure?",
+        options: ["Thermometer", "Barometer", "Hygrometer", "Anemometer"],
+        correct: 1
+      },
+      {
+        question: "What is the most abundant element in the universe?",
+        options: ["Helium", "Oxygen", "Hydrogen", "Carbon"],
+        correct: 2
+      },
+      {
+        question: "Which mountain range contains Mount Everest?",
+        options: ["Andes", "Alps", "Rocky Mountains", "Himalayas"],
+        correct: 3
+      },
+      {
+        question: "Who developed the theory of relativity?",
+        options: ["Isaac Newton", "Albert Einstein", "Stephen Hawking", "Galileo Galilei"],
+        correct: 1
+      },
+      {
+        question: "What is the largest desert in the world?",
+        options: ["Sahara Desert", "Gobi Desert", "Antarctica", "Arabian Desert"],
+        correct: 2
+      },
+      {
+        question: "Which blood type is known as the universal donor?",
+        options: ["A+", "B+", "AB+", "O-"],
+        correct: 3
+      },
+      {
+        question: "In which city is the headquarters of the United Nations located?",
+        options: ["Geneva", "New York", "London", "Paris"],
+        correct: 1
+      },
+      {
+        question: "What is the powerhouse of the cell?",
+        options: ["Nucleus", "Ribosome", "Mitochondria", "Chloroplast"],
+        correct: 2
+      },
+      {
+        question: "Which country hosted the 2016 Summer Olympics?",
+        options: ["China", "United Kingdom", "Brazil", "Russia"],
+        correct: 2
+      },
+      {
+        question: "What is the study of earthquakes called?",
+        options: ["Geology", "Seismology", "Meteorology", "Volcanology"],
+        correct: 1
+      },
+      {
+        question: "Which vitamin is produced when skin is exposed to sunlight?",
+        options: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"],
+        correct: 3
+      },
+      {
+        question: "What is the largest island in the world?",
+        options: ["Australia", "Greenland", "New Guinea", "Borneo"],
+        correct: 1
+      }
+    ];
+
+    let currentQuestionIndex = 0;
+    let selectedAnswers = [];
+    let score = 0;
+
+    function startQuiz() {
+      document.getElementById('start-screen').classList.add('hidden');
+      document.getElementById('quiz-screen').classList.remove('hidden');
+      selectedAnswers = new Array(questions.length).fill(null);
+      currentQuestionIndex = 0;
+      score = 0;
+      showQuestion();
+    }
+
+    function showQuestion() {
+      const question = questions[currentQuestionIndex];
+      document.getElementById('current-question').textContent = currentQuestionIndex + 1;
+      document.getElementById('total-questions').textContent = questions.length;
+      document.getElementById('question-text').textContent = question.question;
+      
+      const optionsContainer = document.getElementById('options-container');
+      optionsContainer.innerHTML = '';
+      
+      question.options.forEach((option, index) => {
+        const optionElement = document.createElement('div');
+        optionElement.className = 'option';
+        optionElement.textContent = option;
+        optionElement.onclick = () => selectOption(index);
+        
+        if (selectedAnswers[currentQuestionIndex] === index) {
+          optionElement.classList.add('selected');
+        }
+        
+        optionsContainer.appendChild(optionElement);
+      });
+      
+      updateNavigation();
+      updateProgress();
+    }
+
+    function selectOption(optionIndex) {
+      selectedAnswers[currentQuestionIndex] = optionIndex;
+      
+      const options = document.querySelectorAll('.option');
+      options.forEach((option, index) => {
+        option.classList.toggle('selected', index === optionIndex);
+      });
+      
+      updateNavigation();
+    }
+
+    function updateNavigation() {
+      const prevBtn = document.getElementById('prev-btn');
+      const nextBtn = document.getElementById('next-btn');
+      
+      prevBtn.disabled = currentQuestionIndex === 0;
+      nextBtn.disabled = selectedAnswers[currentQuestionIndex] === null;
+      
+      if (currentQuestionIndex === questions.length - 1) {
+        nextBtn.textContent = 'Finish Quiz';
+      } else {
+        nextBtn.textContent = 'Next';
+      }
+    }
+
+    function updateProgress() {
+      const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+      document.getElementById('progress-bar').style.width = progress + '%';
+    }
+
+    function nextQuestion() {
+      if (currentQuestionIndex < questions.length - 1) {
+        currentQuestionIndex++;
+        showQuestion();
+      } else {
+        finishQuiz();
+      }
+    }
+
+    function previousQuestion() {
+      if (currentQuestionIndex > 0) {
+        currentQuestionIndex--;
+        showQuestion();
+      }
+    }
+
+    function finishQuiz() {
+      score = 0;
+      for (let i = 0; i < questions.length; i++) {
+        if (selectedAnswers[i] === questions[i].correct) {
+          score++;
+        }
+      }
+      
+      showResults();
+    }
+
+    function showResults() {
+      document.getElementById('quiz-screen').classList.add('hidden');
+      document.getElementById('results-screen').classList.remove('hidden');
+      
+      const percentage = Math.round((score / questions.length) * 100);
+      
+      document.getElementById('final-score').textContent = `${score}/${questions.length}`;
+      document.getElementById('correct-answers').textContent = score;
+      document.getElementById('incorrect-answers').textContent = questions.length - score;
+      document.getElementById('accuracy-percentage').textContent = percentage + '%';
+      
+      let message = '';
+      if (percentage >= 90) {
+        message = 'Outstanding! You\'re a general knowledge expert! 🎉';
+      } else if (percentage >= 75) {
+        message = 'Great job! You have excellent general knowledge! 👏';
+      } else if (percentage >= 60) {
+        message = 'Good work! You have solid general knowledge! 👍';
+      } else if (percentage >= 40) {
+        message = 'Not bad! There\'s room for improvement! 📚';
+      } else {
+        message = 'Keep studying! Practice makes perfect! 💪';
+      }
+      
+      document.getElementById('score-message').textContent = message;
+    }
+
+    function restartQuiz() {
+      document.getElementById('results-screen').classList.add('hidden');
+      document.getElementById('start-screen').classList.remove('hidden');
+      currentQuestionIndex = 0;
+      selectedAnswers = [];
+      score = 0;
+    }
+
+    // Initialize the quiz
+    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('total-questions').textContent = questions.length;
+    });
+  </script>
+</body>
+</html>
