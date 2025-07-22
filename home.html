@@ -1077,6 +1077,47 @@
       box-shadow: 0 0 0 2px var(--gray);
     }
 
+    /* ===== File preview modal ===== */
+.preview-modal{
+  position:fixed; inset:0; background:rgba(0,0,0,.85);
+  z-index:11000; display:none; align-items:center; justify-content:center;
+}
+.preview-modal.open{display:flex;}
+.preview-modal-content{
+  background:var(--dark); border:1px solid var(--card-border);
+  border-radius:12px; max-width:90vw; max-height:90vh; width:900px;
+  padding:1rem; position:relative; overflow:auto;
+}
+.preview-modal-close{
+  position:absolute; top:8px; right:8px;
+  background:var(--danger); color:#fff; border:none; border-radius:50%;
+  width:34px; height:34px; cursor:pointer;
+}
+.preview-modal iframe, .preview-modal img, .preview-modal pre{
+  width:100%; max-height:80vh; border:none;
+}
+.preview-modal pre{color:var(--light); white-space:pre-wrap;}
+/* ===== profile pop-over ===== */
+.profile-pop{
+  position:absolute; top:50px; right:0;
+  background:var(--dark); border:1px solid var(--card-border);
+  border-radius:8px; padding:1rem; width:220px; display:none;
+  z-index:9999; box-shadow:0 8px 25px rgba(0,0,0,.4);
+}
+.profile-pop.open{display:block;}
+.profile-pop::before{
+  content:''; position:absolute; top:-6px; right:12px;
+  border:6px solid transparent; border-bottom-color:var(--dark);
+}
+.pop-avatar{
+  width:60px; height:60px; border-radius:50%; object-fit:cover;
+  border:2px solid var(--primary); margin-bottom:.5rem;
+}
+.pop-info h4{margin:0 0 .25rem 0; color:var(--light);}
+.pop-info p{margin:0; font-size:.82rem; color:var(--gray);}
+
+
+
     footer {
       text-align: center;
       padding: 1rem;
@@ -1545,7 +1586,15 @@
     </div>
     <div class="header-actions">
       <div class="user-info">
-        <div class="user-avatar" id="userAvatar"></div>
+        <div class="user-avatar" id="userAvatar">
+          <div id="profilePopover" class="profile-pop">
+            <img id="popImg" class="pop-avatar" src="" alt="">
+            <div class="pop-info">
+              <h4 id="popName"></h4>
+              <p id="popEmail"></p>
+              <p id="popDob"></p>
+            </div>
+        </div>
         <span id="username"></span>
       </div>
       <button class="btn btn-danger btn-sm" id="logoutBtn">
@@ -2009,6 +2058,35 @@
 
         // Update UI with user info
         updateUserInfo();
+        /* === PROFILE POPOVER LOGIC === */
+const pop = document.getElementById('profilePopover');
+function fillProfile(){
+  document.getElementById('popName').textContent  = getUserDisplayName(currentUser,currentProfile);
+  document.getElementById('popEmail').textContent = currentUser.email || '';
+  document.getElementById('popDob').textContent   = currentProfile?.dob ? `DOB: ${currentProfile.dob}` : '';
+  // if you store avatar in storage: generate its URL the same way
+  const avatarUrl = currentProfile?.avatar_url || '';
+  document.getElementById('popImg').src = avatarUrl || 'Assets/default-avatar.png';
+}
+function toggleProfile(){
+  if(pop.classList.contains('open')){
+    pop.classList.remove('open');
+  }else{
+    fillProfile();
+    const rect = userAvatar.getBoundingClientRect();
+    pop.style.right = `${window.innerWidth - rect.right}px`;
+    pop.style.top   = `${rect.bottom + 8}px`;
+    pop.classList.add('open');
+  }
+}
+document.getElementById('userAvatar').addEventListener('click',toggleProfile);
+// click outside to close
+document.addEventListener('click',e=>{
+  if(!pop.contains(e.target) && e.target.id!=='userAvatar'){
+    pop.classList.remove('open');
+  }
+});
+
         
         // Show welcome message with cancel button
         showWelcomeToast();
@@ -2139,6 +2217,55 @@
         }
       });
     }
+
+    /* === OPEN / CLOSE MODAL === */
+function openPreview(file){
+  const modal     = document.getElementById('previewModal');
+  const container = document.getElementById('previewBody');
+  container.innerHTML = '';                       // reset
+  const { filetype, filepath, filename } = file;  // supplied from db row
+
+  // Build a public URL (bucket must be public)
+  const { data } = supabaseClient
+      .storage.from('files').getPublicUrl(filepath);
+  const url = data.publicUrl;
+
+  if(!url){ showToast('error','Preview failed','No URL'); return; }
+
+  if(filetype.startsWith('image/')){
+    const img = document.createElement('img');
+    img.src = url; container.appendChild(img);
+
+  }else if(filetype === 'application/pdf'){
+    const frame = document.createElement('iframe');
+    frame.src = `${url}#toolbar=0&navpanes=0`;    // cleaner PDF chrome
+    container.appendChild(frame);
+
+  }else if(filetype.startsWith('text/')){
+    fetch(url)
+      .then(r=>r.text())
+      .then(t=>{
+        const pre = document.createElement('pre');
+        pre.textContent = t; container.appendChild(pre);
+      })
+      .catch(()=>showToast('error','Preview failed','Can’t fetch text'));
+  }else{
+    container.innerHTML =
+      `<p style="color:var(--gray);text-align:center">
+        ⛔ Preview not supported.<br>Download instead.
+      </p>`;
+  }
+
+  modal.classList.add('open');
+  document.body.classList.add('modal-open');
+}
+function closePreview(){
+  document.getElementById('previewModal').classList.remove('open');
+  document.body.classList.remove('modal-open');
+}
+
+
+
 
     async function logout() {
       try {
@@ -2885,6 +3012,7 @@
 
         files.forEach(file => {
           const fileItem = document.createElement('div');
+          fileItem.onclick = ()=>openPreview(file); 
           fileItem.className = 'file-item fade-in';
           fileItem.innerHTML = `
             <div class="file-info">
@@ -3204,5 +3332,16 @@
     // Call on page load
     document.addEventListener('DOMContentLoaded', updateGamesCount);
   </script>
+  <!-- File-preview modal -->
+<div id="previewModal" class="preview-modal">
+  <div class="preview-modal-content">
+    <button class="preview-modal-close" onclick="closePreview()">
+      <i class="fas fa-times"></i>
+    </button>
+    <!-- Dynamic container -->
+    <div id="previewBody"></div>
+  </div>
+</div>
+
 </body>
 </html>
