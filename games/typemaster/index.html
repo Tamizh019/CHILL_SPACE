@@ -4,40 +4,509 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Typing Speed Checker</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Typing Speed Master</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #00ffff;
+            --secondary-color: #ff00ff;
+            --bg-gradient: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            --text-color: #ffffff;
+            --accent-color: #ffd700;
+            --error-color: #ff4d4d;
+            --success-color: #00ff00;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: var(--bg-gradient);
+            color: var(--text-color);
+            overflow: hidden;
+        }
+
+        .wrapper {
+            width: 850px;
+            padding: 40px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .input-field {
+            z-index: -999;
+            opacity: 0;
+            position: absolute;
+        }
+
+        .content-box {
+            padding: 15px 25px;
+            border-radius: 15px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .typing-text {
+            max-height: 280px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary-color) transparent;
+        }
+
+        .typing-text p {
+            font-size: 22px;
+            text-align: justify;
+            letter-spacing: 1.2px;
+            word-break: break-all;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .typing-text p span {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .typing-text p span.correct {
+            color: var(--success-color);
+            text-shadow: 0 0 5px var(--success-color);
+        }
+
+        .typing-text p span.incorrect {
+            color: var(--error-color);
+            background: rgba(255, 77, 77, 0.2);
+            outline: 1px solid var(--error-color);
+            border-radius: 4px;
+            text-shadow: 0 0 5px var(--error-color);
+        }
+
+        .typing-text p span.active {
+            color: var(--primary-color);
+        }
+
+        .typing-text p span.active::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 3px;
+            width: 100%;
+            background: var(--primary-color);
+            animation: blink 1s ease-in-out infinite;
+            box-shadow: 0 0 10px var(--primary-color);
+        }
+
+        @keyframes blink {
+            50% { opacity: 0.5; }
+        }
+
+        .content {
+            display: flex;
+            margin-top: 20px;
+            padding: 15px 0;
+            align-items: center;
+            border-top: 1px solid var(--glass-border);
+            justify-content: space-between;
+        }
+
+        .content button {
+            border: none;
+            outline: none;
+            width: 120px;
+            padding: 10px 0;
+            color: var(--text-color);
+            cursor: pointer;
+            font-size: 18px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+        }
+
+        .content button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.8);
+        }
+
+        .content .result {
+            display: flex;
+            width: calc(100% - 150px);
+            justify-content: space-between;
+        }
+
+        .result li {
+            height: 25px;
+            display: flex;
+            list-style: none;
+            align-items: center;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .result li:not(:first-child) {
+            padding-left: 25px;
+            border-left: 1px solid var(--glass-border);
+        }
+
+        .result li p {
+            font-size: 20px;
+        }
+
+        .result li span {
+            display: block;
+            font-size: 22px;
+            margin-left: 12px;
+            font-weight: 700;
+            color: var(--accent-color);
+            text-shadow: 0 0 5px var(--accent-color);
+        }
+
+        .result li:not(:first-child) span {
+            font-weight: 500;
+        }
+
+        .result li b {
+            font-weight: 700;
+        }
+
+        /* Start Screen */
+        #start-screen {
+            text-align: center;
+        }
+
+        #start-screen h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        #start-screen p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: var(--text-secondary);
+        }
+
+        .difficulty-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .difficulty-buttons button {
+            width: 150px;
+            padding: 12px;
+            font-size: 1.1rem;
+        }
+
+        /* Motivation Message */
+        #motivation {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.5rem;
+            color: var(--success-color);
+            text-shadow: 0 0 10px var(--success-color);
+            animation: pulse 2s infinite;
+            display: none;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .wrapper {
+                width: 95%;
+                padding: 20px;
+            }
+
+            .difficulty-buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="wrapper">
-        <input type="text" class="input-field">
-        <div class="content-box">
-            <div class="typing-text">
-                <p></p>
-            </div>
-            <div class="content">
-                <ul class="result">
-                    <li class="time">
-                        <p>Time Left:</p>
-                        <span><b>60</b>s</span>
-                    </li>
-                    <li class="mistakes">
-                        <p>Mistakes:</p>
-                        <span>0</span>
-                    </li>
-                    <li class="wpm">
-                        <p>WPM:</p>
-                        <span>0</span>
-                    </li>
-                    <li class="cpm">
-                        <p>CPM:</p>
-                        <span>0</span>
-                    </li>
-                </ul>
-                <button>Try Again</button>
+        <!-- Start Screen -->
+        <div id="start-screen">
+            <h1>Typing Speed Master</h1>
+            <p>Choose your difficulty level and test your typing skills!</p>
+            <div class="difficulty-buttons">
+                <button onclick="startGame('easy')">Easy</button>
+                <button onclick="startGame('medium')">Medium</button>
+                <button onclick="startGame('hard')">Hard</button>
             </div>
         </div>
+
+        <!-- Game Screen -->
+        <div id="game-screen" class="hidden">
+            <input type="text" class="input-field">
+            <div class="content-box">
+                <div class="typing-text">
+                    <p></p>
+                </div>
+                <div class="content">
+                    <ul class="result">
+                        <li class="time">
+                            <p>Time Left:</p>
+                            <span><b>60</b>s</span>
+                        </li>
+                        <li class="mistakes">
+                            <p>Mistakes:</p>
+                            <span>0</span>
+                        </li>
+                        <li class="wpm">
+                            <p>WPM:</p>
+                            <span>0</span>
+                        </li>
+                        <li class="cpm">
+                            <p>CPM:</p>
+                            <span>0</span>
+                        </li>
+                    </ul>
+                    <button id="try-again">Try Again</button>
+                </div>
+            </div>
+            <div id="motivation"></div>
+        </div>
     </div>
-    <script src="./js/paragraph.js"></script>
-    <script src="./js/script.js"></script>
+
+    <script>
+        const paragraphs = {
+            easy: [
+                "the cat sat on the mat",
+                "a dog ran in the park",
+                "birds fly in the sky",
+                "fish swim in the sea",
+                "kids play with toys",
+                "trees grow tall and green",
+                "sun shines bright all day",
+                "moon lights up the night",
+                "stars twinkle far away",
+                "rain falls from gray clouds",
+                "snow covers the ground white",
+                "flowers bloom in spring time",
+                "leaves fall in cool autumn",
+                "rivers flow to the ocean",
+                "mountains stand high and strong",
+                "friends share fun times together",
+                "books tell great stories",
+                "music makes people dance",
+                "games bring joy and laughs",
+                "food tastes good when shared",
+                "homes keep us safe and warm",
+                "schools teach new things each day",
+                "work helps us grow and learn",
+                "dreams come true with effort",
+                "love binds families close",
+                "peace brings calm to hearts",
+                "joy fills happy moments",
+                "hope lights the way ahead",
+                "faith moves mountains big",
+                "life is a grand adventure"
+            ],
+            medium: [
+                "Development of the GitHub.com platform began on October 19, 2007. The site was launched in April 2008 by Tom Preston-Werner, Chris Wanstrath, P. J. Hyett and Scott Chacon after it had been made available for a few months prior as a beta release. GitHub has an annual keynote called GitHub Universe.",
+                "The GitHub service was developed by Chris Wanstrath, P. J. Hyett, Tom Preston-Werner, and Scott Chacon using Ruby on Rails, and started in February 2008. The company, GitHub, Inc., has existed since 2007 and is located in San Francisco.",
+                "ChatGPT was launched as a prototype on November 30, 2022, and quickly garnered attention for its detailed responses and articulate answers across many domains of knowledge. Its uneven factual accuracy was identified as a significant drawback. Following the release of ChatGPT, OpenAI was reportedly valued at $29 billion.",
+                "B2B e-commerce, short for business-to-business electronic commerce, is the sale of goods or services between businesses via an online sales portal. In general, it is used to improve the efficiency and effectiveness of a company's sales efforts. Instead of receiving orders using human assets (sales reps) manually – by telephone or e-mail – orders are received digitally, reducing overhead costs.",
+                "The term vanilla script is used to refer to the pure JavaScript (or we can say plain JavaScript) without any type of additional library. Sometimes people often used it as a joke nowadays several things can also be done without using any additional JavaScript libraries.",
+                "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Cupiditate pariatur laborum saepe quae deserunt animi itaque optio doloribus dolorem veritatis dolorum natus, eius quis amet impedit ex asperiores, inventore dolor maxime quia, necessitatibus sapiente repellat. Nobis quaerat, illum tempora inventore error blanditiis praesentium rerum. Nobis illo veritatis non! Temporibus officiis a molestiae dolore magni quaerat facere eum quisquam in quasi voluptatem blanditiis, magnam corrupti repudiandae labore quidem odit neque minima asperiores quae eius! Ducimus exercitationem ut veritatis ipsa iure iusto corporis nesciunt eos cupiditate laudantium fugiat odio eligendi error consequatur blanditiis cumque, quam modi iste provident reiciendis delectus. Eos, nam?",
+                "AI applications include advanced web search engines (e.g., Google), recommendation systems (used by YouTube, Amazon and Netflix), understanding human speech (such as Siri and Alexa), self-driving cars (e.g., Waymo), automated decision-making and competing at the highest level in strategic game systems (such as chess and Go). As machines become increasingly capable, tasks considered to require intelligence are often removed from the definition of AI, a phenomenon known as the AI effect. ",
+                "Quantum computing leverages principles of quantum mechanics to process information at unprecedented speeds. Unlike classical bits, qubits can exist in multiple states simultaneously, enabling exponential computational power for complex problems like cryptography and drug discovery.",
+                "Blockchain technology, beyond cryptocurrencies, is revolutionizing supply chain management by providing transparent, immutable ledgers that ensure traceability and reduce fraud in global trade networks.",
+                "The Internet of Things (IoT) connects everyday devices to the internet, enabling smart homes where appliances communicate seamlessly, optimizing energy use and enhancing user convenience.",
+                "Machine learning algorithms analyze vast datasets to predict trends, from stock market fluctuations to personalized healthcare recommendations, transforming industries with data-driven insights.",
+                "Virtual reality (VR) immerses users in digital environments, finding applications in education, training simulations, and therapeutic treatments for phobias and PTSD.",
+                "Augmented reality (AR) overlays digital information on the real world, enhancing experiences in gaming, navigation, and remote collaboration tools.",
+                "5G networks promise ultra-low latency and high-speed connectivity, paving the way for autonomous vehicles, smart cities, and advanced telemedicine services.",
+                "Cybersecurity threats evolve rapidly, with AI-powered defenses now essential to detect and mitigate sophisticated attacks like ransomware and deepfakes.",
+                "Sustainable energy solutions, such as solar panels and wind turbines, are crucial in combating climate change by reducing reliance on fossil fuels.",
+                "Genetic engineering techniques like CRISPR allow precise DNA editing, potentially curing genetic disorders and improving crop resilience.",
+                "Space exploration advances with reusable rockets, making missions to Mars more feasible and opening possibilities for extraterrestrial colonization.",
+                "Nanotechnology manipulates matter at the atomic scale, creating materials with extraordinary properties for medicine and electronics.",
+                "Big data analytics processes enormous volumes of information to uncover patterns, driving business intelligence and scientific discoveries.",
+                "Cloud computing provides scalable resources on-demand, enabling startups to compete with tech giants without massive infrastructure investments.",
+                "Robotics in manufacturing increases efficiency and precision, while humanoid robots assist in healthcare and elderly care.",
+                "Biometric authentication, using fingerprints and facial recognition, enhances security in devices and access control systems.",
+                "Electric vehicles (EVs) reduce emissions, with advancements in battery technology extending range and reducing charging times.",
+                "The metaverse concept blends virtual and physical realities, creating persistent digital worlds for social interaction and commerce.",
+                "Edge computing processes data closer to the source, reducing latency for real-time applications like autonomous driving and IoT devices."
+            ],
+            hard: [
+                "In the labyrinthine corridors of quantum entanglement, where particles dance in synchronous harmony across vast distances, defying classical intuitions of locality and causality, scientists ponder the implications for faster-than-light communication, though Einstein's relativity staunchly prohibits such feats; nevertheless, applications in secure cryptography burgeon, promising unbreakable codes amidst the cacophony of cyber threats.",
+                "The Byzantine intricacies of international diplomacy, exemplified by the multifaceted negotiations surrounding the Paris Agreement on climate change, reveal a tapestry woven with threads of economic self-interest, geopolitical maneuvering, and environmental imperatives, where nations, from industrialized behemoths to developing economies, grapple with carbon emission quotas, adaptation funds, and technology transfers in a bid to avert catastrophic global warming.",
+                "Within the esoteric realm of neuroplasticity, the brain's remarkable ability to rewire itself in response to injury or learning experiences challenges long-held dogmas of neural rigidity; therapies harnessing this phenomenon, such as constraint-induced movement therapy for stroke victims or cognitive behavioral interventions for anxiety disorders, underscore the organ's adaptability, fostering hope for rehabilitation in cases once deemed irreversible.",
+                "The convoluted history of the Silk Road, an ancient network of trade routes connecting the East and West, facilitated not only the exchange of silk, spices, and precious metals but also the diffusion of religions, technologies, and cultural practices, from Buddhism's spread to papermaking techniques, profoundly shaping civilizations across Eurasia and beyond, until maritime routes supplanted its dominance in the Age of Discovery.",
+                "In the arcane field of string theory, which posits that fundamental particles are one-dimensional 'strings' vibrating in multiple dimensions, physicists attempt to reconcile general relativity with quantum mechanics, potentially unveiling a 'theory of everything'; however, the lack of empirical evidence and the mathematical complexity, involving concepts like Calabi-Yau manifolds and supersymmetry, continue to fuel debates among theorists.",
+                "The paradoxical nature of black holes, where gravity's pull is so immense that not even light can escape, leads to information paradoxes challenging quantum mechanics' unitarity; Hawking radiation suggests gradual evaporation, but whether information is preserved or lost remains contentious, with proposals like holographic principles and firewall hypotheses attempting to resolve these enigmas.",
+                "Amidst the tumultuous waves of financial markets, algorithmic trading systems, employing sophisticated machine learning models to predict price movements based on historical data, sentiment analysis, and real-time news feeds, execute trades at speeds incomprehensible to human traders, amplifying both efficiency and volatility, as evidenced by flash crashes and high-frequency trading controversies.",
+                "The intricate symbiosis between gut microbiota and human health, where trillions of microorganisms influence digestion, immunity, and even mental well-being through the gut-brain axis, prompts research into probiotics and fecal transplants as treatments for conditions ranging from inflammatory bowel disease to depression, highlighting the microbiome's role as a 'forgotten organ'.",
+                "In the realm of epistemology, the Gettier problem undermines traditional definitions of knowledge as justified true belief by presenting scenarios where beliefs are true and justified yet not knowledge due to luck or coincidence, spurring philosophers to propose alternatives like reliabilism or virtue epistemology to capture the essence of knowing.",
+                "The elaborate architecture of Gothic cathedrals, with their flying buttresses, ribbed vaults, and pointed arches, not only allowed for unprecedented height and luminosity through stained glass windows but also symbolized the medieval aspiration towards divine transcendence, as seen in masterpieces like Notre-Dame de Paris, constructed over centuries by anonymous artisans.",
+                "Quantum supremacy, achieved when a quantum computer performs a calculation infeasible for classical supercomputers, was claimed by Google's Sycamore processor in 2019, solving a random sampling task in 200 seconds versus millennia for traditional systems, heralding a new era in computation despite debates over practical utility and error rates.",
+                "The anthropic principle, in its strong form, suggests that the universe's fundamental constants are fine-tuned for life, as slight variations would preclude complex structures; this teleological view contrasts with multiverse theories positing infinite universes, where observer selection effects explain our existence in a habitable one.",
+                "Fractal geometry, pioneered by Benoit Mandelbrot, describes irregular, self-similar patterns in nature, from coastlines to blood vessels, using non-integer dimensions; applications span computer graphics, where algorithms generate realistic landscapes, to finance, modeling stock price fluctuations with multifractal processes.",
+                "The Turing test, proposed by Alan Turing in 1950, evaluates a machine's ability to exhibit human-like intelligence through conversation; while passed by advanced chatbots in limited scenarios, critics argue it measures mimicry rather than true understanding, prompting alternative benchmarks like the Winograd Schema Challenge.",
+                "In linguistics, Chomsky's universal grammar theory posits innate linguistic structures enabling language acquisition; debated amid evidence from diverse languages and creoles, it influences fields from AI natural language processing to evolutionary biology, exploring how homo sapiens developed complex communication.",
+                "The Fermi paradox questions why, given the vastness of the universe and high probability of extraterrestrial life, we observe no evidence thereof; resolutions range from the 'great filter' hypothesis, suggesting advanced civilizations self-destruct, to zoo hypotheses proposing aliens avoid contact.",
+                "Chaos theory illustrates how small initial differences in deterministic systems lead to vastly divergent outcomes, epitomized by the butterfly effect; applications in meteorology explain weather prediction limits, while in ecology, it models population dynamics with logistic maps revealing bifurcations and strange attractors.",
+                "Plate tectonics theory unifies observations of continental drift, seafloor spreading, and earthquakes, explaining mountain formation and volcanic arcs through subduction and collision; its acceptance revolutionized geology, providing mechanisms for phenomena like the Himalayan orogeny.",
+                "Game theory's Nash equilibrium, where no player benefits from unilaterally changing strategy, underpins analyses from economics (oligopolies) to evolutionary biology (altruism); extensions like subgame perfect equilibria refine models for sequential games, informing auction designs and negotiation tactics.",
+                "In quantum field theory, virtual particles mediate forces, arising from vacuum fluctuations per Heisenberg's uncertainty; their effects, like the Casimir force between plates, confirm predictions, bridging particle physics with cosmology in understanding the universe's energy density."
+            ]
+        };
+
+        const typingText = document.querySelector(".typing-text p");
+        const inpField = document.querySelector(".input-field");
+        const timeTag = document.querySelector(".time span b");
+        const mistakeTag = document.querySelector(".mistakes span");
+        const wpmTag = document.querySelector(".wpm span");
+        const cpmTag = document.querySelector(".cpm span");
+        const tryAgainBtn = document.getElementById("try-again");
+        const motivation = document.getElementById("motivation");
+        const startScreen = document.getElementById("start-screen");
+        const gameScreen = document.getElementById("game-screen");
+
+        let timer, maxTime = 60, timeLeft = maxTime;
+        let charIndex = 0, mistakes = 0, isTyping = false;
+        let currentDifficulty = 'medium';
+        let currentParagraph = '';
+
+        function startGame(difficulty) {
+            currentDifficulty = difficulty;
+            startScreen.classList.add('hidden');
+            gameScreen.classList.remove('hidden');
+            resetGame();
+            inpField.focus(); // Ensure focus on load
+        }
+
+        function randomParagraph() {
+            const pool = paragraphs[currentDifficulty];
+            const randIndex = Math.floor(Math.random() * pool.length);
+            currentParagraph = pool[randIndex];
+            typingText.innerHTML = "";
+            currentParagraph.split("").forEach(char => {
+                let spanTag = `<span>${char}</span>`;
+                typingText.innerHTML += spanTag;
+            });
+            typingText.querySelectorAll("span")[0].classList.add("active");
+            document.addEventListener("keydown", () => inpField.focus());
+            typingText.addEventListener("click", () => inpField.focus());
+        }
+
+        function initTyping() {
+            const characters = typingText.querySelectorAll("span");
+            let typedChar = inpField.value.split("")[charIndex];
+            if (charIndex < characters.length - 1 && timeLeft > 0) {
+                if (!isTyping) {
+                    timer = setInterval(initTimer, 1000);
+                    isTyping = true;
+                }
+                if (typedChar == null) {
+                    charIndex--;
+                    if (characters[charIndex].classList.contains("incorrect")) {
+                        mistakes--;
+                    }
+                    characters[charIndex].classList.remove("correct", "incorrect");
+                } else {
+                    if (characters[charIndex].innerText === typedChar) {
+                        characters[charIndex].classList.add("correct");
+                    } else {
+                        mistakes++;
+                        characters[charIndex].classList.add("incorrect");
+                    }
+                    charIndex++;
+                }
+                characters.forEach(span => span.classList.remove("active"));
+                characters[charIndex].classList.add("active");
+
+                let wpm = Math.round((((charIndex - mistakes) / 5) / (maxTime - timeLeft)) * 60);
+                wpm = wpm < 0 || !wpm || wpm === Infinity ? 0 : wpm;
+                mistakeTag.innerText = mistakes;
+                wpmTag.innerText = wpm;
+                cpmTag.innerText = charIndex - mistakes;
+            } else {
+                inpField.value = "";
+                clearInterval(timer);
+                showMotivation(wpm);
+            }
+        }
+
+        function initTimer() {
+            if (timeLeft > 0) {
+                timeLeft--;
+                timeTag.innerText = timeLeft;
+            } else {
+                clearInterval(timer);
+                showMotivation(wpmTag.innerText);
+            }
+        }
+
+        function showMotivation(wpm) {
+            let message = '';
+            if (wpm >= 80) {
+                message = 'Incredible! You\'re a typing wizard! 🚀';
+            } else if (wpm >= 60) {
+                message = 'Awesome job! Keep pushing your limits! 💪';
+            } else if (wpm >= 40) {
+                message = 'Great effort! Practice makes perfect! 📈';
+            } else if (wpm >= 20) {
+                message = 'Good start! You\'re improving steadily! 🌟';
+            } else {
+                message = 'Don\'t give up! Every key press counts! 🔥';
+            }
+            motivation.textContent = message;
+            motivation.style.display = 'block';
+        }
+
+        function resetGame() {
+            randomParagraph();
+            inpField.value = "";
+            clearInterval(timer);
+            timeLeft = maxTime;
+            charIndex = mistakes = 0;
+            isTyping = false;
+            timeTag.innerText = timeLeft;
+            mistakeTag.innerText = mistakes;
+            wpmTag.innerText = 0;
+            cpmTag.innerText = 0;
+            motivation.style.display = 'none';
+            inpField.focus(); // Ensure focus after reset
+        }
+
+        inpField.addEventListener("input", initTyping);
+        tryAgainBtn.addEventListener("click", resetGame);
+
+        // Initial focus on load for game screen
+        document.addEventListener('DOMContentLoaded', () => {
+            inpField.focus();
+        });
+    </script>
 </body>
 </html>

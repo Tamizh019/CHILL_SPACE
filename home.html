@@ -69,30 +69,34 @@
     }
 
     .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
+  display: flex;
+  align-items: center;
+  gap: 3.4rem;
+  margin-left: auto; /* Pushes to the right */
+}
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+#username {
+  color: var(--text);
+  font-weight: 500;
+}
 
-    .user-info {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .user-avatar {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      color: white;
-      box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
-      transition: all 0.3s ease;
-    }
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
 
     .user-avatar:hover {
       transform: scale(1.1);
@@ -1098,23 +1102,47 @@
 }
 .preview-modal pre{color:var(--light); white-space:pre-wrap;}
 /* ===== profile pop-over ===== */
-.profile-pop{
-  position:absolute; top:50px; right:0;
-  background:var(--dark); border:1px solid var(--card-border);
-  border-radius:8px; padding:1rem; width:220px; display:none;
-  z-index:9999; box-shadow:0 8px 25px rgba(0,0,0,.4);
+.profile-pop {
+  position: absolute;
+  top: 60px; /* Adjust based on your header height */
+  right: 20px; /* Position from right edge */
+  background: var(--darker);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem;
+  min-width: 200px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  z-index: 1000;
+  display: none;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
 }
-.profile-pop.open{display:block;}
+
+.profile-pop.open {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
 .profile-pop::before{
   content:''; position:absolute; top:-6px; right:12px;
   border:6px solid transparent; border-bottom-color:var(--dark);
 }
-.pop-avatar{
-  width:60px; height:60px; border-radius:50%; object-fit:cover;
-  border:2px solid var(--primary); margin-bottom:.5rem;
+.pop-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-bottom: 0.5rem;
 }
-.pop-info h4{margin:0 0 .25rem 0; color:var(--light);}
-.pop-info p{margin:0; font-size:.82rem; color:var(--gray);}
+.pop-info h4 {
+  margin: 0 0 0.5rem 0;
+  color: var(--primary);
+}
+.pop-info p {
+  margin: 0.25rem 0;
+  color: var(--gray);
+  font-size: 0.9rem;
+}
 
 
 
@@ -1586,17 +1614,21 @@
     </div>
     <div class="header-actions">
       <div class="user-info">
-        <div class="user-avatar" id="userAvatar">
-          <div id="profilePopover" class="profile-pop">
-            <img id="popImg" class="pop-avatar" src="" alt="">
-            <div class="pop-info">
-              <h4 id="popName"></h4>
-              <p id="popEmail"></p>
-              <p id="popDob"></p>
-            </div>
+        <div class="user-avatar" id="userAvatar">T</div>
+        <span id="username">Username</span>
+        
+        <!-- Profile Popover should be OUTSIDE user-info, not inside userAvatar -->
+        <div id="profilePopover" class="profile-pop">
+          <img id="popImg" class="pop-avatar" src="Assets/default-avatar.png" alt="">
+          <div class="pop-info">
+            <h4 id="popName">Name</h4>
+            <p id="popEmail">email@example.com</p>
+            <p id="popDob">DOB: Not set</p>
+          </div>
         </div>
-        <span id="username"></span>
       </div>
+    </div>
+    
       <button class="btn btn-danger btn-sm" id="logoutBtn">
         <i class="fas fa-sign-out-alt"></i>
         <span class="desktop-only">Logout</span>
@@ -2009,7 +2041,7 @@
     let onlineUsers = new Set();
     let isUserAdmin = false;
     let messageToDelete = null;
-
+    
     // Initialize Supabase
     function initializeSupabase() {
       if (typeof supabase !== 'undefined') {
@@ -2018,7 +2050,7 @@
       }
       return false;
     }
-
+    
     // Initialize app
     if (!initializeSupabase()) {
       const checkInterval = setInterval(() => {
@@ -2030,7 +2062,7 @@
     } else {
       initializeApp();
     }
-
+    
     async function initializeApp() {
       try {
         // Get current user
@@ -2039,95 +2071,130 @@
           window.location.href = 'index.html';
           return;
         }
-
+    
         currentUser = user;
         
-        // Get user profile
-        const { data: profile } = await supabaseClient
+        // Get user profile - FIX: Make sure to get all needed fields
+        const { data: profile, error: profileError } = await supabaseClient
           .from('users')
-          .select('username, role')
+          .select('username, role, email, dob, avatar_url')
           .eq('id', user.id)
           .single();
         
-        currentProfile = profile;
+        if (profileError) {
+          console.error('Profile fetch error:', profileError);
+          // Fallback profile creation
+          currentProfile = {
+            username: user.user_metadata?.username || user.email?.split('@')[0] || 'User',
+            role: 'user',
+            email: user.email
+          };
+        } else {
+          currentProfile = profile;
+        }
         
         // Check admin status
-        if (profile?.role === 'admin') {
-          isUserAdmin = true;
-        }
-
-        // Update UI with user info
+        isUserAdmin = currentProfile?.role === 'admin';
+        const isModerator = currentProfile?.role === 'moderator';
+    
+        // FIX: Update UI AFTER profile is loaded
         updateUserInfo();
-        /* === PROFILE POPOVER LOGIC === */
-const pop = document.getElementById('profilePopover');
-function fillProfile(){
-  document.getElementById('popName').textContent  = getUserDisplayName(currentUser,currentProfile);
-  document.getElementById('popEmail').textContent = currentUser.email || '';
-  document.getElementById('popDob').textContent   = currentProfile?.dob ? `DOB: ${currentProfile.dob}` : '';
-  // if you store avatar in storage: generate its URL the same way
-  const avatarUrl = currentProfile?.avatar_url || '';
-  document.getElementById('popImg').src = avatarUrl || 'Assets/default-avatar.png';
-}
-function toggleProfile(){
-  if(pop.classList.contains('open')){
-    pop.classList.remove('open');
-  }else{
-    fillProfile();
-    const rect = userAvatar.getBoundingClientRect();
-    pop.style.right = `${window.innerWidth - rect.right}px`;
-    pop.style.top   = `${rect.bottom + 8}px`;
-    pop.classList.add('open');
-  }
-}
-document.getElementById('userAvatar').addEventListener('click',toggleProfile);
-// click outside to close
-document.addEventListener('click',e=>{
-  if(!pop.contains(e.target) && e.target.id!=='userAvatar'){
-    pop.classList.remove('open');
-  }
-});
-
         
-        // Show welcome message with cancel button
+        // FIX: Initialize profile popover after DOM is ready
+        initializeProfilePopover();
+        
+        // Show welcome message
         showWelcomeToast();
-
+    
         // Load initial data
         await loadMessages();
         await loadFiles();
         await loadOnlineMembers();
-
+        updateGamesCount(); // FIX: Call this to update games count
+    
         // Setup realtime
         setupRealtimeChat();
         setupPresenceTracking();
-
+    
         // Setup event listeners
         setupEventListeners();
-
+    
       } catch (error) {
         console.error('Error initializing app:', error);
         showToast('error', 'Initialization Error', 'Failed to load the application');
       }
     }
-
+    
+    // FIX: Improved user info update function
     function updateUserInfo() {
       const userAvatar = document.getElementById('userAvatar');
       const username = document.getElementById('username');
       
+      if (!userAvatar || !username) {
+        console.error('User info elements not found');
+        return;
+      }
+      
       const displayName = getUserDisplayName(currentUser, currentProfile);
       userAvatar.textContent = displayName.charAt(0).toUpperCase();
       username.textContent = displayName;
+      
+      console.log('User info updated:', displayName); // Debug log
     }
-
+    
+    // FIX: Separate profile popover initialization
+    function initializeProfilePopover() {
+      const pop = document.getElementById('profilePopover');
+      const userAvatar = document.getElementById('userAvatar');
+      
+      if (!pop || !userAvatar) {
+        console.error('Profile popover elements not found');
+        return;
+      }
+    
+      function fillProfile() {
+        if (!pop) return;
+        
+        const displayName = getUserDisplayName(currentUser, currentProfile);
+        document.getElementById('popName').textContent = displayName;
+        document.getElementById('popEmail').textContent = currentUser.email || '';
+        document.getElementById('popDob').textContent = currentProfile?.dob ? `DOB: ${currentProfile.dob}` : '';
+        
+        const avatarUrl = currentProfile?.avatar_url || '';
+        document.getElementById('popImg').src = avatarUrl || 'Assets/default-avatar.png';
+      }
+    
+      function toggleProfile() {
+        if (!pop) return;
+        
+        if (pop.classList.contains('open')) {
+          pop.classList.remove('open');
+        } else {
+          fillProfile();
+          const rect = userAvatar.getBoundingClientRect();
+          pop.style.right = `${window.innerWidth - rect.right}px`;
+          pop.style.top = `${rect.bottom + 8}px`;
+          pop.classList.add('open');
+        }
+      }
+    
+      // Add click listener to user avatar
+      userAvatar.addEventListener('click', toggleProfile);
+    
+      // Click outside to close
+      document.addEventListener('click', (e) => {
+        if (pop && !pop.contains(e.target) && e.target.id !== 'userAvatar') {
+          pop.classList.remove('open');
+        }
+      });
+    }
+    
     function showWelcomeToast() {
-    const displayName = getUserDisplayName(currentUser, currentProfile);
-    const toastId = showToast(
-      'success', 
-      `Welcome To chill Space ! ${displayName}!`, 
-      'Ready to chill? 🎉', 
-      4000 
-    );
-  }
-
+      const displayName = getUserDisplayName(currentUser, currentProfile);
+      showToast('success', `Welcome To Chill Space, ${displayName}!`, 'Ready to chill? 🎉', 4000);
+    }
+    
+    // FIX: Improved getUserDisplayName function
     function getUserDisplayName(user, profile = null) {
       if (profile?.username) {
         return profile.username;
@@ -2140,20 +2207,43 @@ document.addEventListener('click',e=>{
       }
       return 'User';
     }
-
+    
+    // FIX: Role-based message deletion function
+    function canDeleteMessage(messageUserId, messageSenderRole) {
+      const isCurrentUser = messageUserId === currentUser.id;
+      const currentUserRole = currentProfile?.role || 'user';
+      
+      // Users can only delete their own messages
+      if (currentUserRole === 'user') {
+        return isCurrentUser;
+      }
+      
+      // Admins can delete any message
+      if (currentUserRole === 'admin') {
+        return true;
+      }
+      
+      // Moderators can delete any message except admin messages
+      if (currentUserRole === 'moderator') {
+        return messageSenderRole !== 'admin';
+      }
+      
+      return false;
+    }
+    
     function setupEventListeners() {
       // Logout button
       document.getElementById('logoutBtn').addEventListener('click', logout);
-
+    
       // Code toggle
       document.getElementById('codeToggle').addEventListener('click', toggleCodeMode);
-
+    
       // Emoji toggle
       document.getElementById('emojiToggle').addEventListener('click', toggleEmojiPicker);
-
+    
       // Fullscreen toggle
       document.getElementById('fullscreenToggle').addEventListener('click', openFullscreenEditor);
-
+    
       // Chat input enter key
       document.getElementById('chatInput').addEventListener('keypress', (e) => {
         if (e.key === 'Enter' && !e.shiftKey) {
@@ -2161,7 +2251,7 @@ document.addEventListener('click',e=>{
           sendMessage();
         }
       });
-
+    
       // Code input enter key
       document.getElementById('codeInput').addEventListener('keypress', (e) => {
         if (e.key === 'Enter' && e.ctrlKey) {
@@ -2169,10 +2259,10 @@ document.addEventListener('click',e=>{
           sendMessage();
         }
       });
-
+    
       // File input change
       document.getElementById('fileInput').addEventListener('change', updateFilePreview);
-
+    
       // Emoji category buttons
       document.querySelectorAll('.emoji-category').forEach(button => {
         button.addEventListener('click', (e) => {
@@ -2181,12 +2271,12 @@ document.addEventListener('click',e=>{
           loadEmojis(e.target.dataset.category);
         });
       });
-
+    
       // Emoji search
       document.getElementById('emojiSearch').addEventListener('input', (e) => {
         searchEmojis(e.target.value);
       });
-
+    
       // Close emoji picker when clicking outside
       document.addEventListener('click', (e) => {
         const emojiPicker = document.getElementById('emojiPicker');
@@ -2197,14 +2287,14 @@ document.addEventListener('click',e=>{
           emojiToggle.classList.remove('active');
         }
       });
-
+    
       // Confirm dialog close on click outside
       document.getElementById('confirmDialog').addEventListener('click', (e) => {
         if (e.target === document.getElementById('confirmDialog')) {
           hideConfirmDialog();
         }
       });
-
+    
       // Fullscreen editor close on escape
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
@@ -2217,61 +2307,57 @@ document.addEventListener('click',e=>{
         }
       });
     }
-
-    /* === OPEN / CLOSE MODAL === */
-function openPreview(file){
-  const modal     = document.getElementById('previewModal');
-  const container = document.getElementById('previewBody');
-  container.innerHTML = '';                       // reset
-  const { filetype, filepath, filename } = file;  // supplied from db row
-
-  // Build a public URL (bucket must be public)
-  const { data } = supabaseClient
-      .storage.from('files').getPublicUrl(filepath);
-  const url = data.publicUrl;
-
-  if(!url){ showToast('error','Preview failed','No URL'); return; }
-
-  if(filetype.startsWith('image/')){
-    const img = document.createElement('img');
-    img.src = url; container.appendChild(img);
-
-  }else if(filetype === 'application/pdf'){
-    const frame = document.createElement('iframe');
-    frame.src = `${url}#toolbar=0&navpanes=0`;    // cleaner PDF chrome
-    container.appendChild(frame);
-
-  }else if(filetype.startsWith('text/')){
-    fetch(url)
-      .then(r=>r.text())
-      .then(t=>{
-        const pre = document.createElement('pre');
-        pre.textContent = t; container.appendChild(pre);
-      })
-      .catch(()=>showToast('error','Preview failed','Can’t fetch text'));
-  }else{
-    container.innerHTML =
-      `<p style="color:var(--gray);text-align:center">
-        ⛔ Preview not supported.<br>Download instead.
-      </p>`;
-  }
-
-  modal.classList.add('open');
-  document.body.classList.add('modal-open');
-}
-function closePreview(){
-  document.getElementById('previewModal').classList.remove('open');
-  document.body.classList.remove('modal-open');
-}
-
-
-
-
+    
+    /* === MODAL FUNCTIONS === */
+    function openPreview(file) {
+      const modal = document.getElementById('previewModal');
+      const container = document.getElementById('previewBody');
+      container.innerHTML = '';
+      const { filetype, filepath, filename } = file;
+    
+      const { data } = supabaseClient.storage.from('files').getPublicUrl(filepath);
+      const url = data.publicUrl;
+    
+      if (!url) { 
+        showToast('error', 'Preview failed', 'No URL'); 
+        return; 
+      }
+    
+      if (filetype.startsWith('image/')) {
+        const img = document.createElement('img');
+        img.src = url; 
+        container.appendChild(img);
+      } else if (filetype === 'application/pdf') {
+        const frame = document.createElement('iframe');
+        frame.src = `${url}#toolbar=0&navpanes=0`;
+        container.appendChild(frame);
+      } else if (filetype.startsWith('text/')) {
+        fetch(url)
+          .then(r => r.text())
+          .then(t => {
+            const pre = document.createElement('pre');
+            pre.textContent = t; 
+            container.appendChild(pre);
+          })
+          .catch(() => showToast('error', 'Preview failed', 'Can\'t fetch text'));
+      } else {
+        container.innerHTML = `<p style="color:var(--gray);text-align:center">⛔ Preview not supported.<br>Download instead.</p>`;
+      }
+    
+      modal.classList.add('open');
+      document.body.classList.add('modal-open');
+    }
+    
+    function closePreview() {
+      document.getElementById('previewModal').classList.remove('open');
+      document.body.classList.remove('modal-open');
+    }
+    
     async function logout() {
       try {
         const { error } = await supabaseClient.auth.signOut();
         if (!error) {
-          showToast('success', 'Goodbye!', 'See you Soon !☹️');
+          showToast('success', 'Goodbye!', 'See you Soon! ☹️');
           setTimeout(() => {
             window.location.href = "index.html";
           }, 1000);
@@ -2281,8 +2367,7 @@ function closePreview(){
         showToast('error', 'Logout Error', 'Failed to logout');
       }
     }
-
-    //games
+    
     // Game Functions
     function openGame(gameType) {
       const gameUrls = {
@@ -2307,7 +2392,6 @@ function closePreview(){
         'quiz': 'Take a QUIZ'
       };
       
-      // Create modal if it doesn't exist
       let gameModal = document.getElementById('gameModal');
       if (!gameModal) {
         gameModal = document.createElement('div');
@@ -2331,11 +2415,10 @@ function closePreview(){
         document.body.appendChild(gameModal);
       }
       
-      // Set game details
       document.getElementById('gameModalTitle').textContent = gameNames[gameType] || 'Game';
       var iframe = document.getElementById('gameIframe');
       iframe.src = gameUrls[gameType] || 'games/default.html';
-      // Set special attributes for chess only
+      
       if (gameType === 'chess') {
         iframe.setAttribute('scrolling', 'no');
         iframe.style.overflow = 'hidden';
@@ -2346,39 +2429,29 @@ function closePreview(){
         iframe.style.background = '';
       }
       
-      // Show modal
       gameModal.style.display = 'flex';
-      
-      // Prevent body scroll
       document.body.classList.add('modal-open');
-      
-      // Add escape key listener
       document.addEventListener('keydown', handleGameEscape);
       
       showToast('success', 'Game Loading', `Loading ${gameNames[gameType]}...`);
     }
-
+    
     function closeGame() {
       const gameModal = document.getElementById('gameModal');
       if (gameModal) {
         gameModal.style.display = 'none';
         document.getElementById('gameIframe').src = '';
       }
-      
-      // Restore body scroll
       document.body.classList.remove('modal-open');
-      
-      // Remove escape key listener
       document.removeEventListener('keydown', handleGameEscape);
     }
-
+    
     function handleGameEscape(e) {
       if (e.key === 'Escape') {
         closeGame();
       }
     }
-
-
+    
     // Setup online presence tracking
     function setupPresenceTracking() {
       presenceChannel = supabaseClient.channel('online-users', {
@@ -2388,7 +2461,7 @@ function closePreview(){
           },
         },
       });
-
+    
       presenceChannel.on('presence', { event: 'sync' }, () => {
         const newState = presenceChannel.presenceState();
         onlineUsers.clear();
@@ -2399,17 +2472,17 @@ function closePreview(){
         
         updateOnlineMembers();
       });
-
+    
       presenceChannel.on('presence', { event: 'join' }, ({ key, newPresences }) => {
         onlineUsers.add(key);
         updateOnlineMembers();
       });
-
+    
       presenceChannel.on('presence', { event: 'leave' }, ({ key, leftPresences }) => {
         onlineUsers.delete(key);
         updateOnlineMembers();
       });
-
+    
       presenceChannel.subscribe(async (status) => {
         if (status === 'SUBSCRIBED') {
           await presenceChannel.track({
@@ -2421,7 +2494,7 @@ function closePreview(){
         }
       });
     }
-
+    
     // Chat functionality
     async function sendMessage() {
       const chatInput = document.getElementById('chatInput');
@@ -2439,18 +2512,17 @@ function closePreview(){
       } else {
         messageText = chatInput.value.trim();
       }
-
+    
       if (!messageText) return;
-
+    
       // Clear input immediately
       if (codeToggle.classList.contains('active')) {
         codeInput.value = '';
       } else {
         chatInput.value = '';
       }
-
+    
       try {
-        // Send message to database
         const { error } = await supabaseClient
           .from('messages')
           .insert({
@@ -2458,15 +2530,14 @@ function closePreview(){
             content: messageText,
             sent_at: new Date().toISOString()
           });
-
+    
         if (error) {
           throw error;
         }
-
+    
       } catch (error) {
         console.error('Error sending message:', error);
         showToast('error', 'Send Failed', 'Could not send message');
-        // Restore message to input on error
         if (codeToggle.classList.contains('active')) {
           codeInput.value = messageText.replace(/``````$/g, '');
         } else {
@@ -2474,49 +2545,44 @@ function closePreview(){
         }
       }
     }
-
-    // Show delete confirmation dialog
+    
     function showDeleteConfirmation(messageId) {
       messageToDelete = messageId;
       document.getElementById('confirmDialog').style.display = 'flex';
     }
-
-    // Hide confirmation dialog
+    
     function hideConfirmDialog() {
       document.getElementById('confirmDialog').style.display = 'none';
       messageToDelete = null;
     }
-
-    // Confirm delete
+    
     async function confirmDelete() {
       if (!messageToDelete) return;
-
+    
       try {
         const { error } = await supabaseClient
           .from('messages')
           .delete()
-          .eq('id', messageToDelete)
-          .eq('user_id', currentUser.id);
-
+          .eq('id', messageToDelete);
+    
         if (error) {
           throw error;
         }
-
+    
         showToast('success', 'Message Deleted', 'Message has been removed');
         
       } catch (error) {
         console.error('Error deleting message:', error);
         showToast('error', 'Delete Failed', 'Could not delete message');
       }
-
+    
       hideConfirmDialog();
     }
-
-    // Delete message function
+    
     function deleteMessage(messageId) {
       showDeleteConfirmation(messageId);
     }
-
+    
     // Toggle code mode
     function toggleCodeMode() {
       const chatInput = document.getElementById('chatInput');
@@ -2526,7 +2592,6 @@ function closePreview(){
       const fullscreenToggle = document.getElementById('fullscreenToggle');
       
       if (codeToggle.classList.contains('active')) {
-        // Switch to normal mode
         codeToggle.classList.remove('active');
         codeToggle.innerHTML = '<i class="fas fa-code"></i>';
         chatInput.style.display = 'block';
@@ -2535,7 +2600,6 @@ function closePreview(){
         fullscreenToggle.style.display = 'none';
         chatInput.focus();
       } else {
-        // Switch to code mode
         codeToggle.classList.add('active');
         codeToggle.innerHTML = '<i class="fas fa-comment"></i>';
         chatInput.style.display = 'none';
@@ -2545,8 +2609,8 @@ function closePreview(){
         codeInput.focus();
       }
     }
-
-    // Fullscreen code editor
+    
+    // Fullscreen code editor functions
     function openFullscreenEditor() {
       const fullscreenOverlay = document.getElementById('fullscreenOverlay');
       const fullscreenTextarea = document.getElementById('fullscreenTextarea');
@@ -2554,14 +2618,13 @@ function closePreview(){
       const languageSelect = document.getElementById('languageSelect');
       const fullscreenLanguageSelect = document.getElementById('fullscreenLanguageSelect');
       
-      // Copy current code to fullscreen editor
       fullscreenTextarea.value = codeInput.value;
       fullscreenLanguageSelect.value = languageSelect.value;
       
       fullscreenOverlay.style.display = 'flex';
       fullscreenTextarea.focus();
     }
-
+    
     function closeFullscreenEditor() {
       const fullscreenOverlay = document.getElementById('fullscreenOverlay');
       const fullscreenTextarea = document.getElementById('fullscreenTextarea');
@@ -2569,28 +2632,27 @@ function closePreview(){
       const languageSelect = document.getElementById('languageSelect');
       const fullscreenLanguageSelect = document.getElementById('fullscreenLanguageSelect');
       
-      // Copy fullscreen content back to normal editor
       codeInput.value = fullscreenTextarea.value;
       languageSelect.value = fullscreenLanguageSelect.value;
       
       fullscreenOverlay.style.display = 'none';
       codeInput.focus();
     }
-
+    
     function clearFullscreenEditor() {
       document.getElementById('fullscreenTextarea').value = '';
     }
-
+    
     async function sendFullscreenCode() {
       const fullscreenTextarea = document.getElementById('fullscreenTextarea');
       const fullscreenLanguageSelect = document.getElementById('fullscreenLanguageSelect');
       
       const code = fullscreenTextarea.value.trim();
       if (!code) return;
-
+    
       const language = fullscreenLanguageSelect.value;
       const messageText = `\`\`\`${language}\n${code}\n\`\`\``;
-
+    
       try {
         const { error } = await supabaseClient
           .from('messages')
@@ -2599,34 +2661,33 @@ function closePreview(){
             content: messageText,
             sent_at: new Date().toISOString()
           });
-
+    
         if (error) {
           throw error;
         }
-
-        // Clear and close fullscreen editor
+    
         fullscreenTextarea.value = '';
         closeFullscreenEditor();
-
+    
       } catch (error) {
         console.error('Error sending code:', error);
         showToast('error', 'Send Failed', 'Could not send code');
       }
     }
-
+    
     // Emoji data and functions
     const emojiData = {
       recent: ['😊', '👍', '❤️', '😂', '🎉', '🔥', '💯', '👏', '🙏', '✨'],
       smileys: ['😀', '😃', '😄', '😁', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '🥳', '😏', '😒', '😞', '😔', '😟', '😕', '🙁', '☹️', '😣', '😖', '😫', '😩', '🥺', '😢', '😭', '😤', '😠', '😡', '🤬', '🤯', '😳', '🥵', '🥶', '😱', '😨', '😰', '😥', '😓', '🤗', '🤔', '🤭', '🤫', '🤥', '😶', '😐', '😑', '😯', '😦', '😧', '😮', '😲', '🥱', '😴', '🤤', '😪', '😵', '🤐', '🥴', '🤢', '🤮', '🤧', '😷', '🤒', '🤕', '🤑', '🤠'],
-      animals: ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼', '🐨', '🐯', '🦁', '🐮', '🐷', '🐸', '🐵', '🐔', '🐧', '🐦', '🐤', '🐣', '🦆', '🦅', '🦉', '🦇', '🐺', '🐗', '🐴', '🦄', '🐝', '🐛', '🦋', '🐌', '🐞', '🐜', '🦟', '🦗', '🕷️', '🕸️', '🦂', '🐢', '🐍', '🦎', '🦖', '🦕', '🐙', '🦑', '🦐', '🦞', '🦀', '🐡', '🐠', '🐟', '🐬', '🐳', '🐋', '🦈', '🐊', '🐅', '🐆', '🦓', '🦍', '🦧', '🐘', '🦛', '🦏', '🐪', '🐫', '🦒', '🦘', '🐃', '🐂', '🐄', '🐎', '🐖', '🐏', '🐑', '🦙', '🐐', '🦌', '🐕', '🐩', '🦮', '🐕‍🦺', '🐈', '🐈‍⬛', '🐓', '🦃', '🦚', '🦜', '🦢', '🦩', '🕊️', '🐇', '🦝', '🦨', '🦡', '🦫', '🦦', '🦥', '🐁', '🐀', '🐿️', '🦔'],
-      food: ['🍎', '🍐', '🍊', '🍋', '🍌', '🍉', '🍇', '🍓', '🫐', '🍈', '🍒', '🍑', '🥭', '🍍', '🥥', '🥝', '🍅', '🥑', '🥦', '🥬', '🥒', '🌶️', '🫑', '🌽', '🥕', '🫒', '🧄', '🧅', '🥔', '🍠', '🥐', '🥯', '🍞', '🥖', '🥨', '🧀', '🥚', '🍳', '🧈', '🥞', '🧇', '🥓', '🥩', '🍗', '🍖', '🦴', '🌭', '🍔', '🍟', '🍕', '🥪', '🥙', '🧆', '🌮', '🌯', '🫔', '🥗', '🥘', '🫕', '🥫', '🍝', '🍜', '🍲', '🍛', '🍣', '🍱', '🥟', '🦪', '🍤', '🍙', '🍚', '🍘', '🍥', '🥠', '🥮', '🍢', '🍡', '🍧', '🍨', '🍦', '🥧', '🧁', '🍰', '🎂', '🍮', '🍭', '🍬', '🍫', '🍿', '🍪', '🌰', '🥜', '🍯', '🥛', '🍼', '🫖', '☕', '🍵', '🧃', '🥤', '🧋', '🍶', '🍺', '🍷', '🥂', '🥃', '🍸', '🍹', '🧉', '🍾', '🥄', '🍴', '🍽️', '🥣', '🥡', '🥢', '🧂'],
-      activities: ['⚽', '🏀', '🏈', '⚾', '🥎', '🎾', '🏐', '🏉', '🥏', '🎱', '🪀', '🏓', '🏸', '🏒', '🏑', '🥍', '🏏', '🥅', '⛳', '🪁', '🏹', '🎣', '🤿', '🥊', '🥋', '🎽', '🛹', '🛷', '⛸️', '🥌', '🎿', '⛷️', '🏂', '🪂', '🏋️‍♀️', '🏋️', '🏋️‍♂️', '🤼‍♀️', '🤼', '🤼‍♂️', '🤸‍♀️', '🤸', '🤸‍♂️', '⛹️‍♀️', '⛹️', '⛹️‍♂️', '🤺', '🤾‍♀️', '🤾', '🤾‍♂️', '🏊‍♀️', '🏊', '🏊‍♂️', '🚣‍♀️', '🚣', '🚣‍♂️', '🏄‍♀️', '🏄', '🏄‍♂️', '🚴‍♀️', '🚴', '🚴‍♂️', '🚵‍♀️', '🚵', '🚵‍♂️', '🤽‍♀️', '🤽', '🤽‍♂️', '🏇', '🧘‍♀️', '🧘', '🧘‍♂️', '🏆', '🥇', '🥈', '🥉', '🏅', '🎖️', '🏵️', '🎗️', '🎫', '🎟️', '🎪', '🤹‍♀️', '🤹', '🤹‍♂️', '🎭', '🩰', '🎨', '🎬', '🎤', '🎧', '🎼', '🎹', '🥁', '🪘', '🎷', '🎺', '🎸', '🪕', '🎻', '🎲', '♟️', '🎯', '🎳', '🎮', '🎰', '🧩'],
-      travel: ['✈️', '🛩️', '🛫', '🛬', '🪂', '💺', '🚁', '🚟', '🚠', '🚡', '🛰️', '🚀', '🛸', '🛎️', '🧳', '⌛', '⏰', '⏱️', '⏲️', '🕰️', '🌍', '🌎', '🌏', '🌐', '🗺️', '🗾', '🧭', '🏔️', '⛰️', '🌋', '🗻', '🏕️', '🏖️', '🏜️', '🏝️', '🏞️', '🏟️', '🏛️', '🏗️', '🧱', '🪨', '🪵', '🛖', '🏘️', '🏚️', '🏠', '🏡', '🏢', '🏣', '🏤', '🏥', '🏦', '🏨', '🏩', '🏪', '🏫', '🏬', '🏭', '🏯', '🏰', '💒', '🗼', '🗽', '⛪', '🕌', '🛕', '🕍', '⛩️', '🕋', '⛲', '⛺', '🌁', '🌃', '🏙️', '🌄', '🌅', '🌆', '🌇', '🌉', '♨️', '🎠', '🎡', '🎢', '💈', '🎪', '🚂', '🚃', '🚄', '🚅', '🚆', '🚇', '🚈', '🚉', '🚊', '🚝', '🚞', '🚋', '🚌', '🚍', '🚎', '🚐', '🚑', '🚒', '🚓', '🚔', '🚕', '🚖', '🚗', '🚘', '🚙', '🛻', '🚚', '🚛', '🚜', '🏎️', '🏍️', '🛵', '🦽', '🦼', '🛴', '🚲', '🛶', '🛥️', '🚁', '🛩️', '✈️', '🛫', '🛬', '🪂', '💺', '🚀', '🛸'],
-      objects: ['💡', '🔦', '🕯️', '🪔', '🧯', '🛢️', '💸', '💵', '💴', '💶', '💷', '🪙', '💰', '💳', '💎', '⚖️', '🪜', '🧰', '🪛', '🔧', '🔨', '⚒️', '🛠️', '⛏️', '🪚', '🔩', '⚙️', '🪤', '🧱', '⛓️', '🪝', '🧲', '🔫', '💣', '🪃', '🏹', '🛡️', '🪄', '🔮', '🧿', '🪬', '📿', '🧸', '🪆', '🪅', '🪩', '🪞', '🪟', '🪠', '🪡', '🪢', '🧶', '🪣', '🪤', '🪥', '🪦', '🪧', '⚰️', '🪨', '📱', '📲', '💻', '⌨️', '🖥️', '🖨️', '🖱️', '🖲️', '💽', '💾', '💿', '📀', '🧮', '🎥', '📺', '📻', '📷', '📸', '📹', '📼', '🔋', '🔌', '💡', '🔦', '🕯️', '🪔', '🧯', '🛢️'],
-      symbols: ['❤️', '🧡', '💛', '💚', '💙', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '💕', '💞', '💓', '💗', '💖', '💘', '💝', '💟', '☮️', '✝️', '☪️', '🕉️', '☸️', '✡️', '🔯', '🕎', '☯️', '☦️', '🛐', '⛎', '♈', '♉', '♊', '♋', '♌', '♍', '♎', '♏', '♐', '♑', '♒', '♓', '🆔', '⚛️', '🉑', '☢️', '☣️', '📴', '📳', '🈶', '🈚', '🈸', '🈺', '🈷️', '✴️', '🆚', '💮', '🉐', '㊙️', '㊗️', '🈴', '🈵', '🈹', '🈲', '🅰️', '🅱️', '🆎', '🆑', '🅾️', '🆘', '❌', '⭕', '🛑', '⛔', '📛', '🚫', '💯', '💢', '♨️', '🚷', '🚯', '🚳', '🚱', '🔞', '📵', '🚭', '❗', '❕', '❓', '❔', '‼️', '⁉️', '🔅', '🔆', '〽️', '⚠️', '🚸', '🔱', '⚜️', '🔰', '♻️', '✅', '🈯', '💹', '❇️', '✳️', '❎', '🌐', '💠', 'Ⓜ️', '🌀', '💤', '🏧', '🚾', '♿', '🅿️', '🛗', '🛂', '🛃', '🛄', '🛅', '🚹', '🚺', '🚼', '🚻', '🚮', '🎦', '📶', '🈁', '🔣', 'ℹ️', '🔤', '🔡', '🔠', '🆖', '🆗', '🆙', '🆒', '🆕', '🆓'],
-      flags: ['🏁', '🚩', '🎌', '🏴', '🏳️', '🏳️‍🌈', '🏴‍☠️', '🇦🇨', '🇦🇩', '🇦🇫', '🇦🇬', '🇦🇷', '🇦🇲', '🇦🇼', '🇦🇺', '🇦🇹', '🇦🇿', '🇧🇸', '🇧🇭', '🇧🇩', '🇧🇯', '🇧🇲', '🇧🇳', '🇧🇴', '🇧🇶', '🇧🇷', '🇧🇸', '🇧🇹', '🇧🇻', '🇧🇼', '🇧🇾', '🇧🇿', '🇨🇦', '🇨🇨', '🇨🇩', '🇨🇫', '🇨🇬', '🇨🇭', '🇨🇮', '🇨🇰', '🇨🇱', '🇨🇲', '🇨🇳', '🇨🇴', '🇨🇵', '🇨🇷', '🇨🇺', '🇨🇻', '🇨🇼', '🇨🇽', '🇨🇾', '🇨🇿', '🇩🇪', '🇩🇯', '🇩🇰', '🇩🇲', '🇩🇴', '🇩🇿', '🇪🇨', '🇪🇪', '🇪🇬', '🇪🇭', '🇪🇷', '🇪🇸', '🇪🇹', '🇪🇺', '🇫🇮', '🇫🇯', '🇫🇰', '🇫🇲', '🇫🇴', '🇫🇷', '🇬🇦', '🇬🇧', '🇬🇩', '🇬🇪', '🇬🇫', '🇬🇬', '🇬🇭', '🇬🇮', '🇬🇱', '🇬🇲', '🇬🇳', '🇬🇵', '🇬🇶', '🇬🇷', '🇬🇸', '🇬🇹', '🇬🇺', '🇬🇼', '🇬🇾', '🇭🇰', '🇭🇲', '🇭🇳', '🇭🇷', '🇭🇹', '🇭🇺', '🇮🇩', '🇮🇪', '🇮🇱', '🇮🇲', '🇮🇳', '🇮🇴', '🇮🇶', '🇮🇷', '🇮🇸', '🇮🇹', '🇯🇪', '🇯🇲', '🇯🇴', '🇯🇵', '🇰🇪', '🇰🇬', '🇰🇭', '🇰🇮', '🇰🇲', '🇰🇳', '🇰🇵', '🇰🇷', '🇰🇼', '🇰🇾', '🇰🇿', '🇱🇦', '🇱🇧', '🇱🇨', '🇱🇮', '🇱🇰', '🇱🇷', '🇱🇸', '🇱🇹', '🇱🇺', '🇱🇻', '🇱🇾', '🇲🇦', '🇲🇨', '🇲🇩', '🇲🇪', '🇲🇫', '🇲🇬', '🇲🇭', '🇲🇰', '🇲🇱', '🇲🇲', '🇲🇳', '🇲🇴', '🇲🇵', '🇲🇶', '🇲🇷', '🇲🇸', '🇲🇹', '🇲🇺', '🇲🇻', '🇲🇼', '🇲🇽', '🇲🇾', '🇲🇿', '🇳🇦', '🇳🇨', '🇳🇪', '🇳🇫', '🇳🇬', '🇳🇮', '🇳🇱', '🇳🇴', '🇳🇵', '🇳🇷', '🇳🇺', '🇳🇿', '🇴🇲', '🇵🇦', '🇵🇪', '🇵🇫', '🇵🇬', '🇵🇭', '🇵🇰', '🇵🇱', '🇵🇲', '🇵🇳', '🇵🇷', '🇵🇸', '🇵🇹', '🇵🇼', '🇵🇾', '🇶🇦', '🇷🇪', '🇷🇴', '🇷🇸', '🇷🇺', '🇷🇼', '🇸🇦', '🇸🇧', '🇸🇨', '🇸🇩', '🇸🇪', '🇸🇬', '🇸🇭', '🇸🇮', '🇸🇯', '🇸🇰', '🇸🇱', '🇸🇲', '🇸🇳', '🇸🇴', '🇸🇷', '🇸🇸', '🇸🇹', '🇸🇻', '🇸🇽', '🇸🇾', '🇸🇿', '🇹🇦', '🇹🇨', '🇹🇩', '🇹🇯', '🇹🇰', '🇹🇱', '🇹🇲', '🇹🇳', '🇹🇴', '🇹🇷', '🇹🇹', '🇹🇻', '🇹🇼', '🇹🇿', '🇺🇦', '🇺🇬', '🇺🇲', '🇺🇳', '🇺🇸', '🇺🇾', '🇺🇿', '🇻🇦', '🇻🇨', '🇻🇪', '🇻🇬', '🇻🇮', '🇻🇳', '🇻🇺', '🇼🇫', '🇼🇸', '🇾🇪', '🇾🇹', '🇿🇦', '🇿🇲', '🇿🇼']
+      animals: ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼', '🐨', '🐯', '🦁', '🐮', '🐷', '🐸', '🐵', '🐔', '🐧', '🐦', '🐤', '🐣', '🦆', '🦅', '🦉', '🦇', '🐺', '🐗', '🐴', '🦄', '🐝', '🐛', '🦋', '🐌', '🐞', '🐜'],
+      food: ['🍎', '🍐', '🍊', '🍋', '🍌', '🍉', '🍇', '🍓', '🫐', '🍈', '🍒', '🍑', '🥭', '🍍', '🥥', '🥝', '🍅', '🥑', '🥦', '🥬', '🥒', '🌶️', '🫑', '🌽', '🥕'],
+      activities: ['⚽', '🏀', '🏈', '⚾', '🥎', '🎾', '🏐', '🏉', '🥏', '🎱', '🪀', '🏓', '🏸', '🏒', '🏑', '🥍', '🏏', '🥅', '⛳', '🪁', '🏹', '🎣', '🤿', '🥊', '🥋'],
+      travel: ['✈️', '🛩️', '🛫', '🛬', '🪂', '💺', '🚁', '🚟', '🚠', '🚡', '🛰️', '🚀', '🛸', '🛎️', '🧳', '⌛', '⏰', '⏱️', '⏲️', '🕰️', '🌍', '🌎', '🌏'],
+      objects: ['💡', '🔦', '🕯️', '🪔', '🧯', '🛢️', '💸', '💵', '💴', '💶', '💷', '🪙', '💰', '💳', '💎', '⚖️', '🪜', '🧰', '🪛', '🔧', '🔨', '⚒️', '🛠️'],
+      symbols: ['❤️', '🧡', '💛', '💚', '💙', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '💕', '💞', '💓', '💗', '💖', '💘', '💝', '💟', '☮️', '✝️', '☪️', '🕉️'],
+      flags: ['🏁', '🚩', '🎌', '🏴', '🏳️', '🏳️‍🌈', '🏴‍☠️', '🇦🇨', '🇦🇩', '🇦🇫', '🇦🇬', '🇦🇷', '🇦🇲', '🇦🇼', '🇦🇺', '🇦🇹', '🇦🇿']
     };
-
+    
     // Toggle emoji picker
     function toggleEmojiPicker() {
       const emojiPicker = document.getElementById('emojiPicker');
@@ -2643,8 +2704,7 @@ function closePreview(){
         document.getElementById('chatInput').focus();
       }
     }
-
-    // Load emojis for a category
+    
     function loadEmojis(category) {
       const emojiGrid = document.getElementById('emojiGrid');
       const emojis = emojiData[category] || emojiData.recent;
@@ -2658,15 +2718,13 @@ function closePreview(){
         emojiGrid.appendChild(button);
       });
     }
-
-    // Insert emoji into input
+    
     function insertEmoji(emoji) {
       const chatInput = document.getElementById('chatInput');
       const codeInput = document.getElementById('codeInput');
       const codeToggle = document.getElementById('codeToggle');
       
       if (codeToggle.classList.contains('active')) {
-        // Insert into code input
         const start = codeInput.selectionStart;
         const end = codeInput.selectionEnd;
         const text = codeInput.value;
@@ -2674,7 +2732,6 @@ function closePreview(){
         codeInput.setSelectionRange(start + emoji.length, start + emoji.length);
         codeInput.focus();
       } else {
-        // Insert into chat input
         const start = chatInput.selectionStart;
         const end = chatInput.selectionEnd;
         const text = chatInput.value;
@@ -2683,21 +2740,17 @@ function closePreview(){
         chatInput.focus();
       }
     }
-
-    // Search emojis
+    
     function searchEmojis(query) {
       if (!query) {
         loadEmojis('recent');
         return;
       }
-
+    
       const emojiGrid = document.getElementById('emojiGrid');
       const allEmojis = Object.values(emojiData).flat();
-      const filteredEmojis = allEmojis.filter(emoji => {
-        // Simple emoji search - you could enhance this with emoji names
-        return true; // For now, show all emojis
-      }).slice(0, 64); // Limit results
-
+      const filteredEmojis = allEmojis.slice(0, 64);
+    
       emojiGrid.innerHTML = '';
       filteredEmojis.forEach(emoji => {
         const button = document.createElement('button');
@@ -2707,7 +2760,7 @@ function closePreview(){
         emojiGrid.appendChild(button);
       });
     }
-
+    
     // Real-time chat setup
     function setupRealtimeChat() {
       chatChannel = supabaseClient.channel('public:messages')
@@ -2727,14 +2780,14 @@ function closePreview(){
         })
         .subscribe();
     }
-
+    
     async function handleNewMessage(message) {
       const messagesContainer = document.getElementById('chatMessages');
       const isCurrentUser = message.user_id === currentUser.id;
       
-      // Get sender info
       let senderName = 'Unknown';
       let senderRole = 'user';
+      
       if (isCurrentUser) {
         senderName = getUserDisplayName(currentUser, currentProfile);
         senderRole = currentProfile?.role || 'user';
@@ -2754,7 +2807,7 @@ function closePreview(){
           console.log('Could not fetch sender info:', err);
         }
       }
-
+    
       const messageElement = document.createElement('div');
       messageElement.className = isCurrentUser ? 'message message-sent fade-in' : 'message message-received fade-in';
       messageElement.setAttribute('data-message-id', message.id);
@@ -2769,7 +2822,7 @@ function closePreview(){
         </div>
         <div class="message-content">
           ${formatMessage(message.content)}
-          ${isCurrentUser || isUserAdmin ? `<button class="message-delete" onclick="deleteMessage('${message.id}')" title="Delete message">
+          ${canDeleteMessage(message.user_id, senderRole) ? `<button class="message-delete" onclick="deleteMessage('${message.id}')" title="Delete message">
             <i class="fas fa-times"></i>
           </button>` : ''}
         </div>
@@ -2779,7 +2832,7 @@ function closePreview(){
       messagesContainer.appendChild(messageElement);
       messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
-
+    
     function handleDeletedMessage(messageId) {
       const messageElement = document.querySelector(`[data-message-id="${messageId}"]`);
       if (messageElement) {
@@ -2790,7 +2843,7 @@ function closePreview(){
         }, 300);
       }
     }
-
+    
     function getRoleEmoji(role) {
       const roleEmojis = {
         admin: '👑',
@@ -2800,7 +2853,7 @@ function closePreview(){
       };
       return roleEmojis[role] || '👤';
     }
-
+    
     // Load initial messages
     async function loadMessages() {
       try {
@@ -2809,24 +2862,22 @@ function closePreview(){
           .select('*')
           .order('sent_at', { ascending: true })
           .limit(50);
-
+    
         if (error) {
           console.error('Error loading messages:', error);
           return;
         }
-
+    
         const messagesContainer = document.getElementById('chatMessages');
         messagesContainer.innerHTML = '';
-
+    
         if (!messages || messages.length === 0) {
           messagesContainer.innerHTML = '<p style="color: var(--gray); text-align: center; padding: 2rem;">No messages yet. Be the first to say hello! 👋</p>';
           return;
         }
-
-        // Get all unique user IDs
+    
         const userIds = [...new Set(messages.map(msg => msg.user_id))];
         
-        // Fetch user profiles in batch
         let userProfiles = {};
         if (userIds.length > 0) {
           const { data: profiles } = await supabaseClient
@@ -2840,7 +2891,7 @@ function closePreview(){
             });
           }
         }
-
+    
         messages.forEach(msg => {
           const isCurrentUser = msg.user_id === currentUser.id;
           const messageElement = document.createElement('div');
@@ -2860,7 +2911,7 @@ function closePreview(){
               senderRole = profile.role || 'user';
             }
           }
-
+    
           const roleClass = `role-${senderRole}`;
           const roleDisplay = getRoleEmoji(senderRole);
           
@@ -2871,7 +2922,7 @@ function closePreview(){
             </div>
             <div class="message-content">
               ${formatMessage(msg.content)}
-              ${isCurrentUser || isUserAdmin ? `<button class="message-delete" onclick="deleteMessage('${msg.id}')" title="Delete message">
+              ${canDeleteMessage(msg.user_id, senderRole) ? `<button class="message-delete" onclick="deleteMessage('${msg.id}')" title="Delete message">
                 <i class="fas fa-times"></i>
               </button>` : ''}
             </div>
@@ -2880,13 +2931,13 @@ function closePreview(){
           
           messagesContainer.appendChild(messageElement);
         });
-
+    
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
       } catch (err) {
         console.error('Error in loadMessages:', err);
       }
     }
-
+    
     // File upload functionality
     function updateFilePreview() {
       const fileInput = document.getElementById('fileInput');
@@ -2897,7 +2948,7 @@ function closePreview(){
         filePreview.innerHTML = '<h4><i class="fas fa-eye"></i> Selected Files</h4><div class="no-files">No files selected</div>';
         return;
       }
-
+    
       let previewHTML = '<h4><i class="fas fa-eye"></i> Selected Files</h4>';
       
       Array.from(files).forEach((file, index) => {
@@ -2922,7 +2973,7 @@ function closePreview(){
       
       filePreview.innerHTML = previewHTML;
     }
-
+    
     function removeFileFromPreview(index) {
       const fileInput = document.getElementById('fileInput');
       const dt = new DataTransfer();
@@ -2937,7 +2988,7 @@ function closePreview(){
       fileInput.files = dt.files;
       updateFilePreview();
     }
-
+    
     async function uploadFile() {
       const fileInput = document.getElementById('fileInput');
       const files = fileInput.files;
@@ -2946,21 +2997,21 @@ function closePreview(){
         showToast('error', 'No Files Selected', 'Please select files to upload.');
         return;
       }
-
+    
       showToast('info', 'Uploading Files', `Uploading ${files.length} file(s)...`);
-
+    
       let uploadedCount = 0;
       for (const file of files) {
         try {
           const fileExt = file.name.split('.').pop();
           const fileName = `${currentUser.id}/${Date.now()}_${Math.random().toString(36).substring(2)}.${fileExt}`;
-
+    
           const { error: uploadError } = await supabaseClient.storage
             .from('files')
             .upload(fileName, file);
-
+    
           if (uploadError) throw uploadError;
-
+    
           const { error: dbError } = await supabaseClient
             .from('files')
             .insert({
@@ -2970,15 +3021,15 @@ function closePreview(){
               filepath: fileName,
               filesize: file.size
             });
-
+    
           if (dbError) throw dbError;
           uploadedCount++;
-
+    
         } catch (err) {
           console.error('Error uploading file:', err);
         }
       }
-
+    
       if (uploadedCount > 0) {
         showToast('success', 'Upload Complete!', `Successfully uploaded ${uploadedCount} file(s)!`);
         fileInput.value = '';
@@ -2988,7 +3039,7 @@ function closePreview(){
         showToast('error', 'Upload Failed', 'No files were uploaded successfully.');
       }
     }
-
+    
     // Load files
     async function loadFiles() {
       try {
@@ -2996,23 +3047,23 @@ function closePreview(){
           .from('files')
           .select('*')
           .order('uploaded_at', { ascending: false });
-
+    
         if (error) {
           console.error('Error loading files:', error);
           return;
         }
-
+    
         const fileContainer = document.getElementById('fileContainer');
         fileContainer.innerHTML = '';
-
+    
         if (!files || files.length === 0) {
           fileContainer.innerHTML = '<p style="color: var(--gray); text-align: center;">No files shared yet</p>';
           return;
         }
-
+    
         files.forEach(file => {
           const fileItem = document.createElement('div');
-          fileItem.onclick = ()=>openPreview(file); 
+          fileItem.onclick = () => openPreview(file); 
           fileItem.className = 'file-item fade-in';
           fileItem.innerHTML = `
             <div class="file-info">
@@ -3037,16 +3088,15 @@ function closePreview(){
         console.error('Error in loadFiles:', err);
       }
     }
-
-    // Download file
+    
     async function downloadFile(filepath, filename) {
       try {
         const { data, error } = await supabaseClient.storage
           .from('files')
           .download(filepath);
-
+    
         if (error) throw error;
-
+    
         const url = URL.createObjectURL(data);
         const a = document.createElement('a');
         a.href = url;
@@ -3062,22 +3112,21 @@ function closePreview(){
         showToast('error', 'Download Failed', 'Could not download file.');
       }
     }
-
-    // Delete file
+    
     async function deleteFile(fileId, filepath, filename) {
       if (!confirm(`Delete "${filename}"?`)) return;
-
+    
       try {
         await supabaseClient.storage
           .from('files')
           .remove([filepath]);
-
+    
         await supabaseClient
           .from('files')
           .delete()
           .eq('id', fileId)
           .eq('user_id', currentUser.id);
-
+    
         showToast('success', 'File Deleted', `"${filename}" deleted successfully!`);
         loadFiles();
       } catch (err) {
@@ -3085,7 +3134,7 @@ function closePreview(){
         showToast('error', 'Delete Failed', 'Could not delete file.');
       }
     }
-
+    
     // Load online members
     async function loadOnlineMembers() {
       try {
@@ -3093,30 +3142,28 @@ function closePreview(){
           .from('users')
           .select('id, username, email, role')
           .order('username', { ascending: true });
-
+    
         if (error) {
           console.error('Error loading members:', error);
           return;
         }
-
+    
         updateOnlineMembers(allMembers);
         
       } catch (err) {
         console.error('Error in loadOnlineMembers:', err);
       }
     }
-
+    
     function updateOnlineMembers(allMembers = null) {
       const membersList = document.getElementById('membersList');
       const onlineCount = document.getElementById('onlineCount');
       
       if (!allMembers) {
-        // If not provided, we need to fetch them
         loadOnlineMembers();
         return;
       }
-
-      // Filter to only show online members
+    
       const onlineMembers = allMembers.filter(member => onlineUsers.has(member.id));
       
       membersList.innerHTML = '';
@@ -3126,7 +3173,7 @@ function closePreview(){
         onlineCount.textContent = '0 Online';
         return;
       }
-
+    
       onlineMembers.forEach(member => {
         const memberElement = document.createElement('div');
         memberElement.className = 'member';
@@ -3151,33 +3198,35 @@ function closePreview(){
         
         membersList.appendChild(memberElement);
       });
-
+    
       onlineCount.textContent = `${onlineMembers.length} Online`;
     }
-
+    
     // Helper functions
     function formatMessage(content) {
   if (content.includes('```')) {
     return content.replace(/```(\w*)\n([\s\S]*?)```/g, (match, language, code) => {
-      return `<div class="code-block">
-        <div class="code-header">
-          <span class="code-language">${language || 'code'}</span>
-          <button class="code-copy" onclick="copyCode(this)">
-            <i class="fas fa-copy"></i>
-          </button>
+      return `
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-language">${language || 'code'}</span>
+            <button class="code-copy" onclick="copyCode(this)">
+              <i class="fas fa-copy"></i>
+            </button>
+          </div>
+          <pre class="code-content"><code>${code.trim()}</code></pre>
         </div>
-        <div class="code-content">${code.trim()}</div>
-      </div>`;
+      `;
     });
   }
   return content;
 }
 
-
+    
     function formatTime(date) {
       return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     }
-
+    
     function formatFileSize(bytes) {
       if (bytes === 0) return '0 Bytes';
       const k = 1024;
@@ -3185,7 +3234,7 @@ function closePreview(){
       const i = Math.floor(Math.log(bytes) / Math.log(k));
       return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
     }
-
+    
     function getFileIcon(filetype) {
       const typeMap = {
         'pdf': 'fa-file-pdf',
@@ -3201,12 +3250,12 @@ function closePreview(){
         'mp3': 'fa-file-audio',
         'zip': 'fa-file-archive'
       };
-
+    
       if (!filetype) return 'fa-file';
       const ext = filetype.split('/').pop();
       return typeMap[ext] || 'fa-file';
     }
-
+    
     function safeCopy(text, target, btn) {
       if (!text) {
         showToast('error', 'Copy Failed', 'Nothing to copy!');
@@ -3227,9 +3276,8 @@ function closePreview(){
         showToast('error', 'Copy Failed', 'Could not copy code to clipboard');
       });
     }
-
+    
     function copyCode(copyBtn) {
-      // Find the nearest .code-block and .code-content
       const codeBlock = copyBtn.closest('.code-block');
       if (!codeBlock) {
         showToast('error', 'Copy Failed', 'Code block not found!');
@@ -3243,7 +3291,7 @@ function closePreview(){
       const text = codeElement.textContent;
       safeCopy(text, codeElement, copyBtn);
     }
-
+    
     function copyFromElement(selector) {
       const el = document.querySelector(selector);
       if (!el) {
@@ -3252,7 +3300,7 @@ function closePreview(){
       }
       safeCopy(el.textContent, el);
     }
-
+    
     // Toast notification system
     function showToast(type, title, message, duration = 4000) {
       const toastContainer = document.getElementById('toastContainer');
@@ -3283,20 +3331,19 @@ function closePreview(){
       toastContainer.appendChild(toast);
       
       setTimeout(() => {
-      if (toast.parentElement) {
-        toast.style.animation = 'toastSlideOut 0.3s ease-out forwards';
-        setTimeout(() => {
-          if (toast.parentElement) {
-            toast.remove();
-          }
-        }, 300);
-      }
-    }, duration);
+        if (toast.parentElement) {
+          toast.style.animation = 'toastSlideOut 0.3s ease-out forwards';
+          setTimeout(() => {
+            if (toast.parentElement) {
+              toast.remove();
+            }
+          }, 300);
+        }
+      }, duration);
+      
+      return toast.id;
+    }
     
-    return toast.id;
-  }
-    
-
     function closeToast(toastId) {
       const toast = document.getElementById(toastId);
       if (toast) {
@@ -3309,7 +3356,7 @@ function closePreview(){
         }, 300);
       }
     }
-
+    
     // Cleanup on page unload
     window.addEventListener('beforeunload', () => {
       if (chatChannel) {
@@ -3319,19 +3366,21 @@ function closePreview(){
         presenceChannel.unsubscribe();
       }
     });
-
-    // Dynamically update the games count in the games section
+    
+    // FIX: Games count update function
     function updateGamesCount() {
       const gamesGrid = document.querySelector('.games-grid');
       const count = gamesGrid ? gamesGrid.querySelectorAll('.game-card').length : 0;
       const gamesCount = document.getElementById('gamesCount');
       if (gamesCount) {
-        gamesCount.textContent = count + (count === 1 ? ' Content Available' : ' Content Available');
+        gamesCount.textContent = count + ' Games Available';
       }
     }
+    
     // Call on page load
     document.addEventListener('DOMContentLoaded', updateGamesCount);
-  </script>
+    </script>
+    
   <!-- File-preview modal -->
 <div id="previewModal" class="preview-modal">
   <div class="preview-modal-content">
