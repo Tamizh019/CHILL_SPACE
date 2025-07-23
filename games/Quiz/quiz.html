@@ -6,7 +6,7 @@
   <title>General Knowledge Quiz</title>
   
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
   
   <style>
     :root {
@@ -18,6 +18,9 @@
       --glass-border: rgba(255, 255, 255, 0.2);
       --text-primary: #ffffff;
       --text-secondary: rgba(255, 255, 255, 0.8);
+      --neon-cyan: #00ffff;
+      --neon-purple: #8b5cf6;
+      --dev-gradient: linear-gradient(135deg, #00ffff 0%, #8b5cf6 50%, #f093fb 100%);
     }
 
     * {
@@ -35,6 +38,7 @@
       justify-content: center;
       color: var(--text-primary);
       padding: 20px;
+      position: relative;
     }
 
     .container {
@@ -46,6 +50,174 @@
       border-radius: 24px;
       padding: 40px;
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      margin-bottom: 80px; /* Space for developer credit */
+    }
+
+    /* Developer Credit Styles */
+    .developer-credit {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+      font-family: 'Orbitron', monospace;
+      font-weight: 700;
+      font-size: 0.9rem;
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 50px;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: slideUpFade 2s ease-out;
+      box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    .developer-credit::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: var(--dev-gradient);
+      border-radius: 50px;
+      z-index: -1;
+      opacity: 0;
+      animation: borderGlow 3s ease-in-out infinite;
+    }
+
+    .dev-icon {
+      width: 20px;
+      height: 20px;
+      background: var(--dev-gradient);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: iconPulse 2s ease-in-out infinite;
+      box-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
+    }
+
+    .dev-icon::before {
+      content: '⚡';
+      color: white;
+      font-size: 12px;
+      animation: iconRotate 4s linear infinite;
+    }
+
+    .dev-text {
+      background: var(--dev-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      animation: textGlow 2s ease-in-out infinite alternate;
+      text-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+    }
+
+    .dev-name {
+      color: var(--neon-cyan);
+      font-weight: 900;
+      text-shadow: 
+        0 0 5px var(--neon-cyan),
+        0 0 10px var(--neon-cyan),
+        0 0 15px var(--neon-cyan);
+      animation: nameFlicker 3s ease-in-out infinite;
+    }
+
+    /* Keyframe Animations */
+    @keyframes slideUpFade {
+      0% {
+        transform: translateX(-50%) translateY(100px);
+        opacity: 0;
+      }
+      100% {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes borderGlow {
+      0%, 100% { opacity: 0; }
+      50% { opacity: 0.8; }
+    }
+
+    @keyframes iconPulse {
+      0%, 100% { 
+        transform: scale(1);
+        box-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
+      }
+      50% { 
+        transform: scale(1.1);
+        box-shadow: 0 0 25px rgba(139, 92, 246, 0.8);
+      }
+    }
+
+    @keyframes iconRotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes textGlow {
+      0% {
+        text-shadow: 0 0 5px rgba(0, 255, 255, 0.2);
+      }
+      100% {
+        text-shadow: 
+          0 0 10px rgba(0, 255, 255, 0.6),
+          0 0 20px rgba(139, 92, 246, 0.4);
+      }
+    }
+
+    @keyframes nameFlicker {
+      0%, 100% {
+        text-shadow: 
+          0 0 5px var(--neon-cyan),
+          0 0 10px var(--neon-cyan),
+          0 0 15px var(--neon-cyan);
+      }
+      50% {
+        text-shadow: 
+          0 0 2px var(--neon-cyan),
+          0 0 8px var(--neon-cyan),
+          0 0 12px var(--neon-cyan),
+          0 0 20px var(--neon-purple);
+      }
+    }
+
+    /* Floating particles for extra futuristic effect */
+    .particle {
+      position: fixed;
+      width: 2px;
+      height: 2px;
+      background: var(--neon-cyan);
+      border-radius: 50%;
+      z-index: 999;
+      animation: float 6s linear infinite;
+      box-shadow: 0 0 6px var(--neon-cyan);
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) translateX(0);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100vh) translateX(100px);
+        opacity: 0;
+      }
     }
 
     .quiz-header {
@@ -257,6 +429,7 @@
     @media (max-width: 768px) {
       .container {
         padding: 30px 20px;
+        margin-bottom: 100px;
       }
       
       .quiz-title {
@@ -279,10 +452,39 @@
       .difficulty-buttons {
         flex-direction: column;
       }
+
+      .developer-credit {
+        bottom: 10px;
+        font-size: 0.8rem;
+        padding: 10px 20px;
+      }
+
+      .dev-icon {
+        width: 18px;
+        height: 18px;
+      }
     }
   </style>
 </head>
 <body>
+  <!-- Floating Particles -->
+  <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+  <div class="particle" style="left: 20%; animation-delay: 1s;"></div>
+  <div class="particle" style="left: 30%; animation-delay: 2s;"></div>
+  <div class="particle" style="left: 40%; animation-delay: 3s;"></div>
+  <div class="particle" style="left: 50%; animation-delay: 4s;"></div>
+  <div class="particle" style="left: 60%; animation-delay: 5s;"></div>
+  <div class="particle" style="left: 70%; animation-delay: 0.5s;"></div>
+  <div class="particle" style="left: 80%; animation-delay: 1.5s;"></div>
+  <div class="particle" style="left: 90%; animation-delay: 2.5s;"></div>
+
+  <!-- Developer Credit - Fixed Position -->
+  <div class="developer-credit">
+    <div class="dev-icon"></div>
+    <span class="dev-text">Developed by</span>
+    <span class="dev-name">KALEES</span>
+  </div>
+
   <div class="container">
     <!-- Start Screen -->
     <div id="start-screen">
@@ -356,95 +558,90 @@
   </div>
 
   <script>
-    // Compiled unique questions from provided search results [1][2][3], categorized into easy, medium, hard
-    // Easy: Basic facts, history, geography
-    // Medium: Inventions, tech, current affairs
-    // Hard: Advanced topics, specifics
-    // Removed duplicates based on question text
+    // Your existing JavaScript code remains the same
     const allQuestions = {
-  easy: [
-    { question: "India's first atomic reactor was", options: ["Zerlina", "Dhruva", "Apsara", "Kamini"], correct: 2 },
-    { question: "Who was the first President of India?", options: ["Mahatma Gandhi", "Dr. Rajendra Prasad", "Jawaharlal Nehru", "Sardar Patel"], correct: 1 },
-    { question: "Who is known as the Father of the Indian Constitution?", options: ["Mahatma Gandhi", "Jawaharlal Nehru", "Dr. B.R. Ambedkar", "Sardar Patel"], correct: 2 },
-    { question: "The Cold War was mainly between which two superpowers?", options: ["USA and Germany", "USA and UK", "USA and Soviet Union (USSR)", "USSR and China"], correct: 2 },
-    { question: "In which year did India officially become a Republic?", options: ["1947", "1950", "1952", "1949"], correct: 1 },
-    { question: "Who was the British Prime Minister during World War II?", options: ["Winston Churchill", "Neville Chamberlain", " Harold Macmillan", "Clement Attlee"], correct: 0 },
-    { question: "Which country has the highest number of official languages?", options: ["Switzerland", "South Africa", "India", "Canada"], correct: 1 },
-    { question: "The currency “Ruble” is used in which country?", options: ["Ukraine", "Poland", "Russia", "Belarus"], correct: 2 },
-    { question: "Which is the only country to have used nuclear weapons in war?", options: ["Russia", "China", "USA", "Germany"], correct: 2 },
-    { question: "What is the official language of Brazil?", options: ["Spanish", "French", "Portuguese", "English"], correct: 2 },
-    { question: "Which country is known as the 'Land of a Thousand Lakes'?", options: ["Sweden", "Finland", "Norway", "Switzerland"], correct: 1 },
-    { question: "Which country has no army?", options: ["Bhutan", "Costa Rica", "Iceland", "Both B and C"], correct: 3 },
-    { question: "What is the capital of Kazakhstan?", options: ["Almaty", "Astana", "Tashkent", "Bishkek"], correct: 1 },
-    { question: "What is the currency of South Korea?", options: ["Yen", "Won", "Yuan", "Ringgit"], correct: 1 },
-    { question: "What is the full form of NATO?", options: ["North Asia Trade Organization", "North Atlantic Treaty Organization", "National Atlantic Treaty Organization", "Non-Aligned Treaty Organization"], correct: 1 },
-    { question: "Which country hosted the G20 Summit in 2023?", options: ["Brazil", "Indonesia", "India", "Italy"], correct: 2 },
-    { question: "Which country leads in the production of solar energy (as of 2024)?", options: ["Germany", "India", "USA", "China"], correct: 3 },
-    { question: "What does USB stand for?", options: ["Universal System Bus", "Unified Serial Bus", "Universal Serial Bus", "United Signal Board"], correct: 2 },
-    { question: "Raspberry Pi is an example of a:", options: ["Mobile processor", "Single-board computer", "Digital signal processor", "IoT router"], correct: 1 },
-    { question: "Which device is used to connect different networks?", options: ["Switch", "Hub", "Router", "Bridge"], correct: 2 },
-    { question: "What is the speed unit of data transfer?", options: ["Megabyte", "Hertz", "Mbps", "Watt"], correct: 2 },
-    { question: "Which sensor is commonly used in smartphones for auto-rotation?", options: ["GPS", "Accelerometer", "Proximity sensor", "Gyroscope"], correct: 1 },
-    { question: "Which company developed the first commercially available microprocessor?", options: ["IBM", "Intel", "AMD", "Motorola"], correct: 1 },
-    { question: "Which display technology is most commonly used in modern smartphones?", options: ["LCD", "CRT", "OLED", "Plasma"], correct: 2 },
-    { question: "Which device converts digital signals into analog for display on older monitors or TVs?", options: ["Router", "Decoder", "Modulator", "DAC"], correct: 3 }
-  ],
-  medium: [
-    { question: "Which invention is Galileo known for?", options: ["Microscope", "Calculator", "Thermometer", "Telescope"], correct: 3 },
-    { question: "What does the SIM in SIM card stand for?", options: ["Subscriber Identity Module", "Signal Identification Mechanism", "Secure Internal Memory", "Satellite Information Monitor"], correct: 0 },
-    { question: "Who invented the electric bulb?", options: ["Alexander Graham Bell", "Michael Faraday", "Isaac Newton", "Thomas Edison"], correct: 3 },
-    { question: "Who is considered the father of Artificial Intelligence?", options: ["Alan Turing", "John McCarthy", "Marvin Minsky", "Geoffrey Hinton"], correct: 1 },
-    { question: "What is the core idea behind Deep Learning?", options: ["Symbolic reasoning", "Decision trees", "Neural networks with multiple layers", "Genetic algorithms"], correct: 2 },
-    { question: "Who is the current President of the World Bank (as of 2025)?", options: ["Ajay Banga", "Kristalina Georgieva", "Ngozi Okonjo-Iweala", "David Malpass"], correct: 0 },
-    { question: "Which country recently joined BRICS in 2024?", options: ["Argentina", "Indonesia", "Egypt", "Vietnam"], correct: 2 },
-    { question: "Which company became the world's most valuable company by market capitalization in 2024?", options: ["Microsoft", "Apple", "Saudi Aramco", "NVIDIA"], correct: 0 },
-    { question: "Who is the current CEO of OpenAI (as of 2025)?", options: ["Elon Musk", "Satya Nadella", "Sam Altman", "Demis Hassabis"], correct: 2 },
-    { question: "Which Indian state has the highest GDP?", options: ["Maharashtra", "Tamil Nadu", "Gujarat", "Karnataka"], correct: 0 },
-    { question: "What is ChatGPT developed by?", options: ["Google", "Meta", "OpenAI", "IBM"], correct: 2 },
-    { question: "Who authored the book 'The Psychology of Money'?", options: ["Robert Kiyosaki", "Morgan Housel", "Yuval Noah Harari", "Nassim Taleb"], correct: 1 },
-    { question: "Which layer of the OSI model is responsible for error detection?", options: ["Network Layer", "Data Link Layer", "Transport Layer", "Application Layer"], correct: 1 },
-    { question: "India's first atomic reactor was", options: ["Zerlina", "Dhruva", "Apsara", "Kamini"], correct: 2 },
-    { question: "Who was the first President of India?", options: ["Mahatma Gandhi", "Dr. Rajendra Prasad", "Jawaharlal Nehru", "Sardar Patel"], correct: 1 },
-    { question: "Who is known as the Father of the Indian Constitution?", options: ["Mahatma Gandhi", "Jawaharlal Nehru", "Dr. B.R. Ambedkar", "Sardar Patel"], correct: 2 },
-    { question: "The Cold War was mainly between which two superpowers?", options: ["USA and Germany", "USA and UK", "USA and Soviet Union (USSR)", "USSR and China"], correct: 2 },
-    { question: "In which year did India officially become a Republic?", options: ["1947", "1950", "1952", "1949"], correct: 1 },
-    { question: "Who was the British Prime Minister during World War II?", options: ["Winston Churchill", "Neville Chamberlain", " Harold Macmillan", "Clement Attlee"], correct: 0 },
-    { question: "Which country has the highest number of official languages?", options: ["Switzerland", "South Africa", "India", "Canada"], correct: 1 },
-    { question: "The currency “Ruble” is used in which country?", options: ["Ukraine", "Poland", "Russia", "Belarus"], correct: 2 },
-    { question: "Which is the only country to have used nuclear weapons in war?", options: ["Russia", "China", "USA", "Germany"], correct: 2 },
-    { question: "What is the official language of Brazil?", options: ["Spanish", "French", "Portuguese", "English"], correct: 2 },
-    { question: "Which country is known as the 'Land of a Thousand Lakes'?", options: ["Sweden", "Finland", "Norway", "Switzerland"], correct: 1 },
-    { question: "Which country has no army?", options: ["Bhutan", "Costa Rica", "Iceland", "Both B and C"], correct: 3 }
-  ],
-  hard: [
-    { question: "Who is considered the father of Artificial Intelligence?", options: ["Alan Turing", "John McCarthy", "Marvin Minsky", "Geoffrey Hinton"], correct: 1 },
-    { question: "What is the core idea behind Deep Learning?", options: ["Symbolic reasoning", "Decision trees", "Neural networks with multiple layers", "Genetic algorithms"], correct: 2 },
-    { question: "Which company developed the first commercially available microprocessor?", options: ["IBM", "Intel", "AMD", "Motorola"], correct: 1 },
-    { question: "Which display technology is most commonly used in modern smartphones?", options: ["LCD", "CRT", "OLED", "Plasma"], correct: 2 },
-    { question: "Which device converts digital signals into analog for display on older monitors or TVs?", options: ["Router", "Decoder", "Modulator", "DAC"], correct: 3 },
-    { question: "Which layer of the OSI model is responsible for error detection?", options: ["Network Layer", "Data Link Layer", "Transport Layer", "Application Layer"], correct: 1 },
-    { question: "Who is the current President of the World Bank (as of 2025)?", options: ["Ajay Banga", "Kristalina Georgieva", "Ngozi Okonjo-Iweala", "David Malpass"], correct: 0 },
-    { question: "Which country recently joined BRICS in 2024?", options: ["Argentina", "Indonesia", "Egypt", "Vietnam"], correct: 2 },
-    { question: "Which company became the world's most valuable company by market capitalization in 2024?", options: ["Microsoft", "Apple", "Saudi Aramco", "NVIDIA"], correct: 0 },
-    { question: "Who is the current CEO of OpenAI (as of 2025)?", options: ["Elon Musk", "Satya Nadella", "Sam Altman", "Demis Hassabis"], correct: 2 },
-    { question: "Which Indian state has the highest GDP?", options: ["Maharashtra", "Tamil Nadu", "Gujarat", "Karnataka"], correct: 0 },
-    { question: "What is ChatGPT developed by?", options: ["Google", "Meta", "OpenAI", "IBM"], correct: 2 },
-    { question: "Who authored the book 'The Psychology of Money'?", options: ["Robert Kiyosaki", "Morgan Housel", "Yuval Noah Harari", "Nassim Taleb"], correct: 1 },
-    { question: "India's first atomic reactor was", options: ["Zerlina", "Dhruva", "Apsara", "Kamini"], correct: 2 },
-    { question: "Who was the first President of India?", options: ["Mahatma Gandhi", "Dr. Rajendra Prasad", "Jawaharlal Nehru", "Sardar Patel"], correct: 1 },
-    { question: "Who is known as the Father of the Indian Constitution?", options: ["Mahatma Gandhi", "Jawaharlal Nehru", "Dr. B.R. Ambedkar", "Sardar Patel"], correct: 2 },
-    { question: "The Cold War was mainly between which two superpowers?", options: ["USA and Germany", "USA and UK", "USA and Soviet Union (USSR)", "USSR and China"], correct: 2 },
-    { question: "In which year did India officially become a Republic?", options: ["1947", "1950", "1952", "1949"], correct: 1 },
-    { question: "Who was the British Prime Minister during World War II?", options: ["Winston Churchill", "Neville Chamberlain", " Harold Macmillan", "Clement Attlee"], correct: 0 },
-    { question: "Which country has the highest number of official languages?", options: ["Switzerland", "South Africa", "India", "Canada"], correct: 1 },
-    { question: "Which is the only country to have used nuclear weapons in war?", options: ["Russia", "China", "USA", "Germany"], correct: 2 },
-    { question: "Which country has no army?", options: ["Bhutan", "Costa Rica", "Iceland", "Both B and C"], correct: 3 },
-    { question: "Which country leads in the production of solar energy (as of 2024)?", options: ["Germany", "India", "USA", "China"], correct: 3 },
-    { question: "What does USB stand for?", options: ["Universal System Bus", "Unified Serial Bus", "Universal Serial Bus", "United Signal Board"], correct: 2 },
-    { question: "Which sensor is commonly used in smartphones for auto-rotation?", options: ["GPS", "Accelerometer", "Proximity sensor", "Gyroscope"], correct: 1 }
-  ]
-};
-
+      easy: [
+        { question: "India's first atomic reactor was", options: ["Zerlina", "Dhruva", "Apsara", "Kamini"], correct: 2 },
+        { question: "Who was the first President of India?", options: ["Mahatma Gandhi", "Dr. Rajendra Prasad", "Jawaharlal Nehru", "Sardar Patel"], correct: 1 },
+        { question: "Who is known as the Father of the Indian Constitution?", options: ["Mahatma Gandhi", "Jawaharlal Nehru", "Dr. B.R. Ambedkar", "Sardar Patel"], correct: 2 },
+        { question: "The Cold War was mainly between which two superpowers?", options: ["USA and Germany", "USA and UK", "USA and Soviet Union (USSR)", "USSR and China"], correct: 2 },
+        { question: "In which year did India officially become a Republic?", options: ["1947", "1950", "1952", "1949"], correct: 1 },
+        { question: "Who was the British Prime Minister during World War II?", options: ["Winston Churchill", "Neville Chamberlain", " Harold Macmillan", "Clement Attlee"], correct: 0 },
+        { question: "Which country has the highest number of official languages?", options: ["Switzerland", "South Africa", "India", "Canada"], correct: 1 },
+        { question: "The currency Ruble is used in which country?", options: ["Ukraine", "Poland", "Russia", "Belarus"], correct: 2 },
+        { question: "Which is the only country to have used nuclear weapons in war?", options: ["Russia", "China", "USA", "Germany"], correct: 2 },
+        { question: "What is the official language of Brazil?", options: ["Spanish", "French", "Portuguese", "English"], correct: 2 },
+        { question: "Which country is known as the 'Land of a Thousand Lakes'?", options: ["Sweden", "Finland", "Norway", "Switzerland"], correct: 1 },
+        { question: "Which country has no army?", options: ["Bhutan", "Costa Rica", "Iceland", "Both B and C"], correct: 3 },
+        { question: "What is the capital of Kazakhstan?", options: ["Almaty", "Astana", "Tashkent", "Bishkek"], correct: 1 },
+        { question: "What is the currency of South Korea?", options: ["Yen", "Won", "Yuan", "Ringgit"], correct: 1 },
+        { question: "What is the full form of NATO?", options: ["North Asia Trade Organization", "North Atlantic Treaty Organization", "National Atlantic Treaty Organization", "Non-Aligned Treaty Organization"], correct: 1 },
+        { question: "Which country hosted the G20 Summit in 2023?", options: ["Brazil", "Indonesia", "India", "Italy"], correct: 2 },
+        { question: "Which country leads in the production of solar energy (as of 2024)?", options: ["Germany", "India", "USA", "China"], correct: 3 },
+        { question: "What does USB stand for?", options: ["Universal System Bus", "Unified Serial Bus", "Universal Serial Bus", "United Signal Board"], correct: 2 },
+        { question: "Raspberry Pi is an example of a:", options: ["Mobile processor", "Single-board computer", "Digital signal processor", "IoT router"], correct: 1 },
+        { question: "Which device is used to connect different networks?", options: ["Switch", "Hub", "Router", "Bridge"], correct: 2 },
+        { question: "What is the speed unit of data transfer?", options: ["Megabyte", "Hertz", "Mbps", "Watt"], correct: 2 },
+        { question: "Which sensor is commonly used in smartphones for auto-rotation?", options: ["GPS", "Accelerometer", "Proximity sensor", "Gyroscope"], correct: 1 },
+        { question: "Which company developed the first commercially available microprocessor?", options: ["IBM", "Intel", "AMD", "Motorola"], correct: 1 },
+        { question: "Which display technology is most commonly used in modern smartphones?", options: ["LCD", "CRT", "OLED", "Plasma"], correct: 2 },
+        { question: "Which device converts digital signals into analog for display on older monitors or TVs?", options: ["Router", "Decoder", "Modulator", "DAC"], correct: 3 }
+      ],
+      medium: [
+        { question: "Which invention is Galileo known for?", options: ["Microscope", "Calculator", "Thermometer", "Telescope"], correct: 3 },
+        { question: "What does the SIM in SIM card stand for?", options: ["Subscriber Identity Module", "Signal Identification Mechanism", "Secure Internal Memory", "Satellite Information Monitor"], correct: 0 },
+        { question: "Who invented the electric bulb?", options: ["Alexander Graham Bell", "Michael Faraday", "Isaac Newton", "Thomas Edison"], correct: 3 },
+        { question: "Who is considered the father of Artificial Intelligence?", options: ["Alan Turing", "John McCarthy", "Marvin Minsky", "Geoffrey Hinton"], correct: 1 },
+        { question: "What is the core idea behind Deep Learning?", options: ["Symbolic reasoning", "Decision trees", "Neural networks with multiple layers", "Genetic algorithms"], correct: 2 },
+        { question: "Who is the current President of the World Bank (as of 2025)?", options: ["Ajay Banga", "Kristalina Georgieva", "Ngozi Okonjo-Iweala", "David Malpass"], correct: 0 },
+        { question: "Which country recently joined BRICS in 2024?", options: ["Argentina", "Indonesia", "Egypt", "Vietnam"], correct: 2 },
+        { question: "Which company became the world's most valuable company by market capitalization in 2024?", options: ["Microsoft", "Apple", "Saudi Aramco", "NVIDIA"], correct: 0 },
+        { question: "Who is the current CEO of OpenAI (as of 2025)?", options: ["Elon Musk", "Satya Nadella", "Sam Altman", "Demis Hassabis"], correct: 2 },
+        { question: "Which Indian state has the highest GDP?", options: ["Maharashtra", "Tamil Nadu", "Gujarat", "Karnataka"], correct: 0 },
+        { question: "What is ChatGPT developed by?", options: ["Google", "Meta", "OpenAI", "IBM"], correct: 2 },
+        { question: "Who authored the book 'The Psychology of Money'?", options: ["Robert Kiyosaki", "Morgan Housel", "Yuval Noah Harari", "Nassim Taleb"], correct: 1 },
+        { question: "Which layer of the OSI model is responsible for error detection?", options: ["Network Layer", "Data Link Layer", "Transport Layer", "Application Layer"], correct: 1 },
+        { question: "India's first atomic reactor was", options: ["Zerlina", "Dhruva", "Apsara", "Kamini"], correct: 2 },
+        { question: "Who was the first President of India?", options: ["Mahatma Gandhi", "Dr. Rajendra Prasad", "Jawaharlal Nehru", "Sardar Patel"], correct: 1 },
+        { question: "Who is known as the Father of the Indian Constitution?", options: ["Mahatma Gandhi", "Jawaharlal Nehru", "Dr. B.R. Ambedkar", "Sardar Patel"], correct: 2 },
+        { question: "The Cold War was mainly between which two superpowers?", options: ["USA and Germany", "USA and UK", "USA and Soviet Union (USSR)", "USSR and China"], correct: 2 },
+        { question: "In which year did India officially become a Republic?", options: ["1947", "1950", "1952", "1949"], correct: 1 },
+        { question: "Who was the British Prime Minister during World War II?", options: ["Winston Churchill", "Neville Chamberlain", " Harold Macmillan", "Clement Attlee"], correct: 0 },
+        { question: "Which country has the highest number of official languages?", options: ["Switzerland", "South Africa", "India", "Canada"], correct: 1 },
+        { question: "The currency Ruble is used in which country?", options: ["Ukraine", "Poland", "Russia", "Belarus"], correct: 2 },
+        { question: "Which is the only country to have used nuclear weapons in war?", options: ["Russia", "China", "USA", "Germany"], correct: 2 },
+        { question: "What is the official language of Brazil?", options: ["Spanish", "French", "Portuguese", "English"], correct: 2 },
+        { question: "Which country is known as the 'Land of a Thousand Lakes'?", options: ["Sweden", "Finland", "Norway", "Switzerland"], correct: 1 },
+        { question: "Which country has no army?", options: ["Bhutan", "Costa Rica", "Iceland", "Both B and C"], correct: 3 }
+      ],
+      hard: [
+        { question: "Who is considered the father of Artificial Intelligence?", options: ["Alan Turing", "John McCarthy", "Marvin Minsky", "Geoffrey Hinton"], correct: 1 },
+        { question: "What is the core idea behind Deep Learning?", options: ["Symbolic reasoning", "Decision trees", "Neural networks with multiple layers", "Genetic algorithms"], correct: 2 },
+        { question: "Which company developed the first commercially available microprocessor?", options: ["IBM", "Intel", "AMD", "Motorola"], correct: 1 },
+        { question: "Which display technology is most commonly used in modern smartphones?", options: ["LCD", "CRT", "OLED", "Plasma"], correct: 2 },
+        { question: "Which device converts digital signals into analog for display on older monitors or TVs?", options: ["Router", "Decoder", "Modulator", "DAC"], correct: 3 },
+        { question: "Which layer of the OSI model is responsible for error detection?", options: ["Network Layer", "Data Link Layer", "Transport Layer", "Application Layer"], correct: 1 },
+        { question: "Who is the current President of the World Bank (as of 2025)?", options: ["Ajay Banga", "Kristalina Georgieva", "Ngozi Okonjo-Iweala", "David Malpass"], correct: 0 },
+        { question: "Which country recently joined BRICS in 2024?", options: ["Argentina", "Indonesia", "Egypt", "Vietnam"], correct: 2 },
+        { question: "Which company became the world's most valuable company by market capitalization in 2024?", options: ["Microsoft", "Apple", "Saudi Aramco", "NVIDIA"], correct: 0 },
+        { question: "Who is the current CEO of OpenAI (as of 2025)?", options: ["Elon Musk", "Satya Nadella", "Sam Altman", "Demis Hassabis"], correct: 2 },
+        { question: "Which Indian state has the highest GDP?", options: ["Maharashtra", "Tamil Nadu", "Gujarat", "Karnataka"], correct: 0 },
+        { question: "What is ChatGPT developed by?", options: ["Google", "Meta", "OpenAI", "IBM"], correct: 2 },
+        { question: "Who authored the book 'The Psychology of Money'?", options: ["Robert Kiyosaki", "Morgan Housel", "Yuval Noah Harari", "Nassim Taleb"], correct: 1 },
+        { question: "India's first atomic reactor was", options: ["Zerlina", "Dhruva", "Apsara", "Kamini"], correct: 2 },
+        { question: "Who was the first President of India?", options: ["Mahatma Gandhi", "Dr. Rajendra Prasad", "Jawaharlal Nehru", "Sardar Patel"], correct: 1 },
+        { question: "Who is known as the Father of the Indian Constitution?", options: ["Mahatma Gandhi", "Jawaharlal Nehru", "Dr. B.R. Ambedkar", "Sardar Patel"], correct: 2 },
+        { question: "The Cold War was mainly between which two superpowers?", options: ["USA and Germany", "USA and UK", "USA and Soviet Union (USSR)", "USSR and China"], correct: 2 },
+        { question: "In which year did India officially become a Republic?", options: ["1947", "1950", "1952", "1949"], correct: 1 },
+        { question: "Who was the British Prime Minister during World War II?", options: ["Winston Churchill", "Neville Chamberlain", " Harold Macmillan", "Clement Attlee"], correct: 0 },
+        { question: "Which country has the highest number of official languages?", options: ["Switzerland", "South Africa", "India", "Canada"], correct: 1 },
+        { question: "Which is the only country to have used nuclear weapons in war?", options: ["Russia", "China", "USA", "Germany"], correct: 2 },
+        { question: "Which country has no army?", options: ["Bhutan", "Costa Rica", "Iceland", "Both B and C"], correct: 3 },
+        { question: "Which country leads in the production of solar energy (as of 2024)?", options: ["Germany", "India", "USA", "China"], correct: 3 },
+        { question: "What does USB stand for?", options: ["Universal System Bus", "Unified Serial Bus", "Universal Serial Bus", "United Signal Board"], correct: 2 },
+        { question: "Which sensor is commonly used in smartphones for auto-rotation?", options: ["GPS", "Accelerometer", "Proximity sensor", "Gyroscope"], correct: 1 }
+      ]
+    };
 
     let currentQuestions = [];
     let currentQuestionIndex = 0;
