@@ -623,7 +623,7 @@ header::before {
       gap: 1rem;
       background: rgba(2, 6, 23, 0.5);
       border-radius: 8px;
-      margin-bottom: 1rem;
+      margin-bottom: 0;
       -webkit-overflow-scrolling: touch;
       scroll-behavior: smooth;
       scrollbar-width: thin;
@@ -1886,11 +1886,21 @@ header::before {
   display: flex;
   align-items: flex-end;
   gap: 8px;
-  margin: 6px 0 2px 0;
+  margin: 0; /* Remove margin since it's outside messages */
+  padding: 0.5rem 1rem; /* Add padding for spacing */
   font-size: 0.85rem;
   line-height: 18px;
+  background: rgba(2, 6, 23, 0.3); /* Subtle background */
+  border-radius: 8px;
+  margin-bottom: 0.5rem; /* Space from chat input */
+  animation: pulse 2s infinite;
 }
 .typing.hidden { display: none; }
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
 
 /* —— avatar —— */
 .typing .avatar   { width: 28px; height: 28px; flex-shrink: 0; }
@@ -1988,18 +1998,19 @@ header::before {
         </div>
         <div class="chat-messages" id="chatMessages">
           <!-- Messages will appear here -->
+          <!-- DON'T put typing indicator here! -->
+        </div>
         
-          <!-- Typing indicator (hidden until a signal arrives) -->
-          <div id="typingIndicator" class="typing hidden">
-            <div class="avatar">
-              <img id="typingAvatar" src="" alt="" />
-            </div>
-            <div class="bubble">
-              <span id="typingName"></span> is&nbsp;
-              <span class="dots">
-                <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-              </span>
-            </div>
+        <!-- Move typing indicator HERE - outside messages but inside chat container -->
+        <div id="typingIndicator" class="typing hidden">
+          <div class="avatar">
+            <img id="typingAvatar" src="" alt="" />
+          </div>
+          <div class="bubble">
+            <span id="typingName"></span> is&nbsp;
+            <span class="dots">
+              <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            </span>
           </div>
         </div>
         
@@ -2325,6 +2336,7 @@ header::before {
     </div>
   </main>
 
+
   <!-- File-preview modal -->
 <div id="previewModal" class="preview-modal">
   <div class="preview-modal-content">
@@ -2458,7 +2470,11 @@ header::before {
     let onlineUsers = new Set();
     let isUserAdmin = false;
     let messageToDelete = null;
-    
+// ✅ ADD THIS LINE - Declare typingTimer globally
+let typingTimer;
+
+// ✅ Also ensure usersTyping is declared
+const usersTyping = {};
     // Initialize Supabase
     function initializeSupabase() {
       if (typeof supabase !== 'undefined') {
@@ -2481,66 +2497,89 @@ header::before {
     }
     
     async function initializeApp() {
-      try {
-        // Get current user
-        const { data: { user }, error } = await supabaseClient.auth.getUser();
-        if (error || !user) {
-          window.location.href = 'index.html';
-          return;
-        }
+  try {
+    console.log('🚀 Starting app initialization...');
     
-        currentUser = user;
-        
-        // Get user profile - FIX: Make sure to get all needed fields
-        const { data: profile, error: profileError } = await supabaseClient
-          .from('users')
-          .select('username, role, email, dob, avatar_url')
-          .eq('id', user.id)
-          .single();
-        
-        if (profileError) {
-          console.error('Profile fetch error:', profileError);
-          // Fallback profile creation
-          currentProfile = {
-            username: user.user_metadata?.username || user.email?.split('@')[0] || 'User',
-            role: 'user',
-            email: user.email
-          };
-        } else {
-          currentProfile = profile;
-        }
-        
-        // Check admin status
-        isUserAdmin = currentProfile?.role === 'admin';
-        const isModerator = currentProfile?.role === 'moderator';
-    
-        // FIX: Update UI AFTER profile is loaded
-        updateUserInfo();
-        
-        // FIX: Initialize profile popover after DOM is ready
-        initializeProfilePopover();
-        
-        // Show welcome message
-        showWelcomeToast();
-    
-        // Load initial data
-        await loadMessages();
-        await loadFiles();
-        await loadOnlineMembers();
-        updateGamesCount(); // FIX: Call this to update games count
-    
-        // Setup realtime
-        setupRealtimeChat();
-        setupPresenceTracking();
-    
-        // Setup event listeners
-        setupEventListeners();
-    
-      } catch (error) {
-        console.error('Error initializing app:', error);
-        showToast('error', 'Initialization Error', 'Failed to load the application');
-      }
+    // Get current user FIRST
+    const { data: { user }, error } = await supabaseClient.auth.getUser();
+    if (error || !user) {
+      console.error('❌ User authentication failed');
+      window.location.href = 'index.html';
+      return;
     }
+
+    currentUser = user;
+    console.log('✅ User authenticated:', currentUser.id);
+    
+    // Get user profile SECOND
+    const { data: profile, error: profileError } = await supabaseClient
+      .from('users')
+      .select('username, role, email, dob, avatar_url')
+      .eq('id', user.id)
+      .single();
+    
+    if (profileError) {
+      console.error('Profile fetch error:', profileError);
+      currentProfile = {
+        username: user.user_metadata?.username || user.email?.split('@')[0] || 'User',
+        role: 'user',
+        email: user.email
+      };
+    } else {
+      currentProfile = profile;
+    }
+    
+    console.log('✅ Profile loaded:', currentProfile.username);
+    
+    // Update UI THIRD
+    updateUserInfo();
+    initializeProfilePopover();
+    
+    // Setup realtime FOURTH (after user data is ready)
+    console.log('🔧 Setting up realtime connections...');
+    setupRealtimeChat();
+    setupPresenceTracking();
+    
+    // Setup event listeners FIFTH
+    setupEventListeners();
+    
+    // Load data SIXTH
+    await Promise.all([
+      loadMessages(),
+      loadFiles(),
+      loadOnlineMembers()
+    ]);
+    
+    updateGamesCount();
+    showWelcomeToast();
+    
+
+  } catch (error) {
+    console.error('Error initializing app:', error);
+    showToast('error', 'Initialization Error', 'Failed to load the application');
+  }
+}
+// Add this function to clear test data
+function clearTestTypingData() {
+  console.log('🧹 Clearing test typing data...');
+  
+  // Remove any test users from the typing object
+  Object.keys(usersTyping).forEach(userId => {
+    if (userId.includes('test') || usersTyping[userId].name === 'Test User') {
+      console.log(`🗑️ Removing test user: ${userId}`);
+      delete usersTyping[userId];
+    }
+  });
+  
+  // Update the indicator to reflect changes
+  updateTypingIndicator();
+  console.log('✅ Test data cleared');
+}
+
+// Call this once in your browser console or add it temporarily to initializeApp()
+clearTestTypingData();
+
+
     
     function updateUserInfo() {
   const userAvatar = document.getElementById('userAvatar');
@@ -2647,95 +2686,333 @@ header::before {
     }
     
     function setupEventListeners() {
-      // Logout button
-      document.getElementById('logoutBtn').addEventListener('click', logout);
-    
-      // Code toggle
-      document.getElementById('codeToggle').addEventListener('click', toggleCodeMode);
-    
-      // Emoji toggle
-      document.getElementById('emojiToggle').addEventListener('click', toggleEmojiPicker);
-    
-      // Fullscreen toggle
-      document.getElementById('fullscreenToggle').addEventListener('click', openFullscreenEditor);
-    
-      // Chat input enter key
-      document.getElementById('chatInput').addEventListener('keypress', (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-          e.preventDefault();
-          sendMessage();
-        }
-      });
+  console.log('🔧 Setting up event listeners...');
+  
+  // Logout button
+  const logoutBtn = document.getElementById('logoutBtn');
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', logout);
+    console.log('✅ Logout button listener added');
+  } else {
+    console.error('❌ logoutBtn not found');
+  }
 
-      // --- typing indicator listeners ---
-['chatInput','codeInput'].forEach(id=>{
-  const el=document.getElementById(id);
-  el.addEventListener('input',handleTyping);
-  el.addEventListener('blur',stopTyping);
-  el.addEventListener('keydown',e=>{
-    if(e.key==='Enter' && !e.shiftKey) stopTyping();
-  });
-});
+  // Code toggle
+  const codeToggle = document.getElementById('codeToggle');
+  if (codeToggle) {
+    codeToggle.addEventListener('click', toggleCodeMode);
+    console.log('✅ Code toggle listener added');
+  } else {
+    console.error('❌ codeToggle not found');
+  }
 
+  // Emoji toggle
+  const emojiToggle = document.getElementById('emojiToggle');
+  if (emojiToggle) {
+    emojiToggle.addEventListener('click', toggleEmojiPicker);
+    console.log('✅ Emoji toggle listener added');
+  } else {
+    console.error('❌ emojiToggle not found');
+  }
 
-      document.getElementById('userAvatar').onclick = openEditProfile;
+  // Fullscreen toggle
+  const fullscreenToggle = document.getElementById('fullscreenToggle');
+  if (fullscreenToggle) {
+    fullscreenToggle.addEventListener('click', openFullscreenEditor);
+    console.log('✅ Fullscreen toggle listener added');
+  } else {
+    console.error('❌ fullscreenToggle not found');
+  }
 
+  // === TYPING INDICATOR SETUP === 
+  console.log('🔧 Setting up typing indicator listeners...');
+  
+  const chatInput = document.getElementById('chatInput');
+  const codeInput = document.getElementById('codeInput');
+  
+  if (chatInput) {
+    console.log('✅ Setting up chatInput typing events');
     
-      // Code input enter key
-      document.getElementById('codeInput').addEventListener('keypress', (e) => {
-        if (e.key === 'Enter' && e.ctrlKey) {
-          e.preventDefault();
-          sendMessage();
-        }
+    // Input event for typing detection
+    chatInput.addEventListener('input', handleTyping);
+    
+    // Blur event to stop typing
+    chatInput.addEventListener('blur', stopTyping);
+    
+    // Enter key to send message and stop typing
+    chatInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        stopTyping(); // Stop typing first
+        sendMessage();
+      }
+    });
+    
+    // Additional keydown for more responsive typing detection
+    chatInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        stopTyping();
+      }
+    });
+    
+    console.log('✅ chatInput typing events configured');
+  } else {
+    console.error('❌ chatInput element not found!');
+  }
+  
+  if (codeInput) {
+    console.log('✅ Setting up codeInput typing events');
+    
+    // Input event for typing detection
+    codeInput.addEventListener('input', handleTyping);
+    
+    // Blur event to stop typing
+    codeInput.addEventListener('blur', stopTyping);
+    
+    // Ctrl+Enter to send code and stop typing
+    codeInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter' && e.ctrlKey) {
+        e.preventDefault();
+        stopTyping(); // Stop typing first
+        sendMessage();
+      }
+    });
+    
+    // Additional keydown for more responsive typing detection
+    codeInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && e.ctrlKey) {
+        stopTyping();
+      }
+    });
+    
+    console.log('✅ codeInput typing events configured');
+  } else {
+    console.error('❌ codeInput element not found!');
+  }
+
+  // User avatar click for profile editing
+  const userAvatar = document.getElementById('userAvatar');
+  if (userAvatar) {
+    userAvatar.onclick = openEditProfile;
+    console.log('✅ User avatar click listener added');
+  } else {
+    console.error('❌ userAvatar not found');
+  }
+
+  // File input change
+  const fileInput = document.getElementById('fileInput');
+  if (fileInput) {
+    fileInput.addEventListener('change', updateFilePreview);
+    console.log('✅ File input listener added');
+  } else {
+    console.error('❌ fileInput not found');
+  }
+
+  // Emoji category buttons
+  const emojiCategories = document.querySelectorAll('.emoji-category');
+  if (emojiCategories.length > 0) {
+    emojiCategories.forEach(button => {
+      button.addEventListener('click', (e) => {
+        document.querySelectorAll('.emoji-category').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        loadEmojis(e.target.dataset.category);
       });
+    });
+    console.log(`✅ ${emojiCategories.length} emoji category listeners added`);
+  } else {
+    console.error('❌ No emoji category buttons found');
+  }
+
+  // Emoji search
+  const emojiSearch = document.getElementById('emojiSearch');
+  if (emojiSearch) {
+    emojiSearch.addEventListener('input', (e) => {
+      searchEmojis(e.target.value);
+    });
+    console.log('✅ Emoji search listener added');
+  } else {
+    console.error('❌ emojiSearch not found');
+  }
+
+  // Close emoji picker when clicking outside
+  document.addEventListener('click', (e) => {
+    const emojiPicker = document.getElementById('emojiPicker');
+    const emojiToggleBtn = document.getElementById('emojiToggle');
     
-      // File input change
-      document.getElementById('fileInput').addEventListener('change', updateFilePreview);
-    
-      // Emoji category buttons
-      document.querySelectorAll('.emoji-category').forEach(button => {
-        button.addEventListener('click', (e) => {
-          document.querySelectorAll('.emoji-category').forEach(b => b.classList.remove('active'));
-          e.target.classList.add('active');
-          loadEmojis(e.target.dataset.category);
-        });
-      });
-    
-      // Emoji search
-      document.getElementById('emojiSearch').addEventListener('input', (e) => {
-        searchEmojis(e.target.value);
-      });
-    
-      // Close emoji picker when clicking outside
-      document.addEventListener('click', (e) => {
-        const emojiPicker = document.getElementById('emojiPicker');
-        const emojiToggle = document.getElementById('emojiToggle');
-        
-        if (!emojiPicker.contains(e.target) && !emojiToggle.contains(e.target)) {
-          emojiPicker.style.display = 'none';
-          emojiToggle.classList.remove('active');
-        }
-      });
-    
-      // Confirm dialog close on click outside
-      document.getElementById('confirmDialog').addEventListener('click', (e) => {
-        if (e.target === document.getElementById('confirmDialog')) {
-          hideConfirmDialog();
-        }
-      });
-    
-      // Fullscreen editor close on escape
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-          if (document.getElementById('fullscreenOverlay').style.display === 'flex') {
-            closeFullscreenEditor();
-          }
-          if (document.getElementById('emojiPicker').style.display === 'block') {
-            toggleEmojiPicker();
-          }
-        }
-      });
+    if (emojiPicker && emojiToggleBtn) {
+      if (!emojiPicker.contains(e.target) && !emojiToggleBtn.contains(e.target)) {
+        emojiPicker.style.display = 'none';
+        emojiToggleBtn.classList.remove('active');
+      }
     }
+  });
+
+  // Confirm dialog close on click outside
+  const confirmDialog = document.getElementById('confirmDialog');
+  if (confirmDialog) {
+    confirmDialog.addEventListener('click', (e) => {
+      if (e.target === confirmDialog) {
+        hideConfirmDialog();
+      }
+    });
+    console.log('✅ Confirm dialog listener added');
+  } else {
+    console.error('❌ confirmDialog not found');
+  }
+
+  // Fullscreen editor close on escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      const fullscreenOverlay = document.getElementById('fullscreenOverlay');
+      const emojiPickerEl = document.getElementById('emojiPicker');
+      
+      if (fullscreenOverlay && fullscreenOverlay.style.display === 'flex') {
+        closeFullscreenEditor();
+      }
+      if (emojiPickerEl && emojiPickerEl.style.display === 'block') {
+        toggleEmojiPicker();
+      }
+    }
+  });
+
+  console.log('✅ All event listeners setup completed');
+}
+
+// === SEPARATE DEBUG FUNCTION === 
+function debugTypingSetup() {
+  console.log('🔍 Debugging typing indicator setup...');
+  
+  const chatInput = document.getElementById('chatInput');
+  const codeInput = document.getElementById('codeInput');
+  const typingIndicator = document.getElementById('typingIndicator');
+  const typingName = document.getElementById('typingName');
+  const typingAvatar = document.getElementById('typingAvatar');
+  
+  console.log('🔍 Element status:');
+  console.log(`- chatInput: ${chatInput ? '✅ Found' : '❌ Missing'}`);
+  console.log(`- codeInput: ${codeInput ? '✅ Found' : '❌ Missing'}`);
+  console.log(`- typingIndicator: ${typingIndicator ? '✅ Found' : '❌ Missing'}`);
+  console.log(`- typingName: ${typingName ? '✅ Found' : '❌ Missing'}`);
+  console.log(`- typingAvatar: ${typingAvatar ? '✅ Found' : '❌ Missing'}`);
+  
+  // Test input detection
+  if (chatInput) {
+    chatInput.addEventListener('input', () => {
+      console.log('📝 Chat input detected (debug listener)');
+    });
+  }
+  
+  if (codeInput) {
+    codeInput.addEventListener('input', () => {
+      console.log('💻 Code input detected (debug listener)');
+    });
+  }
+  
+  console.log('🔍 Debug setup completed');
+}
+
+// === ENHANCED TYPING FUNCTIONS ===
+function handleTyping() {
+  console.log('⌨️ handleTyping called');
+  
+  if (!presenceChannel) {
+    console.warn('⚠️ No presence channel available for typing signal');
+    return;
+  }
+  
+  if (!currentUser || !currentProfile) {
+    console.warn('⚠️ User data not available for typing signal');
+    return;
+  }
+  
+  // Send typing signal
+  sendTypingSignal(true);
+  
+  // Reset the timer
+  clearTimeout(typingTimer);
+  typingTimer = setTimeout(() => {
+    console.log('⏱️ Typing timer expired, sending stop signal');
+    sendTypingSignal(false);
+  }, 3000);
+}
+
+function stopTyping() {
+  console.log('🛑 stopTyping called');
+  clearTimeout(typingTimer);
+  sendTypingSignal(false);
+}
+
+function sendTypingSignal(isTyping) {
+  console.log(`📡 Sending typing signal: ${isTyping ? 'TYPING' : 'STOPPED'}`);
+  
+  if (!presenceChannel) {
+    console.error('❌ Presence channel not available');
+    return;
+  }
+  
+  if (!currentUser || !currentProfile) {
+    console.error('❌ User data not available');
+    return;
+  }
+  
+  const payload = {
+    typing: isTyping,
+    name: currentProfile?.username || 'Someone',
+    avatar: currentProfile?.avatar_url || 'Assets/pfp2.jpg',
+    userId: currentUser.id 
+  };
+  
+  console.log('📤 Typing payload:', payload);
+  
+  presenceChannel.send({
+    type: 'broadcast',
+    event: 'typing',
+    payload: payload
+  }).then(() => {
+    console.log('✅ Typing signal sent successfully');
+  }).catch(err => {
+    console.error('❌ Failed to send typing signal:', err);
+  });
+}
+
+// === ENHANCED TYPING EVENT HANDLER ===
+function handleTypingEvent(payload) {
+  console.log('🎯 handleTypingEvent called with:', payload);
+  
+  if (!payload || !payload.userId) {
+    console.error('❌ Invalid typing payload received');
+    return;
+  }
+  
+  // ✅ IGNORE TEST USERS
+  if (payload.userId.includes('test') || payload.name === 'Test User') {
+    console.log('🚫 Ignoring test user typing event');
+    return;
+  }
+  
+  // ✅ IGNORE YOUR OWN TYPING (optional)
+  if (payload.userId === currentUser?.id) {
+    console.log('🚫 Ignoring own typing event');
+    return;
+  }
+  
+  if (payload.typing) {
+    console.log(`✍️ User ${payload.name} started typing`);
+    usersTyping[payload.userId] = { 
+      name: payload.name, 
+      avatar: payload.avatar 
+    };
+  } else {
+    console.log(`⏹️ User ${payload.name} stopped typing`);
+    delete usersTyping[payload.userId];
+  }
+  
+  console.log('👥 Current typing users:', Object.keys(usersTyping));
+  updateTypingIndicator();
+}
+
+
+
     
     /* === MODAL FUNCTIONS === */
     // ===============  openPreview  ==================
@@ -2915,18 +3192,21 @@ function openPreview(file) {
       }
     }
     
-    // Setup online presence tracking
     function setupPresenceTracking() {
-  // 1. Get the channel instance
+  console.log('🔧 Setting up presence tracking...');
+  
   presenceChannel = supabaseClient.channel('online-users', {
     config: {
       presence: {
         key: currentUser.id,
       },
+      broadcast: {
+        self: true, // ✅ CHANGE: Allow self-broadcasts for debugging
+        ack: false  // ✅ CHANGE: Don't wait for acknowledgments
+      }
     },
   });
 
-  // 2. Chain all event listeners together, THEN subscribe at the end
   presenceChannel
     .on('presence', { event: 'sync' }, () => {
       const newState = presenceChannel.presenceState();
@@ -2944,30 +3224,39 @@ function openPreview(file) {
       onlineUsers.delete(key);
       updateOnlineMembers();
     })
-    // THIS IS THE KEY FIX: The 'typing' listener is now part of the chain
-    // The 'typing' listener is now part of the chain and uses the new handler
-.on('broadcast', { event: 'typing' }, ({ payload, sender_id }) => {
-  // Ignore signals from yourself
-  if (sender_id === presenceChannel.sessionId) {
-    return;
-  }
-  // Let our new function handle the logic
-  handleTypingEvent(payload);
-})
-
-    // 3. Finally, subscribe to activate all the listeners above
+    // ✅ FIXED: Enhanced broadcast listener
+    .on('broadcast', { event: 'typing' }, (payload) => {
+      console.log('📨 Received typing broadcast:', payload);
+      console.log('📨 Payload details:', JSON.stringify(payload, null, 2));
+      
+      // Check if it's your own message (for debugging)
+      if (payload.payload?.userId === currentUser?.id) {
+        console.log('🔍 This is my own typing signal');
+        // For now, DON'T ignore it - let's see if broadcasts work at all
+        // return; // Comment this out temporarily
+      }
+      
+      if (payload.payload) {
+        handleTypingEvent(payload.payload);
+      } else {
+        console.error('❌ Invalid broadcast payload structure');
+      }
+    })
     .subscribe(async (status) => {
+      console.log('📡 Presence channel status:', status);
       if (status === 'SUBSCRIBED') {
-        // Once connected, tell everyone you are online
+        console.log('✅ Presence channel subscribed successfully');
         await presenceChannel.track({
           user_id: currentUser.id,
           username: getUserDisplayName(currentUser, currentProfile),
           role: currentProfile?.role || 'user',
           online_at: new Date().toISOString(),
         });
+        
       }
     });
 }
+
 
     
     // Chat functionality
@@ -3343,7 +3632,11 @@ function openPreview(file) {
       .limit(50);
 
     const messagesContainer = document.getElementById('chatMessages');
-    messagesContainer.innerHTML = '';
+    
+    // ✅ FIX: Don't clear innerHTML - this was deleting the typing indicator!
+    // Instead, remove only message elements
+    const messageElements = messagesContainer.querySelectorAll('[data-message-id]');
+    messageElements.forEach(el => el.remove());
 
     if (error) {
       console.error('Error loading messages:', error);
@@ -3355,10 +3648,9 @@ function openPreview(file) {
       return;
     }
 
-    // 1. Gather all user IDs involved in these messages
+    // Rest of your loadMessages code stays the same...
     const userIds = [...new Set(messages.map(msg => msg.user_id))];
-
-    // 2. Fetch all necessary user fields, including avatar_url
+    
     let userProfiles = {};
     if (userIds.length > 0) {
       const { data: profiles } = await supabaseClient
@@ -3373,14 +3665,12 @@ function openPreview(file) {
       }
     }
 
-    // 3. Now render all messages
     messages.forEach(msg => {
       const isCurrentUser = msg.user_id === currentUser.id;
       const messageElement = document.createElement('div');
       messageElement.className = isCurrentUser ? 'message message-sent fade-in' : 'message message-received fade-in';
       messageElement.setAttribute('data-message-id', msg.id);
 
-      // --- Profile information ---
       let senderName = 'Unknown', senderRole = 'user', avatarUrl = 'Assets/pfp2.jpg';
       if (isCurrentUser) {
         senderName = getUserDisplayName(currentUser, currentProfile);
@@ -3396,7 +3686,6 @@ function openPreview(file) {
       const roleClass = `role-${senderRole}`;
       const roleDisplay = getRoleEmoji(senderRole);
 
-      // --- Add avatar to chat message sender row ---
       messageElement.innerHTML = `
         <div class="message-sender">
           <img src="${avatarUrl}" alt="${senderName}" class="chat-avatar">
@@ -3420,6 +3709,7 @@ function openPreview(file) {
     console.error('Error in loadMessages:', err);
   }
 }
+
 
     
     // File upload functionality
@@ -3788,85 +4078,165 @@ function openPreview(file) {
 
 /* ---------- Typing indicator helpers ---------- */
 
-// This object will keep track of everyone who is currently typing.
-// The key is the user's ID, and the value is their info.
-const usersTyping = {};
-
-// We still need a timer, but it's just for the *current* user.
-let typingTimer;
 
 function handleTyping() {
-  // When the current user types, send a "typing: true" signal.
+  console.log('⌨️ handleTyping called');
+  
+  if (!presenceChannel) {
+    console.warn('⚠️ No presence channel available for typing signal');
+    return;
+  }
+  
+  if (!currentUser || !currentProfile) {
+    console.warn('⚠️ User data not available for typing signal');
+    return;
+  }
+  
+  // Send typing signal
   sendTypingSignal(true);
   
-  // Reset the timer. If they stop typing for 3 seconds, we'll send a "stop" signal.
+  // Reset the timer - now typingTimer is properly declared
   clearTimeout(typingTimer);
-  typingTimer = setTimeout(() => sendTypingSignal(false), 3000);
+  typingTimer = setTimeout(() => {
+    console.log('⏱️ Typing timer expired, sending stop signal');
+    sendTypingSignal(false);
+  }, 3000);
 }
 
 function stopTyping() {
-  // This is called when the user sends a message or blurs the input.
+  console.log('🛑 stopTyping called');
   clearTimeout(typingTimer);
   sendTypingSignal(false);
 }
 
 function sendTypingSignal(isTyping) {
-  // This is the message we broadcast to other users.
-  // It includes the user's status, name, avatar, and unique ID.
-  presenceChannel?.send({
+  console.log(`📡 Sending typing signal: ${isTyping ? 'TYPING' : 'STOPPED'}`);
+  
+  if (!presenceChannel) {
+    console.error('❌ Presence channel not available');
+    return;
+  }
+  
+  if (!currentUser || !currentProfile) {
+    console.error('❌ User data not available');
+    return;
+  }
+  
+  const payload = {
+    typing: isTyping,
+    name: currentProfile?.username || 'Someone',
+    avatar: currentProfile?.avatar_url || 'Assets/pfp2.jpg',
+    userId: currentUser.id 
+  };
+  
+  console.log('📤 Payload:', payload);
+  
+  presenceChannel.send({
     type: 'broadcast',
     event: 'typing',
-    payload: {
-      typing: isTyping,
-      name: currentProfile?.username || 'Someone',
-      avatar: currentProfile?.avatar_url || 'Assets/pfp2.jpg',
-      userId: currentUser.id 
-    }
+    payload: payload
+  }).then(() => {
+    console.log('✅ Typing signal sent successfully');
+  }).catch(err => {
+    console.error('❌ Failed to send typing signal:', err);
   });
 }
 
+function handleTypingEvent(payload) {
+  console.log('🎯 handleTypingEvent called with:', payload);
+  
+  if (!payload || !payload.userId) {
+    console.error('❌ Invalid typing payload received');
+    return;
+  }
+  
+  // Ignore your own typing signals
+  if (payload.userId === currentUser?.id) {
+    console.log('🚫 Ignoring own typing signal');
+    return;
+  }
+  
+  if (payload.typing) {
+    console.log(`✍️ User ${payload.name} started typing`);
+    usersTyping[payload.userId] = { 
+      name: payload.name, 
+      avatar: payload.avatar 
+    };
+  } else {
+    console.log(`⏹️ User ${payload.name} stopped typing`);
+    delete usersTyping[payload.userId];
+  }
+  
+  console.log('👥 Current typing users:', Object.keys(usersTyping));
+  updateTypingIndicator();
+}
+
 function updateTypingIndicator() {
+  console.log('🔄 updateTypingIndicator called');
+  
   const indicator = document.getElementById('typingIndicator');
   const nameSpan = document.getElementById('typingName');
   const avatarImg = document.getElementById('typingAvatar');
   const messagesContainer = document.getElementById('chatMessages');
 
+  if (!indicator) {
+    console.error('❌ typingIndicator element not found!');
+    return;
+  }
+
   const typers = Object.values(usersTyping);
+  console.log(`👥 ${typers.length} users currently typing:`, typers);
 
   if (typers.length === 0) {
+    console.log('🚫 Hiding typing indicator');
     indicator.classList.add('hidden');
     return;
   }
 
+  console.log('✅ Showing typing indicator');
+  
   if (typers.length === 1) {
     const user = typers[0];
-    nameSpan.textContent = `${user.name} is`;
-    avatarImg.src = user.avatar;
+    if (nameSpan) nameSpan.textContent = `${user.name} is`;
+    if (avatarImg) avatarImg.src = user.avatar;
+    console.log(`👤 Single user typing: ${user.name}`);
   } else {
-    // For multiple typers, we just show a generic message.
-    nameSpan.textContent = 'Several people are';
-    avatarImg.src = 'Assets/pfp2.jpg'; // A default group icon
+    if (nameSpan) nameSpan.textContent = 'Several people are';
+    if (avatarImg) avatarImg.src = 'Assets/pfp2.jpg';
+    console.log('👥 Multiple users typing');
   }
   
   indicator.classList.remove('hidden');
-  
-  // Ensure the chat scrolls down to show the indicator
-  messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  if (messagesContainer) {
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  }
 }
+
 
 // This is a new function that will manage the usersTyping object
 function handleTypingEvent(payload) {
+  console.log('🎯 handleTypingEvent called with:', payload);
+  
+  if (!payload || !payload.userId) {
+    console.error('❌ Invalid payload received');
+    return;
+  }
+  
   if (payload.typing) {
-    // If a user starts typing, add them to our list.
-    usersTyping[payload.userId] = { name: payload.name, avatar: payload.avatar };
+    console.log(`✍️ User ${payload.name} started typing`);
+    usersTyping[payload.userId] = { 
+      name: payload.name, 
+      avatar: payload.avatar 
+    };
   } else {
-    // If a user stops typing, remove them from the list.
+    console.log(`⏹️ User ${payload.name} stopped typing`);
     delete usersTyping[payload.userId];
   }
   
-  // After any change, update the UI.
+  console.log('👥 Current typing users:', Object.keys(usersTyping));
   updateTypingIndicator();
 }
+
 
 
     
