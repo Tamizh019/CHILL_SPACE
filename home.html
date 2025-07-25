@@ -7,6 +7,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <link rel="icon" href="Assets/logo1.svg" type="image/x-icon">
+  <link rel="icon" href="Assets/logo3.png" type="image/x-icon">
+
   
   <style>
     :root {
@@ -694,34 +697,41 @@ header::before {
     }
 
     .message-delete {
-      position: absolute;
-      top: -8px;
-      right: -8px;
-      background: var(--danger);
-      border: none;
-      color: white;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.7rem;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.2s ease;
-      z-index: 10;
-    }
-
-    .message-delete:hover {
-      background: #dc2626;
-      transform: scale(1.1);
-    }
-
+  background: var(--danger) !important;
+  border: none !important;
+  color: white !important;
+  width: 28px !important;
+  height: 28px !important;
+  border-radius: 50% !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 0.75rem !important;
+  transition: all 0.2s ease !important;
+  flex-shrink: 0 !important;
+}
+.message-delete:hover {
+  background: #dc2626 !important;
+  transform: scale(1.1) !important;
+}
     .message-content {
       position: relative;
     }
+    @media (max-width: 480px) {
+  .message-actions {
+    gap: 0.4rem !important;
+    padding: 0.2rem 0.3rem !important;
+    top: -6px !important;
+    right: -6px !important;
+  }
+  
+  .pin-btn, .message-delete {
+    width: 24px !important;
+    height: 24px !important;
+    font-size: 0.65rem !important;
+  }
+}
 
     .user-role {
         font-size: 0.75rem;        /* Changed from 0.7rem */
@@ -1104,54 +1114,74 @@ header::before {
 
     /* Code Editor */
     .code-block {
-      background: var(--darker);
-      border: 1px solid var(--card-border);
-      border-radius: 8px;
-      margin: 0.5rem 0;
-      overflow: hidden;
-    }
+  background: var(--darker);
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  margin: 0.5rem 0;
+  overflow: hidden;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
+}
 
-    .code-header {
-      background: rgba(30, 41, 59, 0.8);
-      padding: 0.5rem 1rem;
-      border-bottom: 1px solid var(--card-border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.75rem;
-      color: var(--gray);
-    }
 
-    .code-language {
-      font-weight: 500;
-      color: var(--secondary);
-      text-transform: uppercase;
-    }
+.code-header {
+  background: rgba(30, 41, 59, 0.8);
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid var(--card-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  color: var(--gray);
+}
 
-    .code-copy {
-      background: none;
-      border: none;
-      color: var(--gray);
-      cursor: pointer;
-      padding: 0.25rem;
-      border-radius: 4px;
-      transition: all 0.2s ease;
-    }
+.code-language {
+  font-weight: 500;
+  color: var(--secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
 
-    .code-copy:hover {
-      color: var(--light);
-      background: rgba(148, 163, 184, 0.1);
-    }
+.code-copy {
+  background: none;
+  border: none;
+  color: var(--gray);
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  margin-right: 4rem;
+}
+.code-copy:hover {
+  color: var(--light);
+  background: rgba(148, 163, 184, 0.1);
+}
 
-    .code-content {
-      padding: 1rem;
-      font-family: 'Courier New', monospace;
-      font-size: 0.875rem;
-      line-height: 1.5;
-      white-space: pre-wrap;
-      overflow-x: auto;
-      color: var(--light);
-    }
+.code-content {
+  padding: 1rem;
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-x: auto;
+  color: var(--light);
+  background: var(--darker);
+}
+.code-content code {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  background: none;
+  padding: 0;
+  border-radius: 0;
+}
+/* Syntax highlighting colors */
+.code-content {
+  color: #e2e8f0; /* Default text color */
+}
 
     .members-list {
       display: flex;
@@ -1709,11 +1739,18 @@ header::before {
   }
 
   .code-content {
-    padding: 0.6rem;
-    font-size: 0.7rem;
-    line-height: 1.3;
+    padding: 0.75rem;
+    font-size: 0.8rem;
+    line-height: 1.4;
   }
-
+  .code-header {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.7rem;
+  }
+  .code-copy {
+    padding: 0.2rem 0.4rem;
+    font-size: 0.7rem;
+  }
   /* ===== EMOJI PICKER - MOBILE OPTIMIZED ===== */
   .emoji-picker {
     bottom: 70px; /* Adjust for smaller input */
@@ -2430,6 +2467,329 @@ header::before {
   0%, 80%, 100% { transform: translateY(0);   opacity:.4;}
   40%          { transform: translateY(-6px); opacity:1;}
 }
+/* ===== ADVANCED ANIMATED TEXT SYSTEM ===== */
+.animated-text-container {
+  display: flex;
+  align-items: center;
+  gap: 0.1rem;
+  min-height: 2rem;
+  position: relative;
+}
+
+.cyber-animated-text {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  
+  /* Cyber gradient matching your logo */
+  background: linear-gradient(135deg, #00d4ff, #6366f1);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  
+  /* Crystal clear rendering */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  
+  /* Subtle glow effect */
+  filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.3));
+  
+  /* Smooth transitions */
+  transition: all 0.3s ease;
+  
+  /* Minimum width to prevent layout shift */
+  min-width: 150px;
+  display: inline-block;
+}
+
+.animated-cursor {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #00d4ff;
+  
+  /* Blinking animation */
+  animation: cursorBlink 1s infinite;
+  
+  /* Glow effect */
+  text-shadow: 
+    0 0 5px #00d4ff,
+    0 0 10px #00d4ff,
+    0 0 15px rgba(0, 212, 255, 0.5);
+    
+  /* Smooth transitions */
+  transition: opacity 0.3s ease;
+}
+
+/* Cursor blinking animation */
+@keyframes cursorBlink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* Enhanced hover effects */
+.logo:hover .cyber-animated-text {
+  filter: drop-shadow(0 0 12px rgba(0, 212, 255, 0.5));
+  transform: translateY(-1px);
+}
+
+.logo:hover .animated-cursor {
+  text-shadow: 
+    0 0 8px #00d4ff,
+    0 0 16px #00d4ff,
+    0 0 24px rgba(0, 212, 255, 0.7);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .cyber-animated-text {
+    font-size: 1.2rem;
+    letter-spacing: 1.5px;
+    min-width: 120px;
+  }
+  
+  .animated-cursor {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .cyber-animated-text {
+    font-size: 1rem;
+    letter-spacing: 1px;
+    min-width: 100px;
+  }
+  
+  .animated-cursor {
+    font-size: 1rem;
+  }
+}
+/* ===== SIMPLIFIED PINNED MESSAGES ===== */
+
+.message-actions {
+  position: absolute !important;
+  top: -8px !important;
+  right: -8px !important;
+  display: flex !important;
+  gap: 0.6rem !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transition: all 0.2s ease !important;
+  z-index: 10 !important;
+  background: rgba(0, 0, 0, 0.85) !important;
+  padding: 0.3rem 0.5rem !important;
+  border-radius: 8px !important;
+  backdrop-filter: blur(10px) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+.message:hover .message-actions {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+.pin-btn {
+  background: var(--secondary) !important;
+  border: none !important;
+  color: white !important;
+  width: 28px !important;
+  height: 28px !important;
+  border-radius: 50% !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 0.75rem !important;
+  transition: all 0.2s ease !important;
+  flex-shrink: 0 !important;
+}
+
+.pin-btn:hover {
+  background: #e67e22 !important;
+  transform: scale(1.1) !important;
+}
+
+.pin-btn.pinned {
+  background: var(--primary) !important;
+}
+
+.pinned-messages-section {
+  background: rgba(99, 102, 241, 0.05);
+  border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.pinned-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background: rgba(99, 102, 241, 0.1);
+  border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.pinned-messages {
+  max-height: 120px;
+  overflow-y: auto;
+  padding: 0.5rem;
+  transition: max-height 0.3s ease;
+}
+
+.pinned-messages.collapsed {
+  max-height: 0;
+  padding: 0 0.5rem;
+}
+
+/* ===== SINGLE LINE PINNED MESSAGE ===== */
+.pinned-message {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 0.4rem;
+  position: relative;
+  animation: pinnedSlideIn 0.3s ease-out;
+  
+  /* Single line layout */
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 40px;
+}
+
+.pinned-message:last-child {
+  margin-bottom: 0;
+}
+
+/* ===== COMPACT USER INFO ===== */
+.pinned-user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  min-width: 120px;
+}
+
+.pinned-user-info img {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.pinned-username {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--primary);
+  white-space: nowrap;
+}
+
+.pinned-role {
+  font-size: 0.6rem;
+  padding: 0.1rem 0.3rem;
+  border-radius: 8px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* ===== SINGLE LINE CONTENT ===== */
+.pinned-content {
+  flex: 1;
+  color: var(--light);
+  font-size: 0.8rem;
+  
+  /* Single line truncation */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+/* ===== COMPACT ACTIONS ===== */
+.pinned-actions {
+  display: flex;
+  gap: 0.25rem;
+  flex-shrink: 0;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.pinned-message:hover .pinned-actions {
+  opacity: 1;
+}
+
+.unpin-btn {
+  background: var(--danger);
+  border: none;
+  color: white;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  transition: all 0.2s ease;
+}
+
+.unpin-btn:hover {
+  background: #dc2626;
+  transform: scale(1.1);
+}
+
+@keyframes pinnedSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== MOBILE OPTIMIZATION ===== */
+@media (max-width: 480px) {
+  .pinned-message {
+    padding: 0.4rem 0.6rem;
+    gap: 0.5rem;
+    min-height: 36px;
+  }
+  
+  .pinned-user-info {
+    min-width: 100px;
+    gap: 0.4rem;
+  }
+  
+  .pinned-user-info img {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .pinned-username {
+    font-size: 0.7rem;
+  }
+  
+  .pinned-content {
+    font-size: 0.75rem;
+  }
+  
+  .unpin-btn {
+    width: 20px;
+    height: 20px;
+    font-size: 0.6rem;
+  }
+}
 
 
 
@@ -2447,9 +2807,15 @@ header::before {
 
   <header>
     <div class="logo">
-      <i class="fas fa-book-open"></i>
-      <h1>Chill Space</h1>
+      <img src="Assets/logo4.svg" alt="Logo" width="55" height="52">
+      <div class="animated-text-container">
+        <span id="animatedText" class="cyber-animated-text"></span>
+        <span id="cursor" class="animated-cursor">|</span>
+      </div>
+      <h2 id="subtitleText" class="cyber-animated-text" style="font-size:1rem;
+      font-weight:500;margin-top:.25rem;min-height: 1.2rem;"></h2>
     </div>
+    
     <div class="header-actions">
       <div class="user-info">
         <div class="user-avatar" id="userAvatar">
@@ -2485,10 +2851,25 @@ header::before {
         <div class="card-header">
           <h2><i class="fas fa-comments"></i> Group Chat AI-A4 </h2>
         </div>
-        <div class="chat-messages" id="chatMessages">
-          <!-- Messages will appear here -->
-          <!-- DON'T put typing indicator here! -->
-        </div>
+
+        <!-- Add this ABOVE the existing chat-messages div -->
+<div class="pinned-messages-section" id="pinnedMessagesSection" style="display: none;">
+  <div class="pinned-header">
+    <h4><i class="fas fa-thumbtack"></i> Pinned Messages</h4>
+    <button class="btn btn-outline btn-sm" onclick="togglePinnedMessages()" id="togglePinnedBtn">
+      <i class="fas fa-chevron-up"></i> Hide
+    </button>
+  </div>
+  <div class="pinned-messages" id="pinnedMessages">
+    <!-- Pinned messages will appear here -->
+  </div>
+</div>
+
+<!-- Your existing chat-messages div stays the same -->
+<div class="chat-messages" id="chatMessages">
+  <!-- Messages will appear here -->
+</div>
+
         
         <!-- Move typing indicator HERE - outside messages but inside chat container -->
         <div id="typingIndicator" class="typing hidden">
@@ -2631,14 +3012,15 @@ header::before {
             </div>
             <div class="game-info">
               <h3 class="game-name">Chess Master</h3>
-              <p class="game-description">Classic chess game with multiplayer mode</p>
+              <p class="game-description">Face off in the ultimate battle of minds. Outsmart your opponent in this classic multiplayer chess duel.</p>
               <div class="game-details">
                 <span class="game-players"><i class="fas fa-users"></i> 2 Players</span>
-                <span class="game-difficulty"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> Hard </span>
+                <span class="game-difficulty"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> Strategic </span>
               </div>
               <div class="game-tags">
                 <span class="tag">Strategy</span>
-                <span class="tag">Turn-based</span>
+                <span class="tag">Mind-Game</span>
+                <span class="tag">Tactics </span>
               </div>
             </div>
           </div>
@@ -2646,14 +3028,14 @@ header::before {
           <!-- Game Card 2 -->
           <div class="game-card" onclick="openGame('tic-tac-toe')">
             <div class="game-image">
-              <img src="Assets/Human Tic-Tac-Toe.jpg" alt="Tic Tac Toe" />
+              <img src="Assets/xo.jpg" alt="Tic Tac Toe" />
               <div class="game-overlay">
                 <i class="fas fa-play"></i>
               </div>
             </div>
             <div class="game-info">
               <h3 class="game-name">Tic Tac Toe</h3>
-              <p class="game-description">Quick and fun classic game for two players</p>
+              <p class="game-description">The timeless X vs O battle! Quick, fun, and perfect for friendly face-offs.</p>
               <div class="game-details">
                 <span class="game-players"><i class="fas fa-users"></i> 2 Players</span>
                 <span class="game-difficulty"><i class="fas fa-star"></i><i class="fas fa-star"></i> Medium  </span>
@@ -2661,6 +3043,7 @@ header::before {
               <div class="game-tags">
                 <span class="tag">Quick</span>
                 <span class="tag">Classic</span>
+                <span class="tag">friendly </span>
               </div>
             </div>
           </div>
@@ -2668,92 +3051,73 @@ header::before {
           <!-- Game Card 3 -->
           <div class="game-card" onclick="openGame('typemaster')">
             <div class="game-image">
-              <img src="Assets/key.jpg" alt="Type Master" />
+              <img src="Assets/type.jpg" alt="Type Master" />
               <div class="game-overlay">
                 <i class="fas fa-play"></i>
               </div>
             </div>
             <div class="game-info">
               <h3 class="game-name">Type Master</h3>
-              <p class="game-description">Improve your typing speed in this fun and addictive word shooter.</p>
+              <p class="game-description">Ready to dominate the keyboard? Blast words, boost speed, and become the ultimate typing warrior.</p>
               <div class="game-details">
-                <span class="game-players"><i class="fas fa-users"></i> 1 Player</span>
-                <span class="game-difficulty"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> Hard </span>
+                <span class="game-players"><i class="fas fa-users"></i> Solo Challenge</span>
+                <span class="game-difficulty"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> Intense </span>
               </div>
               <div class="game-tags">
-                <span class="tag">Typing</span>
-                <span class="tag">Skill</span>
+                <span class="tag">Speed</span>
+                <span class="tag">Focus</span>
+                <span class="tag">Reflex </span>
               </div>
             </div>
           </div>
   
           <!-- Game Card 4 -->
-          <div class="game-card" onclick="openGame('stone')">
+          <div class="game-card" onclick="openGame('advice')">
             <div class="game-image">
-              <img src="Assets/rps1.png" alt="stonepaperscissor" />
+              <img src="Assets/motivation.jpg" alt="Advice" />
               <div class="game-overlay">
                 <i class="fas fa-play"></i>
               </div>
             </div>
             <div class="game-info">
-              <h3 class="game-name">Rock Paper Scissor (AI)</h3>
-              <p class="game-description">Classic hand game with fast-paced decision making with AI.</p>
+              <h3 class="game-name">Boost Up!</h3>
+              <p class="game-description">Feeling low or bored? Tap to power up your mindset with a random dose of motivation.</p>
               <div class="game-details">
-                <span class="game-players"><i class="fas fa-users"></i> 1 Player</span>
-                <span class="game-difficulty"><i class="fas fa-star"></i> Easy </span>
+                <span class="game-players"><i class="fas fa-users"></i> Solo Mode </span>
+                <span class="game-difficulty"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> Instant Boost </span>
               </div>
               <div class="game-tags">
-                <span class="tag">Strategic</span>
-                <span class="tag">Decision</span>
+                <span class="tag">Motivation</span>
+                <span class="tag">Daily Boost</span>
+                <span class="tag">Energy</span>
               </div>
             </div>
           </div>
   
           <!-- Game Card 5 -->
-          <div class="game-card" onclick="openGame('advice')">
-            <div class="game-image">
-              <img src="Assets/advice.jpg" alt="Advice" />
-              <div class="game-overlay">
-                <i class="fas fa-play"></i>
-              </div>
-            </div>
-            <div class="game-info">
-              <h3 class="game-name">Free Advice</h3>
-              <p class="game-description">Not a GAME ! Get a random life tip or motivational quote with a click.</p>
-              <div class="game-details">
-                <span class="game-players"><i class="fas fa-users"></i> 1 Player</span>
-                <span class="game-difficulty"><i class="fas fa-star"></i> Easy</span>
-              </div>
-              <div class="game-tags">
-                <span class="tag">Motivation</span>
-                <span class="tag">Fun</span>
-              </div>
-            </div>
-          </div>
-  
-          <!-- Game Card 6 -->
           <div class="game-card" onclick="openGame('whiteboard')">
             <div class="game-image">
-              <img src="Assets/white.jpg" alt="whiteboard" />
+              <img src="Assets/creative.jpg" alt="whiteboard" />
               <div class="game-overlay">
                 <i class="fas fa-play"></i>
               </div>
             </div>
             <div class="game-info">
-              <h3 class="game-name">White Board</h3>
-              <p class="game-description">Just a normal White Board !</p>
+              <h3 class="game-name">Creative Board</h3>
+              <p class="game-description">Sketch ideas, doodle freely, or brainstorm anything — your imagination has no limits!</p>
               <div class="game-details">
-                <span class="game-players"><i class="fas fa-users"></i> 1 Player</span>
+                <span class="game-players"><i class="fas fa-users"></i> Solo Mode </span>
                 <span class="game-difficulty"><i class="fas fa-star"></i> Easy</span>
               </div>
               <div class="game-tags">
-                <span class="tag">Single</span>
-                <span class="tag">Creative</span>
+                <span class="tag">Draw</span>
+                <span class="tag">Think </span>
+                <span class="tag">Express </span>
               </div>
             </div>
           </div>
 
-          <!-- Game Card 7 -->
+          <!-- Game Card 6 -->
           <div class="game-card" onclick="openGame('dsasolver')">
             <div class="game-image">
               <img src="Assets/dsa.jpg" alt="DSA" />
@@ -2775,10 +3139,10 @@ header::before {
             </div>
           </div>
 
-          <!-- Game Card 8 -->
+          <!-- Game Card 7 -->
           <div class="game-card" onclick="openGame('quiz')">
             <div class="game-image">
-              <img src="Assets/quiz.jpg" alt="quiz" />
+              <img src="Assets/quiz1.jpg" alt="quiz" />
               <div class="game-overlay">
                 <i class="fas fa-play"></i>
               </div>
@@ -2797,28 +3161,29 @@ header::before {
             </div>
           </div>
 
+          <!-- Game Card 8 -->
           <div class="game-card" onclick="openGame('snake')">
             <div class="game-image">
-              <img src="Assets/snake.jpg" alt="snake" />
+              <img src="Assets/snake1.jpg" alt="snake" />
               <div class="game-overlay">
                 <i class="fas fa-play"></i>
               </div>
             </div>
             <div class="game-info">
-              <h3 class="game-name">Snake Game</h3>
-              <p class="game-description">Classic Snake Game with a modern twist</p>
+              <h3 class="game-name">Snake Reloaded</h3>
+              <p class="game-description">The legendary snake is back! Eat, grow, and dodge in this fast-paced arcade remake.</p>
               <div class="game-details">
                 <span class="game-players"><i class="fas fa-users"></i> 1 Player</span>
                 <span class="game-difficulty" ><i class="fas fa-star"></i><i class="fas fa-star"></i> Medium  </span>
               </div>
               <div class="game-tags">
-                <span class="tag">Casual</span>
-                <span class="tag">Fun</span>
+                <span class="tag">Arcade</span>
+                <span class="tag">Retro</span>
+                <span class="tag">Reflex</span>
               </div>
             </div>
           </div>
 
-          
           
         </div>
       </section>
@@ -3037,7 +3402,8 @@ const usersTyping = {};
     await Promise.all([
       loadMessages(),
       loadFiles(),
-      loadOnlineMembers()
+      loadOnlineMembers(),
+      loadPinnedMessages()
     ]);
     
     updateGamesCount();
@@ -3049,6 +3415,254 @@ const usersTyping = {};
     showToast('error', 'Initialization Error', 'Failed to load the application');
   }
 }
+
+// ===== PIN MESSAGES FUNCTIONALITY =====
+
+// Check if user can pin messages
+function canPinMessages() {
+  const userRole = currentProfile?.role || 'user';
+  return userRole === 'admin' || userRole === 'moderator';
+}
+
+// Pin/Unpin message
+async function togglePinMessage(messageId, isPinned = false) {
+  if (!canPinMessages()) {
+    showToast('error', 'Permission Denied', 'Only moderators and admins can pin messages');
+    return;
+  }
+
+  // Add loading state
+  const pinBtn = document.querySelector(`[onclick*="togglePinMessage('${messageId}'"]`);
+  if (pinBtn) {
+    pinBtn.disabled = true;
+    pinBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+  }
+
+  try {
+    const updateData = {
+      pinned: !isPinned,
+      pinned_at: !isPinned ? new Date().toISOString() : null,
+      pinned_by_username: !isPinned ? currentProfile?.username : null
+    };
+
+    const { error } = await supabaseClient
+      .from('messages')
+      .update(updateData)
+      .eq('id', messageId);
+
+    if (error) throw error;
+
+    const action = !isPinned ? 'pinned' : 'unpinned';
+    showToast('success', 'Message ' + action, `Message ${action} successfully!`);
+    
+    // Don't manually reload - let the realtime listener handle it
+    
+  } catch (error) {
+    console.error('Error toggling pin:', error);
+    showToast('error', 'Pin Failed', 'Could not update message pin status');
+    
+    // Restore button state on error
+    if (pinBtn) {
+      pinBtn.innerHTML = '<i class="fas fa-thumbtack"></i>';
+      pinBtn.disabled = false;
+    }
+  }
+}
+
+
+// Load pinned messages
+async function loadPinnedMessages() {
+  try {
+    const { data: pinnedMessages, error } = await supabaseClient
+      .from('messages')
+      .select('*')
+      .eq('pinned', true)
+      .order('pinned_at', { ascending: false })
+      .limit(5);
+
+    if (error) throw error;
+
+    const pinnedSection = document.getElementById('pinnedMessagesSection');
+    const pinnedContainer = document.getElementById('pinnedMessages');
+
+    if (!pinnedMessages || pinnedMessages.length === 0) {
+      pinnedSection.style.display = 'none';
+      return;
+    }
+
+    // Show pinned section
+    pinnedSection.style.display = 'block';
+    pinnedContainer.innerHTML = '';
+
+    // Get user profiles for pinned messages
+    const userIds = [...new Set(pinnedMessages.map(msg => msg.user_id))];
+    let userProfiles = {};
+    
+    if (userIds.length > 0) {
+      const { data: profiles } = await supabaseClient
+        .from('users')
+        .select('id, username, email, role, avatar_url')
+        .in('id', userIds);
+
+      if (profiles) {
+        profiles.forEach(profile => {
+          userProfiles[profile.id] = profile;
+        });
+      }
+    }
+
+    // Render pinned messages
+// Render pinned messages - SIMPLIFIED VERSION
+pinnedMessages.forEach(msg => {
+  const profile = userProfiles[msg.user_id];
+  const senderName = profile?.username || profile?.email?.split('@')[0] || 'Unknown';
+  const senderRole = profile?.role || 'user';
+  const avatarUrl = profile?.avatar_url || 'Assets/pfp2.jpg';
+
+  const pinnedElement = document.createElement('div');
+  pinnedElement.className = 'pinned-message';
+  pinnedElement.innerHTML = `
+    <div class="pinned-user-info">
+      <img src="${avatarUrl}" alt="${senderName}">
+      <span class="pinned-username">${senderName}</span>
+      <span class="user-role role-${senderRole} pinned-role">
+        ${getRoleEmoji(senderRole)}
+      </span>
+    </div>
+    <div class="pinned-content" title="${msg.content}">
+      ${formatMessage(msg.content)}
+    </div>
+    ${canPinMessages() ? `
+      <div class="pinned-actions">
+        <button class="unpin-btn" onclick="togglePinMessage('${msg.id}', true)" title="Unpin message">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    ` : ''}
+  `;
+  
+  pinnedContainer.appendChild(pinnedElement);
+});
+
+
+  } catch (error) {
+    console.error('Error loading pinned messages:', error);
+  }
+}
+
+// Toggle pinned messages visibility
+function togglePinnedMessages() {
+  const pinnedMessages = document.getElementById('pinnedMessages');
+  const toggleBtn = document.getElementById('togglePinnedBtn');
+  
+  if (pinnedMessages.classList.contains('collapsed')) {
+    pinnedMessages.classList.remove('collapsed');
+    toggleBtn.innerHTML = '<i class="fas fa-chevron-up"></i> Hide';
+  } else {
+    pinnedMessages.classList.add('collapsed');
+    toggleBtn.innerHTML = '<i class="fas fa-chevron-down"></i> Show';
+  }
+}
+
+
+// ===== SIMPLIFIED TEXT ANIMATION =====
+
+/* === Title typed once === */
+function typeOnce(el, text, i = 0) {
+  if (i < text.length) {
+    el.textContent += text[i];
+    setTimeout(() => typeOnce(el, text, i + 1), 120);
+  } else {
+    // Stop cursor after typing completes
+    document.getElementById('cursor').style.animation = 'none';
+    document.getElementById('cursor').style.opacity = '0.8';
+    startSubtitleLoop(); // Launch the second effect
+  }
+}
+
+/* === Looping subtitle === */
+const phrases = [
+  'WELCOME TO THE CORE 🧠',
+  'MADE FOR FRIENDS', 
+  'JUST VIBE ✨',
+  'NO PRESSURE ZONE',
+  'Strive for progress, not perfection.',
+  'Every day is a second chance.',
+  'Your vibe attracts your tribe.',
+  'Make it happen. Shock everyone.',
+  'Stay hungry, stay foolish.',
+  'Today is another opportunity to grow.',
+  'Focus on the step in front of you, not the whole staircase.',
+  'Small steps lead to big results.',
+  'Turn setbacks into comebacks.',
+  'Your only limit is you.',
+  'Do it with passion or not at all.',
+  'Nothing changes if nothing changes.',
+  'Progress over perfection.',
+  'Consistency is what transforms average into excellence.',
+  'Become the hardest working person you know.',
+  'Doubt kills more dreams than failure ever will.',
+  'Discipline is choosing between what you want now and what you want most.',
+  'Stars can’t shine without darkness.',
+  'Great things take time—keep going.',
+  'Be stronger than your strongest excuse.',
+  'Make yourself proud.',
+  'Success smells like sweat.',
+  'Create the life you can\'t wait to wake up to.',
+  'Run the day or the day runs you.',
+  'Success is a series of small wins.',
+  'Work in silence, let success make the noise.',
+  'Fear is temporary. Regret is forever.',
+  'Be the energy you want to attract.',
+  'Done is better than perfect.',
+  'Rise up and attack the day with enthusiasm.',
+  'Don\'t be busy, be productive.',
+  'Stay patient and trust your journey.',
+  'You are your only competition.',
+  'Dreams don\'t work unless you do.',
+  'Be the change you wish to see.',
+  'The comeback is always stronger than the setback.',
+  'Start where you are, use what you have, do what you can.',
+  'Keep your eyes on the stars and your feet on the ground.',
+  'Grow through what you go through.',
+  'One day or day one—you decide.'
+
+];
+let p = 0, pos = 0, del = false;
+
+function startSubtitleLoop() { 
+  requestAnimationFrame(loop); 
+}
+
+function loop() {
+  const sub = document.getElementById('subtitleText');
+  if (!sub) return; // Safety check
+  
+  const full = phrases[p];
+  sub.textContent = del ? full.slice(0, pos--) : full.slice(0, pos++);
+
+  // Switch from typing → pause → deleting
+  if (!del && pos === full.length + 1) {         // Finished typing
+    setTimeout(() => { del = true; loop(); }, 3800);
+    return;
+  }
+  if (del && pos === 0) {                        // Finished deleting
+    del = false;
+    p = (p + 1) % phrases.length;
+  }
+
+  setTimeout(loop, del ? 70 : 130);
+}
+
+/* === Start animation when DOM is ready === */
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('🚀 Page loaded, setting up simplified text animation...');
+  
+  setTimeout(() => {
+    typeOnce(document.getElementById('animatedText'), 'CHILL SPACE');
+  }, 2000);
+});
+
 // Add this function to clear test data
 function clearTestTypingData() {
   console.log('🧹 Clearing test typing data...');
@@ -3602,7 +4216,6 @@ function openPreview(file) {
         'chess': 'games/chess/chess.html',
         'tic-tac-toe': 'games/ttt/index.html',
         'typemaster': 'games/typemaster/index.html',
-        'stone': 'games/stonepaper/index.html',
         'advice': 'games/advice/index.html',
         'whiteboard': 'games/white/index.html',
         'dsasolver': 'games/dsasolver/index.html',
@@ -3614,12 +4227,11 @@ function openPreview(file) {
         'chess': 'Chess Master',
         'tic-tac-toe': 'Tic Tac Toe',
         'typemaster': 'Type Master',
-        'stone': 'Stone Paper Scissor',
-        'advice': 'Free Advice',
-        'whiteboard': 'White Board',
+        'advice': 'Boost Up!',
+        'whiteboard': 'Creative Board',
         'dsasolver': 'DSA Solver',
         'quiz': 'Take a QUIZ',
-        'snake': 'Snake Game'
+        'snake': 'Snake Reloaded'
       };
       
       let gameModal = document.getElementById('gameModal');
@@ -3723,7 +4335,7 @@ function openPreview(file) {
       if (payload.payload?.userId === currentUser?.id) {
         console.log('🔍 This is my own typing signal');
         // For now, DON'T ignore it - let's see if broadcasts work at all
-        // return; // Comment this out temporarily
+        return; // Comment this out temporarily
       }
       
       if (payload.payload) {
@@ -4015,25 +4627,50 @@ function openPreview(file) {
       });
     }
     
-    // Real-time chat setup
     function setupRealtimeChat() {
-      chatChannel = supabaseClient.channel('public:messages')
-        .on('postgres_changes', {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'messages'
-        }, async (payload) => {
-          await handleNewMessage(payload.new);
-        })
-        .on('postgres_changes', {
-          event: 'DELETE',
-          schema: 'public',
-          table: 'messages'
-        }, (payload) => {
-          handleDeletedMessage(payload.old.id);
-        })
-        .subscribe();
-    }
+  chatChannel = supabaseClient.channel('public:messages')
+    .on('postgres_changes', {
+      event: 'INSERT',
+      schema: 'public',
+      table: 'messages'
+    }, async (payload) => {
+      await handleNewMessage(payload.new);
+    })
+    .on('postgres_changes', {
+      event: 'DELETE',
+      schema: 'public',
+      table: 'messages'
+    }, (payload) => {
+      handleDeletedMessage(payload.old.id);
+    })
+    // ✅ FIXED: Listen to ALL message updates for pin changes
+    .on('postgres_changes', {
+      event: 'UPDATE',
+      schema: 'public',
+      table: 'messages'
+    }, (payload) => {
+      // Refresh pinned messages whenever any message is updated
+      loadPinnedMessages();
+      
+      // Also refresh the specific message in chat if it's visible
+      const messageElement = document.querySelector(`[data-message-id="${payload.new.id}"]`);
+      if (messageElement) {
+        // Update the pin button state
+        const pinBtn = messageElement.querySelector('.pin-btn');
+        if (pinBtn) {
+          if (payload.new.pinned) {
+            pinBtn.classList.add('pinned');
+            pinBtn.title = 'Unpin message';
+          } else {
+            pinBtn.classList.remove('pinned');
+            pinBtn.title = 'Pin message';
+          }
+        }
+      }
+    })
+    .subscribe();
+}
+
     
     async function handleNewMessage(message) {
   const messagesContainer = document.getElementById('chatMessages');
@@ -4072,19 +4709,40 @@ function openPreview(file) {
   const roleDisplay = getRoleEmoji(senderRole);
 
   messageElement.innerHTML = `
-    <div class="message-sender">
-      <img src="${avatarUrl}" alt="${senderName}" class="chat-avatar">
-      ${senderName}
-      <span class="user-role ${roleClass}">${roleDisplay} ${senderRole}</span>
+  <div class="message-sender">
+    <img src="${avatarUrl}" alt="${senderName}" class="chat-avatar">
+    ${senderName}
+    <span class="user-role ${roleClass}">${roleDisplay} ${senderRole}</span>
+  </div>
+  <div class="message-content">
+    ${formatMessage(message.content)}
+    <div class="message-actions">
+      ${canPinMessages() ? `
+        <button class="pin-btn ${message.pinned ? 'pinned' : ''}" onclick="togglePinMessage('${message.id}', ${message.pinned})" title="${message.pinned ? 'Unpin' : 'Pin'} message">
+          <i class="fas fa-thumbtack"></i>
+        </button>
+      ` : ''}
+      ${canDeleteMessage(message.user_id, senderRole) ? `
+        <button class="message-delete" onclick="deleteMessage('${message.id}')" title="Delete message">
+          <i class="fas fa-times"></i>
+        </button>
+      ` : ''}
     </div>
-    <div class="message-content">
-      ${formatMessage(message.content)}
-      ${canDeleteMessage(message.user_id, senderRole) ? `<button class="message-delete" onclick="deleteMessage('${message.id}')" title="Delete message">
-        <i class="fas fa-times"></i>
-      </button>` : ''}
-    </div>
-    <div class="message-time">${formatTime(new Date(message.sent_at))}</div>
-  `;
+  </div>
+  <div class="message-time">${formatTime(new Date(message.sent_at))}</div>
+`;
+
+// Add hover event listeners
+messageElement.addEventListener('mouseenter', () => {
+  const actions = messageElement.querySelector('.message-actions');
+  if (actions) actions.style.opacity = '1';
+});
+
+messageElement.addEventListener('mouseleave', () => {
+  const actions = messageElement.querySelector('.message-actions');
+  if (actions) actions.style.opacity = '0';
+});
+
 
   messagesContainer.appendChild(messageElement);
   messagesContainer.scrollTop = messagesContainer.scrollHeight;
@@ -4177,19 +4835,40 @@ function openPreview(file) {
       const roleDisplay = getRoleEmoji(senderRole);
 
       messageElement.innerHTML = `
-        <div class="message-sender">
-          <img src="${avatarUrl}" alt="${senderName}" class="chat-avatar">
-          ${senderName}
-          <span class="user-role ${roleClass}">${roleDisplay} ${senderRole}</span>
-        </div>
-        <div class="message-content">
-          ${formatMessage(msg.content)}
-          ${canDeleteMessage(msg.user_id, senderRole) ? `<button class="message-delete" onclick="deleteMessage('${msg.id}')" title="Delete message">
-            <i class="fas fa-times"></i>
-          </button>` : ''}
-        </div>
-        <div class="message-time">${formatTime(new Date(msg.sent_at))}</div>
-      `;
+  <div class="message-sender">
+    <img src="${avatarUrl}" alt="${senderName}" class="chat-avatar">
+    ${senderName}
+    <span class="user-role ${roleClass}">${roleDisplay} ${senderRole}</span>
+  </div>
+  <div class="message-content">
+    ${formatMessage(msg.content)}
+    <div class="message-actions">
+      ${canPinMessages() ? `
+        <button class="pin-btn ${msg.pinned ? 'pinned' : ''}" onclick="togglePinMessage('${msg.id}', ${msg.pinned})" title="${msg.pinned ? 'Unpin' : 'Pin'} message">
+          <i class="fas fa-thumbtack"></i>
+        </button>
+      ` : ''}
+      ${canDeleteMessage(msg.user_id, senderRole) ? `
+        <button class="message-delete" onclick="deleteMessage('${msg.id}')" title="Delete message">
+          <i class="fas fa-times"></i>
+        </button>
+      ` : ''}
+    </div>
+  </div>
+  <div class="message-time">${formatTime(new Date(msg.sent_at))}</div>
+`;
+
+// Add hover event listeners
+messageElement.addEventListener('mouseenter', () => {
+  const actions = messageElement.querySelector('.message-actions');
+  if (actions) actions.style.opacity = '1';
+});
+
+messageElement.addEventListener('mouseleave', () => {
+  const actions = messageElement.querySelector('.message-actions');
+  if (actions) actions.style.opacity = '0';
+});
+
 
       messagesContainer.appendChild(messageElement);
     });
@@ -4467,24 +5146,126 @@ function openPreview(file) {
 }
 
     
-    // Helper functions
-    function formatMessage(content) {
+// ===== ENHANCED MESSAGE FORMATTING =====
+function formatMessage(content) {
+  // First handle code blocks (before link formatting to avoid conflicts)
   if (content.includes('```')) {
-    return content.replace(/```(\w*)\n([\s\S]*?)```/g, (match, language, code) => {
-      return `
-        <div class="code-block">
-          <div class="code-header">
-            <span class="code-language">${language || 'code'}</span>
-            <button class="code-copy" onclick="copyCode(this)">
-              <i class="fas fa-copy"></i>
-            </button>
-          </div>
-          <pre class="code-content"><code>${code.trim()}</code></pre>
+  content = content.replace(/```(\w*)\n?([\s\S]*?)```/g, (match, language, code) => {
+    return `
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-language">${language || 'code'}</span>
+          <button class="code-copy" onclick="copyCode(this)" title="Copy code">
+            <i class="fas fa-copy"></i>
+          </button>
         </div>
-      `;
-    });
-  }
+        <pre class="code-content"><code>${escapeHtml(code.trim())}</code></pre>
+      </div>
+    `;
+  });
+}
+
+  // Then handle URLs (but not inside code blocks)
+  const urlRegex = /(https?:\/\/[^\s<>"']+|www\.[^\s<>"']+\.[^\s<>"']*[^\s<>"'.,;!?)])/gi;
+  
+  content = content.replace(urlRegex, (url) => {
+    // Don't format URLs that are already inside HTML tags (like code blocks)
+    if (content.indexOf(`<code>${url}</code>`) !== -1 || content.indexOf(`>${url}<`) !== -1) {
+      return url;
+    }
+    
+    let displayUrl = url;
+    let fullUrl = url;
+    
+    // Add https:// if it starts with www.
+    if (url.toLowerCase().startsWith('www.')) {
+      fullUrl = 'https://' + url;
+    }
+    
+    // Truncate very long URLs for display
+    if (displayUrl.length > 50) {
+      displayUrl = displayUrl.substring(0, 47) + '...';
+    }
+    
+    return `<a href="${fullUrl}" target="_blank" rel="noopener noreferrer" style="color: var(--primary); text-decoration: underline; word-break: break-all;">${displayUrl}</a>`;
+  });
+  
   return content;
+
+
+// ===== MISSING HELPER FUNCTIONS =====
+
+// Escape HTML to prevent XSS in code blocks
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+// Copy code functionality
+function copyCode(button) {
+  const codeBlock = button.closest('.code-block');
+  const codeContent = codeBlock.querySelector('.code-content code');
+  const text = codeContent.textContent;
+
+  // Use modern clipboard API
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(() => {
+      showCopyFeedback(button);
+    }).catch(err => {
+      console.error('Failed to copy code:', err);
+      fallbackCopyTextToClipboard(text, button);
+    });
+  } else {
+    // Fallback for older browsers
+    fallbackCopyTextToClipboard(text, button);
+  }
+}
+
+// Fallback copy method
+function fallbackCopyTextToClipboard(text, button) {
+  const textArea = document.createElement("textarea");
+  textArea.value = text;
+  
+  // Avoid scrolling to bottom
+  textArea.style.top = "0";
+  textArea.style.left = "0";
+  textArea.style.position = "fixed";
+  textArea.style.opacity = "0";
+
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+
+  try {
+    const successful = document.execCommand('copy');
+    if (successful) {
+      showCopyFeedback(button);
+    } else {
+      showToast('error', 'Copy Failed', 'Could not copy code to clipboard');
+    }
+  } catch (err) {
+    console.error('Fallback copy failed:', err);
+    showToast('error', 'Copy Failed', 'Could not copy code to clipboard');
+  }
+
+  document.body.removeChild(textArea);
+}
+
+// Visual feedback for copy action
+function showCopyFeedback(button) {
+  const originalContent = button.innerHTML;
+  button.innerHTML = '<i class="fas fa-check"></i>';
+  button.style.color = 'var(--success)';
+  
+  setTimeout(() => {
+    button.innerHTML = originalContent;
+    button.style.color = '';
+  }, 2000);
+  
+  showToast('success', 'Copied!', 'Code copied to clipboard');
+}
+
 }
 
     

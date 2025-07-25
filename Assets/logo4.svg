@@ -1,0 +1,70 @@
+<svg width="96" height="96" viewBox="0 0 96 96"
+     xmlns="http://www.w3.org/2000/svg" version="1.1">
+  <defs>
+    <!-- Primary two-tone gradient -->
+    <linearGradient id="cleanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00d4ff"/>
+      <stop offset="100%" stop-color="#6366f1"/>
+    </linearGradient>
+
+    <!-- Subtle glow filter -->
+    <filter id="softGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Embedded CSS animations -->
+    <style>
+      <![CDATA[
+        .pulse {
+          animation: pulse 3s infinite ease-in-out;
+          transform-origin: center;
+        }
+        @keyframes pulse {
+          0%,100% { transform: scale(1); opacity: 0.8; }
+          50%    { transform: scale(1.1); opacity: 1; }
+        }
+      ]]>
+    </style>
+  </defs>
+
+  <!-- Background ring -->
+  <circle cx="48" cy="48" r="44"
+          fill="none" stroke="#fff" stroke-opacity="0.1" stroke-width="2"/>
+
+  <!-- Outer hexagon with glow -->
+  <polygon points="48,6 84,26 84,70 48,90 12,70 12,26"
+           fill="none" stroke="url(#cleanGrad)"
+           stroke-width="3" filter="url(#softGlow)"
+           class="pulse"/>
+
+  <!-- Inner hexagon -->
+  <polygon points="48,16 72,30 72,66 48,80 24,66 24,30"
+           fill="none" stroke="url(#cleanGrad)"
+           stroke-width="2" opacity="0.8"/>
+
+  <!-- Connection lines -->
+  <g stroke="url(#cleanGrad)" stroke-width="1" opacity="0.7">
+    <line x1="48" y1="16" x2="48" y2="80"/>
+    <line x1="24" y1="30" x2="72" y2="66"/>
+    <line x1="72" y1="30" x2="24" y2="66"/>
+  </g>
+
+  <!-- Corner nodes with pulsing -->
+  <circle cx="48" cy="16" r="2" fill="#fff" class="pulse"/>
+  <circle cx="72" cy="30" r="2" fill="#fff" class="pulse"/>
+  <circle cx="72" cy="66" r="2" fill="#fff" class="pulse"/>
+  <circle cx="48" cy="80" r="2" fill="#fff" class="pulse"/>
+  <circle cx="24" cy="66" r="2" fill="#fff" class="pulse"/>
+  <circle cx="24" cy="30" r="2" fill="#fff" class="pulse"/>
+
+  <!-- Central core -->
+  <circle cx="48" cy="48" r="10"
+          fill="none" stroke="url(#cleanGrad)"
+          stroke-width="2" filter="url(#softGlow)"
+          class="pulse"/>
+  <circle cx="48" cy="48" r="6" fill="#fff" class="pulse"/>
+</svg>

@@ -1,381 +1,402 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Meta tags for basic setup -->
   <meta charset="UTF-8" />
+  <title>Motivational Quotes - Futuristic Edition</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Motivational Quotes</title>
+  <meta name="description" content="A futuristic motivational quotes app with professional animations." />
+  
+  <!-- Stylesheet with futuristic professional look -->
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@400;600&display=swap');
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    /* Root variables for easy theming - like constants in your Java DSA code */
+    :root {
+      --bg-blur: 4px; /* Blur level for background */
+      --card-bg: rgba(20, 25, 50, 0.85); /* Darker, futuristic card background */
+      --text-color: #e0e7ff; /* Soft neon text color */
+      --neon-glow: #00ffea; /* Cyan neon for futuristic accents */
+      --btn-gradient: linear-gradient(92deg, #00b4d8 10%, #7209b7 80%); /* Futuristic gradient */
+      --btn-hover-gradient: linear-gradient(95deg, #7209b7 17%, #00b4d8 90%); /* Hover shift */
+      --shadow: 0 0 20px rgba(0, 255, 234, 0.3); /* Neon glow shadow */
+      --transition: 0.4s ease-in-out; /* Smooth animation timing */
+      --animation-duration: 0.6s; /* For keyframe animations */
     }
 
+    /* Body setup for full-screen futuristic feel */
     body {
       min-height: 100vh;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      font-family: 'Inter', sans-serif;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-      position: relative;
-      overflow-x: hidden;
-    }
-
-    /* Animated background particles */
-    body::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-image: radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-                        radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
-      animation: float 6s ease-in-out infinite;
-      pointer-events: none;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0px) rotate(0deg); }
-      50% { transform: translateY(-20px) rotate(180deg); }
-    }
-
-    .container {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(20px);
-      border-radius: 24px;
-      padding: 60px 40px;
-      max-width: 800px;
-      width: 100%;
-      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15),
-                  0 0 0 1px rgba(255, 255, 255, 0.3);
-      text-align: center;
-      position: relative;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .container:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 35px 70px rgba(0, 0, 0, 0.2),
-                  0 0 0 1px rgba(255, 255, 255, 0.4);
-    }
-
-    .container::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      border-radius: 24px;
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
-      pointer-events: none;
-    }
-
-    .quote-icon {
-      font-size: 3rem;
-      color: #667eea;
-      margin-bottom: 20px;
-      opacity: 0.7;
-      animation: pulse 2s ease-in-out infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 0.7; transform: scale(1); }
-      50% { opacity: 1; transform: scale(1.05); }
-    }
-
-    #advice {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.8rem;
-      font-weight: 400;
-      line-height: 1.6;
-      color: #2d3748;
-      margin: 30px 0 40px;
-      min-height: 120px;
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #0a0e1f; /* Deep space-like background */
       display: flex;
       align-items: center;
       justify-content: center;
+      overflow: hidden;
+    }
+
+    /* Background element with cover fit and blur */
+    .bg {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      filter: blur(var(--bg-blur)) brightness(0.6) saturate(0.7);
+      transition: background-image var(--transition), filter var(--transition);
+    }
+
+    /* Card container with futuristic professional look: glassmorphism + neon borders */
+    .card {
+      background: var(--card-bg);
+      padding: 3rem 2.5rem;
+      border-radius: 1.5rem;
+      box-shadow: var(--shadow), inset 0 0 10px rgba(0, 255, 234, 0.1); /* Inner glow */
       text-align: center;
-      transition: all 0.6s ease;
-      position: relative;
-      z-index: 2;
+      max-width: 32rem;
+      width: 95%;
+      backdrop-filter: blur(10px); /* Holographic glass effect */
+      border: 1px solid var(--neon-glow); /* Subtle neon border */
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+      animation: bootUp var(--animation-duration) ease-out; /* Load animation */
     }
 
-    #advice::before {
-      content: '"';
-      font-size: 4rem;
-      color: #667eea;
-      opacity: 0.3;
-      position: absolute;
-      left: -20px;
-      top: -10px;
+    /* Hover effect for interactivity */
+    .card:hover {
+      transform: translateY(-8px) scale(1.02); /* Lift and slight zoom */
+      box-shadow: 0 0 30px rgba(0, 255, 234, 0.5); /* Intensified glow */
+      border-color: #a479a4; /* Color shift for dynamism */
     }
 
-    #advice::after {
-      content: '"';
-      font-size: 4rem;
-      color: #667eea;
-      opacity: 0.3;
-      position: absolute;
-      right: -20px;
-      bottom: -30px;
+    /* Quote styling with animation classes */
+    .quote {
+      font-size: 1.6rem;
+      color: var(--text-color);
+      font-weight: 600;
+      font-family: 'Georgia', serif;
+      letter-spacing: 0.02em;
+      margin-bottom: 1.5rem;
+      min-height: 5rem;
+      opacity: 0; /* Start hidden for animation */
+      transform: translateY(20px); /* For slide-in */
+      transition: opacity var(--transition), transform var(--transition);
     }
 
-    .fade-out {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-
-    .fade-in {
+    /* Active state for quote animation */
+    .quote.active {
       opacity: 1;
       transform: translateY(0);
     }
 
-    #random {
-      background: linear-gradient(135deg, #667eea, #764ba2);
+    /* Fade-out for smooth transitions */
+    .quote.fade-out {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+
+    /* Button with futuristic pulse animation */
+    button {
+      background: var(--btn-gradient);
+      color: #fff;
       border: none;
-      padding: 16px 40px;
-      border-radius: 50px;
-      font-family: 'Inter', sans-serif;
+      border-radius: 2rem;
       font-size: 1.1rem;
-      font-weight: 600;
-      color: white;
+      padding: 1rem 3rem;
+      font-weight: 700;
       cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-      position: relative;
-      overflow: hidden;
-      z-index: 2;
+      transition: background var(--transition), box-shadow var(--transition), transform 0.15s ease;
+      box-shadow: 0 0 15px rgba(0, 180, 216, 0.4); /* Initial glow */
+      animation: pulse 2s infinite alternate; /* Subtle pulse */
     }
 
-    #random::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-      transition: left 0.6s;
+    /* Button hover enhancements */
+    button:hover {
+      background: var(--btn-hover-gradient);
+      box-shadow: 0 0 25px rgba(114, 9, 183, 0.6); /* Stronger glow */
+      animation: pulse-hover 1s infinite alternate; /* Faster pulse */
     }
 
-    #random:hover::before {
-      left: 100%;
+    /* Active state for button */
+    button:active {
+      transform: scale(0.95);
+      box-shadow: 0 0 10px rgba(114, 9, 183, 0.3);
     }
 
-    #random:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 35px rgba(102, 126, 234, 0.5);
-      background: linear-gradient(135deg, #5a6fd8, #6b47a1);
-    }
-
-    #random:active {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-    }
-
-    .button-wrapper {
-      position: relative;
-    }
-
-    .ripple {
-      position: absolute;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.4);
-      animation: ripple-animation 0.6s linear;
-      pointer-events: none;
-    }
-
-    @keyframes ripple-animation {
-      to {
-        transform: scale(4);
+    /* Keyframe for card boot-up animation */
+    @keyframes bootUp {
+      0% {
         opacity: 0;
+        transform: scale(0.9) translateY(50px);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
       }
     }
 
-    footer {
-      margin-top: 40px;
-      font-size: 0.9rem;
-      color: rgba(255, 255, 255, 0.8);
-      font-weight: 300;
-      letter-spacing: 0.5px;
+    /* Keyframe for button pulse */
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 15px rgba(0, 180, 216, 0.4);
+      }
+      100% {
+        box-shadow: 0 0 25px rgba(0, 180, 216, 0.6);
+      }
     }
 
-    /* Responsive Design */
-    @media (max-width: 768px) {
-      .container {
-        padding: 40px 30px;
-        margin: 20px;
+    /* Faster pulse on hover */
+    @keyframes pulse-hover {
+      0% {
+        box-shadow: 0 0 25px rgba(114, 9, 183, 0.6);
       }
-      
-      #advice {
-        font-size: 1.4rem;
-        min-height: 100px;
+      100% {
+        box-shadow: 0 0 35px rgba(114, 9, 183, 0.8);
       }
-      
-      #advice::before,
-      #advice::after {
-        font-size: 3rem;
+    }
+
+    /* Responsive media query for smaller screens like your OnePlus */
+    @media (max-width: 540px) {
+      .card {
+        padding: 2rem 1.5rem;
       }
-      
-      #random {
-        padding: 14px 35px;
+      .quote {
+        font-size: 1.3rem;
+        min-height: 4rem;
+      }
+      button {
+        padding: 0.8rem 2rem;
         font-size: 1rem;
       }
     }
 
-    @media (max-width: 480px) {
-      .container {
-        padding: 30px 20px;
+    /* Additional media query for larger screens */
+    @media (min-width: 1024px) {
+      .card {
+        max-width: 40rem;
+        padding: 4rem 3rem;
       }
-      
-      #advice {
-        font-size: 1.2rem;
-        min-height: 80px;
+      .quote {
+        font-size: 1.8rem;
       }
-      
-      #advice::before {
-        left: -15px;
-      }
-      
-      #advice::after {
-        right: -15px;
-      }
-    }
-
-    /* Loading animation */
-    .loading {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      border: 2px solid #667eea;
-      border-radius: 50%;
-      border-top-color: transparent;
-      animation: spin 1s ease-in-out infinite;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="quote-icon">✨</div>
-    <div id="advice">Loading your daily inspiration...</div>
-    <div class="button-wrapper">
-      <button id="random">Inspire Me</button>
-    </div>
-  </div>
-  <footer>Daily Inspiration © 2025</footer>
+  <!-- Background div -->
+  <div class="bg" id="bg"></div>
   
+  <!-- Main card container -->
+  <div class="card">
+    <div class="quote" id="quote">Loading...</div>
+    <button id="next">Inspire Me</button>
+  </div>
+  
+  <!-- JavaScript for functionality -->
   <script>
-    const quotes = [
-      'The best way to get started is to quit talking and begin doing.',
-      'Don\'t let yesterday take up too much of today.',
-      'It\'s not whether you get knocked down, it\'s whether you get up.',
-      'If you are working on something exciting, it will keep you motivated.',
-      'Success is not in what you have, but who you are.',
-      'The harder you work for something, the greater you\'ll feel when you achieve it.',
-      'Dream bigger. Do bigger.',
-      'Don\'t stop when you\'re tired. Stop when you\'re done.',
-      'Wake up with determination. Go to bed with satisfaction.',
-      'Do something today that your future self will thank you for.',
-      'Little things make big days.',
-      'It\'s going to be hard, but hard does not mean impossible.',
-      'Don\'t wait for opportunity. Create it.',
-      'Sometimes we\'re tested not to show our weaknesses, but to discover our strengths.',
-      'The key to success is to focus on goals, not obstacles.',
-      'Push yourself, because no one else is going to do it for you.',
-      'Great things never come from comfort zones.',
-      'Dream it. Wish it. Do it.',
-      'Success doesn\'t just find you. You have to go out and get it.',
-      'The harder you work, the luckier you get.',
-      'Don\'t watch the clock; do what it does. Keep going.',
-      'You don\'t have to be great to start, but you have to start to be great.',
-      'Believe you can and you\'re halfway there.',
-      'Your limitation—it\'s only your imagination.',
-      'Sometimes later becomes never. Do it now.',
-      'Don\'t wait for the right moment. Take the moment and make it right.',
-      'Failure will never overtake me if my determination to succeed is strong enough.',
-      'We may encounter many defeats but we must not be defeated.',
-      'Act as if what you do makes a difference. It does.',
-      'Success is not final, failure is not fatal: It is the courage to continue that counts.',
-      'The only way to do great work is to love what you do.',
-      'Innovation distinguishes between a leader and a follower.',
-      'Your time is limited, don\'t waste it living someone else\'s life.',
-      'The future belongs to those who believe in the beauty of their dreams.',
-      'It is during our darkest moments that we must focus to see the light.',
-      'The only impossible journey is the one you never begin.',
-      'In the middle of difficulty lies opportunity.',
-      'Life is what happens to you while you\'re busy making other plans.',
-      'The way to get started is to quit talking and begin doing.',
-      'You miss 100% of the shots you don\'t take.',
-      'Whether you think you can or you think you can\'t, you\'re right.',
-      'I have not failed. I\'ve just found 10,000 ways that won\'t work.',
-      'A person who never made a mistake never tried anything new.',
-      'The only person you are destined to become is the person you decide to be.',
-      'Go confidently in the direction of your dreams. Live the life you have imagined.',
-      'Twenty years from now you will be more disappointed by the things you didn\'t do.',
-      'You become what you believe.',
-      'The most common way people give up their power is by thinking they don\'t have any.',
-      'If you want to lift yourself up, lift up someone else.',
-      'Champions aren\'t made in the gyms. Champions are made from something deep inside.'
+    // Array of local image paths - expand this for more variety
+    const images = [
+      'images/bg.jpg',
+      'images/bg1.jpg',
+      'images/bg2.jpg',
+      'images/bg3.jpg',
+      'images/bg4.jpg',
+      'images/bg5.jpg',
+      'images/bg6.jpg', 
+      'images/bg7.jpg',
+      'images/bg8.jpg',
+      'images/bg9.jpg',
+      'images/bg10.jpg',
+      'images/bg11.jpg', 
+      'images/bg12.jpg',
+      'images/bg13.jpg',
+      'images/bg14.jpg',
+      'images/bg15.jpg', 
+      'images/bg16.jpg',
+      'images/bg17.jpg',
+      'images/bg18.jpg',
+      'images/bg19.jpg', 
+      'images/bg20.jpg',
+      'images/bg21.jpg',
+      'images/bg22.jpg'
     ];
 
-    const adviceElement = document.getElementById('advice');
-    const randomButton = document.getElementById('random');
+    // Expanded list of motivational quotes - more options for longer sessions
+    const quotes = [
+    "The best way to get started is to quit talking and begin doing.",
+  "Don't let yesterday take up too much of today.",
+  "It's not whether you get knocked down, it's whether you get up.",
+  "If you are working on something exciting, it will keep you motivated.",
+  "Success is not in what you have, but who you are.",
+  "The harder you work for something, the greater you'll feel when you achieve it.",
+  "Dream bigger. Do bigger.","Don't stop when you're tired. Stop when you're done.",
+  "Wake up with determination. Go to bed with satisfaction.",
+  "Do something today that your future self will thank you for.",
+  "Little things make big days.","It's going to be hard, but hard does not mean impossible.",
+  "Don't wait for opportunity. Create it.",
+  "Sometimes we're tested not to show our weaknesses, but to discover our strengths.",
+  "The key to success is to focus on goals, not obstacles.",
+  "Push yourself, because no one else is going to do it for you.",
+  "Great things never come from comfort zones.","Dream it. Wish it. Do it.",
+  "Success doesn't just find you. You have to go out and get it.",
+  "The harder you work, the luckier you get.",
+  "Don't watch the clock; do what it does. Keep going.",
+  "You don't have to be great to start, but you have to start to be great.",
+  "Believe you can and you're halfway there.","Your limitation—it's only your imagination.",
+  "Sometimes later becomes never. Do it now.",
+  "Don't wait for the right moment. Take the moment and make it right.",
+  "Failure will never overtake me if my determination to succeed is strong enough.",
+  "We may encounter many defeats but we must not be defeated.",
+  "Act as if what you do makes a difference. It does.",
+  "Success is not final, failure is not fatal: It is the courage to continue that counts.",
+  "The only way to do great work is to love what you do.",
+  "Innovation distinguishes between a leader and a follower.",
+  "Your time is limited, don't waste it living someone else's life.",
+  "The future belongs to those who believe in the beauty of their dreams.",
+  "It is during our darkest moments that we must focus to see the light.",
+  "The only impossible journey is the one you never begin.",
+  "In the middle of difficulty lies opportunity.",
+  "Life is what happens to you while you're busy making other plans.",
+  "You miss 100% of the shots you don't take.",
+  "Whether you think you can or you think you can't, you're right.",
+  "I have not failed. I've just found 10,000 ways that won't work.",
+  "A person who never made a mistake never tried anything new.",
+  "The only person you are destined to become is the person you decide to be.",
+  "Go confidently in the direction of your dreams. Live the life you have imagined.",
+  "Twenty years from now you will be more disappointed by the things you didn't do.",
+  "You become what you believe.",
+  "The most common way people give up their power is by thinking they don't have any.",
+  "If you want to lift yourself up, lift up someone else.",
+  "Champions aren't made in gyms. Champions are made from something deep inside.",
+  "Strive for progress, not perfection.",
+  "Every day is a second chance.",
+  "Your vibe attracts your tribe.",
+  "Make it happen. Shock everyone.",
+  "Stay hungry, stay foolish.",
+  "Today is another opportunity to grow.",
+  "Focus on the step in front of you, not the whole staircase.",
+  "Small steps lead to big results.",
+  "Turn setbacks into comebacks.",
+  "Your only limit is you.",
+  "Do it with passion or not at all.",
+  "Nothing changes if nothing changes.",
+  "Progress over perfection.",
+  "Consistency is what transforms average into excellence.",
+  "Become the hardest working person you know.",
+  "Doubt kills more dreams than failure ever will.",
+  "Discipline is choosing between what you want now and what you want most.",
+  "Stars can’t shine without darkness.",
+  "Great things take time—keep going.",
+  "Be stronger than your strongest excuse.",
+  "Make yourself proud.",
+  "Success smells like sweat.",
+  "Create the life you can't wait to wake up to.",
+  "Run the day or the day runs you.",
+  "Success is a series of small wins.",
+  "Work in silence, let success make the noise.",
+  "Fear is temporary. Regret is forever.",
+  "Be the energy you want to attract.",
+  "Done is better than perfect.",
+  "Rise up and attack the day with enthusiasm.",
+  "Don't be busy, be productive.",
+  "Stay patient and trust your journey.",
+  "You are your only competition.",
+  "Dreams don't work unless you do.",
+  "Be the change you wish to see.",
+  "The comeback is always stronger than the setback.",
+  "Start where you are, use what you have, do what you can.",
+  "Keep your eyes on the stars and your feet on the ground.",
+  "Grow through what you go through.",
+  "One day or day one—you decide."
+    ];
 
-    function getRandomQuote() {
-      const idx = Math.floor(Math.random() * quotes.length);
-      return quotes[idx];
+    // DOM elements - cached for performance
+    const quoteEl = document.getElementById('quote');
+    const bgEl = document.getElementById('bg');
+    const nextBtn = document.getElementById('next');
+
+    // Utility function: Fisher-Yates shuffle for arrays
+    function shuffle(arr) {
+      const a = [...arr]; // Copy to avoid mutating original
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
     }
 
-    function displayQuote() {
-      adviceElement.classList.add('fade-out');
+    // Shuffled arrays - prepared once for efficiency
+    const shuffledQuotes = shuffle(quotes);
+    let shuffledImages = shuffle(images);
+
+    // State variables
+    let idx = 0;
+    let autoAdvanceTimer;
+
+    // Function to update the view with animations
+    function updateView() {
+      // Update background image
+      bgEl.style.backgroundImage = `url('${shuffledImages[idx % shuffledImages.length]}')`;
+
+      // Animate quote fade-out and slide
+      quoteEl.classList.remove('active');
+      quoteEl.classList.add('fade-out');
       
+      // Timeout for fade-out completion
       setTimeout(() => {
-        const quote = getRandomQuote();
-        adviceElement.textContent = quote;
-        adviceElement.classList.remove('fade-out');
-        adviceElement.classList.add('fade-in');
-      }, 300);
+        quoteEl.textContent = shuffledQuotes[idx % shuffledQuotes.length];
+        quoteEl.classList.remove('fade-out');
+        quoteEl.classList.add('active'); // Trigger slide-in
+      }, 400); // Adjusted for animation sync
+
+      // Reset and set auto-advance timer (optional feature)
+      clearTimeout(autoAdvanceTimer);
+      autoAdvanceTimer = setTimeout(() => {
+        idx = (idx + 1) % shuffledQuotes.length;
+        updateView();
+      }, 12000); // Longer interval for a relaxed feel
     }
 
-    function createRipple(event) {
-      const button = event.currentTarget;
-      const ripple = document.createElement('span');
-      const rect = button.getBoundingClientRect();
-      const size = Math.max(rect.width, rect.height);
-      const x = event.clientX - rect.left - size / 2;
-      const y = event.clientY - rect.top - size / 2;
-      
-      ripple.style.width = ripple.style.height = size + 'px';
-      ripple.style.left = x + 'px';
-      ripple.style.top = y + 'px';
-      ripple.classList.add('ripple');
-      
-      button.appendChild(ripple);
-      
-      setTimeout(() => {
-        ripple.remove();
-      }, 600);
-    }
-
-    window.addEventListener('load', () => {
-      displayQuote();
+    // Initial load - call updateView
+    window.addEventListener('DOMContentLoaded', () => {
+      updateView();
     });
 
-    randomButton.addEventListener('click', (e) => {
-      createRipple(e);
-      displayQuote();
+    // Event listener for next button
+    nextBtn.addEventListener('click', () => {
+      idx = (idx + 1) % shuffledQuotes.length;
+      updateView();
+    });
+
+    // Optional: Advance on card click (excluding button)
+    document.querySelector('.card').addEventListener('click', (ev) => {
+      if (!ev.target.closest('button')) {
+        idx = (idx + 1) % shuffledQuotes.length;
+        updateView();
+      }
+    });
+
+    // Image error handling - fallback for robustness
+    const imgTester = new Image();
+    imgTester.onerror = () => {
+      // Filter out bad image
+      shuffledImages = shuffledImages.filter(img => img !== imgTester.src);
+      if (shuffledImages.length === 0) {
+        bgEl.style.background = "#0a0e1f"; // Fallback color
+      } else {
+        updateView();
+      }
+    };
+
+    // Pre-test all images on load for proactive error handling
+    shuffledImages.forEach(src => {
+      const tester = new Image();
+      tester.src = src;
+      tester.onerror = () => {
+        shuffledImages = shuffledImages.filter(img => img !== src);
+        if (shuffledImages.length === 0) {
+          bgEl.style.background = "#0a0e1f";
+        }
+      };
     });
   </script>
 </body>

@@ -1,0 +1,123 @@
+<svg width="96" height="96" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Clean cyber gradient -->
+    <linearGradient id="primaryGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00d4ff"/>
+      <stop offset="50%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#8b5cf6"/>
+    </linearGradient>
+
+    <!-- Accent gradient -->
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#ec4899"/>
+    </linearGradient>
+
+    <!-- Refined glow -->
+    <filter id="cleanGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="glow"/>
+      <feMerge>
+        <feMergeNode in="glow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+      <animate attributeName="stdDeviation" values="2;5;2" dur="3s" repeatCount="indefinite"/>
+    </filter>
+
+    <!-- Subtle outer glow -->
+    <filter id="subtleGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="2" result="softGlow"/>
+      <feMerge>
+        <feMergeNode in="softGlow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background energy field -->
+  <circle cx="48" cy="48" r="40" 
+          fill="none" 
+          stroke="url(#primaryGrad)" 
+          stroke-width="1" 
+          opacity="0.2"
+          filter="url(#subtleGlow)">
+    <animate attributeName="opacity" values="0.1;0.3;0.1" dur="4s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- Main hexagon structure -->
+  <polygon points="48,8 80,28 80,68 48,88 16,68 16,28"
+           fill="none" 
+           stroke="url(#primaryGrad)" 
+           stroke-width="3" 
+           filter="url(#cleanGlow)">
+    <animate attributeName="stroke-width" values="2;4;2" dur="2.5s" repeatCount="indefinite"/>
+  </polygon>
+
+  <!-- Inner hexagon -->
+  <polygon points="48,16 72,30 72,66 48,80 24,66 24,30"
+           fill="none" 
+           stroke="url(#accentGrad)" 
+           stroke-width="2" 
+           opacity="0.8"
+           filter="url(#subtleGlow)">
+    <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/>
+  </polygon>
+
+  <!-- Network connection lines -->
+  <g opacity="0.7" filter="url(#subtleGlow)">
+    <line x1="48" y1="16" x2="48" y2="80" stroke="url(#primaryGrad)" stroke-width="1">
+      <animate attributeName="opacity" values="0.4;0.9;0.4" dur="2.5s" repeatCount="indefinite"/>
+    </line>
+    <line x1="24" y1="30" x2="72" y2="66" stroke="url(#primaryGrad)" stroke-width="1">
+      <animate attributeName="opacity" values="0.4;0.9;0.4" dur="3s" repeatCount="indefinite"/>
+    </line>
+    <line x1="72" y1="30" x2="24" y2="66" stroke="url(#primaryGrad)" stroke-width="1">
+      <animate attributeName="opacity" values="0.4;0.9;0.4" dur="2.8s" repeatCount="indefinite"/>
+    </line>
+  </g>
+
+  <!-- Corner nodes -->
+  <circle cx="48" cy="16" r="2" fill="url(#accentGrad)" filter="url(#cleanGlow)">
+    <animate attributeName="r" values="1.5;3;1.5" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="72" cy="30" r="2" fill="url(#primaryGrad)" filter="url(#cleanGlow)">
+    <animate attributeName="r" values="1.5;3;1.5" dur="2.2s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="72" cy="66" r="2" fill="url(#accentGrad)" filter="url(#cleanGlow)">
+    <animate attributeName="r" values="1.5;3;1.5" dur="2.4s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="48" cy="80" r="2" fill="url(#primaryGrad)" filter="url(#cleanGlow)">
+    <animate attributeName="r" values="1.5;3;1.5" dur="2.1s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="24" cy="66" r="2" fill="url(#accentGrad)" filter="url(#cleanGlow)">
+    <animate attributeName="r" values="1.5;3;1.5" dur="2.3s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="24" cy="30" r="2" fill="url(#primaryGrad)" filter="url(#cleanGlow)">
+    <animate attributeName="r" values="1.5;3;1.5" dur="1.9s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- Central power core -->
+  <circle cx="48" cy="48" r="10" 
+          fill="none" 
+          stroke="url(#primaryGrad)" 
+          stroke-width="2" 
+          filter="url(#cleanGlow)"
+          opacity="0.8">
+    <animate attributeName="r" values="8;12;8" dur="2s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- Inner core -->
+  <circle cx="48" cy="48" r="6" 
+          fill="url(#accentGrad)" 
+          filter="url(#cleanGlow)"
+          opacity="0.9">
+    <animate attributeName="r" values="5;7;5" dur="1.5s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- Central bright point -->
+  <circle cx="48" cy="48" r="2" 
+          fill="#ffffff" 
+          filter="url(#cleanGlow)">
+    <animate attributeName="opacity" values="0.8;1;0.8" dur="1s" repeatCount="indefinite"/>
+  </circle>
+</svg>

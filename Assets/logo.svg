@@ -1,0 +1,61 @@
+<svg width="96" height="96" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Neon gradient -->
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#f59e0b"/>
+    </linearGradient>
+
+    <!-- Slow pulsing glow -->
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+      <animate attributeName="stdDeviation" values="1;4;1" dur="3s" repeatCount="indefinite"/>
+    </filter>
+  </defs>
+
+  <!-- Embedded CSS Styles -->
+  <style>
+    <![CDATA[
+      .neon-icon {
+        color: #fff;
+        --glow1: #6366f1;
+        --glow2: #f59e0b;
+        text-shadow:
+          0 0 6px var(--glow1),
+          0 0 12px var(--glow1),
+          0 0 18px var(--glow2);
+        animation: pulse 2.5s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        0%, 100% { 
+          text-shadow:
+            0 0 4px var(--glow1),
+            0 0 10px var(--glow1),
+            0 0 14px var(--glow2); 
+        }
+        50% { 
+          text-shadow:
+            0 0 8px var(--glow1),
+            0 0 16px var(--glow1),
+            0 0 24px var(--glow2); 
+        }
+      }
+    ]]>
+  </style>
+
+  <!-- Hexagon outline -->
+  <polygon points="48,4 86,24 86,72 48,92 10,72 10,24"
+           fill="none" stroke="url(#grad)" stroke-width="6" filter="url(#glow)"/>
+
+  <!-- Inner network lines -->
+  <polyline points="48,18 72,30 72,66 48,78 24,66 24,30 48,18"
+            fill="none" stroke="url(#grad)" stroke-width="4" opacity="0.6"/>
+
+  <!-- Central node -->
+  <circle cx="48" cy="48" r="6" fill="#fff"/>
+</svg>
