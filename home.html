@@ -3320,12 +3320,12 @@ header::before {
   
     const button = document.getElementById('enable-notifications');
     const buttonText = document.getElementById('notification-text');
-    
+  
     // Check current notification permission on page load
     function updateButtonState() {
       const permission = Notification.permission;
       console.log('Current notification permission:', permission);
-      
+  
       if (permission === 'granted') {
         button.className = 'btn btn-success';
         button.innerHTML = '<i class="fas fa-bell"></i> <span>Notifications Enabled ✓</span>';
@@ -3347,16 +3347,17 @@ header::before {
     // Button click handler
     button.addEventListener('click', async () => {
       console.log('🔔 Notification button clicked!');
-      
+  
       // Show loading state
       button.disabled = true;
       button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Requesting...</span>';
-      
+  
       try {
         const token = await requestNotificationPermission();
-        
+  
         if (token) {
           console.log('✅ FCM Token received:', token);
+          console.log('🎯 FCM TOKEN:', token); // 👈 This is the line you wanted
           alert('🔔 Notifications enabled successfully!\nYou can now receive push notifications.');
         } else {
           console.log('❌ Permission denied or failed');
@@ -3366,16 +3367,17 @@ header::before {
         console.error('❌ Error requesting notifications:', error);
         alert('❌ Error: ' + error.message);
       }
-      
+  
       // Update button state based on final permission
       updateButtonState();
     });
   
     // Start listening for foreground messages
     listenForForegroundMessages();
-    
+  
     console.log('🔔 Notification setup completed');
   </script>
+  
   
 
 </body>
