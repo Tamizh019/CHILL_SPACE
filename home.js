@@ -13,6 +13,13 @@ let messageToDelete = null;
 // ✅ ADD THIS LINE - Declare typingTimer globally
 let typingTimer;
 
+// FCM Service Worker Registration - ADD THIS NEAR THE TOP
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/firebase-messaging-sw.js')
+    .then(reg => console.log('FCM SW registered:', reg.scope))
+    .catch(err => console.error('FCM SW registration failed:', err));
+}
+
 // ✅ Also ensure usersTyping is declared
 const usersTyping = {};
 // Initialize Supabase

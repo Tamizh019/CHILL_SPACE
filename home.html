@@ -2814,6 +2814,7 @@ header::before {
       </div>
       <h2 id="subtitleText" class="cyber-animated-text" style="font-size:1rem;
       font-weight:500;margin-top:.25rem;min-height: 1.2rem;"></h2>
+    
     </div>
     
     <div class="header-actions">
@@ -2850,6 +2851,9 @@ header::before {
       <section class="card chat-container">
         <div class="card-header">
           <h2><i class="fas fa-comments"></i> Group Chat AI-A4 </h2>
+          <button id="enable-notifications" class="btn btn-primary">
+            <i class="fas fa-bell"></i> Enable Notifications
+          </button>
         </div>
 
         <!-- Add this ABOVE the existing chat-messages div -->
@@ -3311,5 +3315,17 @@ header::before {
     </div>
   </footer>
   <script src="home.js"></script>
+  <script type="module">
+    import { requestNotificationPermission, listenForForegroundMessages } from './src/notification.js';
+  
+    document.getElementById('enable-notifications')
+      .addEventListener('click', async () => {
+        const token = await requestNotificationPermission();
+        if (token) console.log('Notifications enabled!');
+      });
+  
+    listenForForegroundMessages();
+  </script>
+
 </body>
 </html>

@@ -1,0 +1,191 @@
+Folder PATH listing for volume New Volume
+Volume serial number is 1A75-1B47
+D:.
+¦   .gitignore
+¦   home.html
+¦   home.js
+¦   index.html
+¦   index.js
+¦   package-lock.json
+¦   package.json
+¦   README.md
+¦   register.html
+¦   register.js
+¦   reset-password.html
+¦   SMTP_SETUP_GUIDE.md
+¦   structure.txt
+¦   supabase-config.js
+¦   tree.txt
+¦   
++---Assets
+¦       advice.jpg
+¦       chess.png
+¦       chess2.jpg
+¦       Chill.jpg
+¦       chill3.JPG
+¦       creative.jpg
+¦       dsa.jpg
+¦       face.png
+¦       Human Tic-Tac-Toe.jpg
+¦       key.jpg
+¦       key2.jpg
+¦       logo.png
+¦       logo.svg
+¦       logo1.svg
+¦       logo1.txt
+¦       logo2.png
+¦       logo2.svg
+¦       logo3.png
+¦       logo4.png
+¦       logo4.svg
+¦       motivation.jpg
+¦       pfp.jpg
+¦       pfp2.jpg
+¦       pfp3.jpg
+¦       quiz.jpg
+¦       quiz1.jpg
+¦       rps.jpg
+¦       rps1.png
+¦       snake1.jpg
+¦       ttt.png
+¦       twitter.png
+¦       type.jpg
+¦       white.jpg
+¦       xo.jpg
+¦       
++---games
+    +---advice
+    ¦   ¦   index.html
+    ¦   ¦   
+    ¦   +---images
+    ¦           bg.jpg
+    ¦           bg1.jpg
+    ¦           bg10.jpg
+    ¦           bg11.jpg
+    ¦           bg12.jpg
+    ¦           bg13.jpg
+    ¦           bg14.jpg
+    ¦           bg15.jpg
+    ¦           bg16.jpg
+    ¦           bg17.jpg
+    ¦           bg18.jpg
+    ¦           bg19.jpg
+    ¦           bg2.jpg
+    ¦           bg20.jpg
+    ¦           bg21.jpg
+    ¦           bg22.jpg
+    ¦           bg3.jpg
+    ¦           bg4.jpg
+    ¦           bg5.jpg
+    ¦           bg6.jpg
+    ¦           bg7.jpg
+    ¦           bg8.jpg
+    ¦           bg9.jpg
+    ¦           
+    +---chess
+    ¦       chess.html
+    ¦       
+    +---dsasolver
+    ¦   ¦   index.html
+    ¦   ¦   script.js
+    ¦   ¦   style.css
+    ¦   ¦   
+    ¦   +---assests
+    ¦       +---image
+    ¦       ¦       Array.png
+    ¦       ¦       bits.png
+    ¦       ¦       DynamicPrograming.png
+    ¦       ¦       Graph.png
+    ¦       ¦       LinkedList.png
+    ¦       ¦       mathematics-circular-flat-vector-20232263.jpg
+    ¦       ¦       maxresdefault.jpg
+    ¦       ¦       Mylog.png
+    ¦       ¦       Queue.png
+    ¦       ¦       seraching.jfif
+    ¦       ¦       sorting.jpg
+    ¦       ¦       String.png
+    ¦       ¦       Trees.png
+    ¦       ¦       
+    ¦       +---Problem_tabel
+    ¦       ¦   +---Array
+    ¦       ¦   ¦       Array.html
+    ¦       ¦   ¦       
+    ¦       ¦   +---Bitsmanupulation
+    ¦       ¦   ¦       bits.html
+    ¦       ¦   ¦       
+    ¦       ¦   +---Dynamic_programing
+    ¦       ¦   ¦       dynamic.html
+    ¦       ¦   ¦       
+    ¦       ¦   +---Graph
+    ¦       ¦   ¦       graph.html
+    ¦       ¦   ¦       
+    ¦       ¦   +---Linked list
+    ¦       ¦   ¦       linked_list.html
+    ¦       ¦   ¦       
+    ¦       ¦   +---Maths
+    ¦       ¦   ¦       maths.html
+    ¦       ¦   ¦       
+    ¦       ¦   +---Recursion
+    ¦       ¦   ¦       recursion.html
+    ¦       ¦   ¦       
+    ¦       ¦   +---Searching
+    ¦       ¦   ¦       Searching.html
+    ¦       ¦   ¦       
+    ¦       ¦   +---Sorting
+    ¦       ¦   ¦       Sorting.html
+    ¦       ¦   ¦       
+    ¦       ¦   +---Stack_Queue
+    ¦       ¦   ¦       stack_queue.html
+    ¦       ¦   ¦       
+    ¦       ¦   +---String
+    ¦       ¦   ¦       string.html
+    ¦       ¦   ¦       
+    ¦       ¦   +---tree
+    ¦       ¦           tree.html
+    ¦       ¦           
+    ¦       +---readme_img
+    ¦               Screenshot 2023-06-20 001525.png
+    ¦               Screenshot 2023-06-20 001614.png
+    ¦               Screenshot 2023-06-20 001637.png
+    ¦               Screenshot 2023-06-20 001654.png
+    ¦               
+    +---Quiz
+    ¦       quiz.html
+    ¦       script.js
+    ¦       
+    +---snake
+    ¦       game.html
+    ¦       
+    +---stonepaper
+    ¦   ¦   index.html
+    ¦   ¦   
+    ¦   +---img
+    ¦           paper.png
+    ¦           robot.png
+    ¦           rock.png
+    ¦           scissor.png
+    ¦           
+    +---ttt
+    ¦       0.gif
+    ¦       600.css
+    ¦       bg1.jpg
+    ¦       index.html
+    ¦       index.js
+    ¦       styles.css
+    ¦       X.gif
+    ¦       xo.png
+    ¦       
+    +---typemaster
+    ¦   ¦   index.html
+    ¦   ¦   
+    ¦   +---images
+    ¦   ¦       image2.jpg
+    ¦   ¦       readme.md
+    ¦   ¦       
+    ¦   +---js
+    ¦           readme.md
+    ¦           script.js
+    ¦           
+    +---white
+            index.html
+            
