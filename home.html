@@ -2852,7 +2852,7 @@ header::before {
         <div class="card-header">
           <h2><i class="fas fa-comments"></i> Group Chat AI-A4 </h2>
           <button id="enable-notifications" class="btn btn-primary">
-            <i class="fas fa-bell"></i> Enable Notifications
+            <i class="fas fa-bell"></i> <span id="notification-text">Enable Notifications</span>
           </button>
         </div>
 
@@ -3318,14 +3318,65 @@ header::before {
   <script type="module">
     import { requestNotificationPermission, listenForForegroundMessages } from './src/notification.js';
   
-    document.getElementById('enable-notifications')
-      .addEventListener('click', async () => {
-        const token = await requestNotificationPermission();
-        if (token) console.log('Notifications enabled!');
-      });
+    const button = document.getElementById('enable-notifications');
+    const buttonText = document.getElementById('notification-text');
+    
+    // Check current notification permission on page load
+    function updateButtonState() {
+      const permission = Notification.permission;
+      console.log('Current notification permission:', permission);
+      
+      if (permission === 'granted') {
+        button.className = 'btn btn-success';
+        button.innerHTML = '<i class="fas fa-bell"></i> <span>Notifications Enabled ✓</span>';
+        button.disabled = true;
+      } else if (permission === 'denied') {
+        button.className = 'btn btn-danger';
+        button.innerHTML = '<i class="fas fa-bell-slash"></i> <span>Notifications Blocked ✗</span>';
+        button.disabled = true;
+      } else {
+        button.className = 'btn btn-primary';
+        button.innerHTML = '<i class="fas fa-bell"></i> <span>Enable Notifications</span>';
+        button.disabled = false;
+      }
+    }
   
+    // Update button state on page load
+    updateButtonState();
+  
+    // Button click handler
+    button.addEventListener('click', async () => {
+      console.log('🔔 Notification button clicked!');
+      
+      // Show loading state
+      button.disabled = true;
+      button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Requesting...</span>';
+      
+      try {
+        const token = await requestNotificationPermission();
+        
+        if (token) {
+          console.log('✅ FCM Token received:', token);
+          alert('🔔 Notifications enabled successfully!\nYou can now receive push notifications.');
+        } else {
+          console.log('❌ Permission denied or failed');
+          alert('❌ Notification permission denied or failed.');
+        }
+      } catch (error) {
+        console.error('❌ Error requesting notifications:', error);
+        alert('❌ Error: ' + error.message);
+      }
+      
+      // Update button state based on final permission
+      updateButtonState();
+    });
+  
+    // Start listening for foreground messages
     listenForForegroundMessages();
+    
+    console.log('🔔 Notification setup completed');
   </script>
+  
 
 </body>
 </html>
