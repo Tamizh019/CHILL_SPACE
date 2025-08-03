@@ -66,6 +66,7 @@ const emojiSearchData = {
     '🤭': ['face', 'hand', 'mouth', 'quiet', 'whoops'],
     '🤫': ['shushing', 'face', 'quiet', 'shhh', 'discretion'],
     '🤥': ['lying', 'face', 'liar', 'pinocchio', 'dishonesty'],
+    '🫡': ['bow', 'face', 'respect', 'thank', 'you' , 'salute'],
   
     // Animals
     '🐶': ['dog', 'face', 'pet', 'puppy', 'woof', 'loyal'],

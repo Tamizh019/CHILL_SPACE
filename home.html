@@ -1194,6 +1194,9 @@
       color: var(--gray);
       font-size: 0.9rem;
     }
+    .mobile-avatar {
+  display: none !important; /* Hide by default (PC/tablet) */
+}
 
     /* ===== MOBILE RESPONSIVE DESIGN ===== */
 
@@ -1230,10 +1233,10 @@
         gap: 0.8rem;
       }
       
-      /* Hide username on mobile */
-      .user-info {
-        display: none !important;
-      }
+        /* Hide username on mobile */
+        .user-info {
+          display: none !important;
+        }
       
       /* Optimize logout button for mobile */
       #logoutBtn {
@@ -1608,62 +1611,559 @@
 
     /* ===== VERY SMALL MOBILE (480px and below) ===== */
     @media (max-width: 480px) {
-      .message {
-        font-size: 0.85rem;
-        max-width: 90%;
-        padding: 0.5rem 0.7rem;
-        margin: 0.3rem 0.1rem;
-        border-radius: 14px;
-      }
-      
-      .chat-avatar {
-        width: 28px;
-        height: 28px;
-      }
-      
-      .message-sender {
-        font-size: 0.7rem;
-        gap: 0.3rem;
-      }
-      
-      .message-time {
-        font-size: 0.6rem;
-      }
-      
-      .user-role {
-        display: none;
-      }
-      
-      .chat-input input, .chat-input textarea {
-        font-size: 0.95rem;
-        min-height: 42px;
-        padding: 0.5rem 0.7rem;
-      }
-      
-      .btn {
-        min-height: 42px;
-        min-width: 42px;
-        padding: 0.5rem 0.8rem;
-        font-size: 0.85rem;
-      }
-      
-      .date-divider-text {
-        font-size: 0.65rem;
-        padding: 0.25rem 0.5rem;
-        min-width: 60px;
-      }
-      
-      .emoji-grid {
-        grid-template-columns: repeat(7, 1fr);
-      }
-      
-      .emoji-item {
-        font-size: 1.1rem;
-        min-height: 38px;
-        min-width: 38px;
-        padding: 0.2rem;
-      }
-    }
+  body, .chat-container {
+    background: #f3f4f8 !important;
+    min-width: 100vw !important;
+    min-height: 100vh !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    color: #23272f !important;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  /* HEADER */
+  header {
+    background: #1a2536 !important;
+    color: #f9fafb !important;
+    padding: 0.64rem 1rem !important;
+    min-height: 54px !important;
+    border-bottom: 1px solid #dde3eb;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    position: sticky;
+    top: 0; z-index: 10001;
+  }
+  .logo, .logo::after {
+    display: block !important;
+    content: "Chill Space" !important;
+    font-size: 1.16rem !important;
+    color: #19A7CE !important;
+    font-weight: 700 !important;
+    background: none !important;
+    letter-spacing: 0.01em !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    font-family: 'Poppins', sans-serif !important;
+    text-shadow: 0 1px 2px #182a4805;
+  }
+  .animated-text-container, .user-info, #subtitleText, .desktop-only {
+    display: none !important;
+  }
+  .header-actions {
+    margin-left: auto !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5em !important;
+  }
+  .mobile-avatar {
+    display: inline-block !important;
+    margin-right: 7px;
+    cursor: pointer;
+    border: 2px solid #18a7d6 !important;
+    border-radius: 50%;
+    background: #f9fafb;
+    box-shadow: 0 1px 3px 0 #19A7CE12;
+    width: 38px;
+    height: 38px;
+  }
+  .mobile-avatar img {
+    width: 36px!important; height: 36px!important;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+  }
+  #logoutBtn {
+    padding: 0.45em 0.9em !important;
+    font-size: 0.99em !important;
+    min-width: 38px;
+    border-radius: 14px !important;
+  }
+
+  /* CARD HEADER (Chat & Games) */
+  .card-header {
+    background: #1976d2 !important;
+    color: #fff !important;
+    border-radius: 0 0 13px 13px !important;
+    box-shadow: 0 2px 8px rgba(25,118,210,0.04);
+    font-size: 1.07rem !important;
+    text-align: center !important;
+    padding: 1em 0.8em 0.7em 1em !important;
+    letter-spacing: .011em !important;
+    min-height: 36px !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .6em;
+    font-weight: 600;
+  }
+  .card-header h2,
+  .card-header span,
+  .card-header button {
+    font-size: 1em !important;
+    font-weight: 600 !important;
+  }
+  #enable-notifications, .btn-primary {
+    background: #1976d2 !important;
+    color: #fff !important;
+    font-weight: 600;
+    border: none;
+    border-radius: 11px;
+    padding: 0.52em 1.1em !important;
+    font-size: 0.98em !important;
+    box-shadow: 0 1px 6px #1976d209;
+  }
+  #enable-notifications:active { background: #145ea1 !important; }
+
+  /* HIDE SIDEBAR on mobile */
+  .sidebar, .sidebar-grid { display: none !important; }
+  
+  /* MAIN CARDS & SECTIONS */
+  .main-content, main,
+  .card {
+    background: #f3f4f8 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100vw !important;
+    color: #222 !important;
+  }
+
+  /* CHAT SYSTEM */
+  .chat-messages, #chatMessages {
+    width: 100vw !important;
+    padding: 0.66em 0.25em 1em 0.25em !important;
+    background: #e8ecf7 !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.25em;
+    overflow-y: auto !important;
+    max-height: calc(100dvh - 136px) !important;
+    min-height: 185px !important;
+  }
+
+  /* MESSAGE BUBBLES */
+  .message {
+    font-size: 1.05rem !important;
+    max-width: 86% !important;
+    padding: 0.6rem 1rem !important;
+    margin: 0.58rem 0.2rem !important;
+    border-radius: 16px !important;
+    background: #fff !important;
+    color: #171d26 !important;
+    box-shadow: 0 1px 6px 0 rgba(0,0,0,0.04);
+    word-break: break-word !important;
+    position: relative !important;
+    flex-direction: column !important;
+    border: 1px solid #e8edf2;
+    transition: background 0.15s;
+  }
+  .message-sent {
+    background: #E9F7EF !important;
+    color: #222 !important;
+    margin-left: auto !important;
+    border-bottom-right-radius: 7px !important;
+    border: 1.5px solid #b5e4da !important;
+  }
+  .message-received {
+    background: #fff !important;
+    color: #222 !important;
+    margin-right: auto !important;
+    border-bottom-left-radius: 7px !important;
+    border: 1px solid #e8edf2;
+  }
+  .message-sender {
+    display: flex !important;
+    align-items: center;
+    font-size: 0.92rem !important;
+    font-weight: 600;
+    color: #247aab;
+    opacity: 0.96;
+    margin-bottom: 0.18rem;
+    gap: 0.22rem;
+    letter-spacing: .03em;
+    padding-left: 2px;
+  }
+  .message-sent .message-sender { color: #15986f !important; }
+  .chat-avatar {
+    width: 28px !important;
+    height: 28px !important;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 0.27rem;
+  }
+  .message-content {
+    margin-left: 0 !important;
+    line-height: 1.61 !important;
+    word-break: break-word !important;
+  }
+  .message-time {
+    font-size: 0.65rem !important;
+    color: #92a8b8 !important;
+    text-align: right !important;
+    margin-top: 0.1rem !important;
+    opacity: 0.8;
+    letter-spacing: 0.03em;
+  }
+  .user-role { display:none !important; }
+
+  /* Hide message actions on mobile */
+  .message-actions, .pin-btn, .message-delete { display: none !important; visibility: hidden !important; }
+
+  /* DATE DIVIDERS */
+  .date-divider {
+    margin: 0.90rem 0 0.44rem 0!important;
+    text-align: center;
+  }
+  .date-divider-text {
+    font-size: 0.72rem !important;
+    padding: 0.13em 0.64em !important;
+    min-width: 54px !important;
+    background: #e7eefa !important;
+    color: #1e73b5 !important;
+    border-radius: 13px;
+    border: none;
+    margin: 0 auto;
+    display: inline-block;
+    text-transform: capitalize;
+    font-weight: 700;
+    box-shadow: none;
+    opacity: 0.95;
+  }
+  .date-divider-text.today {
+    background: #bee4fb !important;
+    color: #1976d2 !important;
+  }
+
+
+  /* INPUT AREA (sticky) */
+  .input-area, .chat-input {
+    position: fixed !important;
+    bottom: 0; left: 0; right: 0;
+    width: 100vw !important;
+    z-index: 10011;
+    display: flex !important;
+    align-items: center;
+    background: #f7fbff !important;
+    box-shadow: 0 -4px 15px #0f172a07;
+    border-radius: 0 !important;
+    padding: 0.41em 0.8em !important;
+    gap: 0.38em;
+    border-top: 1.5px solid #dde9f2;
+  }
+  #chatInput, #codeInput {
+    flex: 1 1 0px;
+    border-radius: 15px;
+    background: #fff;
+    border: 1px solid #dde9f2;
+    padding: 0.52em 1em !important;
+    font-size: 1.02em;
+    color: #23272f;
+    min-height: 37.5px;
+    box-shadow: none;
+    outline: none;
+    font-family: inherit;
+    font-weight: 500;
+    max-width: 100vw !important;
+    transition: border 0.14s;
+  }
+  #chatInput:focus, #codeInput:focus {
+    border: 1.7px solid #19A7CE;
+  }
+  .send-btn, #emojiToggle {
+    width: 44px !important; height: 44px !important; min-width: 38px;
+    border-radius: 50% !important;
+    font-size: 1.24rem !important;
+    background: #1976d2 !important;
+    color: #fff !important;
+    border: none !important;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 1.5px 8px #1976d211;
+    transition: background 0.17s;
+  }
+  .send-btn:active, #emojiToggle:active { background: #125197 !important; }
+
+
+  /* EMOJI PICKER */
+  #emojiPicker {
+    width: 100vw !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 56px !important;
+    border-radius: 14px 14px 0 0 !important;
+    box-shadow: 0 -3px 19px #19A7CE17;
+    padding: 1rem 0.4rem 0.7rem 0.4rem !important;
+    background: #fafdff !important;
+    min-height: 121px !important;
+    max-height: 34vh !important;
+  }
+  .emoji-grid { grid-template-columns: repeat(8,1fr) !important;}
+  .emoji-item {
+    min-height: 39px !important; min-width: 39px !important;
+    font-size: 1.17rem !important; padding: 0.09rem !important;
+    text-align: center;
+    border-radius: 9px !important;
+    background: none !important;
+    color: #1a2536 !important;
+    transition: background 0.12s;
+  }
+  .emoji-item:active {
+    background: #e9f3fb;
+    color: #0a7bc6;
+    transform: scale(0.98);
+  }
+
+
+  /* GAME CARDS */
+  .games-section {
+    background: #fafdff !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 0.5rem 0.06rem 1.18rem 0.1rem !important;
+    width: 100vw !important;
+  }
+  .games-section .card-header {
+    background: #1976d2 !important;
+    color: #fff !important;
+    border-radius: 0 0 13px 13px !important;
+    font-size: 1.09rem !important;
+    box-shadow: 0 2px 8px #1976d209 !important;
+    padding: 0.85em 0.4em 0.7em 1em !important;
+    margin-bottom: 0.09em !important;
+    letter-spacing: .011em;
+  }
+  .games-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1.11rem !important;
+    padding: 0.56em 0.06em !important;
+    width: 100vw !important;
+  }
+  .game-card {
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+    border-radius: 15px !important;
+    background: #fff !important;
+    border: 1.4px solid #e0e6ee !important;
+    box-shadow: 0 2px 15px 0 #18558c1a !important;
+    margin: 0 auto 0.2em auto;
+    width: 97vw !important;
+    min-width: 0 !important;
+    max-width: 97vw !important;
+    transition: box-shadow .18s, outline .18s;
+  }
+  .game-card:active {
+    box-shadow: 0 2px 18px #1976d236 !important;
+    outline: 1.5px solid #1976d2 !important;
+    transform: scale(0.98);
+  }
+  .game-image {
+    width: 100% !important;
+    height: 123px !important;
+    position: relative;
+    overflow: hidden !important;
+    background: #e2e8f0 !important;
+    border-radius: 13px 13px 0 0 !important;
+  }
+  .game-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .13s;
+    display: block;
+  }
+  .game-card:active .game-image img {
+    transform: scale(1.034);
+  }
+  .game-overlay {
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(20,36,60,0.35);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 1;
+    pointer-events: none;
+  }
+  .game-overlay i {
+    color: #1976d2 !important;
+    font-size: 2.2rem !important;
+    opacity: 0.95;
+    filter: drop-shadow(0 2px 4px #fff6);
+  }
+  .game-info {
+    padding: 1.08em 0.9em 0.91em 0.95em !important;
+    background: transparent !important;
+    display: flex; flex-direction: column; gap: 0.36em;
+    min-height: 90px !important;
+  }
+  .game-name {
+    color: #17202f !important;
+    font-size: 1.07rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.01em;
+    margin-bottom: 1px !important;
+    display: flex; align-items: center;
+    gap: 0.3em;
+  }
+  .game-description {
+    color: #415b7c !important;
+    font-size: 0.96rem !important;
+    line-height: 1.41 !important;
+    font-weight: 500;
+    margin: 3px 0 4px 0 !important;
+    min-height: 35px;
+    text-shadow: none !important;
+    opacity: 0.97;
+  }
+  .game-details {
+    display: flex; flex-wrap: wrap; gap: 0.55em 0.77em;
+    margin-bottom: 0.10em; margin-top: 0.01em;
+    font-size: 0.92em !important;
+    color: #2174ba;
+    align-items: center;
+    font-weight: 600;
+  }
+  .game-details i, .game-difficulty i {
+    color: #faa81a !important;
+    font-size: 1em;
+  }
+  .game-players {
+    color: #1197ad !important;
+    font-weight: 700 !important;
+    font-size: 1em !important;
+    display: flex; align-items: center;
+    gap: 0.17em;
+  }
+  .game-difficulty {
+    color: #1976d2 !important;
+    font-weight: 500 !important;
+    display: flex; align-items: center;
+    gap: 0.13em;
+  }
+  .game-tags {
+    display: flex;
+    gap: 0.33em;
+    flex-wrap: wrap;
+    margin-top: 0.06em;
+  }
+  .tag {
+    background: #e3f1fb !important;
+    color: #1976d2 !important;
+    padding: 0.14em 0.74em !important;
+    border-radius: 13px !important;
+    font-size: 0.77em !important;
+    font-weight: 700 !important;
+    text-transform: capitalize !important;
+    margin-bottom: 0.11em;
+    letter-spacing: 0.012em;
+    box-shadow: 0 1px 5px #01a4d809;
+  }
+  .tag:nth-child(even) {
+    background: #ffe9ba !important;
+    color: #c27606 !important;
+  }
+
+  /* Hide PINNED on mobile (unless you want to display), but matches your latest code: */
+  .pinned-messages-section, .pinned-messages {
+    display: none !important;
+  }
+
+  /* Mobile Profile Modal */
+  #mobileProfileModal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh; 
+    z-index: 25000;
+    background: rgba(22,29,41,0.94);
+    backdrop-filter: blur(6px);
+    align-items: center;
+    justify-content: center;
+  }
+  #mobileProfileModal > div {
+    background: #fcfdff;
+    max-width: 320px;
+    width: 92vw;
+    margin: 0 auto;
+    border-radius: 18px;
+    padding: 2.1em 1em 1.15em 1em;
+    box-shadow: 0 2px 26px rgba(44,98,150,0.11);
+    text-align: center;
+    position: relative;
+  }
+  #mobileProfileModal button {
+    background: #1976d2 !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 50% !important;
+    width: 32px !important; height: 32px !important;
+    position: absolute; top: 12px; right: 12px;
+    font-size: 1.20em;
+    transition: background 0.13s;
+  }
+  #mobileProfileModal button:active { background: #1261ad !important;}
+  #mobileProfileImg {
+    width: 74px;
+    height: 74px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 0.74em;
+    border: 2.5px solid #1976d2;
+    background: #f9fafb;
+  }
+  #mobileProfileName {
+    font-weight: 700;
+    font-size: 1.11em;
+    color: #161e2e;
+  }
+  #mobileProfileEmail {
+    color: #1976d2;
+    font-size: 0.99em;
+    margin-top: 0.22em;
+    font-weight: 500;
+  }
+  #mobileProfileDob {
+    color: #5d6a7a;
+    font-size: 0.93em;
+    margin-top: 0.21em;
+    font-style: italic;
+  }
+
+  /* HIDE all user-info in main header, just in case - mobile only uses mobile-avatar */
+  .user-info { display: none !important; }
+
+  /* FOOTER */
+  footer {
+    background: #1a2536 !important;
+    border-top: 1px solid #dde3eb !important;
+    color: #a0aec0 !important;
+    padding: 1.1rem 0 0.74rem 0 !important;
+    font-size: 1em !important;
+    text-align: center !important;
+    min-height: 56px !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    width: 100vw !important;
+  }
+  footer div, footer a, footer span, footer i { color: #83bbf1 !important; }
+  footer a:hover { color: #1976d2 !important; }
+
+  /* TUNE small screens further if needed */
+  @media (max-width: 400px) {
+    .game-info { padding: 0.66em 0.4em 0.61em 0.46em !important;}
+    .games-section .card-header { font-size:0.98em!important;}
+    .chat-messages, #chatMessages { font-size: 0.96em; }
+    .emoji-grid { grid-template-columns: repeat(6, 1fr) !important;}
+  }
+}
+
+
+
 
     /* ===== LANDSCAPE MODE ===== */
     @media (max-width: 768px) and (orientation: landscape) {
@@ -2812,8 +3312,10 @@
           <img id="userAvatarImg" src="Assets/pfp2.jpg" alt="Profile" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">
         </div>
         
+        
 
         <span id="username">Username</span>
+
         
         <!-- Profile Popover should be OUTSIDE user-info, not inside userAvatar -->
         <div id="profilePopover" class="profile-pop">
@@ -2826,12 +3328,17 @@
         </div>
       </div>
     </div>
+    <!-- In header, for mobile (inside .header-actions) -->
+<span class="mobile-avatar" id="mobileAvatar" style="display: inline-block;">
+  <img src="Assets/pfp2.jpg" alt="Profile" style="
+    width:36px;height:36px;border-radius:50%;object-fit:cover;vertical-align:middle;">
+</span>
+
     
       <button class="btn btn-danger btn-sm" id="logoutBtn">
         <i class="fas fa-sign-out-alt"></i>
         <span class="desktop-only">Logout</span>
       </button>
-    </div>
   </header>
 
   <main>
@@ -3330,6 +3837,29 @@
       </div>
     </div>
   </footer>
+  <!-- Mobile Profile Modal -->
+<div id="mobileProfileModal" style="
+display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:25000;
+background:rgba(0,0,0,0.72);backdrop-filter:blur(4px); align-items: center; justify-content: center;">
+<div style="
+  background:#fff;max-width:320px;width:95vw;margin:0 auto;border-radius:18px;
+  padding:2em 1em 1.2em 1em;box-shadow:0 2px 24px rgba(30,41,59,0.13);text-align:center;position:relative;">
+  <button style="
+    background: #ef4444; color: #fff; border:none; border-radius:50%;
+    width:32px; height:32px; position:absolute; top:12px; right:12px; font-size:1.2em;" 
+    id="closeMobileProfile"
+    aria-label="Close"
+  >
+    &times;
+  </button>
+  <img id="mobileProfileImg" src="Assets/pfp2.jpg" alt="avatar"
+    style="width:74px;height:74px;border-radius:50%;object-fit:cover;margin-bottom:0.8em;">
+  <div style="font-weight:600;font-size:1.08em; color:#232323;" id="mobileProfileName">Name</div>
+  <div style="color: #6366f1; font-size:0.96em;margin-top:0.18em;" id="mobileProfileEmail">email@example.com</div>
+  <div style="color: #666; font-size:0.91em;margin-top:0.15em;" id="mobileProfileDob">DOB: Not set</div>
+</div>
+</div>
+
   <script src="emoji.js"></script>
   <script src="home.js"></script>
   <script type="module">
@@ -3393,6 +3923,32 @@
     listenForForegroundMessages();
   
     console.log('🔔 Notification setup completed');
+    // Click avatar to open (mobile)
+document.getElementById('mobileAvatar').addEventListener('click', function() {
+  // Fallback values in case profile isn't loaded yet
+  const name = (currentProfile && currentProfile.username) || 'User';
+  const email = (currentUser && currentUser.email) || 'user@example.com';
+  const dob = (currentProfile && currentProfile.dob) ? `DOB: ${currentProfile.dob}` : '';
+  const avatar = (currentProfile && currentProfile.avatar_url) || 'Assets/pfp2.jpg';
+
+  document.getElementById('mobileProfileImg').src = avatar;
+  document.getElementById('mobileProfileName').textContent = name;
+  document.getElementById('mobileProfileEmail').textContent = email;
+  document.getElementById('mobileProfileDob').textContent = dob;
+
+  document.getElementById('mobileProfileModal').style.display = "flex";
+});
+
+// Hide on close
+document.getElementById('closeMobileProfile').addEventListener('click', function() {
+  document.getElementById('mobileProfileModal').style.display = "none";
+});
+
+// Optional: Hide on clicking outside modal content
+document.getElementById('mobileProfileModal').addEventListener('click', function(e) {
+  if (e.target === this) this.style.display = "none";
+});
+
   </script>
   
   

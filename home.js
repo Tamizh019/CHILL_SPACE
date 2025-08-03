@@ -1655,48 +1655,48 @@ async function loadFiles() {
       return;
     }
 
-    files.forEach(file => {
-      const fileItem = document.createElement('div');
-      fileItem.className = 'file-item fade-in';
-      
-      fileItem.innerHTML = `
-        <div class="file-info" data-clickable="true">
-          <i class="fas ${getFileIcon(file.filetype)} file-icon"></i>
-          <div class="file-details">
-            <div class="file-name" title="${file.filename}">${file.filename}</div>
-            <div class="file-meta">${formatFileSize(file.filesize)}</div>
-          </div>
-        </div>
-        <div class="file-actions">
-          <button class="btn btn-outline btn-sm" onclick="event.stopPropagation(); downloadFile('${file.filepath}', '${file.filename}')" title="Download file">
-            <i class="fas fa-download"></i>
-          </button>
-          <button class="btn btn-danger btn-sm" onclick="event.stopPropagation(); deleteFile('${file.id}', '${file.filepath}', '${file.filename}')" title="Delete file">
-            <i class="fas fa-trash"></i>
-          </button>
-        </div>
-      `;
-      
-      // Add click handler for preview (only on file info area)
-      const fileInfo = fileItem.querySelector('.file-info[data-clickable="true"]');
-      fileInfo.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        openPreview(file);
-      });
-      
-      // Add visual feedback for clickable area
-      fileInfo.style.cursor = 'pointer';
-      fileInfo.addEventListener('mouseenter', () => {
-        fileInfo.style.backgroundColor = 'rgba(99, 102, 241, 0.1)';
-      });
-      fileInfo.addEventListener('mouseleave', () => {
-        fileInfo.style.backgroundColor = 'transparent';
-      });
-      
-      fileContainer.appendChild(fileItem);
-    });
-    
+files.forEach(file => {
+  const fileItem = document.createElement('div');
+  fileItem.className = 'file-item fade-in';
+  
+  fileItem.innerHTML = `
+    <div class="file-info" data-clickable="true">
+      <i class="fas ${getFileIcon(file.filetype)} file-icon"></i>
+      <div class="file-details">
+        <div class="file-name" title="${file.filename}">${file.filename}</div>
+        <div class="file-meta">${formatFileSize(file.filesize)}</div>
+      </div>
+    </div>
+    <div class="file-actions">
+      <button class="btn btn-outline btn-sm" onclick="event.stopPropagation(); downloadFile('${file.filepath}', '${file.filename}')" title="Download file">
+        <i class="fas fa-download"></i>
+      </button>
+      <button class="btn btn-danger btn-sm" onclick="event.stopPropagation(); deleteFile('${file.id}', '${file.filepath}', '${file.filename}')" title="Delete file">
+        <i class="fas fa-trash"></i>
+      </button>
+    </div>
+  `;
+  
+  // Add click handler for preview (only on file info area)
+  const fileInfo = fileItem.querySelector('.file-info[data-clickable="true"]');
+  fileInfo.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    openPreview(file);
+  });
+  
+  // Add visual feedback for clickable area
+  fileInfo.style.cursor = 'pointer';
+  fileInfo.addEventListener('mouseenter', () => {
+    fileInfo.style.backgroundColor = 'rgba(99, 102, 241, 0.1)';
+  });
+  fileInfo.addEventListener('mouseleave', () => {
+    fileInfo.style.backgroundColor = 'transparent';
+  });
+  
+  fileContainer.appendChild(fileItem);
+});
+
   } catch (err) {
     console.error('Error in loadFiles:', err);
   }
