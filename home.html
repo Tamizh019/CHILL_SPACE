@@ -1197,6 +1197,9 @@
     .mobile-avatar {
   display: none !important; /* Hide by default (PC/tablet) */
 }
+.back-btn-mobile {
+  display: none;
+}
 
     /* ===== MOBILE RESPONSIVE DESIGN ===== */
 
@@ -1715,10 +1718,11 @@
     font-size: 0.98em !important;
     box-shadow: 0 1px 6px #1976d209;
   }
-  #enable-notifications:active { background: #145ea1 !important; }
-
   /* HIDE SIDEBAR on mobile */
   .sidebar, .sidebar-grid { display: none !important; }
+  #enable-notifications {
+    display: none !important;
+  }
   
   /* MAIN CARDS & SECTIONS */
   .main-content, main,
@@ -2068,6 +2072,73 @@
     background: #ffe9ba !important;
     color: #c27606 !important;
   }
+  .game-modal-close .desktop-only {
+    display: none !important;
+  }
+  /* Shrink the Close (X) button itself */
+  .game-modal-close {
+    background: #1976d2 !important;
+    padding: 0.35em 0.35em !important;
+    border-radius: 50% !important;
+    min-width: 34px !important;
+    min-height: 34px !important;
+    width: 34px !important;
+    height: 34px !important;
+    font-size: 1.19em !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 1px 6px #1976d209;
+  }
+  .game-modal-close i {
+    margin: 0 !important;
+    font-size: 1.16em !important;
+  }
+
+  /* Layout modal header for mobile: Back btn at far left, Title centered, Close at far right */
+  .game-modal-header {
+    padding: 0.6em 0.55em !important;
+    border-bottom: 1.2px solid #dde3eb !important;
+    gap: 0 !important;
+    position: relative !important;
+  }
+  .game-modal-title {
+    justify-content: center !important;
+    align-items: center !important;
+    font-size: 1.05em !important;
+    margin: 0 auto !important;
+    display: flex !important;
+    width: 100% !important;
+    color: #1976d2 !important;
+    font-weight: 700 !important;
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+  .back-btn-mobile {
+    display: flex !important;
+    background: #1976d2 !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 14px !important;
+    font-size: 1.25em !important;
+    min-width: 34px !important;
+    min-height: 34px !important;
+    width: 34px !important;
+    height: 34px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    position: static !important;
+    box-shadow: 0 1.5px 8px #1976d219;
+    z-index: 12;
+
+  }
+  .back-btn-mobile i {
+    margin: 0 !important;
+    font-size: 1.24em !important;
+  }
 
   /* Hide PINNED on mobile (unless you want to display), but matches your latest code: */
   .pinned-messages-section, .pinned-messages {
@@ -2161,9 +2232,6 @@
     .emoji-grid { grid-template-columns: repeat(6, 1fr) !important;}
   }
 }
-
-
-
 
     /* ===== LANDSCAPE MODE ===== */
     @media (max-width: 768px) and (orientation: landscape) {
@@ -3329,10 +3397,10 @@
       </div>
     </div>
     <!-- In header, for mobile (inside .header-actions) -->
-<span class="mobile-avatar" id="mobileAvatar" style="display: inline-block;">
-  <img src="Assets/pfp2.jpg" alt="Profile" style="
-    width:36px;height:36px;border-radius:50%;object-fit:cover;vertical-align:middle;">
-</span>
+    <span class="mobile-avatar" id="mobileAvatar" style="display: inline-block;">
+      <img id="mobileAvatarImg" src="Assets/pfp2.jpg" alt="Profile" style="width:36px;height:36px;border-radius:50%;object-fit:cover;vertical-align:middle;">
+    </span>
+    
 
     
       <button class="btn btn-danger btn-sm" id="logoutBtn">

@@ -381,6 +381,7 @@ clearTestTypingData();
 function updateUserInfo() {
 const userAvatar = document.getElementById('userAvatar');
 const userAvatarImg = document.getElementById('userAvatarImg');
+const mobileAvatarImg = document.getElementById('mobileAvatarImg');
 const username = document.getElementById('username');
 
 const displayName = getUserDisplayName(currentUser, currentProfile);
@@ -391,6 +392,10 @@ let avatarUrl = currentProfile?.avatar_url || 'Assets/pfp2.jpg';
 if (userAvatarImg) {
 userAvatarImg.src = avatarUrl;
 userAvatarImg.alt = displayName + " avatar";
+}
+if (mobileAvatarImg) {
+  mobileAvatarImg.src = avatarUrl;
+  mobileAvatarImg.alt = displayName + " avatar";
 }
 }
 
@@ -898,6 +903,9 @@ function openGame(gameType) {
     gameModal.innerHTML = `
       <div class="game-modal-content">
         <div class="game-modal-header">
+          <button class="back-btn-mobile" onclick="closeGame()" aria-label="Back to games">
+            <i class="fas fa-arrow-left"></i>
+          </button>
           <div class="game-modal-title">
             <i class="fas fa-gamepad"></i>
             <span id="gameModalTitle">Game</span>
@@ -930,6 +938,9 @@ function openGame(gameType) {
   gameModal.style.display = 'flex';
   document.body.classList.add('modal-open');
   document.addEventListener('keydown', handleGameEscape);
+  if (!history.state || history.state.gameModal !== true) {
+    history.pushState({ gameModal: true }, 'Game', '');
+  }
   
   showToast('success', 'Game Loading', `Loading ${gameNames[gameType]}...`);
 }
@@ -942,6 +953,9 @@ function closeGame() {
   }
   document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', handleGameEscape);
+  if (history.state && history.state.gameModal === true) {
+    history.back();
+  }
 }
 
 function handleGameEscape(e) {
@@ -2367,3 +2381,16 @@ function closeEditProfile() {
   document.getElementById('editProfileModal').classList.remove('open');
   document.body.classList.remove('modal-open');
 }
+window.addEventListener('popstate', function(event) {
+  var gameModal = document.getElementById('gameModal');
+  // If the modal is open, just close it; DO NOT call history.back() again!
+  if (gameModal && gameModal.style.display === 'flex') {
+    gameModal.style.display = 'none';
+    document.getElementById('gameIframe').src = '';
+    document.body.classList.remove('modal-open');
+    document.removeEventListener('keydown', handleGameEscape);
+    // DO NOT call history.back() here!
+    return;
+  }
+  // Else, let normal navigation happen
+});
