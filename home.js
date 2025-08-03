@@ -1364,81 +1364,149 @@ chatChannel = supabaseClient.channel('public:messages')
 .subscribe();
 }
 
+// ===== DATE DIVIDERS FUNCTIONS =====
+function formatDateForDivider(date) {
+  const now = new Date();
+  const messageDate = new Date(date);
+  
+  // Reset time to compare dates only
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
+  const msgDate = new Date(messageDate.getFullYear(), messageDate.getMonth(), messageDate.getDate());
+  
+  if (msgDate.getTime() === today.getTime()) {
+    return { text: 'Today', class: 'today' };
+  } else if (msgDate.getTime() === yesterday.getTime()) {
+    return { text: 'Yesterday', class: 'yesterday' };
+  } else {
+    // Format as "January 15, 2025" or "Jan 15" for current year
+    const options = msgDate.getFullYear() === now.getFullYear() 
+      ? { month: 'short', day: 'numeric' }
+      : { year: 'numeric', month: 'short', day: 'numeric' };
+    
+    return { 
+      text: messageDate.toLocaleDateString('en-US', options),
+      class: ''
+    };
+  }
+}
+
+function createDateDivider(date) {
+  const dateInfo = formatDateForDivider(date);
+  const divider = document.createElement('div');
+  divider.className = 'date-divider';
+  divider.innerHTML = `
+    <div class="date-divider-text ${dateInfo.class}">
+      ${dateInfo.text}
+    </div>
+  `;
+  return divider;
+}
+
+function shouldShowDateDivider(currentMessageDate, previousMessageDate) {
+  if (!previousMessageDate) return true;
+  
+  const current = new Date(currentMessageDate);
+  const previous = new Date(previousMessageDate);
+  
+  // Compare dates (ignore time)
+  return current.toDateString() !== previous.toDateString();
+}
+
+
 
 async function handleNewMessage(message) {
-const messagesContainer = document.getElementById('chatMessages');
-const isCurrentUser = message.user_id === currentUser.id;
+  const messagesContainer = document.getElementById('chatMessages');
+  const isCurrentUser = message.user_id === currentUser.id;
 
-let senderName = 'Unknown';
-let senderRole = 'user';
-let avatarUrl = 'Assets/pfp2.jpg';
-
-if (isCurrentUser) {
-senderName = getUserDisplayName(currentUser, currentProfile);
-senderRole = currentProfile?.role || 'user';
-avatarUrl = currentProfile?.avatar_url || 'Assets/pfp2.jpg';
-} else {
-try {
-  const { data: profile } = await supabaseClient
-    .from('users')
-    .select('username, email, role, avatar_url')
-    .eq('id', message.user_id)
-    .single();
-  if (profile) {
-    senderName = profile.username || profile.email.split('@')[0];
-    senderRole = profile.role || 'user';
-    avatarUrl = profile.avatar_url || 'Assets/pfp2.jpg';
+  // Check if we need a date divider
+  const allMessages = messagesContainer.querySelectorAll('[data-message-id]');
+  let previousMessageDate = null;
+  
+  if (allMessages.length > 0) {
+    const lastMessage = allMessages[allMessages.length - 1];
+    const timeElement = lastMessage.querySelector('.message-time');
+    if (timeElement && timeElement.getAttribute('data-timestamp')) {
+      previousMessageDate = timeElement.getAttribute('data-timestamp');
+    }
   }
-} catch (err) {
-  console.log('Could not fetch sender info:', err);
-}
-}
 
-const messageElement = document.createElement('div');
-messageElement.className = isCurrentUser ? 'message message-sent fade-in' : 'message message-received fade-in';
-messageElement.setAttribute('data-message-id', message.id);
+  // Add date divider if needed
+  if (shouldShowDateDivider(message.sent_at, previousMessageDate)) {
+    const dateDivider = createDateDivider(message.sent_at);
+    messagesContainer.appendChild(dateDivider);
+  }
 
-const roleClass = `role-${senderRole}`;
-const roleDisplay = getRoleEmoji(senderRole);
+  // Rest of your existing handleNewMessage code stays the same...
+  let senderName = 'Unknown';
+  let senderRole = 'user';
+  let avatarUrl = 'Assets/pfp2.jpg';
 
-messageElement.innerHTML = `
-<div class="message-sender">
-<img src="${avatarUrl}" alt="${senderName}" class="chat-avatar">
-${senderName}
-<span class="user-role ${roleClass}">${roleDisplay} ${senderRole}</span>
-</div>
-<div class="message-content">
-${formatMessage(message.content)}
-<div class="message-actions">
-  ${canPinMessages() ? `
-    <button class="pin-btn ${message.pinned ? 'pinned' : ''}" onclick="togglePinMessage('${message.id}', ${message.pinned})" title="${message.pinned ? 'Unpin' : 'Pin'} message">
-      <i class="fas fa-thumbtack"></i>
-    </button>
-  ` : ''}
-  ${canDeleteMessage(message.user_id, senderRole) ? `
-    <button class="message-delete" onclick="deleteMessage('${message.id}')" title="Delete message">
-      <i class="fas fa-times"></i>
-    </button>
-  ` : ''}
-</div>
-</div>
-<div class="message-time">${formatTime(new Date(message.sent_at))}</div>
-`;
+  if (isCurrentUser) {
+    senderName = getUserDisplayName(currentUser, currentProfile);
+    senderRole = currentProfile?.role || 'user';
+    avatarUrl = currentProfile?.avatar_url || 'Assets/pfp2.jpg';
+  } else {
+    try {
+      const { data: profile } = await supabaseClient
+        .from('users')
+        .select('username, email, role, avatar_url')
+        .eq('id', message.user_id)
+        .single();
+      if (profile) {
+        senderName = profile.username || profile.email.split('@')[0];
+        senderRole = profile.role || 'user';
+        avatarUrl = profile.avatar_url || 'Assets/pfp2.jpg';
+      }
+    } catch (err) {
+      console.log('Could not fetch sender info:', err);
+    }
+  }
 
-// Add hover event listeners
-messageElement.addEventListener('mouseenter', () => {
-const actions = messageElement.querySelector('.message-actions');
-if (actions) actions.style.opacity = '1';
-});
+  const messageElement = document.createElement('div');
+  messageElement.className = isCurrentUser ? 'message message-sent fade-in' : 'message message-received fade-in';
+  messageElement.setAttribute('data-message-id', message.id);
 
-messageElement.addEventListener('mouseleave', () => {
-const actions = messageElement.querySelector('.message-actions');
-if (actions) actions.style.opacity = '0';
-});
+  const roleClass = `role-${senderRole}`;
+  const roleDisplay = getRoleEmoji(senderRole);
 
+  messageElement.innerHTML = `
+    <div class="message-sender">
+      <img src="${avatarUrl}" alt="${senderName}" class="chat-avatar">
+      ${senderName}
+      <span class="user-role ${roleClass}">${roleDisplay} ${senderRole}</span>
+    </div>
+    <div class="message-content">
+      ${formatMessage(message.content)}
+      <div class="message-actions">
+        ${canPinMessages() ? `
+          <button class="pin-btn ${message.pinned ? 'pinned' : ''}" onclick="togglePinMessage('${message.id}', ${message.pinned})" title="${message.pinned ? 'Unpin' : 'Pin'} message">
+            <i class="fas fa-thumbtack"></i>
+          </button>
+        ` : ''}
+        ${canDeleteMessage(message.user_id, senderRole) ? `
+          <button class="message-delete" onclick="deleteMessage('${message.id}')" title="Delete message">
+            <i class="fas fa-times"></i>
+          </button>
+        ` : ''}
+      </div>
+    </div>
+    <div class="message-time" data-timestamp="${message.sent_at}">${formatTime(new Date(message.sent_at))}</div>
+  `;
 
-messagesContainer.appendChild(messageElement);
-messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  // Add hover event listeners
+  messageElement.addEventListener('mouseenter', () => {
+    const actions = messageElement.querySelector('.message-actions');
+    if (actions) actions.style.opacity = '1';
+  });
+
+  messageElement.addEventListener('mouseleave', () => {
+    const actions = messageElement.querySelector('.message-actions');
+    if (actions) actions.style.opacity = '0';
+  });
+
+  messagesContainer.appendChild(messageElement);
+  messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
 
 
@@ -1465,111 +1533,123 @@ function getRoleEmoji(role) {
 
 // Load initial messages
 async function loadMessages() {
-try {
-const { data: messages, error } = await supabaseClient
-  .from('messages')
-  .select('*')
-  .order('sent_at', { ascending: true })
-  .limit(50);
+  try {
+    const { data: messages, error } = await supabaseClient
+      .from('messages')
+      .select('*')
+      .order('sent_at', { ascending: true })
+      .limit(50);
 
-const messagesContainer = document.getElementById('chatMessages');
+    const messagesContainer = document.getElementById('chatMessages');
 
-// ✅ FIX: Don't clear innerHTML - this was deleting the typing indicator!
-// Instead, remove only message elements
-const messageElements = messagesContainer.querySelectorAll('[data-message-id]');
-messageElements.forEach(el => el.remove());
+    // Don't clear innerHTML - this was deleting the typing indicator!
+    // Instead, remove only message elements and date dividers
+    const messageElements = messagesContainer.querySelectorAll('[data-message-id], .date-divider');
+    messageElements.forEach(el => el.remove());
 
-if (error) {
-  console.error('Error loading messages:', error);
-  return;
-}
+    if (error) {
+      console.error('Error loading messages:', error);
+      return;
+    }
 
-if (!messages || messages.length === 0) {
-  messagesContainer.innerHTML = '<p style="color: var(--gray); text-align: center; padding: 2rem;">No messages yet. Be the first to say hello! 👋</p>';
-  return;
-}
+    if (!messages || messages.length === 0) {
+      messagesContainer.innerHTML = '<p style="color: var(--gray); text-align: center; padding: 2rem;">No messages yet. Be the first to say hello! 👋</p>';
+      return;
+    }
 
-// Rest of your loadMessages code stays the same...
-const userIds = [...new Set(messages.map(msg => msg.user_id))];
+    // Get user profiles
+    const userIds = [...new Set(messages.map(msg => msg.user_id))];
+    let userProfiles = {};
+    if (userIds.length > 0) {
+      const { data: profiles } = await supabaseClient
+        .from('users')
+        .select('id, username, email, role, avatar_url')
+        .in('id', userIds);
 
-let userProfiles = {};
-if (userIds.length > 0) {
-  const { data: profiles } = await supabaseClient
-    .from('users')
-    .select('id, username, email, role, avatar_url')
-    .in('id', userIds);
+      if (profiles) {
+        profiles.forEach(profile => {
+          userProfiles[profile.id] = profile;
+        });
+      }
+    }
 
-  if (profiles) {
-    profiles.forEach(profile => {
-      userProfiles[profile.id] = profile;
+    // Process messages with date dividers
+    messages.forEach((msg, index) => {
+      // Check if we need a date divider
+      let previousMessageDate = null;
+      if (index > 0) {
+        previousMessageDate = messages[index - 1].sent_at;
+      }
+
+      if (shouldShowDateDivider(msg.sent_at, previousMessageDate)) {
+        const dateDivider = createDateDivider(msg.sent_at);
+        messagesContainer.appendChild(dateDivider);
+      }
+
+      // Create and append message (keep your existing message creation logic)
+      const isCurrentUser = msg.user_id === currentUser.id;
+      const messageElement = document.createElement('div');
+      messageElement.className = isCurrentUser ? 'message message-sent fade-in' : 'message message-received fade-in';
+      messageElement.setAttribute('data-message-id', msg.id);
+
+      let senderName = 'Unknown', senderRole = 'user', avatarUrl = 'Assets/pfp2.jpg';
+      if (isCurrentUser) {
+        senderName = getUserDisplayName(currentUser, currentProfile);
+        senderRole = currentProfile?.role || 'user';
+        avatarUrl = currentProfile?.avatar_url || 'Assets/pfp2.jpg';
+      } else if (userProfiles[msg.user_id]) {
+        const profile = userProfiles[msg.user_id];
+        senderName = profile.username || profile.email.split('@')[0];
+        senderRole = profile.role || 'user';
+        avatarUrl = profile.avatar_url || 'Assets/pfp2.jpg';
+      }
+
+      const roleClass = `role-${senderRole}`;
+      const roleDisplay = getRoleEmoji(senderRole);
+
+      messageElement.innerHTML = `
+        <div class="message-sender">
+          <img src="${avatarUrl}" alt="${senderName}" class="chat-avatar">
+          ${senderName}
+          <span class="user-role ${roleClass}">${roleDisplay} ${senderRole}</span>
+        </div>
+        <div class="message-content">
+          ${formatMessage(msg.content)}
+          <div class="message-actions">
+            ${canPinMessages() ? `
+              <button class="pin-btn ${msg.pinned ? 'pinned' : ''}" onclick="togglePinMessage('${msg.id}', ${msg.pinned})" title="${msg.pinned ? 'Unpin' : 'Pin'} message">
+                <i class="fas fa-thumbtack"></i>
+              </button>
+            ` : ''}
+            ${canDeleteMessage(msg.user_id, senderRole) ? `
+              <button class="message-delete" onclick="deleteMessage('${msg.id}')" title="Delete message">
+                <i class="fas fa-times"></i>
+              </button>
+            ` : ''}
+          </div>
+        </div>
+        <div class="message-time" data-timestamp="${msg.sent_at}">${formatTime(new Date(msg.sent_at))}</div>
+
+      `;
+
+      // Add hover event listeners
+      messageElement.addEventListener('mouseenter', () => {
+        const actions = messageElement.querySelector('.message-actions');
+        if (actions) actions.style.opacity = '1';
+      });
+
+      messageElement.addEventListener('mouseleave', () => {
+        const actions = messageElement.querySelector('.message-actions');
+        if (actions) actions.style.opacity = '0';
+      });
+
+      messagesContainer.appendChild(messageElement);
     });
+
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  } catch (err) {
+    console.error('Error in loadMessages:', err);
   }
-}
-
-messages.forEach(msg => {
-  const isCurrentUser = msg.user_id === currentUser.id;
-  const messageElement = document.createElement('div');
-  messageElement.className = isCurrentUser ? 'message message-sent fade-in' : 'message message-received fade-in';
-  messageElement.setAttribute('data-message-id', msg.id);
-
-  let senderName = 'Unknown', senderRole = 'user', avatarUrl = 'Assets/pfp2.jpg';
-  if (isCurrentUser) {
-    senderName = getUserDisplayName(currentUser, currentProfile);
-    senderRole = currentProfile?.role || 'user';
-    avatarUrl = currentProfile?.avatar_url || 'Assets/pfp2.jpg';
-  } else if (userProfiles[msg.user_id]) {
-    const profile = userProfiles[msg.user_id];
-    senderName = profile.username || profile.email.split('@')[0];
-    senderRole = profile.role || 'user';
-    avatarUrl = profile.avatar_url || 'Assets/pfp2.jpg';
-  }
-
-  const roleClass = `role-${senderRole}`;
-  const roleDisplay = getRoleEmoji(senderRole);
-
-  messageElement.innerHTML = `
-<div class="message-sender">
-<img src="${avatarUrl}" alt="${senderName}" class="chat-avatar">
-${senderName}
-<span class="user-role ${roleClass}">${roleDisplay} ${senderRole}</span>
-</div>
-<div class="message-content">
-${formatMessage(msg.content)}
-<div class="message-actions">
-  ${canPinMessages() ? `
-    <button class="pin-btn ${msg.pinned ? 'pinned' : ''}" onclick="togglePinMessage('${msg.id}', ${msg.pinned})" title="${msg.pinned ? 'Unpin' : 'Pin'} message">
-      <i class="fas fa-thumbtack"></i>
-    </button>
-  ` : ''}
-  ${canDeleteMessage(msg.user_id, senderRole) ? `
-    <button class="message-delete" onclick="deleteMessage('${msg.id}')" title="Delete message">
-      <i class="fas fa-times"></i>
-    </button>
-  ` : ''}
-</div>
-</div>
-<div class="message-time">${formatTime(new Date(msg.sent_at))}</div>
-`;
-
-// Add hover event listeners
-messageElement.addEventListener('mouseenter', () => {
-const actions = messageElement.querySelector('.message-actions');
-if (actions) actions.style.opacity = '1';
-});
-
-messageElement.addEventListener('mouseleave', () => {
-const actions = messageElement.querySelector('.message-actions');
-if (actions) actions.style.opacity = '0';
-});
-
-
-  messagesContainer.appendChild(messageElement);
-});
-
-messagesContainer.scrollTop = messagesContainer.scrollHeight;
-} catch (err) {
-console.error('Error in loadMessages:', err);
-}
 }
 
 
