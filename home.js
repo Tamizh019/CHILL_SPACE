@@ -605,44 +605,7 @@ console.log('✅ File input listener added');
 console.error('❌ fileInput not found');
 }
 
-// Emoji category buttons
-const emojiCategories = document.querySelectorAll('.emoji-category');
-if (emojiCategories.length > 0) {
-emojiCategories.forEach(button => {
-  button.addEventListener('click', (e) => {
-    document.querySelectorAll('.emoji-category').forEach(b => b.classList.remove('active'));
-    e.target.classList.add('active');
-    loadEmojis(e.target.dataset.category);
-  });
-});
-console.log(`✅ ${emojiCategories.length} emoji category listeners added`);
-} else {
-console.error('❌ No emoji category buttons found');
-}
 
-// Emoji search
-const emojiSearch = document.getElementById('emojiSearch');
-if (emojiSearch) {
-emojiSearch.addEventListener('input', (e) => {
-  searchEmojis(e.target.value);
-});
-console.log('✅ Emoji search listener added');
-} else {
-console.error('❌ emojiSearch not found');
-}
-
-// Close emoji picker when clicking outside
-document.addEventListener('click', (e) => {
-const emojiPicker = document.getElementById('emojiPicker');
-const emojiToggleBtn = document.getElementById('emojiToggle');
-
-if (emojiPicker && emojiToggleBtn) {
-  if (!emojiPicker.contains(e.target) && !emojiToggleBtn.contains(e.target)) {
-    emojiPicker.style.display = 'none';
-    emojiToggleBtn.classList.remove('active');
-  }
-}
-});
 
 // Confirm dialog close on click outside
 const confirmDialog = document.getElementById('confirmDialog');
@@ -666,9 +629,7 @@ if (e.key === 'Escape') {
   if (fullscreenOverlay && fullscreenOverlay.style.display === 'flex') {
     closeFullscreenEditor();
   }
-  if (emojiPickerEl && emojiPickerEl.style.display === 'block') {
-    toggleEmojiPicker();
-  }
+
 }
 });
 
@@ -914,6 +875,7 @@ function openGame(gameType) {
     'dsasolver': 'games/dsasolver/index.html',
     'quiz': 'games/Quiz/quiz.html',
     'snake': 'games/snake/game.html',
+    'Placement': 'games/Placement/index.html',
   };
   
   const gameNames = {
@@ -924,7 +886,8 @@ function openGame(gameType) {
     'whiteboard': 'Creative Board',
     'dsasolver': 'DSA Solver',
     'quiz': 'Take a QUIZ',
-    'snake': 'Snake Reloaded'
+    'snake': 'Snake Reloaded',
+    'Placement': 'Aptitude Test'
   };
   
   let gameModal = document.getElementById('gameModal');
@@ -1234,91 +1197,6 @@ async function sendFullscreenCode() {
   }
 }
 
-// Emoji data and functions
-const emojiData = {
-  recent: ['😊', '👍', '❤️', '😂', '🎉', '🔥', '💯', '👏', '🙏', '✨'],
-  smileys: ['😀', '😃', '😄', '😁', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '🥳', '😏', '😒', '😞', '😔', '😟', '😕', '🙁', '☹️', '😣', '😖', '😫', '😩', '🥺', '😢', '😭', '😤', '😠', '😡', '🤬', '🤯', '😳', '🥵', '🥶', '😱', '😨', '😰', '😥', '😓', '🤗', '🤔', '🤭', '🤫', '🤥', '😶', '😐', '😑', '😯', '😦', '😧', '😮', '😲', '🥱', '😴', '🤤', '😪', '😵', '🤐', '🥴', '🤢', '🤮', '🤧', '😷', '🤒', '🤕', '🤑', '🤠'],
-  animals: ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼', '🐨', '🐯', '🦁', '🐮', '🐷', '🐸', '🐵', '🐔', '🐧', '🐦', '🐤', '🐣', '🦆', '🦅', '🦉', '🦇', '🐺', '🐗', '🐴', '🦄', '🐝', '🐛', '🦋', '🐌', '🐞', '🐜'],
-  food: ['🍎', '🍐', '🍊', '🍋', '🍌', '🍉', '🍇', '🍓', '🫐', '🍈', '🍒', '🍑', '🥭', '🍍', '🥥', '🥝', '🍅', '🥑', '🥦', '🥬', '🥒', '🌶️', '🫑', '🌽', '🥕'],
-  activities: ['⚽', '🏀', '🏈', '⚾', '🥎', '🎾', '🏐', '🏉', '🥏', '🎱', '🪀', '🏓', '🏸', '🏒', '🏑', '🥍', '🏏', '🥅', '⛳', '🪁', '🏹', '🎣', '🤿', '🥊', '🥋'],
-  travel: ['✈️', '🛩️', '🛫', '🛬', '🪂', '💺', '🚁', '🚟', '🚠', '🚡', '🛰️', '🚀', '🛸', '🛎️', '🧳', '⌛', '⏰', '⏱️', '⏲️', '🕰️', '🌍', '🌎', '🌏'],
-  objects: ['💡', '🔦', '🕯️', '🪔', '🧯', '🛢️', '💸', '💵', '💴', '💶', '💷', '🪙', '💰', '💳', '💎', '⚖️', '🪜', '🧰', '🪛', '🔧', '🔨', '⚒️', '🛠️'],
-  symbols: ['❤️', '🧡', '💛', '💚', '💙', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '💕', '💞', '💓', '💗', '💖', '💘', '💝', '💟', '☮️', '✝️', '☪️', '🕉️'],
-  flags: ['🏁', '🚩', '🎌', '🏴', '🏳️', '🏳️‍🌈', '🏴‍☠️', '🇦🇨', '🇦🇩', '🇦🇫', '🇦🇬', '🇦🇷', '🇦🇲', '🇦🇼', '🇦🇺', '🇦🇹', '🇦🇿']
-};
-
-// Toggle emoji picker
-function toggleEmojiPicker() {
-  const emojiPicker = document.getElementById('emojiPicker');
-  const emojiToggle = document.getElementById('emojiToggle');
-  
-  if (emojiPicker.style.display === 'none') {
-    emojiPicker.style.display = 'block';
-    emojiToggle.classList.add('active');
-    loadEmojis('recent');
-    document.getElementById('emojiSearch').focus();
-  } else {
-    emojiPicker.style.display = 'none';
-    emojiToggle.classList.remove('active');
-    document.getElementById('chatInput').focus();
-  }
-}
-
-function loadEmojis(category) {
-  const emojiGrid = document.getElementById('emojiGrid');
-  const emojis = emojiData[category] || emojiData.recent;
-  
-  emojiGrid.innerHTML = '';
-  emojis.forEach(emoji => {
-    const button = document.createElement('button');
-    button.className = 'emoji-item';
-    button.textContent = emoji;
-    button.onclick = () => insertEmoji(emoji);
-    emojiGrid.appendChild(button);
-  });
-}
-
-function insertEmoji(emoji) {
-  const chatInput = document.getElementById('chatInput');
-  const codeInput = document.getElementById('codeInput');
-  const codeToggle = document.getElementById('codeToggle');
-  
-  if (codeToggle.classList.contains('active')) {
-    const start = codeInput.selectionStart;
-    const end = codeInput.selectionEnd;
-    const text = codeInput.value;
-    codeInput.value = text.substring(0, start) + emoji + text.substring(end);
-    codeInput.setSelectionRange(start + emoji.length, start + emoji.length);
-    codeInput.focus();
-  } else {
-    const start = chatInput.selectionStart;
-    const end = chatInput.selectionEnd;
-    const text = chatInput.value;
-    chatInput.value = text.substring(0, start) + emoji + text.substring(end);
-    chatInput.setSelectionRange(start + emoji.length, start + emoji.length);
-    chatInput.focus();
-  }
-}
-
-function searchEmojis(query) {
-  if (!query) {
-    loadEmojis('recent');
-    return;
-  }
-
-  const emojiGrid = document.getElementById('emojiGrid');
-  const allEmojis = Object.values(emojiData).flat();
-  const filteredEmojis = allEmojis.slice(0, 64);
-
-  emojiGrid.innerHTML = '';
-  filteredEmojis.forEach(emoji => {
-    const button = document.createElement('button');
-    button.className = 'emoji-item';
-    button.textContent = emoji;
-    button.onclick = () => insertEmoji(emoji);
-    emojiGrid.appendChild(button);
-  });
-}
 
 function setupRealtimeChat() {
 chatChannel = supabaseClient.channel('public:messages')
@@ -1779,10 +1657,10 @@ async function loadFiles() {
 
     files.forEach(file => {
       const fileItem = document.createElement('div');
-      fileItem.onclick = () => openPreview(file); 
       fileItem.className = 'file-item fade-in';
+      
       fileItem.innerHTML = `
-        <div class="file-info">
+        <div class="file-info" data-clickable="true">
           <i class="fas ${getFileIcon(file.filetype)} file-icon"></i>
           <div class="file-details">
             <div class="file-name" title="${file.filename}">${file.filename}</div>
@@ -1790,20 +1668,66 @@ async function loadFiles() {
           </div>
         </div>
         <div class="file-actions">
-          <button class="btn btn-outline btn-sm" onclick="downloadFile('${file.filepath}', '${file.filename}')">
+          <button class="btn btn-outline btn-sm" onclick="event.stopPropagation(); downloadFile('${file.filepath}', '${file.filename}')" title="Download file">
             <i class="fas fa-download"></i>
           </button>
-          <button class="btn btn-danger btn-sm" onclick="deleteFile('${file.id}', '${file.filepath}', '${file.filename}')">
+          <button class="btn btn-danger btn-sm" onclick="event.stopPropagation(); deleteFile('${file.id}', '${file.filepath}', '${file.filename}')" title="Delete file">
             <i class="fas fa-trash"></i>
           </button>
         </div>
       `;
+      
+      // Add click handler for preview (only on file info area)
+      const fileInfo = fileItem.querySelector('.file-info[data-clickable="true"]');
+      fileInfo.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        openPreview(file);
+      });
+      
+      // Add visual feedback for clickable area
+      fileInfo.style.cursor = 'pointer';
+      fileInfo.addEventListener('mouseenter', () => {
+        fileInfo.style.backgroundColor = 'rgba(99, 102, 241, 0.1)';
+      });
+      fileInfo.addEventListener('mouseleave', () => {
+        fileInfo.style.backgroundColor = 'transparent';
+      });
+      
       fileContainer.appendChild(fileItem);
     });
+    
   } catch (err) {
     console.error('Error in loadFiles:', err);
   }
 }
+// Download file without preview
+async function downloadFileOnly(filepath, filename) {
+  try {
+    console.log(`📥 Downloading file: ${filename}`);
+    
+    const { data, error } = await supabaseClient.storage
+      .from('files')
+      .download(filepath);
+
+    if (error) throw error;
+
+    const url = URL.createObjectURL(data);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    showToast('success', 'Download Started', `${filename} download began!`);
+  } catch (err) {
+    console.error('Download error:', err);
+    showToast('error', 'Download Failed', 'Could not download file.');
+  }
+}
+
 
 async function downloadFile(filepath, filename) {
   try {
