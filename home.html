@@ -3341,6 +3341,185 @@
 .file-info[data-clickable="true"]:hover::after {
   height: 80%;
 }
+/* ===== FLOATING CHATBOT STYLES ===== */
+.chatbot-float {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  z-index: 9999;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: chatbotPulse 2s infinite;
+}
+
+.chatbot-float:hover {
+  transform: scale(1.1);
+  animation: none;
+}
+
+.chatbot-icon {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.8rem;
+  box-shadow: 
+    0 8px 25px rgba(99, 102, 241, 0.4),
+    0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.chatbot-icon::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transform: rotate(45deg);
+  transition: transform 0.6s ease;
+}
+
+.chatbot-float:hover .chatbot-icon::before {
+  transform: rotate(45deg) translate(100%, 100%);
+}
+
+.chatbot-tooltip {
+  position: absolute;
+  bottom: 70px;
+  right: 0;
+  background: var(--dark);
+  color: var(--light);
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--card-border);
+}
+
+.chatbot-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  right: 20px;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid var(--dark);
+}
+
+.chatbot-float:hover .chatbot-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Missing pulse animation */
+@keyframes chatbotPulse {
+  0%, 100% { 
+    transform: scale(1); 
+  }
+  50% { 
+    transform: scale(1.05); 
+  }
+}
+
+/* ===== FULLSCREEN IFRAME ONLY ===== */
+.chatbot-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(10px);
+  z-index: 10000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.chatbot-modal.open {
+  display: flex;
+}
+
+.chatbot-modal-content {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+}
+
+.chatbot-modal-header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.chatbot-modal-title {
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.chatbot-modal-close {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.chatbot-modal-close:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.chatbot-iframe-container {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+}
+
+.chatbot-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: white;
+}
+
+
 
 /* Mobile optimization */
 @media (max-width: 768px) {
@@ -3717,9 +3896,12 @@
             </div>
             <div class="game-info">
               <h3 class="game-name">Take a QUIZ</h3>
-              <p class="game-description">Challenge your knowledge with high-intensity quizzes across various topics</p>
+              <p class="game-description">Challenge your knowledge with high-intensity quizzes across various topics
+                <br><span style="color: #dc2626; font-weight: 600; font-size: 0.95rem; opacity: 0.85; animation: pulseFade 1.5s infinite;">STILL IN DEVELOPMENT ⚠️⚠️</span>
               <div class="game-details">
                 <span class="game-players"><i class="fas fa-users"></i> 1 Player</span>
+              </p>
+              
                 <span class="game-difficulty" ><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> Hard  </span>
               </div>
               <div class="game-tags">
@@ -3927,6 +4109,38 @@ background:rgba(0,0,0,0.72);backdrop-filter:blur(4px); align-items: center; just
   <div style="color: #666; font-size:0.91em;margin-top:0.15em;" id="mobileProfileDob">DOB: Not set</div>
 </div>
 </div>
+
+<!-- Floating Chatbot Icon -->
+<div class="chatbot-float" id="chatbotFloat">
+  <div class="chatbot-icon">
+    <i class="fas fa-robot"></i>
+  </div>
+  <div class="chatbot-tooltip">Ask me anything!</div>
+</div>
+
+<!-- Chatbot Modal -->
+<div class="chatbot-modal" id="chatbotModal">
+  <div class="chatbot-modal-content">
+    <div class="chatbot-modal-header">
+      <div class="chatbot-modal-title">
+        <i class="fas fa-robot"></i>
+        AI Assistant
+      </div>
+      <button class="chatbot-modal-close" id="closeChatbot">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="chatbot-iframe-container">
+      <iframe 
+        id="chatbotIframe" 
+        src="" 
+        class="chatbot-iframe"
+        frameborder="0">
+      </iframe>
+    </div>
+  </div>
+</div>
+
 
   <script src="emoji.js"></script>
   <script src="home.js"></script>

@@ -109,8 +109,101 @@ showToast('error', 'Initialization Error', 'Failed to load the application');
 }
 }
 
-// ===== PIN MESSAGES FUNCTIONALITY =====
+// ===== CHATBOT MODAL FUNCTIONALITY (COMPLETE FIX) =====
 
+function openChatbot() {
+  console.log('🤖 Opening chatbot modal...');
+  
+  const modal = document.getElementById('chatbotModal');
+  const iframe = document.getElementById('chatbotIframe');
+  
+  if (!modal || !iframe) {
+    console.error('❌ Chatbot elements not found in HTML');
+    return;
+  }
+  
+  // Set your chatbot URL
+  iframe.src = "https://chillspacechatbot-production.up.railway.app/";
+  
+  // Show modal
+  modal.classList.add('open');
+  document.body.classList.add('modal-open');
+  
+  // Add escape key listener
+  document.addEventListener('keydown', handleChatbotEscape);
+  
+  console.log('✅ Chatbot modal opened');
+}
+
+function closeChatbot() {
+  console.log('🤖 Closing chatbot modal...');
+  
+  const modal = document.getElementById('chatbotModal');
+  const iframe = document.getElementById('chatbotIframe');
+  
+  if (modal) {
+    modal.classList.remove('open');
+  }
+  
+  document.body.classList.remove('modal-open');
+  
+  // Clear iframe source after a short delay for smooth animation
+  setTimeout(() => {
+    if (iframe) iframe.src = '';
+  }, 300);
+  
+  // Remove escape key listener
+  document.removeEventListener('keydown', handleChatbotEscape);
+  
+  console.log('✅ Chatbot modal closed');
+}
+
+function handleChatbotEscape(e) {
+  if (e.key === 'Escape') {
+    closeChatbot();
+  }
+}
+
+// Initialize chatbot event listeners for existing HTML elements
+function initializeChatbotListeners() {
+  console.log('🤖 Initializing chatbot listeners...');
+  
+  // Get existing elements from HTML
+  const chatbotFloat = document.getElementById('chatbotFloat');
+  const closeChatbotBtn = document.getElementById('closeChatbot');
+  const chatbotModal = document.getElementById('chatbotModal');
+  
+  if (chatbotFloat) {
+    chatbotFloat.addEventListener('click', openChatbot);
+    console.log('✅ Chatbot float button listener added');
+  } else {
+    console.error('❌ chatbotFloat element not found in HTML');
+  }
+  
+  if (closeChatbotBtn) {
+    closeChatbotBtn.addEventListener('click', closeChatbot);
+    console.log('✅ Close chatbot button listener added');
+  } else {
+    console.error('❌ closeChatbot button not found in HTML');
+  }
+  
+  // Close on outside click
+  if (chatbotModal) {
+    chatbotModal.addEventListener('click', function(e) {
+      if (e.target === chatbotModal) {
+        closeChatbot();
+      }
+    });
+    console.log('✅ Modal outside click listener added');
+  }
+  
+  console.log('✅ Chatbot system initialized');
+}
+
+
+
+
+// ===== PIN MESSAGES FUNCTIONALITY =====
 // Check if user can pin messages
 function canPinMessages() {
 const userRole = currentProfile?.role || 'user';
@@ -637,6 +730,7 @@ if (e.key === 'Escape') {
 
 }
 });
+initializeChatbotListeners();
 
 console.log('✅ All event listeners setup completed');
 }
@@ -880,7 +974,7 @@ function openGame(gameType) {
     'dsasolver': 'games/dsasolver/index.html',
     'quiz': 'games/Quiz/quiz.html',
     'snake': 'games/snake/game.html',
-    'Placement': 'games/Placement/index.html',
+    'Placement': 'Maintenance.html',
   };
   
   const gameNames = {
