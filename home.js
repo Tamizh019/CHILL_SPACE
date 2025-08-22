@@ -109,7 +109,7 @@ showToast('error', 'Initialization Error', 'Failed to load the application');
 }
 }
 
-// ===== CHATBOT MODAL FUNCTIONALITY (COMPLETE FIX) =====
+// ===== CORRECTED CHATBOT MODAL FUNCTIONALITY =====
 
 function openChatbot() {
   console.log('🤖 Opening chatbot modal...');
@@ -119,15 +119,16 @@ function openChatbot() {
   
   if (!modal || !iframe) {
     console.error('❌ Chatbot elements not found in HTML');
+    alert('❌ Chatbot is currently unavailable. Please try again later.');
     return;
   }
   
   // Set your chatbot URL
-  iframe.src = "https://chillspacechatbot-production.up.railway.app/";
+  iframe.src = "http://localhost:8080/";
   
   // Show modal
   modal.classList.add('open');
-  document.body.classList.add('modal-open');
+  document.body.classList.add('chatbot-modal-open');
   
   // Add escape key listener
   document.addEventListener('keydown', handleChatbotEscape);
@@ -145,11 +146,13 @@ function closeChatbot() {
     modal.classList.remove('open');
   }
   
-  document.body.classList.remove('modal-open');
+  document.body.classList.remove('chatbot-modal-open');
   
   // Clear iframe source after a short delay for smooth animation
   setTimeout(() => {
-    if (iframe) iframe.src = '';
+    if (iframe) {
+      iframe.src = "about:blank";
+    }
   }, 300);
   
   // Remove escape key listener
@@ -164,16 +167,15 @@ function handleChatbotEscape(e) {
   }
 }
 
-// Initialize chatbot event listeners for existing HTML elements
 function initializeChatbotListeners() {
   console.log('🤖 Initializing chatbot listeners...');
   
-  // Get existing elements from HTML
   const chatbotFloat = document.getElementById('chatbotFloat');
   const closeChatbotBtn = document.getElementById('closeChatbot');
   const chatbotModal = document.getElementById('chatbotModal');
   
   if (chatbotFloat) {
+    chatbotFloat.removeEventListener('click', openChatbot);
     chatbotFloat.addEventListener('click', openChatbot);
     console.log('✅ Chatbot float button listener added');
   } else {
@@ -181,28 +183,35 @@ function initializeChatbotListeners() {
   }
   
   if (closeChatbotBtn) {
+    closeChatbotBtn.removeEventListener('click', closeChatbot);
     closeChatbotBtn.addEventListener('click', closeChatbot);
     console.log('✅ Close chatbot button listener added');
   } else {
     console.error('❌ closeChatbot button not found in HTML');
   }
   
-  // Close on outside click
   if (chatbotModal) {
-    chatbotModal.addEventListener('click', function(e) {
-      if (e.target === chatbotModal) {
-        closeChatbot();
-      }
-    });
+    chatbotModal.removeEventListener('click', handleModalOutsideClick);
+    chatbotModal.addEventListener('click', handleModalOutsideClick);
     console.log('✅ Modal outside click listener added');
   }
   
   console.log('✅ Chatbot system initialized');
 }
 
+function handleModalOutsideClick(e) {
+  const chatbotModal = document.getElementById('chatbotModal');
+  if (e.target === chatbotModal) {
+    closeChatbot();
+  }
+}
 
-
-
+// Initialize when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initializeChatbotListeners);
+} else {
+  initializeChatbotListeners();
+}
 // ===== PIN MESSAGES FUNCTIONALITY =====
 // Check if user can pin messages
 function canPinMessages() {
