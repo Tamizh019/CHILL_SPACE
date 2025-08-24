@@ -1,0 +1,29 @@
+{
+  "name": "chill-space-chat-app",
+  "version": "1.0.0",
+  "description": "Chill Space - Real-time Group Chat & File Sharing App with Supabase Integration",
+  "main": "index.html",
+  "scripts": {
+    "dev": "live-server",
+    "build": "echo 'Build complete'",
+    "deploy": "echo 'Deploy to your hosting platform'"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.38.0",
+    "bcryptjs": "^2.4.3",
+    "ws": "^8.18.3"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  },
+  "keywords": [
+    "chill space",
+    "chat",
+    "supabase",
+    "realtime",
+    "education",
+    "file sharing"
+  ],
+  "author": "Chill Space Team",
+  "license": "MIT"
+}

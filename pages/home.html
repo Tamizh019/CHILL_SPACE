@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chill Space</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <link rel="icon" href="Assets/logo1.svg" type="image/x-icon">
+  <link rel="icon" href="Assets/logo3.png" type="image/x-icon">
+  <link rel="stylesheet" href="../css/home.css">
+</head>
+<body>
+
+  <header>
+    <div class="logo">
+      <img src="Assets/logo4.svg" alt="Logo" width="55" height="52">
+      <div class="animated-text-container">
+        <span id="animatedText" class="cyber-animated-text"></span>
+        <span id="cursor" class="animated-cursor">|</span>
+      </div>
+      <h2 id="subtitleText" class="cyber-animated-text" style="font-size:1rem;
+      font-weight:500;margin-top:.25rem;min-height: 1.2rem;"></h2>
+    </div>  
+    <div class="header-actions">
+      <div class="user-info">
+        <div class="user-avatar" id="userAvatar">
+          <img id="userAvatarImg" src="Assets/pfp2.jpg" alt="Profile" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">
+        </div>
+        <span id="username">Username</span>
+        <!-- Profile Popover should be OUTSIDE user-info, not inside userAvatar -->
+        <div id="profilePopover" class="profile-pop">
+          <img id="popImg" class="pop-avatar" src="Assets/pfp2.jpg" alt="">
+          <div class="pop-info">
+            <h4 id="popName">Name</h4>
+            <p id="popEmail">email@example.com</p>
+            <p id="popDob">DOB: Not set</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- In header, for mobile (inside .header-actions) -->
+    <span class="mobile-avatar" id="mobileAvatar" style="display: inline-block;">
+      <img id="mobileAvatarImg" src="Assets/pfp2.jpg" alt="Profile" style="width:36px;height:36px;border-radius:50%;object-fit:cover;vertical-align:middle;">
+    </span>
+      <button class="btn btn-danger btn-sm" id="logoutBtn">
+        <i class="fas fa-sign-out-alt"></i>
+        <span class="desktop-only">Logout</span>
+      </button>
+  </header>
+
+  <main>
+    <div class="main-content">
+      <!-- Chat Container (Full Width) -->
+      <section class="card chat-container">
+        <div class="card-header">
+          <h2><i class="fas fa-comments"></i> Group Chat AI-A4 </h2>
+          <button id="enable-notifications" class="btn btn-primary">
+            <i class="fas fa-bell"></i> <span id="notification-text">Enable Notifications</span>
+          </button>
+        </div>
+
+        <!-- Add this ABOVE the existing chat-messages div -->
+<div class="pinned-messages-section" id="pinnedMessagesSection" style="display: none;">
+  <div class="pinned-header">
+    <h4><i class="fas fa-thumbtack"></i> Pinned Messages</h4>
+    <button class="btn btn-outline btn-sm" onclick="togglePinnedMessages()" id="togglePinnedBtn">
+      <i class="fas fa-chevron-up"></i> Hide
+    </button>
+  </div>
+  <div class="pinned-messages" id="pinnedMessages">
+    <!-- Pinned messages will appear here -->
+  </div>
+</div>
+
+<!-- Your existing chat-messages div stays the same -->
+<div class="chat-messages" id="chatMessages">
+  <!-- Messages will appear here -->
+</div>
+
+        
+        <!-- Move typing indicator HERE - outside messages but inside chat container -->
+        <div id="typingIndicator" class="typing hidden">
+          <div class="avatar">
+            <img id="typingAvatar" src="" alt="" />
+          </div>
+          <div class="bubble">
+            <span id="typingName"></span> &nbsp;
+            <span class="dots">
+              <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            </span>
+          </div>
+        </div>
+        
+
+          <!-- Messages will appear here -->
+      
+        <div class="chat-input">
+          <div class="chat-controls">
+            <button class="code-toggle" id="codeToggle" title="Toggle Code Mode">
+              <i class="fas fa-code"></i>
+            </button>
+            <button class="emoji-toggle" id="emojiToggle" title="Emoji Picker">
+              <i class="fas fa-smile"></i>
+            </button>
+            <button class="fullscreen-toggle" id="fullscreenToggle" title="Fullscreen Code Editor" style="display: none;">
+              <i class="fas fa-expand"></i>
+            </button>
+            <select class="language-select" id="languageSelect" style="display: none;">
+              <option value="javascript">JavaScript</option>
+              <option value="python">Python</option>
+              <option value="html">HTML</option>
+              <option value="css">CSS</option>
+              <option value="java">Java</option>
+              <option value="cpp">C++</option>
+              <option value="csharp">C#</option>
+              <option value="php">PHP</option>
+              <option value="sql">SQL</option>
+              <option value="bash">Bash</option>
+              <option value="json">JSON</option>
+              <option value="xml">XML</option>
+              <option value="markdown">Markdown</option>
+              <option value="plaintext">Plain Text</option>
+            </select>
+          </div>
+          <input type="text" id="chatInput" placeholder="Type your message..." />
+          <textarea id="codeInput" placeholder="Write your code here..." style="display: none;"></textarea>
+          <button class="btn btn-primary" onclick="sendMessage()">
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </div>
+        
+        <!-- Emoji Picker -->
+        <div class="emoji-picker" id="emojiPicker" style="display: none;">
+          <div class="emoji-picker-header">
+            <div class="emoji-search">
+              <input type="text" id="emojiSearch" placeholder="Search emojis..." />
+            </div>
+            <button class="emoji-close" onclick="toggleEmojiPicker()">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="emoji-categories">
+            <button class="emoji-category active" data-category="recent">🕒</button>
+            <button class="emoji-category" data-category="smileys">😊</button>
+            <button class="emoji-category" data-category="animals">🐱</button>
+            <button class="emoji-category" data-category="food">🍕</button>
+            <button class="emoji-category" data-category="activities">⚽</button>
+            <button class="emoji-category" data-category="travel">✈️</button>
+            <button class="emoji-category" data-category="objects">💡</button>
+            <button class="emoji-category" data-category="symbols">💕</button>
+            <button class="emoji-category" data-category="flags">🏁</button>
+          </div>
+          <div class="emoji-grid" id="emojiGrid">
+            <!-- Emojis will be loaded here -->
+          </div>
+        </div>
+      </section>
+  
+      <!-- Three Column Layout for Upload, Files, Members -->
+      <div class="sidebar-grid">
+        <section class="card">
+          <div class="card-header">
+            <h2><i class="fas fa-cloud-upload-alt"></i> Upload Files</h2>
+          </div>
+          <div class="upload-area">
+            <i class="fas fa-file-upload" style="font-size: 2rem; color: var(--primary);"></i>
+            <h3>Drag & Drop files here</h3>
+            <p>or click to browse</p>
+            <input type="file" id="fileInput" multiple />
+          </div>
+          <div class="file-preview" id="filePreview">
+            <h4><i class="fas fa-eye"></i> Selected Files</h4>
+            <div class="no-files">No files selected</div>
+          </div>
+          <div style="margin-top: 1rem;">
+            <button class="btn btn-primary" onclick="uploadFile()">
+              <i class="fas fa-upload"></i> Upload
+            </button>
+          </div>
+        </section>
+  
+        <section class="card">
+          <div class="card-header">
+            <h2><i class="fas fa-folder-open"></i> Shared Files</h2>
+            <button class="btn btn-outline btn-sm" onclick="loadFiles()">
+              <i class="fas fa-sync-alt"></i>
+            </button>
+          </div>
+          <div class="file-list" id="fileContainer">
+            <!-- Files will be loaded here -->
+          </div>
+        </section>
+  
+        <section class="card">
+          <div class="card-header">
+            <h2><i class="fas fa-users"></i> Online Members</h2>
+            <span class="btn btn-outline btn-sm" id="onlineCount">0 Online</span>
+          </div>
+          <div class="members-list" id="membersList">
+            <!-- Online members will appear here -->
+          </div>
+        </section>
+      </div>
+      
+      <!-- Games Section (Full Width, now below sidebar-grid) -->
+      <section class="card games-section">
+        <div class="card-header">
+          <h2><i class="fas fa-gamepad"></i> Feel bored? No worries...</h2>
+          <span class="btn btn-outline btn-sm" id="gamesCount"></span>
+        </div>
+        <div class="games-grid">
+          <!-- Game Card 1 -->
+          <div class="game-card" onclick="openGame('chess')">
+            <div class="game-image">
+              <img src="Assets/chess2.jpg" alt="Chess Game" />
+              <div class="game-overlay">
+                <i class="fas fa-play"></i>
+              </div>
+            </div>
+            <div class="game-info">
+              <h3 class="game-name">Chess Master</h3>
+              <p class="game-description">Face off in the ultimate battle of minds. Outsmart your opponent in this classic multiplayer chess duel.</p>
+              <div class="game-details">
+                <span class="game-players"><i class="fas fa-users"></i> 2 Players</span>
+                <span class="game-difficulty"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> Strategic </span>
+              </div>
+              <div class="game-tags">
+                <span class="tag">Strategy</span>
+                <span class="tag">Mind-Game</span>
+                <span class="tag">Tactics </span>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Game Card 2 -->
+          <div class="game-card" onclick="openGame('tic-tac-toe')">
+            <div class="game-image">
+              <img src="Assets/xo.jpg" alt="Tic Tac Toe" />
+              <div class="game-overlay">
+                <i class="fas fa-play"></i>
+              </div>
+            </div>
+            <div class="game-info">
+              <h3 class="game-name">Tic Tac Toe</h3>
+              <p class="game-description">The timeless X vs O battle! Quick, fun, and perfect for friendly face-offs.</p>
+              <div class="game-details">
+                <span class="game-players"><i class="fas fa-users"></i> 2 Players</span>
+                <span class="game-difficulty"><i class="fas fa-star"></i><i class="fas fa-star"></i> Medium  </span>
+              </div>
+              <div class="game-tags">
+                <span class="tag">Quick</span>
+                <span class="tag">Classic</span>
+                <span class="tag">friendly </span>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Game Card 3 -->
+          <div class="game-card" onclick="openGame('typemaster')">
+            <div class="game-image">
+              <img src="Assets/type.jpg" alt="Type Master" />
+              <div class="game-overlay">
+                <i class="fas fa-play"></i>
+              </div>
+            </div>
+            <div class="game-info">
+              <h3 class="game-name">Type Master</h3>
+              <p class="game-description">Ready to dominate the keyboard? Blast words, boost speed, and become the ultimate typing warrior.</p>
+              <div class="game-details">
+                <span class="game-players"><i class="fas fa-users"></i> Solo Challenge</span>
+                <span class="game-difficulty"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> Intense </span>
+              </div>
+              <div class="game-tags">
+                <span class="tag">Speed</span>
+                <span class="tag">Focus</span>
+                <span class="tag">Reflex </span>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Game Card 4 -->
+          <div class="game-card" onclick="openGame('advice')">
+            <div class="game-image">
+              <img src="Assets/motivation.jpg" alt="Advice" />
+              <div class="game-overlay">
+                <i class="fas fa-play"></i>
+              </div>
+            </div>
+            <div class="game-info">
+              <h3 class="game-name">Boost Up!</h3>
+              <p class="game-description">Feeling low or bored? Tap to power up your mindset with a random dose of motivation.</p>
+              <div class="game-details">
+                <span class="game-players"><i class="fas fa-users"></i> Solo Mode </span>
+                <span class="game-difficulty"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> Instant Boost </span>
+              </div>
+              <div class="game-tags">
+                <span class="tag">Motivation</span>
+                <span class="tag">Daily Boost</span>
+                <span class="tag">Energy</span>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Game Card 5 -->
+          <div class="game-card" onclick="openGame('whiteboard')">
+            <div class="game-image">
+              <img src="Assets/creative.jpg" alt="whiteboard" />
+              <div class="game-overlay">
+                <i class="fas fa-play"></i>
+              </div>
+            </div>
+            <div class="game-info">
+              <h3 class="game-name">Creative Board</h3>
+              <p class="game-description">Sketch ideas, doodle freely, or brainstorm anything — your imagination has no limits!</p>
+              <div class="game-details">
+                <span class="game-players"><i class="fas fa-users"></i> Solo Mode </span>
+                <span class="game-difficulty"><i class="fas fa-star"></i> Easy</span>
+              </div>
+              <div class="game-tags">
+                <span class="tag">Draw</span>
+                <span class="tag">Think </span>
+                <span class="tag">Express </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Game Card 6 -->
+          <div class="game-card" onclick="openGame('dsasolver')">
+            <div class="game-image">
+              <img src="Assets/dsa.jpg" alt="DSA" />
+              <div class="game-overlay">
+                <i class="fas fa-play"></i>
+              </div>
+            </div>
+            <div class="game-info">
+              <h3 class="game-name">DSA Solver (ONLINE)</h3>
+              <p class="game-description">Practice and solve Data Structures & Algorithms problems interactively online</p>
+              <div class="game-details">
+                <span class="game-players"><i class="fas fa-users"></i> 1 Player</span>
+                <span class="game-difficulty" > ☠️☠️☠️ Extreme  </span>
+              </div>
+              <div class="game-tags">
+                <span class="tag">DSA</span>
+                <span class="tag">Coding</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Game Card 7 -->
+          <div class="game-card" onclick="openGame('quiz')">
+            <div class="game-image">
+              <img src="Assets/quiz1.jpg" alt="quiz" />
+              <div class="game-overlay">
+                <i class="fas fa-play"></i>
+              </div>
+            </div>
+            <div class="game-info">
+              <h3 class="game-name">Take a QUIZ</h3>
+              <p class="game-description">Challenge your knowledge with high-intensity quizzes across various topics
+                <br><span style="color: #dc2626; font-weight: 600; font-size: 0.95rem; opacity: 0.85; animation: pulseFade 1.5s infinite;">STILL IN DEVELOPMENT ⚠️⚠️</span>
+              <div class="game-details">
+                <span class="game-players"><i class="fas fa-users"></i> 1 Player</span>
+              </p>
+              
+                <span class="game-difficulty" ><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> Hard  </span>
+              </div>
+              <div class="game-tags">
+                <span class="tag">Quiz</span>
+                <span class="tag">Trivia</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Game Card 8 -->
+          <div class="game-card" onclick="openGame('snake')">
+            <div class="game-image">
+              <img src="Assets/snake1.jpg" alt="snake" />
+              <div class="game-overlay">
+                <i class="fas fa-play"></i>
+              </div>
+            </div>
+            <div class="game-info">
+              <h3 class="game-name">Snake Reloaded</h3>
+              <p class="game-description">The legendary snake is back! Eat, grow, and dodge in this fast-paced arcade remake.</p>
+              <div class="game-details">
+                <span class="game-players"><i class="fas fa-users"></i> 1 Player</span>
+                <span class="game-difficulty" ><i class="fas fa-star"></i><i class="fas fa-star"></i> Medium  </span>
+              </div>
+              <div class="game-tags">
+                <span class="tag">Arcade</span>
+                <span class="tag">Retro</span>
+                <span class="tag">Reflex</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Game Card 9 -->
+          <div class="game-card" onclick="openGame('Placement')">
+            <div class="game-image">
+              <img src="Assets/placement.jpg" alt="Aptitude Game" />
+              <div class="game-overlay">
+                <i class="fas fa-play"></i>
+              </div>
+            </div>
+            <div class="game-info">
+              <h3 class="game-name">Aptitude Test</h3>
+              <p class="game-description">
+                Let’s crack aptitude together! <br>
+                <span style="color: #dc2626; font-weight: 600; font-size: 0.95rem; opacity: 0.85; animation: pulseFade 1.5s infinite;">STILL IN DEVELOPMENT ⚠️⚠️</span>
+              </p>
+              
+              <div class="game-details">
+                <span class="game-players"><i class="fas fa-users"></i> 1 Player</span>
+                <span class="game-difficulty"><i class="fas fa-star"></i><i class="fas fa-star"></i> Medium</span>
+              </div>
+              <div class="game-tags">
+                <span class="tag">Interview</span>
+                <span class="tag">Practice</span>
+                <span class="tag">Preparation</span>
+              </div>
+            </div>
+          </div>
+          
+          
+        </div>
+      </section>
+    </div>
+  </main>
+  <!-- File-preview modal -->
+<div id="previewModal" class="preview-modal">
+  <div class="preview-modal-content">
+    <button class="preview-modal-close" onclick="closePreview()">
+      <i class="fas fa-times"></i>
+    </button>
+    <!-- Dynamic container -->
+    <div id="previewBody"></div>
+  </div>
+</div>
+<div id="editProfileModal" class="profile-edit-modal">
+  <div class="profile-edit-content">
+    <button class="profile-edit-close" onclick="closeEditProfile()">
+      <i class="fas fa-times"></i>
+    </button>
+    <h2>Edit Profile</h2>
+    <form id="profileEditForm" enctype="multipart/form-data" autocomplete="off">
+      <div class="profile-edit-avatar">
+        <img id="editProfileImg" src="Assets/pfp2.jpg" alt="Avatar">
+        <input type="file" name="avatar" id="avatarInput" accept="image/*">
+      </div>
+      <div class="profile-edit-field">
+        <label>Username</label>
+        <input type="text" id="editUsername" name="username" required>
+      </div>
+      <div class="profile-edit-field">
+        <label>Date of Birth</label>
+        <input type="date" id="editDob" name="dob">
+      </div>
+      <button type="submit" class="btn btn-primary" style="margin-top: 1em;">Save Changes</button>
+    </form>
+  </div>
+</div>
+  
+
+  <!-- Fullscreen Code Editor -->
+  <div class="fullscreen-overlay" id="fullscreenOverlay">
+    <div class="fullscreen-editor">
+      <div class="fullscreen-header">
+        <div class="fullscreen-title">
+          <i class="fas fa-code"></i> Code Editor
+        </div>
+        <div class="fullscreen-controls">
+          <select class="language-select" id="fullscreenLanguageSelect">
+            <option value="javascript">JavaScript</option>
+            <option value="python">Python</option>
+            <option value="html">HTML</option>
+            <option value="css">CSS</option>
+            <option value="java">Java</option>
+            <option value="cpp">C++</option>
+            <option value="csharp">C#</option>
+            <option value="php">PHP</option>
+            <option value="sql">SQL</option>
+            <option value="bash">Bash</option>
+            <option value="json">JSON</option>
+            <option value="xml">XML</option>
+            <option value="markdown">Markdown</option>
+            <option value="plaintext">Plain Text</option>
+          </select>
+          <button class="btn btn-secondary" onclick="closeFullscreenEditor()">
+            <i class="fas fa-times"></i> Close
+          </button>
+        </div>
+      </div>
+      <textarea class="fullscreen-textarea" id="fullscreenTextarea" placeholder="Write your code here..."></textarea>
+      <div class="fullscreen-actions">
+        <button class="btn btn-outline" onclick="clearFullscreenEditor()">
+          <i class="fas fa-trash"></i> Clear
+        </button>
+        <button class="btn btn-primary" onclick="sendFullscreenCode()">
+          <i class="fas fa-paper-plane"></i> Send Code
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirmation Dialog -->
+  <div class="confirm-dialog" id="confirmDialog">
+    <div class="confirm-content">
+      <div class="confirm-title">Confirm Delete</div>
+      <div class="confirm-message">Are you sure you want to delete this message? This action cannot be undone.</div>
+      <div class="confirm-actions">
+        <button class="btn btn-outline" onclick="hideConfirmDialog()">Cancel</button>
+        <button class="btn btn-danger" onclick="confirmDelete()">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification System -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <footer style="background: var(--dark); border-top: 1.5px solid var(--card-border); box-shadow: 0 -4px 24px -8px rgba(0,0,0,0.10), 0 -1px 0 0 rgba(148,163,184,0.10); padding: 2rem 0 1.2rem 0;">
+    <div style="max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 1.1em;">
+      <div style="font-size: 1.15rem; font-weight: 600; color: var(--primary); display: flex; align-items: center; gap: 0.5em; letter-spacing: 0.01em;">
+        <i class="fas fa-meteor"></i>
+        Chill Space – Tamizh & Co.
+      </div>
+      <div style="width: 100%; height: 1px; background: var(--card-border); margin: 0.5em 0 0.2em 0;"></div>
+      <div style="display: flex; flex-direction: row; gap: 1.5em; flex-wrap: wrap; justify-content: center; align-items: center;">
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeZq1r-dkj_B6La2_owrnof10yGgF4AWWfqYHktguRD9Tfe7g/viewform?usp=dialog" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 500; display: flex; align-items: center; gap: 0.4em; transition: color 0.2s;">
+          <i class="fas fa-bug"></i>
+          <span>Report a bug / Suggest a feature</span>
+        </a>
+        <span style="color: var(--gray); font-size: 1.1em;">|</span>
+        <a href="mailto:jefftamizh01@gmail.com" style="color: var(--secondary); text-decoration: none; font-weight: 500; display: flex; align-items: center; gap: 0.4em; transition: color 0.2s;">
+          <i class="fas fa-envelope"></i>
+          <span>Contact: jefftamizh01@gmail.com</span>
+        </a>
+      </div>
+      <div style="display: flex; flex-direction: row; gap: 1.2em; margin-top: 0.2em; justify-content: center; align-items: center;">
+        <a href="https://github.com/Tamizh019" target="_blank" aria-label="GitHub" style="color: var(--gray); font-size: 1.35em; margin: 0 0.1em; transition: color 0.2s;"><i class="fab fa-github"></i></a>
+        <a href="https://www.linkedin.com/in/tamizharasan-r-a6931828a/" target="_blank" aria-label="LinkedIn" style="color: #0A66C2; font-size: 1.35em; margin: 0 0.1em; transition: color 0.2s;"><i class="fab fa-linkedin"></i></a>
+      </div>
+      <div style="width: 100%; height: 1px; background: var(--card-border); margin: 0.7em 0 0.2em 0;"></div>
+      <div style="font-size: 0.97rem; color: var(--gray); letter-spacing: 0.01em; display: flex; align-items: center; gap: 0.5em;">
+        <span>For educational purposes only 💀</span>
+      </div>
+    </div>
+  </footer>
+  <!-- Mobile Profile Modal -->
+<div id="mobileProfileModal" style="
+display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:25000;
+background:rgba(0,0,0,0.72);backdrop-filter:blur(4px); align-items: center; justify-content: center;">
+<div style="
+  background:#fff;max-width:320px;width:95vw;margin:0 auto;border-radius:18px;
+  padding:2em 1em 1.2em 1em;box-shadow:0 2px 24px rgba(30,41,59,0.13);text-align:center;position:relative;">
+  <button style="
+    background: #ef4444; color: #fff; border:none; border-radius:50%;
+    width:32px; height:32px; position:absolute; top:12px; right:12px; font-size:1.2em;" 
+    id="closeMobileProfile"
+    aria-label="Close"
+  >
+    &times;
+  </button>
+  <img id="mobileProfileImg" src="Assets/pfp2.jpg" alt="avatar"
+    style="width:74px;height:74px;border-radius:50%;object-fit:cover;margin-bottom:0.8em;">
+  <div style="font-weight:600;font-size:1.08em; color:#232323;" id="mobileProfileName">Name</div>
+  <div style="color: #6366f1; font-size:0.96em;margin-top:0.18em;" id="mobileProfileEmail">email@example.com</div>
+  <div style="color: #666; font-size:0.91em;margin-top:0.15em;" id="mobileProfileDob">DOB: Not set</div>
+</div>
+</div>
+
+<!-- Floating Chatbot Icon -->
+<div class="chatbot-float" id="chatbotFloat">
+  <div class="chatbot-icon">
+    <i class="fas fa-robot"></i>
+  </div>
+  <div class="chatbot-tooltip">Ask me anything!</div>
+</div>
+
+<!-- Chatbot Modal -->
+<div class="chatbot-modal" id="chatbotModal">
+  <div class="chatbot-modal-content">
+    <div class="chatbot-modal-header">
+      <div class="chatbot-modal-title">
+        <i class="fas fa-robot"></i>
+        AI Assistant
+      </div>
+      <button class="chatbot-modal-close" id="closeChatbot">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="chatbot-iframe-container">
+      <iframe 
+        id="chatbotIframe" 
+        src="" 
+        class="chatbot-iframe"
+        frameborder="0">
+      </iframe>
+    </div>
+  </div>
+</div>
+
+
+  <script src="../js/home.js"></script>
+  <script src="../js/emoji.js"></script>
+  <script type="module">
+    import { requestNotificationPermission, listenForForegroundMessages } from './src/notification.js';
+  
+    const button = document.getElementById('enable-notifications');
+    const buttonText = document.getElementById('notification-text');
+  
+    // Check current notification permission on page load
+    function updateButtonState() {
+      const permission = Notification.permission;
+      console.log('Current notification permission:', permission);
+  
+      if (permission === 'granted') {
+        button.className = 'btn btn-success';
+        button.innerHTML = '<i class="fas fa-bell"></i> <span>Notifications Enabled ✓</span>';
+        button.disabled = true;
+      } else if (permission === 'denied') {
+        button.className = 'btn btn-danger';
+        button.innerHTML = '<i class="fas fa-bell-slash"></i> <span>Notifications Blocked ✗</span>';
+        button.disabled = true;
+      } else {
+        button.className = 'btn btn-primary';
+        button.innerHTML = '<i class="fas fa-bell"></i> <span>Enable Notifications</span>';
+        button.disabled = false;
+      }
+    }
+  
+    // Update button state on page load
+    updateButtonState();
+  
+    // Button click handler
+    button.addEventListener('click', async () => {
+      console.log('🔔 Notification button clicked!');
+  
+      // Show loading state
+      button.disabled = true;
+      button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Requesting...</span>';
+  
+      try {
+        const token = await requestNotificationPermission();
+  
+        if (token) {
+          console.log('✅ FCM Token received:', token);
+          console.log('🎯 FCM TOKEN:', token); // 👈 This is the line you wanted
+          alert('🔔 Notifications enabled successfully!\nYou can now receive push notifications.');
+        } else {
+          console.log('❌ Permission denied or failed');
+          alert('❌ Notification permission denied or failed.');
+        }
+      } catch (error) {
+        console.error('❌ Error requesting notifications:', error);
+        alert('❌ Error: ' + error.message);
+      }
+  
+      // Update button state based on final permission
+      updateButtonState();
+    });
+  
+    // Start listening for foreground messages
+    listenForForegroundMessages();
+  
+    console.log('🔔 Notification setup completed');
+    // Click avatar to open (mobile)
+document.getElementById('mobileAvatar').addEventListener('click', function() {
+  // Fallback values in case profile isn't loaded yet
+  const name = (currentProfile && currentProfile.username) || 'User';
+  const email = (currentUser && currentUser.email) || 'user@example.com';
+  const dob = (currentProfile && currentProfile.dob) ? `DOB: ${currentProfile.dob}` : '';
+  const avatar = (currentProfile && currentProfile.avatar_url) || 'Assets/pfp2.jpg';
+
+  document.getElementById('mobileProfileImg').src = avatar;
+  document.getElementById('mobileProfileName').textContent = name;
+  document.getElementById('mobileProfileEmail').textContent = email;
+  document.getElementById('mobileProfileDob').textContent = dob;
+
+  document.getElementById('mobileProfileModal').style.display = "flex";
+});
+
+// Hide on close
+document.getElementById('closeMobileProfile').addEventListener('click', function() {
+  document.getElementById('mobileProfileModal').style.display = "none";
+});
+
+// Optional: Hide on clicking outside modal content
+document.getElementById('mobileProfileModal').addEventListener('click', function(e) {
+  if (e.target === this) this.style.display = "none";
+});
+
+  </script>
+  
+  
+
+</body>
+</html>

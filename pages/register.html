@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chill Space | Register</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="icon" href="Assets/logo1.svg" type="image/x-icon">
+    <link rel="stylesheet" href="../css/register.css">
+
+</head>
+<body> 
+    <div id="particles-js"></div>
+    
+    <div class="floating-elements">
+        <div class="floating-element violet" style="top:-150px; left:-150px; width:400px; height:400px;"></div>
+        <div class="floating-element violet" style="bottom:-100px; right:-100px; width:350px; height:350px;"></div>
+        <div class="floating-element accent" style="top:100px; right:-100px; width:250px; height:250px; background:radial-gradient(circle, var(--accent), transparent 70%);"></div>
+        <div class="floating-element accent" style="bottom:150px; left:-100px; width:220px; height:220px; background:radial-gradient(circle, var(--accent), transparent 70%);"></div>
+    </div>
+    
+    <div class="register-container">
+        <div class="header">
+            <div class="logo-wrapper">
+                <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#09090f"/><path d="M30 40 L50 20 L70 40 L60 60 L40 60 Z" fill="#8a2be2"/><circle cx="50" cy="45" r="10" fill="#2be2d7"/></svg>
+            </div>
+            <div class="title">Join Chill Space</div>
+            <div class="subtitle">Ready to be part of the crew? 🚀</div>
+        </div>
+        
+        <form id="registerForm">
+            <div class="form-group">
+                <label for="username">Name</label>
+                <input type="text" id="username" placeholder="Your cool name" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Your Email</label>
+                <input type="email" id="email" placeholder="What's your email?" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Create Password</label>
+                <input type="password" id="password" placeholder="Pick a strong password 🔒" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Confirm Password</label>
+                <input type="password" id="confirmPassword" placeholder="Confirm it again!" required>
+            </div>
+            
+            <button class="submit-btn">Create account</button>
+            
+            <div id="registerMessage" class="status-message"></div>
+            
+            <a href="../index.html" class="new">Already here? → Log back in 😊</a>
+        </form>
+    </div>
+    
+    <footer>2025 © Chill Space - Tamizh</footer>   
+    
+<script src="../js/register.js"></script>
+</body>
+</html>
