@@ -278,20 +278,45 @@ body {
 
 /* Links - mobile optimized */
 .new {
-    display: block;
-    text-align: center;
-    margin-top: 16px;
-    font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(8px);
+    
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.75);
     text-decoration: none;
-    transition: color 0.3s;
-    padding: 8px;
+    
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
     -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
 }
 
-.new:hover,
-.new:active {
+.new:hover{
     color: var(--accent);
+    border-color: rgba(43, 226, 215, 0.3);
+    background: rgba(43, 226, 215, 0.08);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(43, 226, 215, 0.15);
+}
+.new:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(43, 226, 215, 0.1);
+}
+.new:focus{
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(43, 226, 215, 0.2);
 }
 
 /* Status message */
@@ -663,7 +688,7 @@ footer {
             
             <div id="registerMessage" class="status-message"></div>
             
-            <a href="index.html" class="new">Already part of the crew? Sign in here! 😊</a>
+            <a href="index.html" class="new">Already here? → Log back in 😊</a>
         </form>
     </div>
     

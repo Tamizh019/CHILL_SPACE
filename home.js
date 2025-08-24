@@ -44,68 +44,141 @@ if (!initializeSupabase()) {
 }
 
 async function initializeApp() {
-try {
-console.log('🚀 Starting app initialization...');
+  // ✅ ADD THIS - Check for login loading screen
+  const loginSuccess = sessionStorage.getItem('loginSuccess');
+  let homeLoadingScreen = null;
+  
+  if (loginSuccess === 'true') {
+    // Show loading screen on home page
+    const loadingHTML = `
+      <div id="homeLoadingScreen" class="loading-overlay" style="display: flex;">
+        <div class="loading-container">
+          <div class="loading-spinner">
+            <div class="spinner-ring"></div>
+            <div class="spinner-ring"></div>
+            <div class="spinner-ring"></div>
+          </div>
+          <div class="loading-text">
+            <h3>Welcome back to Chill Space! 😎</h3>
+            <p>Setting up your dashboard...</p>
+            <div class="loading-dots">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    
+    document.body.insertAdjacentHTML('beforeend', loadingHTML);
+    homeLoadingScreen = document.getElementById('homeLoadingScreen');
+  }
 
-// Get current user FIRST
-const { data: { user }, error } = await supabaseClient.auth.getUser();
-if (error || !user) {
-  console.error('❌ User authentication failed');
-  window.location.href = 'index.html';
+  try {
+    console.log('🚀 Starting app initialization...');
+  
+  // Get current user FIRST
+  const { data: { user }, error } = await supabaseClient.auth.getUser();
+  if (error || !user) {
+    console.error('❌ User authentication failed');
+    window.location.href = 'index.html';
+    return;
+  }
+  
+  currentUser = user;
+  console.log('✅ User authenticated:', currentUser.id);
+  
+  // Get user profile SECOND
+  const { data: profile, error: profileError } = await supabaseClient
+    .from('users')
+    .select('username, role, email, dob, avatar_url')
+    .eq('id', user.id)
+    .single();
+  
+  if (profileError) {
+    console.error('Profile fetch error:', profileError);
+    currentProfile = {
+      username: user.user_metadata?.username || user.email?.split('@')[0] || 'User',
+      role: 'user',
+      email: user.email
+    };
+  } else {
+    currentProfile = profile;
+  }
+  
+  console.log('✅ Profile loaded:', currentProfile.username);
+  
+// ✅ Enhanced OAuth verification check in initializeApp()
+console.log('🔐 Checking OAuth verification status...');
+
+// Get all user identities to check for email/password signup
+const { data: identities, error: identitiesError } = await supabaseClient
+  .from('auth.identities')
+  .select('provider')
+  .eq('user_id', user.id);
+
+const isGoogleLogin = user.app_metadata.provider === 'google';
+const hasEmailIdentity = identities?.some(id => id.provider === 'email') || 
+                         user.identities?.some(id => id.provider === 'email');
+
+// Check if user signed up with email first but hasn't verified
+if (isGoogleLogin && hasEmailIdentity && !user.email_confirmed_at) {
+  console.log('❌ Google user with unverified email detected');
+  showToast('error', 'Verification Required', '⚠️ Please verify your email first before using Google login!', 5000);
+  
+  await supabaseClient.auth.signOut();
+  setTimeout(() => {
+    window.location.href = 'index.html';
+  }, 3000);
   return;
 }
 
-currentUser = user;
-console.log('✅ User authenticated:', currentUser.id);
-
-// Get user profile SECOND
-const { data: profile, error: profileError } = await supabaseClient
-  .from('users')
-  .select('username, role, email, dob, avatar_url')
-  .eq('id', user.id)
-  .single();
-
-if (profileError) {
-  console.error('Profile fetch error:', profileError);
-  currentProfile = {
-    username: user.user_metadata?.username || user.email?.split('@')[0] || 'User',
-    role: 'user',
-    email: user.email
-  };
-} else {
-  currentProfile = profile;
-}
-
-console.log('✅ Profile loaded:', currentProfile.username);
-
-// Update UI THIRD
-updateUserInfo();
-initializeProfilePopover();
-
-// Setup realtime FOURTH (after user data is ready)
-console.log('🔧 Setting up realtime connections...');
-setupRealtimeChat();
-setupPresenceTracking();
-
-
-// Setup event listeners FIFTH
-setupEventListeners();
-
-// Load data SIXTH
-await Promise.all([
-  loadMessages(),
-  loadFiles(),
-  loadOnlineMembers(),
-  loadPinnedMessages()
-]);
-
-updateGamesCount();
-showWelcomeToast();
-
-
+  
+  console.log('✅ OAuth verification check passed');
+  
+  // Update UI THIRD
+  updateUserInfo();
+  initializeProfilePopover();
+  
+  // Setup realtime FOURTH (after user data is ready)
+  console.log('🔧 Setting up realtime connections...');
+  setupRealtimeChat();
+  setupPresenceTracking();
+  
+  // Setup event listeners FIFTH
+  setupEventListeners();
+  
+  // Load data SIXTH
+  await Promise.all([
+    loadMessages(),
+    loadFiles(),
+    loadOnlineMembers(),
+    loadPinnedMessages()
+  ]);
+  
+  updateGamesCount();
+  showWelcomeToast();
+  if (homeLoadingScreen) {
+    setTimeout(() => {
+      homeLoadingScreen.style.opacity = '0';
+      setTimeout(() => {
+        homeLoadingScreen.remove();
+        // Clear the session storage
+        sessionStorage.removeItem('loginSuccess');
+      }, 300);
+    }, 1500); // Show for at least 6.5 seconds
+  }
+  
 } catch (error) {
-console.error('Error initializing app:', error);
-showToast('error', 'Initialization Error', 'Failed to load the application');
+  console.error('Error initializing app:', error);
+  showToast('error', 'Initialization Error', 'Failed to load the application');
+  
+  // ✅ ADD THIS - Hide loading screen on error too  
+  if (homeLoadingScreen) {
+    homeLoadingScreen.remove();
+    sessionStorage.removeItem('loginSuccess');
+  }
 }
 }
 
