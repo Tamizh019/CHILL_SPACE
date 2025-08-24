@@ -82,7 +82,7 @@ async function initializeApp() {
   const { data: { user }, error } = await supabaseClient.auth.getUser();
   if (error || !user) {
     console.error('❌ User authentication failed');
-    window.location.href = 'index.html';
+    window.location.href = '../index.html';
     return;
   }
   
@@ -129,7 +129,7 @@ if (isGoogleLogin && hasEmailIdentity && !user.email_confirmed_at) {
   
   await supabaseClient.auth.signOut();
   setTimeout(() => {
-    window.location.href = 'index.html';
+    window.location.href = '../index.html';
   }, 3000);
   return;
 }
