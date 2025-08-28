@@ -1,6 +1,6 @@
 # Chill Space
 
-**Author: TAMIZHARASAN**  
+**Author: Chill Space Team**  
 *A modern, real-time group chat and file sharing web application built with Supabase.*
 
 ---
@@ -47,6 +47,7 @@ What began as a workaround for network restrictions evolved into a feature-rich 
 
 - **Frontend**: HTML5, CSS3 (Poppins font, custom styles), Vanilla JS
 - **Backend/Realtime**: [Supabase](https://supabase.com/) (Auth, Database, Storage, Realtime)
+- **Dependencies**: [ws](https://github.com/websockets/ws), [bcryptjs](https://github.com/dcodeIO/bcrypt.js)
 - **Live Development**: [live-server](https://www.netlify.com/)
 
 ---
@@ -75,36 +76,63 @@ As a 19-year-old developer and AI student from Chennai, I created Chill Space to
 
 ---
 
+## 🎮 Games
+
+This project includes a collection of games that can be played directly in the browser.
+
+- **Placement:** A placement preparation game.
+- **Quiz:** A quiz game.
+- **Advice:** Get some advice.
+- **Chess:** A classic game of chess.
+- **DSA Solver:** A DSA problem solver.
+- **Snake:** The classic snake game.
+- **Stone Paper Scissor:** A game of stone, paper, scissor.
+- **Tic Tac Toe:** A classic game of Tic Tac Toe.
+- **Typemaster:** A typing speed game.
+- **White:** A game on a white background.
+
 ## 📦 Project Structure
 
 ```
-CHILL_SPACE/
-├── index.html              # Landing/Login page
-├── package.json            # Project metadata & scripts
-├── css/                    # Global and page-specific stylesheets
+.
+├── README.md
+├── config
+│   ├── package.json
+│   └── ...
+├── css
 │   ├── home.css
 │   ├── index.css
 │   └── ...
-├── docs/                   # Documentation
-│   └── README.md           # This file
-├── games/                  # Integrated games collection
-│   ├── chess/
-│   ├── typemaster/
-│   └── ... (9+ game folders)
-├── js/                     # JavaScript modules
-│   ├── home.js             # Main application logic
-│   ├── index.js            # Login/auth logic
+├── docs
+│   ├── README.md
+│   └── SMTP_SETUP_GUIDE.md
+├── games
+│   ├── Placement
+│   ├── Quiz
+│   ├── advice
+│   ├── chess
+│   ├── dsasolver
+│   ├── snake
+│   ├── stonepaper
+│   ├── ttt
+│   ├── typemaster
+│   └── white
+├── index.html
+├── js
+│   ├── home.js
+│   ├── index.js
 │   └── ...
-├── pages/                  # All other HTML pages
-│   ├── home.html           # The main application dashboard
-│   ├── register.html
-│   ├── reset-password.html
-│   └── Maintenance.html
-├── Assets/                 # Shared static assets (images, icons)
-└── workers/                # Service workers
+├── node_modules
+├── pages
+│   ├── Assets
+│   ├── home.html
+│   └── ...
+├── src
+│   ├── firebase-config.js
+│   └── notification.js
+└── workers
     └── firebase-messaging-sw.js
-
-``` 
+```
 
 ---
 
@@ -112,24 +140,36 @@ CHILL_SPACE/
 
 ### 1. Clone the Repo
 
+```bash
+git clone https://github.com/your-username/chill-space.git
+cd chill-space
 ```
-git clone <your-repo-url>
-cd CHILL_SPACE
-```
+
 ### 2. Install Dependencies
-```
+
+```bash
+cd config
 npm install
 ```
+
 ### 3. Configure Supabase
-- Update your Supabase URL and Anon Key in `home.html`, `index.html`, `register.html`, and `reset-password.html` if needed.
-- Set up your Supabase tables: `users`, `messages`, `files` (see schema in code or ask for SQL).
-- (Optional) Configure SMTP for email in Supabase dashboard (see `SMTP_SETUP_GUIDE.md`).
+
+- Create a new project on [Supabase](https://supabase.com/).
+- Go to the **Settings** > **API** section and get your **Project URL** and **anon key**.
+- In the root of the project, update the following files with your Supabase credentials:
+  - `index.html`
+  - `pages/home.html`
+  - `pages/register.html`
+  - `pages/reset-password.html`
+- You will also need to set up the required tables in your Supabase database. You can find the schema in the codebase or ask for the SQL queries.
 
 ### 4. Run Locally
-```
+
+```bash
 npm run dev
 ```
-- Visit [http://localhost:8080](http://localhost:8080) (or the port shown) in your browser.
+
+This will start a live server, and you can access the application at `http://localhost:8080`.
 
 ---
 
@@ -138,7 +178,7 @@ npm run dev
 - **Chat** in real time with all online users during study sessions
 - **Share files** by uploading in the sidebar - perfect for sharing project files, documents, and resources
 - **Send code** by toggling code mode in the chat input - great for sharing solutions and getting help
-- **Pick emojis** to add fun to your messages and keep the mood light during intense study sessions
+- **Pick emojis** to add fun to your messages and and keep the mood light during intense study sessions
 - **Reset your password** via the reset link if needed
 - **Access from anywhere** - works on college computers, personal devices, and restricted networks
 
@@ -238,6 +278,7 @@ npm run dev
 ---
 
 ## ⚠️ License
+
 This project is for educational and personal use. Feel free to fork, modify, and adapt it for your own needs.
 
 ---
