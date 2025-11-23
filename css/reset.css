@@ -416,20 +416,155 @@ footer {
 
 /* --- Responsive --- */
 @media (max-width: 480px) {
+
+    /* Enable scrolling for longer forms */
+    body {
+        overflow-y: auto;
+    }
+
+    /* Simplify cosmic background for better readability */
+    .aurora {
+        opacity: 0.15;
+        filter: blur(100px);
+    }
+
+    .stars {
+        opacity: 0.05;
+    }
+
+    .card-decoration {
+        display: none;
+    }
+
+    /* Full-screen mobile experience */
     .glass-hero {
         border-radius: 0;
         min-height: 100vh;
         max-width: none;
+        border: none;
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: flex-start;
+        padding-top: env(safe-area-inset-top);
     }
 
+    /* Generous mobile padding */
     .hero-content {
-        padding: 24px;
+        padding: 32px 24px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
     }
 
-    .card-decoration {
-        opacity: 0.1;
+    /* Larger, more prominent branding */
+    .reset-header {
+        margin-bottom: 32px;
+    }
+
+    .brand-badge {
+        width: 96px;
+        height: 96px;
+        margin-bottom: 20px;
+    }
+
+    .hero-title {
+        font-size: 1.75rem;
+    }
+
+    .hero-subtitle {
+        font-size: 0.9rem;
+    }
+
+    /* Optimized form spacing */
+    .reset-form {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .input-wrapper {
+        margin-bottom: 20px;
+    }
+
+    .input-label {
+        font-size: 0.75rem;
+        margin-bottom: 6px;
+    }
+
+    /* Larger touch targets */
+    .input-container {
+        height: 52px;
+    }
+
+    .glass-input {
+        font-size: 16px;
+        padding: 0 16px 0 44px;
+    }
+
+    /* Bigger, more tappable button */
+    .cta-button {
+        height: 52px;
+        font-size: 1rem;
+        margin-top: 12px;
+    }
+
+    /* Links and messaging */
+    .back-link {
+        margin-top: 24px;
+        padding-bottom: 24px;
+    }
+
+    .status-message {
+        font-size: 0.85rem;
+    }
+
+    /* Hide footer on mobile forms */
+    footer {
+        display: none;
+    }
+}
+
+/* Extra small devices (iPhone SE, small phones) */
+@media (max-width: 375px) {
+    .hero-content {
+        padding: 28px 20px;
+    }
+
+    .brand-badge {
+        width: 88px;
+        height: 88px;
+    }
+
+    .hero-title {
+        font-size: 1.6rem;
+    }
+}
+
+/* Landscape mobile orientation */
+@media (max-width: 800px) and (orientation: landscape) {
+    .glass-hero {
+        min-height: auto;
+    }
+
+    .brand-badge {
+        width: 64px;
+        height: 64px;
+        margin-bottom: 12px;
+    }
+
+    .reset-header {
+        margin-bottom: 20px;
+    }
+
+    .hero-title {
+        font-size: 1.4rem;
+    }
+
+    .hero-subtitle {
+        font-size: 0.85rem;
+    }
+
+    .input-wrapper {
+        margin-bottom: 14px;
     }
 }
