@@ -56,9 +56,6 @@
       <section class="card chat-container">
         <div class="card-header">
           <h2><i class="fas fa-comments"></i> Group Chat AI-A4 </h2>
-          <button id="enable-notifications" class="btn btn-primary">
-            <i class="fas fa-bell"></i> <span id="notification-text">Enable Notifications</span>
-          </button>
         </div>
 
         <!-- Add this ABOVE the existing chat-messages div -->
@@ -359,7 +356,6 @@
             <div class="game-info">
               <h3 class="game-name">Take a QUIZ</h3>
               <p class="game-description">Challenge your knowledge with high-intensity quizzes across various topics
-                <br><span style="color: #dc2626; font-weight: 600; font-size: 0.95rem; opacity: 0.85; animation: pulseFade 1.5s infinite;">STILL IN DEVELOPMENT ⚠️⚠️</span>
               <div class="game-details">
                 <span class="game-players"><i class="fas fa-users"></i> 1 Player</span>
               </p>
@@ -571,15 +567,15 @@ background:rgba(0,0,0,0.72);backdrop-filter:blur(4px); align-items: center; just
 </div>
 
 <!-- Floating Chatbot Icon -->
-<div class="chatbot-float" id="chatbotFloat">
+<!-- <div class="chatbot-float" id="chatbotFloat">
   <div class="chatbot-icon">
     <i class="fas fa-robot"></i>
   </div>
   <div class="chatbot-tooltip">Ask me anything!</div>
-</div>
+</div> -->
 
 <!-- Chatbot Modal -->
-<div class="chatbot-modal" id="chatbotModal">
+<!-- <div class="chatbot-modal" id="chatbotModal">
   <div class="chatbot-modal-content">
     <div class="chatbot-modal-header">
       <div class="chatbot-modal-title">
@@ -599,72 +595,13 @@ background:rgba(0,0,0,0.72);backdrop-filter:blur(4px); align-items: center; just
       </iframe>
     </div>
   </div>
-</div>
+</div> -->
 
 
   <script src="../js/home.js"></script>
   <script src="../js/emoji.js"></script>
   <script type="module">
-    import { requestNotificationPermission, listenForForegroundMessages } from './src/notification.js';
-  
-    const button = document.getElementById('enable-notifications');
-    const buttonText = document.getElementById('notification-text');
-  
-    // Check current notification permission on page load
-    function updateButtonState() {
-      const permission = Notification.permission;
-      console.log('Current notification permission:', permission);
-  
-      if (permission === 'granted') {
-        button.className = 'btn btn-success';
-        button.innerHTML = '<i class="fas fa-bell"></i> <span>Notifications Enabled ✓</span>';
-        button.disabled = true;
-      } else if (permission === 'denied') {
-        button.className = 'btn btn-danger';
-        button.innerHTML = '<i class="fas fa-bell-slash"></i> <span>Notifications Blocked ✗</span>';
-        button.disabled = true;
-      } else {
-        button.className = 'btn btn-primary';
-        button.innerHTML = '<i class="fas fa-bell"></i> <span>Enable Notifications</span>';
-        button.disabled = false;
-      }
-    }
-  
-    // Update button state on page load
-    updateButtonState();
-  
-    // Button click handler
-    button.addEventListener('click', async () => {
-      console.log('🔔 Notification button clicked!');
-  
-      // Show loading state
-      button.disabled = true;
-      button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Requesting...</span>';
-  
-      try {
-        const token = await requestNotificationPermission();
-  
-        if (token) {
-          console.log('✅ FCM Token received:', token);
-          console.log('🎯 FCM TOKEN:', token); // 👈 This is the line you wanted
-          alert('🔔 Notifications enabled successfully!\nYou can now receive push notifications.');
-        } else {
-          console.log('❌ Permission denied or failed');
-          alert('❌ Notification permission denied or failed.');
-        }
-      } catch (error) {
-        console.error('❌ Error requesting notifications:', error);
-        alert('❌ Error: ' + error.message);
-      }
-  
-      // Update button state based on final permission
-      updateButtonState();
-    });
-  
-    // Start listening for foreground messages
-    listenForForegroundMessages();
-  
-    console.log('🔔 Notification setup completed');
+
     // Click avatar to open (mobile)
 document.getElementById('mobileAvatar').addEventListener('click', function() {
   // Fallback values in case profile isn't loaded yet
@@ -692,8 +629,5 @@ document.getElementById('mobileProfileModal').addEventListener('click', function
 });
 
   </script>
-  
-  
-
 </body>
 </html>

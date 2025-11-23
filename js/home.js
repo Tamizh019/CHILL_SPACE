@@ -10,18 +10,11 @@ let presenceChannel = null;
 let onlineUsers = new Set();
 let isUserAdmin = false;
 let messageToDelete = null;
-// ✅ ADD THIS LINE - Declare typingTimer globally
 let typingTimer;
 
-// FCM Service Worker Registration - ADD THIS NEAR THE TOP
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/workers/firebase-messaging-sw.js')
-    .then(reg => console.log('FCM SW registered:', reg.scope))
-    .catch(err => console.error('FCM SW registration failed:', err));
-}
 
-// ✅ Also ensure usersTyping is declared
 const usersTyping = {};
+
 // Initialize Supabase
 function initializeSupabase() {
   if (typeof supabase !== 'undefined') {
@@ -44,12 +37,10 @@ if (!initializeSupabase()) {
 }
 
 async function initializeApp() {
-  // ✅ ADD THIS - Check for login loading screen
   const loginSuccess = sessionStorage.getItem('loginSuccess');
   let homeLoadingScreen = null;
   
   if (loginSuccess === 'true') {
-    // Show loading screen on home page
     const loadingHTML = `
       <div id="homeLoadingScreen" class="loading-overlay" style="display: flex;">
         <div class="loading-container">
@@ -78,363 +69,248 @@ async function initializeApp() {
   try {
     console.log('🚀 Starting app initialization...');
   
-  // Get current user FIRST
-  const { data: { user }, error } = await supabaseClient.auth.getUser();
-  if (error || !user) {
-    console.error('❌ User authentication failed');
-    window.location.href = 'index.html';
-    return;
-  }
-  
-  currentUser = user;
-  console.log('✅ User authenticated:', currentUser.id);
-  
-  // Get user profile SECOND
-  const { data: profile, error: profileError } = await supabaseClient
-    .from('users')
-    .select('username, role, email, dob, avatar_url')
-    .eq('id', user.id)
-    .single();
-  
-  if (profileError) {
-    console.error('Profile fetch error:', profileError);
-    currentProfile = {
-      username: user.user_metadata?.username || user.email?.split('@')[0] || 'User',
-      role: 'user',
-      email: user.email
-    };
-  } else {
-    currentProfile = profile;
-  }
-  
-  console.log('✅ Profile loaded:', currentProfile.username);
-  
-// ✅ Enhanced OAuth verification check in initializeApp()
-console.log('🔐 Checking OAuth verification status...');
-
-// Get all user identities to check for email/password signup
-const { data: identities, error: identitiesError } = await supabaseClient
-  .from('auth.identities')
-  .select('provider')
-  .eq('user_id', user.id);
-
-const isGoogleLogin = user.app_metadata.provider === 'google';
-const hasEmailIdentity = identities?.some(id => id.provider === 'email') || 
-                         user.identities?.some(id => id.provider === 'email');
-
-// Check if user signed up with email first but hasn't verified
-if (isGoogleLogin && hasEmailIdentity && !user.email_confirmed_at) {
-  console.log('❌ Google user with unverified email detected');
-  showToast('error', 'Verification Required', '⚠️ Please verify your email first before using Google login!', 5000);
-  
-  await supabaseClient.auth.signOut();
-  setTimeout(() => {
-    window.location.href = 'index.html';
-  }, 3000);
-  return;
-}
-
-  
-  console.log('✅ OAuth verification check passed');
-  
-  // Update UI THIRD
-  updateUserInfo();
-  initializeProfilePopover();
-  
-  // Setup realtime FOURTH (after user data is ready)
-  console.log('🔧 Setting up realtime connections...');
-  setupRealtimeChat();
-  setupPresenceTracking();
-  
-  // Setup event listeners FIFTH
-  setupEventListeners();
-  
-  // Load data SIXTH
-  await Promise.all([
-    loadMessages(),
-    loadFiles(),
-    loadOnlineMembers(),
-    loadPinnedMessages()
-  ]);
-  
-  updateGamesCount();
-  showWelcomeToast();
-  if (homeLoadingScreen) {
-    setTimeout(() => {
-      homeLoadingScreen.style.opacity = '0';
-      setTimeout(() => {
-        homeLoadingScreen.remove();
-        // Clear the session storage
-        sessionStorage.removeItem('loginSuccess');
-      }, 300);
-    }, 1500); // Show for at least 6.5 seconds
-  }
-  
-} catch (error) {
-  console.error('Error initializing app:', error);
-  showToast('error', 'Initialization Error', 'Failed to load the application');
-  
-  // ✅ ADD THIS - Hide loading screen on error too  
-  if (homeLoadingScreen) {
-    homeLoadingScreen.remove();
-    sessionStorage.removeItem('loginSuccess');
-  }
-}
-}
-
-// ===== CORRECTED CHATBOT MODAL FUNCTIONALITY =====
-
-function openChatbot() {
-  console.log('🤖 Opening chatbot modal...');
-  
-  const modal = document.getElementById('chatbotModal');
-  const iframe = document.getElementById('chatbotIframe');
-  
-  if (!modal || !iframe) {
-    console.error('❌ Chatbot elements not found in HTML');
-    alert('❌ Chatbot is currently unavailable. Please try again later.');
-    return;
-  }
-  
-  // Set your chatbot URL
-  iframe.src = "https://chillspacechatbot-production.up.railway.app/";
-  
-  // Show modal
-  modal.classList.add('open');
-  document.body.classList.add('chatbot-modal-open');
-  
-  // Add escape key listener
-  document.addEventListener('keydown', handleChatbotEscape);
-  
-  console.log('✅ Chatbot modal opened');
-}
-
-function closeChatbot() {
-  console.log('🤖 Closing chatbot modal...');
-  
-  const modal = document.getElementById('chatbotModal');
-  const iframe = document.getElementById('chatbotIframe');
-  
-  if (modal) {
-    modal.classList.remove('open');
-  }
-  
-  document.body.classList.remove('chatbot-modal-open');
-  
-  // Clear iframe source after a short delay for smooth animation
-  setTimeout(() => {
-    if (iframe) {
-      iframe.src = "about:blank";
+    // Get current user FIRST
+    const { data: { user }, error } = await supabaseClient.auth.getUser();
+    if (error || !user) {
+      console.error('❌ User authentication failed');
+      window.location.href = '../index.html';
+      return;
     }
-  }, 300);
-  
-  // Remove escape key listener
-  document.removeEventListener('keydown', handleChatbotEscape);
-  
-  console.log('✅ Chatbot modal closed');
+    
+    currentUser = user;
+    console.log('✅ User authenticated:', currentUser.id);
+    
+    // Get user profile SECOND
+    const { data: profile, error: profileError } = await supabaseClient
+      .from('users')
+      .select('username, role, email, dob, avatar_url')
+      .eq('id', user.id)
+      .single();
+    
+    if (profileError) {
+      console.error('Profile fetch error:', profileError);
+      currentProfile = {
+        username: user.user_metadata?.username || user.email?.split('@')[0] || 'User',
+        role: 'user',
+        email: user.email
+      };
+    } else {
+      currentProfile = profile;
+    }
+    
+    console.log('✅ Profile loaded:', currentProfile.username);
+    
+    // Enhanced OAuth verification check
+    console.log('🔐 Checking OAuth verification status...');
+
+    // Get all user identities to check for email/password signup
+    const { data: identities, error: identitiesError } = await supabaseClient
+      .from('auth.identities')
+      .select('provider')
+      .eq('user_id', user.id);
+
+    const isGoogleLogin = user.app_metadata.provider === 'google';
+    const hasEmailIdentity = identities?.some(id => id.provider === 'email') || 
+                             user.identities?.some(id => id.provider === 'email');
+
+    // Check if user signed up with email first but hasn't verified
+    if (isGoogleLogin && hasEmailIdentity && !user.email_confirmed_at) {
+      console.log('❌ Google user with unverified email detected');
+      showToast('error', 'Verification Required', '⚠️ Please verify your email first before using Google login!', 5000);
+      
+      await supabaseClient.auth.signOut();
+      setTimeout(() => {
+        window.location.href = '../index.html';
+      }, 3000);
+      return;
+    }
+    
+    console.log('✅ OAuth verification check passed');
+    
+    // Update UI THIRD
+    updateUserInfo();
+    initializeProfilePopover();
+    
+    // Setup realtime FOURTH
+    console.log('🔧 Setting up realtime connections...');
+    setupRealtimeChat();
+    setupPresenceTracking();
+    
+    // Setup event listeners FIFTH
+    setupEventListeners();
+    
+    // Load data SIXTH
+    await Promise.all([
+      loadMessages(),
+      loadFiles(),
+      loadOnlineMembers(),
+      loadPinnedMessages()
+    ]);
+    
+    updateGamesCount();
+    showWelcomeToast();
+    
+    if (homeLoadingScreen) {
+      setTimeout(() => {
+        homeLoadingScreen.style.opacity = '0';
+        setTimeout(() => {
+          homeLoadingScreen.remove();
+          sessionStorage.removeItem('loginSuccess');
+        }, 300);
+      }, 1500);
+    }
+    
+  } catch (error) {
+    console.error('Error initializing app:', error);
+    showToast('error', 'Initialization Error', 'Failed to load the application');
+    
+    if (homeLoadingScreen) {
+      homeLoadingScreen.remove();
+      sessionStorage.removeItem('loginSuccess');
+    }
+  }
 }
 
-function handleChatbotEscape(e) {
-  if (e.key === 'Escape') {
-    closeChatbot();
-  }
-}
-
-function initializeChatbotListeners() {
-  console.log('🤖 Initializing chatbot listeners...');
-  
-  const chatbotFloat = document.getElementById('chatbotFloat');
-  const closeChatbotBtn = document.getElementById('closeChatbot');
-  const chatbotModal = document.getElementById('chatbotModal');
-  
-  if (chatbotFloat) {
-    chatbotFloat.removeEventListener('click', openChatbot);
-    chatbotFloat.addEventListener('click', openChatbot);
-    console.log('✅ Chatbot float button listener added');
-  } else {
-    console.error('❌ chatbotFloat element not found in HTML');
-  }
-  
-  if (closeChatbotBtn) {
-    closeChatbotBtn.removeEventListener('click', closeChatbot);
-    closeChatbotBtn.addEventListener('click', closeChatbot);
-    console.log('✅ Close chatbot button listener added');
-  } else {
-    console.error('❌ closeChatbot button not found in HTML');
-  }
-  
-  if (chatbotModal) {
-    chatbotModal.removeEventListener('click', handleModalOutsideClick);
-    chatbotModal.addEventListener('click', handleModalOutsideClick);
-    console.log('✅ Modal outside click listener added');
-  }
-  
-  console.log('✅ Chatbot system initialized');
-}
-
-function handleModalOutsideClick(e) {
-  const chatbotModal = document.getElementById('chatbotModal');
-  if (e.target === chatbotModal) {
-    closeChatbot();
-  }
-}
-
-// Initialize when DOM is ready
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initializeChatbotListeners);
-} else {
-  initializeChatbotListeners();
-}
 // ===== PIN MESSAGES FUNCTIONALITY =====
 // Check if user can pin messages
 function canPinMessages() {
-const userRole = currentProfile?.role || 'user';
-return userRole === 'admin' || userRole === 'moderator';
+  const userRole = currentProfile?.role || 'user';
+  return userRole === 'admin' || userRole === 'moderator';
 }
 
 // Pin/Unpin message
 async function togglePinMessage(messageId, isPinned = false) {
-if (!canPinMessages()) {
-showToast('error', 'Permission Denied', 'Only moderators and admins can pin messages');
-return;
-}
+  if (!canPinMessages()) {
+    showToast('error', 'Permission Denied', 'Only moderators and admins can pin messages');
+    return;
+  }
 
-// Add loading state
-const pinBtn = document.querySelector(`[onclick*="togglePinMessage('${messageId}'"]`);
-if (pinBtn) {
-pinBtn.disabled = true;
-pinBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-}
+  const pinBtn = document.querySelector(`[onclick*="togglePinMessage('${messageId}'"]`);
+  if (pinBtn) {
+    pinBtn.disabled = true;
+    pinBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+  }
 
-try {
-const updateData = {
-  pinned: !isPinned,
-  pinned_at: !isPinned ? new Date().toISOString() : null,
-  pinned_by_username: !isPinned ? currentProfile?.username : null
-};
+  try {
+    const updateData = {
+      pinned: !isPinned,
+      pinned_at: !isPinned ? new Date().toISOString() : null,
+      pinned_by_username: !isPinned ? currentProfile?.username : null
+    };
 
-const { error } = await supabaseClient
-  .from('messages')
-  .update(updateData)
-  .eq('id', messageId);
+    const { error } = await supabaseClient
+      .from('messages')
+      .update(updateData)
+      .eq('id', messageId);
 
-if (error) throw error;
+    if (error) throw error;
 
-const action = !isPinned ? 'pinned' : 'unpinned';
-showToast('success', 'Message ' + action, `Message ${action} successfully!`);
+    const action = !isPinned ? 'pinned' : 'unpinned';
+    showToast('success', 'Message ' + action, `Message ${action} successfully!`);
 
-// Don't manually reload - let the realtime listener handle it
+  } catch (error) {
+    console.error('Error toggling pin:', error);
+    showToast('error', 'Pin Failed', 'Could not update message pin status');
 
-} catch (error) {
-console.error('Error toggling pin:', error);
-showToast('error', 'Pin Failed', 'Could not update message pin status');
-
-// Restore button state on error
-if (pinBtn) {
-  pinBtn.innerHTML = '<i class="fas fa-thumbtack"></i>';
-  pinBtn.disabled = false;
-}
-}
-}
-
-
-// Load pinned messages
-async function loadPinnedMessages() {
-try {
-const { data: pinnedMessages, error } = await supabaseClient
-  .from('messages')
-  .select('*')
-  .eq('pinned', true)
-  .order('pinned_at', { ascending: false })
-  .limit(5);
-
-if (error) throw error;
-
-const pinnedSection = document.getElementById('pinnedMessagesSection');
-const pinnedContainer = document.getElementById('pinnedMessages');
-
-if (!pinnedMessages || pinnedMessages.length === 0) {
-  pinnedSection.style.display = 'none';
-  return;
-}
-
-// Show pinned section
-pinnedSection.style.display = 'block';
-pinnedContainer.innerHTML = '';
-
-// Get user profiles for pinned messages
-const userIds = [...new Set(pinnedMessages.map(msg => msg.user_id))];
-let userProfiles = {};
-
-if (userIds.length > 0) {
-  const { data: profiles } = await supabaseClient
-    .from('users')
-    .select('id, username, email, role, avatar_url')
-    .in('id', userIds);
-
-  if (profiles) {
-    profiles.forEach(profile => {
-      userProfiles[profile.id] = profile;
-    });
+    if (pinBtn) {
+      pinBtn.innerHTML = '<i class="fas fa-thumbtack"></i>';
+      pinBtn.disabled = false;
+    }
   }
 }
 
-// Render pinned messages
-// Render pinned messages - SIMPLIFIED VERSION
-pinnedMessages.forEach(msg => {
-const profile = userProfiles[msg.user_id];
-const senderName = profile?.username || profile?.email?.split('@')[0] || 'Unknown';
-const senderRole = profile?.role || 'user';
-const avatarUrl = profile?.avatar_url || 'Assets/pfp2.jpg';
+// Load pinned messages
+async function loadPinnedMessages() {
+  try {
+    const { data: pinnedMessages, error } = await supabaseClient
+      .from('messages')
+      .select('*')
+      .eq('pinned', true)
+      .order('pinned_at', { ascending: false })
+      .limit(5);
 
-const pinnedElement = document.createElement('div');
-pinnedElement.className = 'pinned-message';
-pinnedElement.innerHTML = `
-<div class="pinned-user-info">
-  <img src="${avatarUrl}" alt="${senderName}">
-  <span class="pinned-username">${senderName}</span>
-  <span class="user-role role-${senderRole} pinned-role">
-    ${getRoleEmoji(senderRole)}
-  </span>
-</div>
-<div class="pinned-content" title="${msg.content}">
-  ${formatMessage(msg.content)}
-</div>
-${canPinMessages() ? `
-  <div class="pinned-actions">
-    <button class="unpin-btn" onclick="togglePinMessage('${msg.id}', true)" title="Unpin message">
-      <i class="fas fa-times"></i>
-    </button>
-  </div>
-` : ''}
-`;
+    if (error) throw error;
 
-pinnedContainer.appendChild(pinnedElement);
-});
+    const pinnedSection = document.getElementById('pinnedMessagesSection');
+    const pinnedContainer = document.getElementById('pinnedMessages');
 
+    if (!pinnedMessages || pinnedMessages.length === 0) {
+      pinnedSection.style.display = 'none';
+      return;
+    }
 
-} catch (error) {
-console.error('Error loading pinned messages:', error);
-}
+    pinnedSection.style.display = 'block';
+    pinnedContainer.innerHTML = '';
+
+    // Get user profiles for pinned messages
+    const userIds = [...new Set(pinnedMessages.map(msg => msg.user_id))];
+    let userProfiles = {};
+
+    if (userIds.length > 0) {
+      const { data: profiles } = await supabaseClient
+        .from('users')
+        .select('id, username, email, role, avatar_url')
+        .in('id', userIds);
+
+      if (profiles) {
+        profiles.forEach(profile => {
+          userProfiles[profile.id] = profile;
+        });
+      }
+    }
+
+    // Render pinned messages
+    pinnedMessages.forEach(msg => {
+      const profile = userProfiles[msg.user_id];
+      const senderName = profile?.username || profile?.email?.split('@')[0] || 'Unknown';
+      const senderRole = profile?.role || 'user';
+      const avatarUrl = profile?.avatar_url || 'Assets/pfp2.jpg';
+
+      const pinnedElement = document.createElement('div');
+      pinnedElement.className = 'pinned-message';
+      pinnedElement.innerHTML = `
+        <div class="pinned-user-info">
+          <img src="${avatarUrl}" alt="${senderName}">
+          <span class="pinned-username">${senderName}</span>
+          <span class="user-role role-${senderRole} pinned-role">
+            ${getRoleEmoji(senderRole)}
+          </span>
+        </div>
+        <div class="pinned-content" title="${msg.content}">
+          ${formatMessage(msg.content)}
+        </div>
+        ${canPinMessages() ? `
+          <div class="pinned-actions">
+            <button class="unpin-btn" onclick="togglePinMessage('${msg.id}', true)" title="Unpin message">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        ` : ''}
+      `;
+
+      pinnedContainer.appendChild(pinnedElement);
+    });
+
+  } catch (error) {
+    console.error('Error loading pinned messages:', error);
+  }
 }
 
 // Toggle pinned messages visibility
 function togglePinnedMessages() {
-const pinnedMessages = document.getElementById('pinnedMessages');
-const toggleBtn = document.getElementById('togglePinnedBtn');
+  const pinnedMessages = document.getElementById('pinnedMessages');
+  const toggleBtn = document.getElementById('togglePinnedBtn');
 
-if (pinnedMessages.classList.contains('collapsed')) {
-pinnedMessages.classList.remove('collapsed');
-toggleBtn.innerHTML = '<i class="fas fa-chevron-up"></i> Hide';
-} else {
-pinnedMessages.classList.add('collapsed');
-toggleBtn.innerHTML = '<i class="fas fa-chevron-down"></i> Show';
+  if (pinnedMessages.classList.contains('collapsed')) {
+    pinnedMessages.classList.remove('collapsed');
+    toggleBtn.innerHTML = '<i class="fas fa-chevron-up"></i> Hide';
+  } else {
+    pinnedMessages.classList.add('collapsed');
+    toggleBtn.innerHTML = '<i class="fas fa-chevron-down"></i> Show';
+  }
 }
-}
-
 
 // ===== SIMPLIFIED TEXT ANIMATION =====
-
 /* === Title typed once === */
 function typeOnce(el, text, i = 0) {
 if (i < text.length) {
@@ -784,9 +660,6 @@ console.log('✅ File input listener added');
 } else {
 console.error('❌ fileInput not found');
 }
-
-
-
 // Confirm dialog close on click outside
 const confirmDialog = document.getElementById('confirmDialog');
 if (confirmDialog) {
@@ -812,8 +685,6 @@ if (e.key === 'Escape') {
 
 }
 });
-initializeChatbotListeners();
-
 console.log('✅ All event listeners setup completed');
 }
 

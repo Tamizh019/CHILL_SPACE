@@ -1,68 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chill Space | Register</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link rel="icon" href="Assets/logo1.svg" type="image/x-icon">
-    <link rel="stylesheet" href="../css/register.css">
-
+    <link rel="icon" href="../Assets/logo1.svg" type="image/x-icon">
+    <!-- Reusing the main CSS for consistent design -->
+    <link rel="stylesheet" href="../css/index.css">
 </head>
-<body> 
-    <div id="particles-js"></div>
-    
-    <div class="floating-elements">
-        <div class="floating-element violet" style="top:-150px; left:-150px; width:400px; height:400px;"></div>
-        <div class="floating-element violet" style="bottom:-100px; right:-100px; width:350px; height:350px;"></div>
-        <div class="floating-element accent" style="top:100px; right:-100px; width:250px; height:250px; background:radial-gradient(circle, var(--accent), transparent 70%);"></div>
-        <div class="floating-element accent" style="bottom:150px; left:-100px; width:220px; height:220px; background:radial-gradient(circle, var(--accent), transparent 70%);"></div>
+
+<body>
+    <!-- Cosmic Background -->
+    <div class="cosmic-bg">
+        <div id="particles-js"></div>
+        <div class="aurora aurora-1"></div>
+        <div class="aurora aurora-2"></div>
+        <div class="stars"></div>
     </div>
-    
-    <div class="register-container">
-        <div class="header">
-            <div class="logo-wrapper">
-                <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#09090f"/><path d="M30 40 L50 20 L70 40 L60 60 L40 60 Z" fill="#8a2be2"/><circle cx="50" cy="45" r="10" fill="#2be2d7"/></svg>
+
+    <!-- Main Layout Container -->
+    <main class="main-container">
+
+        <!-- Glass Hero Card -->
+        <div class="glass-hero">
+            <div class="hero-content">
+
+                <!-- Header Section -->
+                <header class="login-header">
+                    <div class="brand-badge">
+                        <div class="badge-glow"></div>
+                        <svg class="brand-icon" viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="45" fill="#09090F" />
+                            <path d="M30 40 L50 20 L70 40 L60 60 L40 60 Z" fill="#8A2BE2" />
+                            <circle cx="50" cy="45" r="10" fill="#2BE2D7" />
+                        </svg>
+                    </div>
+                    <h1 class="hero-title">Join the Crew</h1>
+                    <p class="hero-subtitle">Start your digital journey</p>
+                </header>
+
+                <!-- Register Form -->
+                <form id="registerForm" class="login-form">
+
+                    <div class="input-wrapper">
+                        <label for="username" class="input-label">Username</label>
+                        <div class="input-container">
+                            <i class="input-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                            </i>
+                            <input type="text" id="username" class="glass-input" placeholder="Pick a cool name" required
+                                autocomplete="username">
+                            <div class="input-border"></div>
+                        </div>
+                    </div>
+
+                    <div class="input-wrapper">
+                        <label for="email" class="input-label">Email Address</label>
+                        <div class="input-container">
+                            <i class="input-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path
+                                        d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
+                                    </path>
+                                    <polyline points="22,6 12,13 2,6"></polyline>
+                                </svg>
+                            </i>
+                            <input type="email" id="email" class="glass-input" placeholder="name@example.com" required
+                                autocomplete="email">
+                            <div class="input-border"></div>
+                        </div>
+                    </div>
+
+                    <div class="input-wrapper">
+                        <label for="password" class="input-label">Password</label>
+                        <div class="input-container">
+                            <i class="input-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                </svg>
+                            </i>
+                            <input type="password" id="password" class="glass-input"
+                                placeholder="Create a strong password" required autocomplete="new-password">
+                            <div class="input-border"></div>
+                        </div>
+                    </div>
+
+                    <div class="input-wrapper">
+                        <label for="confirmPassword" class="input-label">Confirm Password</label>
+                        <div class="input-container">
+                            <i class="input-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                    <path d="M15 11v-4"></path>
+                                </svg>
+                            </i>
+                            <input type="password" id="confirmPassword" class="glass-input"
+                                placeholder="Repeat password" required autocomplete="new-password">
+                            <div class="input-border"></div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="cta-button">
+                        <span class="btn-text">Create Account</span>
+                        <div class="btn-shine"></div>
+                    </button>
+
+                    <div id="registerMessage" class="status-message"></div>
+
+                    <p class="register-prompt">
+                        Already have an account? <a href="../index.html" class="register-link">Log in</a>
+                    </p>
+                </form>
             </div>
-            <div class="title">Join Chill Space</div>
-            <div class="subtitle">Ready to be part of the crew? 🚀</div>
+
+            <!-- Decorative Elements -->
+            <div class="card-decoration top-right"></div>
+            <div class="card-decoration bottom-left"></div>
         </div>
-        
-        <form id="registerForm">
-            <div class="form-group">
-                <label for="username">Name</label>
-                <input type="text" id="username" placeholder="Your cool name" required>
-            </div>
-            
-            <div class="form-group">
-                <label>Your Email</label>
-                <input type="email" id="email" placeholder="What's your email?" required>
-            </div>
-            
-            <div class="form-group">
-                <label>Create Password</label>
-                <input type="password" id="password" placeholder="Pick a strong password 🔒" required>
-            </div>
-            
-            <div class="form-group">
-                <label>Confirm Password</label>
-                <input type="password" id="confirmPassword" placeholder="Confirm it again!" required>
-            </div>
-            
-            <button class="submit-btn">Create account</button>
-            
-            <div id="registerMessage" class="status-message"></div>
-            
-            <a href="../index.html" class="new">Already here? → Log back in 😊</a>
-        </form>
-    </div>
-    
-    <footer>2025 © Chill Space - Tamizh</footer>   
-    
-<script src="../js/register.js"></script>
+    </main>
+
+    <footer>
+        2025 © Chill Space - Tamizh
+    </footer>
+    <script src="../js/register.js"></script>
 </body>
+
 </html>

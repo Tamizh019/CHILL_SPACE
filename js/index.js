@@ -1,13 +1,13 @@
 // Particle.js configuration (keep as is)
-window.addEventListener('load', function() {
+window.addEventListener('load', function () {
     particlesJS("particles-js", {
         particles: {
-            number: { 
+            number: {
                 value: window.innerWidth < 768 ? 80 : 150,
-                density: { enable: true, value_area: 1200 } 
+                density: { enable: true, value_area: 1200 }
             },
             color: { value: ["#ffffff", "#f0f8ff", "#e6f3ff", "#ffd700"] },
-            shape: { 
+            shape: {
                 type: "star",
                 stroke: { width: 0, color: "#000000" },
                 polygon: { nb_sides: 5 }
@@ -148,19 +148,19 @@ function showLoadingScreenWithQuote() {
     const loadingOverlay = document.getElementById('loadingOverlay');
     const quoteText = document.getElementById('quoteText');
     const quoteAuthor = document.getElementById('quoteAuthor');
-    
+
     if (!loadingOverlay) {
         console.error('Loading overlay not found!');
         return;
     }
-    
+
     // Select random quote
     const randomQuote = inspirationalQuotes[Math.floor(Math.random() * inspirationalQuotes.length)];
-    
+
     // Update quote content
     if (quoteText) quoteText.textContent = `"${randomQuote.text}"`;
     if (quoteAuthor) quoteAuthor.textContent = `— ${randomQuote.author}`;
-    
+
     // Show loading screen
     loadingOverlay.style.display = 'flex';
     loadingOverlay.style.opacity = '1';
@@ -179,62 +179,74 @@ function hideLoadingScreen() {
 // ✅ FIXED: Login Form Handler
 document.getElementById('loginForm').addEventListener('submit', async (e) => {
     e.preventDefault();
-    
+
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value;
     const messageEl = document.getElementById('loginMessage');
     const loginBtn = document.querySelector('#loginForm button[type="submit"]');
-    
+
     // Reset message
     messageEl.style.display = 'none';
-    
+
     // Disable login button
     const originalText = loginBtn.textContent;
     loginBtn.disabled = true;
     loginBtn.textContent = 'Logging in...';
-    
+
     try {
         console.log('Attempting login with:', email); // Debug log
-        
-        const { data, error } = await supabase.auth.signInWithPassword({ 
-            email, 
-            password 
+
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email,
+            password
         });
-        
+
         if (error) {
             console.error('Login error:', error);
             showMessage(messageEl, error.message, 'error');
+
+            // Trigger Shake Animation
+            const glassHero = document.querySelector('.glass-hero');
+            glassHero.classList.add('error-shake');
+            setTimeout(() => glassHero.classList.remove('error-shake'), 500);
+
             loginBtn.disabled = false;
             loginBtn.textContent = originalText;
             return;
         }
-        
+
         console.log('Login successful:', data); // Debug log
-        
+
         if (!data.user.email_confirmed_at) {
             showMessage(messageEl, 'Please verify your email before logging in.', 'error');
             loginBtn.disabled = false;
             loginBtn.textContent = originalText;
             return;
         }
-        
+
         // ✅ SUCCESS: Show loading screen immediately
         showLoadingScreenWithQuote();
-        
-        // Dim the login form
-        document.querySelector('.login-container').style.opacity = '0.3';
-        
+
+        // Dim the login form (Fixed selector)
+        document.querySelector('.glass-hero').style.opacity = '0.3';
+
         // Set session storage flag
         sessionStorage.setItem('loginSuccess', 'true');
-        
+
         // Redirect to home page after loading screen duration
         setTimeout(() => {
             window.location.href = 'pages/home.html';
         }, 3500); // 3.5 seconds to enjoy the loading screen
-        
+
     } catch (error) {
         console.error('Unexpected login error:', error);
         showMessage(messageEl, 'An unexpected error occurred. Please try again.', 'error');
+
+        // Trigger Shake Animation
+        const glassHero = document.querySelector('.glass-hero');
+        glassHero.classList.add('error-shake');
+        setTimeout(() => glassHero.classList.remove('error-shake'), 500);
+
         loginBtn.disabled = false;
         loginBtn.textContent = originalText;
     }
@@ -268,11 +280,11 @@ function hideForgotPasswordModal() {
 // Handle forgot password form submission
 document.getElementById('forgotPasswordForm').addEventListener('submit', async (e) => {
     e.preventDefault();
-    
+
     const email = document.getElementById('resetEmail').value.trim();
     const resetBtn = document.getElementById('resetBtn');
     const resetMessage = document.getElementById('resetMessage');
-    
+
     if (!email) {
         showMessage(resetMessage, 'Please enter your email address', 'error');
         return;
@@ -280,12 +292,12 @@ document.getElementById('forgotPasswordForm').addEventListener('submit', async (
 
     resetBtn.disabled = true;
     resetBtn.textContent = 'Sending...';
-    
+
     try {
         const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
             redirectTo: 'https://tamizh-loginpage.netlify.app/pages/reset-password.html'
         });
-        
+
         if (error) {
             showMessage(resetMessage, error.message, 'error');
         } else {
@@ -302,7 +314,7 @@ document.getElementById('forgotPasswordForm').addEventListener('submit', async (
 });
 
 // Close modal when clicking outside
-document.getElementById('forgotPasswordModal').addEventListener('click', function(e) {
+document.getElementById('forgotPasswordModal').addEventListener('click', function (e) {
     if (e.target === this) {
         hideForgotPasswordModal();
     }
@@ -313,7 +325,7 @@ function showMessage(element, text, type) {
     element.textContent = text;
     element.className = type;
     element.style.display = 'block';
-    
+
     if (type === 'success') {
         setTimeout(() => {
             element.style.display = 'none';
