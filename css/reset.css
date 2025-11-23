@@ -417,111 +417,53 @@ footer {
 /* --- Responsive --- */
 @media (max-width: 480px) {
 
-    /* Enable scrolling for longer forms */
-    body {
-        overflow-y: auto;
-    }
+/* Optimized form spacing */
+.reset-form {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
 
-    /* Simplify cosmic background for better readability */
-    .aurora {
-        opacity: 0.15;
-        filter: blur(100px);
-    }
+.input-wrapper {
+    margin-bottom: 20px;
+}
 
-    .stars {
-        opacity: 0.05;
-    }
+.input-label {
+    font-size: 0.75rem;
+    margin-bottom: 6px;
+}
 
-    .card-decoration {
-        display: none;
-    }
+/* Larger touch targets */
+.input-container {
+    height: 52px;
+}
 
-    /* Full-screen mobile experience */
-    .glass-hero {
-        border-radius: 0;
-        min-height: 100vh;
-        max-width: none;
-        border: none;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        padding-top: env(safe-area-inset-top);
-    }
+.glass-input {
+    font-size: 16px;
+    padding: 0 16px 0 44px;
+}
 
-    /* Generous mobile padding */
-    .hero-content {
-        padding: 32px 24px;
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-    }
+/* Bigger, more tappable button */
+.cta-button {
+    height: 52px;
+    font-size: 1rem;
+    margin-top: 12px;
+}
 
-    /* Larger, more prominent branding */
-    .reset-header {
-        margin-bottom: 32px;
-    }
+/* Links and messaging */
+.back-link {
+    margin-top: 24px;
+    padding-bottom: 24px;
+}
 
-    .brand-badge {
-        width: 96px;
-        height: 96px;
-        margin-bottom: 20px;
-    }
+.status-message {
+    font-size: 0.85rem;
+}
 
-    .hero-title {
-        font-size: 1.75rem;
-    }
-
-    .hero-subtitle {
-        font-size: 0.9rem;
-    }
-
-    /* Optimized form spacing */
-    .reset-form {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .input-wrapper {
-        margin-bottom: 20px;
-    }
-
-    .input-label {
-        font-size: 0.75rem;
-        margin-bottom: 6px;
-    }
-
-    /* Larger touch targets */
-    .input-container {
-        height: 52px;
-    }
-
-    .glass-input {
-        font-size: 16px;
-        padding: 0 16px 0 44px;
-    }
-
-    /* Bigger, more tappable button */
-    .cta-button {
-        height: 52px;
-        font-size: 1rem;
-        margin-top: 12px;
-    }
-
-    /* Links and messaging */
-    .back-link {
-        margin-top: 24px;
-        padding-bottom: 24px;
-    }
-
-    .status-message {
-        font-size: 0.85rem;
-    }
-
-    /* Hide footer on mobile forms */
-    footer {
-        display: none;
-    }
+/* Hide footer on mobile forms */
+footer {
+    display: none;
+}
 }
 
 /* Extra small devices (iPhone SE, small phones) */
