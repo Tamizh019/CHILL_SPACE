@@ -148,7 +148,6 @@ cd chill-space
 ### 2. Install Dependencies
 
 ```bash
-cd config
 npm install
 ```
 
