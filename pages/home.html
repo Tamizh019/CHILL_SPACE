@@ -280,6 +280,51 @@
     margin: 0;
   }
 }
+@media (max-width: 480px) {
+  .chatbot-modal-header {
+    padding: 10px 12px !important;
+    background: rgba(15, 23, 42, 1) !important; /* Fully opaque */
+    display: flex !important; /* Force display */
+    visibility: visible !important; /* Force visible */
+    opacity: 1 !important; /* Force opaque */
+    position: sticky !important; /* Stick to top */
+    top: 0 !important;
+    z-index: 10001 !important; /* Above everything */
+  }
+  .chatbot-modal-close {
+    padding: 10px !important;
+    width: 44px !important;  /* Larger touch target */
+    height: 44px !important; /* Apple recommends 44x44px */
+    border-radius: 50% !important;
+    background: rgba(239, 68, 68, 0.4) !important; /* Bright red */
+    border: 2px solid #ef4444 !important; /* Solid border */
+    font-size: 0 !important;
+    position: relative !important;
+    z-index: 10002 !important; /* On top of header */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+  
+  .chatbot-modal-close i {
+    font-size: 20px !important; /* Larger icon */
+    color: #ffffff !important; /* Pure white */
+    margin: 0 !important;
+    display: block !important;
+  }
+  .chatbot-modal-close:active {
+    background: rgba(239, 68, 68, 0.6) !important;
+    transform: scale(1.1) !important;
+  }
+  /* Ensure modal title is visible */
+  .chatbot-modal-title {
+    font-size: 1rem !important;
+    display: flex !important;
+    visibility: visible !important;
+  }
+}
   </style>
 </head>
 
