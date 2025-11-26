@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Chill Space</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -10,7 +11,262 @@
   <link rel="icon" href="Assets/logo1.svg" type="image/x-icon">
   <link rel="icon" href="Assets/logo3.png" type="image/x-icon">
   <link rel="stylesheet" href="../css/home.css">
+  <style>
+    /* Chatbot Styles */
+    .chatbot-float {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 9999;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .chatbot-float:hover {
+      transform: scale(1.1) rotate(5deg);
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6);
+    }
+
+    .chatbot-icon {
+      font-size: 28px;
+      color: white;
+    }
+
+    .chatbot-tooltip {
+      position: absolute;
+      right: 70px;
+      background: rgba(15, 23, 42, 0.9);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      white-space: nowrap;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    /* Chatbot Styles */
+    .chatbot-float {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 9999;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .chatbot-float:hover {
+      transform: scale(1.1) rotate(5deg);
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6);
+    }
+
+    .chatbot-icon {
+      font-size: 28px;
+      color: white;
+    }
+
+    .chatbot-tooltip {
+      position: absolute;
+      right: 70px;
+      background: rgba(15, 23, 42, 0.9);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      white-space: nowrap;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .chatbot-float:hover .chatbot-tooltip {
+      opacity: 1;
+      visibility: visible;
+      right: 80px;
+    }
+
+    /* Chatbot Modal - FULLSCREEN VERSION */
+    .chatbot-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      /* Full viewport width */
+      height: 100vh;
+      /* Full viewport height */
+      z-index: 99999;
+      background: rgba(15, 23, 42, 0.98);
+      /* Darker background */
+      backdrop-filter: blur(12px);
+    }
+
+    .chatbot-modal.active {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chatbot-modal-content {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      background: rgba(15, 23, 42, 0.95);
+    }
+
+    .chatbot-modal-header {
+      padding: 20px 24px;
+      background: rgba(255, 255, 255, 0.05);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+      /* Prevent header from shrinking */
+    }
+
+    .chatbot-modal-title {
+      color: white;
+      font-weight: 600;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .chatbot-modal-title i {
+      color: #8b5cf6;
+      font-size: 1.4rem;
+    }
+
+    .chatbot-modal-close {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #ef4444;
+      cursor: pointer;
+      font-size: 16px;
+      padding: 10px 20px;
+      border-radius: 8px;
+      transition: all 0.2s;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .chatbot-modal-close:hover {
+      background: rgba(239, 68, 68, 0.2);
+      border-color: rgba(239, 68, 68, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .chatbot-iframe-container {
+      flex: 1;
+      /* Take all remaining space */
+      width: 100%;
+      height: 100%;
+      background: rgba(15, 23, 42, 0.95);
+      overflow: hidden;
+      position: relative;
+      /* For loader positioning */
+    }
+
+    .chatbot-iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: transparent;
+    }
+
+    /* Loading spinner for iframe */
+    .chatbot-iframe-container::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(139, 92, 246, 0.2);
+      border-top-color: #8b5cf6;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      z-index: 1;
+    }
+
+    .chatbot-iframe-container.loaded::before {
+      display: none;
+    }
+
+    @keyframes spin {
+      to {
+        transform: translate(-50%, -50%) rotate(360deg);
+      }
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    @keyframes modalPop {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .chatbot-modal-header {
+        padding: 16px 20px;
+      }
+
+      .chatbot-modal-title {
+        font-size: 1.1rem;
+      }
+
+      .chatbot-modal-close {
+        padding: 8px 16px;
+        font-size: 14px;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
   <header>
@@ -22,11 +278,12 @@
       </div>
       <h2 id="subtitleText" class="cyber-animated-text" style="font-size:1rem;
       font-weight:500;margin-top:.25rem;min-height: 1.2rem;"></h2>
-    </div>  
+    </div>
     <div class="header-actions">
       <div class="user-info">
         <div class="user-avatar" id="userAvatar">
-          <img id="userAvatarImg" src="Assets/pfp2.jpg" alt="Profile" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">
+          <img id="userAvatarImg" src="Assets/pfp2.jpg" alt="Profile"
+            style="width:100%;height:100%;border-radius:50%;object-fit:cover;">
         </div>
         <span id="username">Username</span>
         <!-- Profile Popover should be OUTSIDE user-info, not inside userAvatar -->
@@ -42,12 +299,13 @@
     </div>
     <!-- In header, for mobile (inside .header-actions) -->
     <span class="mobile-avatar" id="mobileAvatar" style="display: inline-block;">
-      <img id="mobileAvatarImg" src="Assets/pfp2.jpg" alt="Profile" style="width:36px;height:36px;border-radius:50%;object-fit:cover;vertical-align:middle;">
+      <img id="mobileAvatarImg" src="Assets/pfp2.jpg" alt="Profile"
+        style="width:36px;height:36px;border-radius:50%;object-fit:cover;vertical-align:middle;">
     </span>
-      <button class="btn btn-danger btn-sm" id="logoutBtn">
-        <i class="fas fa-sign-out-alt"></i>
-        <span class="desktop-only">Logout</span>
-      </button>
+    <button class="btn btn-danger btn-sm" id="logoutBtn">
+      <i class="fas fa-sign-out-alt"></i>
+      <span class="desktop-only">Logout</span>
+    </button>
   </header>
 
   <main>
@@ -59,24 +317,24 @@
         </div>
 
         <!-- Add this ABOVE the existing chat-messages div -->
-<div class="pinned-messages-section" id="pinnedMessagesSection" style="display: none;">
-  <div class="pinned-header">
-    <h4><i class="fas fa-thumbtack"></i> Pinned Messages</h4>
-    <button class="btn btn-outline btn-sm" onclick="togglePinnedMessages()" id="togglePinnedBtn">
-      <i class="fas fa-chevron-up"></i> Hide
-    </button>
-  </div>
-  <div class="pinned-messages" id="pinnedMessages">
-    <!-- Pinned messages will appear here -->
-  </div>
-</div>
+        <div class="pinned-messages-section" id="pinnedMessagesSection" style="display: none;">
+          <div class="pinned-header">
+            <h4><i class="fas fa-thumbtack"></i> Pinned Messages</h4>
+            <button class="btn btn-outline btn-sm" onclick="togglePinnedMessages()" id="togglePinnedBtn">
+              <i class="fas fa-chevron-up"></i> Hide
+            </button>
+          </div>
+          <div class="pinned-messages" id="pinnedMessages">
+            <!-- Pinned messages will appear here -->
+          </div>
+        </div>
 
-<!-- Your existing chat-messages div stays the same -->
-<div class="chat-messages" id="chatMessages">
-  <!-- Messages will appear here -->
-</div>
+        <!-- Your existing chat-messages div stays the same -->
+        <div class="chat-messages" id="chatMessages">
+          <!-- Messages will appear here -->
+        </div>
 
-        
+
         <!-- Move typing indicator HERE - outside messages but inside chat container -->
         <div id="typingIndicator" class="typing hidden">
           <div class="avatar">
@@ -89,10 +347,10 @@
             </span>
           </div>
         </div>
-        
 
-          <!-- Messages will appear here -->
-      
+
+        <!-- Messages will appear here -->
+
         <div class="chat-input">
           <div class="chat-controls">
             <button class="code-toggle" id="codeToggle" title="Toggle Code Mode">
@@ -101,7 +359,8 @@
             <button class="emoji-toggle" id="emojiToggle" title="Emoji Picker">
               <i class="fas fa-smile"></i>
             </button>
-            <button class="fullscreen-toggle" id="fullscreenToggle" title="Fullscreen Code Editor" style="display: none;">
+            <button class="fullscreen-toggle" id="fullscreenToggle" title="Fullscreen Code Editor"
+              style="display: none;">
               <i class="fas fa-expand"></i>
             </button>
             <select class="language-select" id="languageSelect" style="display: none;">
@@ -127,7 +386,7 @@
             <i class="fas fa-paper-plane"></i>
           </button>
         </div>
-        
+
         <!-- Emoji Picker -->
         <div class="emoji-picker" id="emojiPicker" style="display: none;">
           <div class="emoji-picker-header">
@@ -154,7 +413,7 @@
           </div>
         </div>
       </section>
-  
+
       <!-- Three Column Layout for Upload, Files, Members -->
       <div class="sidebar-grid">
         <section class="card">
@@ -177,7 +436,7 @@
             </button>
           </div>
         </section>
-  
+
         <section class="card">
           <div class="card-header">
             <h2><i class="fas fa-folder-open"></i> Shared Files</h2>
@@ -189,7 +448,7 @@
             <!-- Files will be loaded here -->
           </div>
         </section>
-  
+
         <section class="card">
           <div class="card-header">
             <h2><i class="fas fa-users"></i> Online Members</h2>
@@ -200,7 +459,7 @@
           </div>
         </section>
       </div>
-      
+
       <!-- Games Section (Full Width, now below sidebar-grid) -->
       <section class="card games-section">
         <div class="card-header">
@@ -218,10 +477,12 @@
             </div>
             <div class="game-info">
               <h3 class="game-name">Chess Master</h3>
-              <p class="game-description">Face off in the ultimate battle of minds. Outsmart your opponent in this classic multiplayer chess duel.</p>
+              <p class="game-description">Face off in the ultimate battle of minds. Outsmart your opponent in this
+                classic multiplayer chess duel.</p>
               <div class="game-details">
                 <span class="game-players"><i class="fas fa-users"></i> 2 Players</span>
-                <span class="game-difficulty"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> Strategic </span>
+                <span class="game-difficulty"><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                    class="fas fa-star"></i> Strategic </span>
               </div>
               <div class="game-tags">
                 <span class="tag">Strategy</span>
@@ -230,7 +491,7 @@
               </div>
             </div>
           </div>
-  
+
           <!-- Game Card 2 -->
           <div class="game-card" onclick="openGame('tic-tac-toe')">
             <div class="game-image">
@@ -241,10 +502,11 @@
             </div>
             <div class="game-info">
               <h3 class="game-name">Tic Tac Toe</h3>
-              <p class="game-description">The timeless X vs O battle! Quick, fun, and perfect for friendly face-offs.</p>
+              <p class="game-description">The timeless X vs O battle! Quick, fun, and perfect for friendly face-offs.
+              </p>
               <div class="game-details">
                 <span class="game-players"><i class="fas fa-users"></i> 2 Players</span>
-                <span class="game-difficulty"><i class="fas fa-star"></i><i class="fas fa-star"></i> Medium  </span>
+                <span class="game-difficulty"><i class="fas fa-star"></i><i class="fas fa-star"></i> Medium </span>
               </div>
               <div class="game-tags">
                 <span class="tag">Quick</span>
@@ -253,7 +515,7 @@
               </div>
             </div>
           </div>
-  
+
           <!-- Game Card 3 -->
           <div class="game-card" onclick="openGame('typemaster')">
             <div class="game-image">
@@ -264,10 +526,12 @@
             </div>
             <div class="game-info">
               <h3 class="game-name">Type Master</h3>
-              <p class="game-description">Ready to dominate the keyboard? Blast words, boost speed, and become the ultimate typing warrior.</p>
+              <p class="game-description">Ready to dominate the keyboard? Blast words, boost speed, and become the
+                ultimate typing warrior.</p>
               <div class="game-details">
                 <span class="game-players"><i class="fas fa-users"></i> Solo Challenge</span>
-                <span class="game-difficulty"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> Intense </span>
+                <span class="game-difficulty"><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                    class="fas fa-star"></i> Intense </span>
               </div>
               <div class="game-tags">
                 <span class="tag">Speed</span>
@@ -276,7 +540,7 @@
               </div>
             </div>
           </div>
-  
+
           <!-- Game Card 4 -->
           <div class="game-card" onclick="openGame('advice')">
             <div class="game-image">
@@ -287,10 +551,12 @@
             </div>
             <div class="game-info">
               <h3 class="game-name">Boost Up!</h3>
-              <p class="game-description">Feeling low or bored? Tap to power up your mindset with a random dose of motivation.</p>
+              <p class="game-description">Feeling low or bored? Tap to power up your mindset with a random dose of
+                motivation.</p>
               <div class="game-details">
                 <span class="game-players"><i class="fas fa-users"></i> Solo Mode </span>
-                <span class="game-difficulty"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> Instant Boost </span>
+                <span class="game-difficulty"><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                    class="fas fa-star"></i><i class="fas fa-star"></i> Instant Boost </span>
               </div>
               <div class="game-tags">
                 <span class="tag">Motivation</span>
@@ -299,7 +565,7 @@
               </div>
             </div>
           </div>
-  
+
           <!-- Game Card 5 -->
           <div class="game-card" onclick="openGame('whiteboard')">
             <div class="game-image">
@@ -310,7 +576,8 @@
             </div>
             <div class="game-info">
               <h3 class="game-name">Creative Board</h3>
-              <p class="game-description">Sketch ideas, doodle freely, or brainstorm anything — your imagination has no limits!</p>
+              <p class="game-description">Sketch ideas, doodle freely, or brainstorm anything — your imagination has no
+                limits!</p>
               <div class="game-details">
                 <span class="game-players"><i class="fas fa-users"></i> Solo Mode </span>
                 <span class="game-difficulty"><i class="fas fa-star"></i> Easy</span>
@@ -333,10 +600,11 @@
             </div>
             <div class="game-info">
               <h3 class="game-name">DSA Solver (ONLINE)</h3>
-              <p class="game-description">Practice and solve Data Structures & Algorithms problems interactively online</p>
+              <p class="game-description">Practice and solve Data Structures & Algorithms problems interactively online
+              </p>
               <div class="game-details">
                 <span class="game-players"><i class="fas fa-users"></i> 1 Player</span>
-                <span class="game-difficulty" > ☠️☠️☠️ Extreme  </span>
+                <span class="game-difficulty"> ☠️☠️☠️ Extreme </span>
               </div>
               <div class="game-tags">
                 <span class="tag">DSA</span>
@@ -358,9 +626,10 @@
               <p class="game-description">Challenge your knowledge with high-intensity quizzes across various topics
               <div class="game-details">
                 <span class="game-players"><i class="fas fa-users"></i> 1 Player</span>
-              </p>
-              
-                <span class="game-difficulty" ><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> Hard  </span>
+                </p>
+
+                <span class="game-difficulty"><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                    class="fas fa-star"></i> Hard </span>
               </div>
               <div class="game-tags">
                 <span class="tag">Quiz</span>
@@ -379,10 +648,11 @@
             </div>
             <div class="game-info">
               <h3 class="game-name">Snake Reloaded</h3>
-              <p class="game-description">The legendary snake is back! Eat, grow, and dodge in this fast-paced arcade remake.</p>
+              <p class="game-description">The legendary snake is back! Eat, grow, and dodge in this fast-paced arcade
+                remake.</p>
               <div class="game-details">
                 <span class="game-players"><i class="fas fa-users"></i> 1 Player</span>
-                <span class="game-difficulty" ><i class="fas fa-star"></i><i class="fas fa-star"></i> Medium  </span>
+                <span class="game-difficulty"><i class="fas fa-star"></i><i class="fas fa-star"></i> Medium </span>
               </div>
               <div class="game-tags">
                 <span class="tag">Arcade</span>
@@ -404,9 +674,11 @@
               <h3 class="game-name">Aptitude Test</h3>
               <p class="game-description">
                 Let’s crack aptitude together! <br>
-                <span style="color: #dc2626; font-weight: 600; font-size: 0.95rem; opacity: 0.85; animation: pulseFade 1.5s infinite;">STILL IN DEVELOPMENT ⚠️⚠️</span>
+                <span
+                  style="color: #dc2626; font-weight: 600; font-size: 0.95rem; opacity: 0.85; animation: pulseFade 1.5s infinite;">STILL
+                  IN DEVELOPMENT ⚠️⚠️</span>
               </p>
-              
+
               <div class="game-details">
                 <span class="game-players"><i class="fas fa-users"></i> 1 Player</span>
                 <span class="game-difficulty"><i class="fas fa-star"></i><i class="fas fa-star"></i> Medium</span>
@@ -418,46 +690,46 @@
               </div>
             </div>
           </div>
-          
-          
+
+
         </div>
       </section>
     </div>
   </main>
   <!-- File-preview modal -->
-<div id="previewModal" class="preview-modal">
-  <div class="preview-modal-content">
-    <button class="preview-modal-close" onclick="closePreview()">
-      <i class="fas fa-times"></i>
-    </button>
-    <!-- Dynamic container -->
-    <div id="previewBody"></div>
+  <div id="previewModal" class="preview-modal">
+    <div class="preview-modal-content">
+      <button class="preview-modal-close" onclick="closePreview()">
+        <i class="fas fa-times"></i>
+      </button>
+      <!-- Dynamic container -->
+      <div id="previewBody"></div>
+    </div>
   </div>
-</div>
-<div id="editProfileModal" class="profile-edit-modal">
-  <div class="profile-edit-content">
-    <button class="profile-edit-close" onclick="closeEditProfile()">
-      <i class="fas fa-times"></i>
-    </button>
-    <h2>Edit Profile</h2>
-    <form id="profileEditForm" enctype="multipart/form-data" autocomplete="off">
-      <div class="profile-edit-avatar">
-        <img id="editProfileImg" src="Assets/pfp2.jpg" alt="Avatar">
-        <input type="file" name="avatar" id="avatarInput" accept="image/*">
-      </div>
-      <div class="profile-edit-field">
-        <label>Username</label>
-        <input type="text" id="editUsername" name="username" required>
-      </div>
-      <div class="profile-edit-field">
-        <label>Date of Birth</label>
-        <input type="date" id="editDob" name="dob">
-      </div>
-      <button type="submit" class="btn btn-primary" style="margin-top: 1em;">Save Changes</button>
-    </form>
+  <div id="editProfileModal" class="profile-edit-modal">
+    <div class="profile-edit-content">
+      <button class="profile-edit-close" onclick="closeEditProfile()">
+        <i class="fas fa-times"></i>
+      </button>
+      <h2>Edit Profile</h2>
+      <form id="profileEditForm" enctype="multipart/form-data" autocomplete="off">
+        <div class="profile-edit-avatar">
+          <img id="editProfileImg" src="Assets/pfp2.jpg" alt="Avatar">
+          <input type="file" name="avatar" id="avatarInput" accept="image/*">
+        </div>
+        <div class="profile-edit-field">
+          <label>Username</label>
+          <input type="text" id="editUsername" name="username" required>
+        </div>
+        <div class="profile-edit-field">
+          <label>Date of Birth</label>
+          <input type="date" id="editDob" name="dob">
+        </div>
+        <button type="submit" class="btn btn-primary" style="margin-top: 1em;">Save Changes</button>
+      </form>
+    </div>
   </div>
-</div>
-  
+
 
   <!-- Fullscreen Code Editor -->
   <div class="fullscreen-overlay" id="fullscreenOverlay">
@@ -515,87 +787,97 @@
   <!-- Toast Notification System -->
   <div id="toastContainer" class="toast-container"></div>
 
-  <footer style="background: var(--dark); border-top: 1.5px solid var(--card-border); box-shadow: 0 -4px 24px -8px rgba(0,0,0,0.10), 0 -1px 0 0 rgba(148,163,184,0.10); padding: 2rem 0 1.2rem 0;">
-    <div style="max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 1.1em;">
-      <div style="font-size: 1.15rem; font-weight: 600; color: var(--primary); display: flex; align-items: center; gap: 0.5em; letter-spacing: 0.01em;">
+  <footer
+    style="background: var(--dark); border-top: 1.5px solid var(--card-border); box-shadow: 0 -4px 24px -8px rgba(0,0,0,0.10), 0 -1px 0 0 rgba(148,163,184,0.10); padding: 2rem 0 1.2rem 0;">
+    <div
+      style="max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 1.1em;">
+      <div
+        style="font-size: 1.15rem; font-weight: 600; color: var(--primary); display: flex; align-items: center; gap: 0.5em; letter-spacing: 0.01em;">
         <i class="fas fa-meteor"></i>
         Chill Space – Tamizh & Co.
       </div>
       <div style="width: 100%; height: 1px; background: var(--card-border); margin: 0.5em 0 0.2em 0;"></div>
-      <div style="display: flex; flex-direction: row; gap: 1.5em; flex-wrap: wrap; justify-content: center; align-items: center;">
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeZq1r-dkj_B6La2_owrnof10yGgF4AWWfqYHktguRD9Tfe7g/viewform?usp=dialog" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 500; display: flex; align-items: center; gap: 0.4em; transition: color 0.2s;">
+      <div
+        style="display: flex; flex-direction: row; gap: 1.5em; flex-wrap: wrap; justify-content: center; align-items: center;">
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeZq1r-dkj_B6La2_owrnof10yGgF4AWWfqYHktguRD9Tfe7g/viewform?usp=dialog"
+          target="_blank"
+          style="color: var(--primary); text-decoration: none; font-weight: 500; display: flex; align-items: center; gap: 0.4em; transition: color 0.2s;">
           <i class="fas fa-bug"></i>
           <span>Report a bug / Suggest a feature</span>
         </a>
         <span style="color: var(--gray); font-size: 1.1em;">|</span>
-        <a href="mailto:jefftamizh01@gmail.com" style="color: var(--secondary); text-decoration: none; font-weight: 500; display: flex; align-items: center; gap: 0.4em; transition: color 0.2s;">
+        <a href="mailto:jefftamizh01@gmail.com"
+          style="color: var(--secondary); text-decoration: none; font-weight: 500; display: flex; align-items: center; gap: 0.4em; transition: color 0.2s;">
           <i class="fas fa-envelope"></i>
           <span>Contact: jefftamizh01@gmail.com</span>
         </a>
       </div>
-      <div style="display: flex; flex-direction: row; gap: 1.2em; margin-top: 0.2em; justify-content: center; align-items: center;">
-        <a href="https://github.com/Tamizh019" target="_blank" aria-label="GitHub" style="color: var(--gray); font-size: 1.35em; margin: 0 0.1em; transition: color 0.2s;"><i class="fab fa-github"></i></a>
-        <a href="https://www.linkedin.com/in/tamizharasan-r-a6931828a/" target="_blank" aria-label="LinkedIn" style="color: #0A66C2; font-size: 1.35em; margin: 0 0.1em; transition: color 0.2s;"><i class="fab fa-linkedin"></i></a>
+      <div
+        style="display: flex; flex-direction: row; gap: 1.2em; margin-top: 0.2em; justify-content: center; align-items: center;">
+        <a href="https://github.com/Tamizh019" target="_blank" aria-label="GitHub"
+          style="color: var(--gray); font-size: 1.35em; margin: 0 0.1em; transition: color 0.2s;"><i
+            class="fab fa-github"></i></a>
+        <a href="https://www.linkedin.com/in/tamizharasan-r-a6931828a/" target="_blank" aria-label="LinkedIn"
+          style="color: #0A66C2; font-size: 1.35em; margin: 0 0.1em; transition: color 0.2s;"><i
+            class="fab fa-linkedin"></i></a>
       </div>
       <div style="width: 100%; height: 1px; background: var(--card-border); margin: 0.7em 0 0.2em 0;"></div>
-      <div style="font-size: 0.97rem; color: var(--gray); letter-spacing: 0.01em; display: flex; align-items: center; gap: 0.5em;">
+      <div
+        style="font-size: 0.97rem; color: var(--gray); letter-spacing: 0.01em; display: flex; align-items: center; gap: 0.5em;">
         <span>For educational purposes only 💀</span>
       </div>
     </div>
   </footer>
   <!-- Mobile Profile Modal -->
-<div id="mobileProfileModal" style="
+  <div id="mobileProfileModal" style="
 display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:25000;
 background:rgba(0,0,0,0.72);backdrop-filter:blur(4px); align-items: center; justify-content: center;">
-<div style="
+    <div style="
   background:#fff;max-width:320px;width:95vw;margin:0 auto;border-radius:18px;
   padding:2em 1em 1.2em 1em;box-shadow:0 2px 24px rgba(30,41,59,0.13);text-align:center;position:relative;">
-  <button style="
+      <button style="
     background: #ef4444; color: #fff; border:none; border-radius:50%;
-    width:32px; height:32px; position:absolute; top:12px; right:12px; font-size:1.2em;" 
-    id="closeMobileProfile"
-    aria-label="Close"
-  >
-    &times;
-  </button>
-  <img id="mobileProfileImg" src="Assets/pfp2.jpg" alt="avatar"
-    style="width:74px;height:74px;border-radius:50%;object-fit:cover;margin-bottom:0.8em;">
-  <div style="font-weight:600;font-size:1.08em; color:#232323;" id="mobileProfileName">Name</div>
-  <div style="color: #6366f1; font-size:0.96em;margin-top:0.18em;" id="mobileProfileEmail">email@example.com</div>
-  <div style="color: #666; font-size:0.91em;margin-top:0.15em;" id="mobileProfileDob">DOB: Not set</div>
-</div>
-</div>
-
-<!-- Floating Chatbot Icon -->
-<!-- <div class="chatbot-float" id="chatbotFloat">
-  <div class="chatbot-icon">
-    <i class="fas fa-robot"></i>
-  </div>
-  <div class="chatbot-tooltip">Ask me anything!</div>
-</div> -->
-
-<!-- Chatbot Modal -->
-<!-- <div class="chatbot-modal" id="chatbotModal">
-  <div class="chatbot-modal-content">
-    <div class="chatbot-modal-header">
-      <div class="chatbot-modal-title">
-        <i class="fas fa-robot"></i>
-        AI Assistant
-      </div>
-      <button class="chatbot-modal-close" id="closeChatbot">
-        <i class="fas fa-times"></i>
+    width:32px; height:32px; position:absolute; top:12px; right:12px; font-size:1.2em;" id="closeMobileProfile"
+        aria-label="Close">
+        &times;
       </button>
-    </div>
-    <div class="chatbot-iframe-container">
-      <iframe 
-        id="chatbotIframe" 
-        src="" 
-        class="chatbot-iframe"
-        frameborder="0">
-      </iframe>
+      <img id="mobileProfileImg" src="Assets/pfp2.jpg" alt="avatar"
+        style="width:74px;height:74px;border-radius:50%;object-fit:cover;margin-bottom:0.8em;">
+      <div style="font-weight:600;font-size:1.08em; color:#232323;" id="mobileProfileName">Name</div>
+      <div style="color: #6366f1; font-size:0.96em;margin-top:0.18em;" id="mobileProfileEmail">email@example.com</div>
+      <div style="color: #666; font-size:0.91em;margin-top:0.15em;" id="mobileProfileDob">DOB: Not set</div>
     </div>
   </div>
-</div> -->
+
+  <!-- Floating Chatbot Icon -->
+  <div class="chatbot-float" id="chatbotFloat">
+    <div class="chatbot-icon">
+      <i class="fas fa-robot"></i>
+    </div>
+    <div class="chatbot-tooltip">Ask Sparky!</div>
+  </div>
+
+  <!-- Chatbot Modal -->
+  <div class="chatbot-modal" id="chatbotModal">
+    <div class="chatbot-modal-content">
+      <div class="chatbot-modal-header">
+        <div class="chatbot-modal-title">
+          <i class="fas fa-robot"></i>
+          Sparky AI
+        </div>
+        <button class="chatbot-modal-close" id="closeChatbot">
+          <i class="fas fa-times"></i>
+          Close
+        </button>
+      </div>
+      <div class="chatbot-iframe-container">
+        <iframe id="chatbotIframe" src="" class="chatbot-iframe" frameborder="0">
+        </iframe>
+      </div>
+    </div>
+  </div>
+
+
 
 
   <script src="../js/home.js"></script>
@@ -603,31 +885,103 @@ background:rgba(0,0,0,0.72);backdrop-filter:blur(4px); align-items: center; just
   <script type="module">
 
     // Click avatar to open (mobile)
-document.getElementById('mobileAvatar').addEventListener('click', function() {
-  // Fallback values in case profile isn't loaded yet
-  const name = (currentProfile && currentProfile.username) || 'User';
-  const email = (currentUser && currentUser.email) || 'user@example.com';
-  const dob = (currentProfile && currentProfile.dob) ? `DOB: ${currentProfile.dob}` : '';
-  const avatar = (currentProfile && currentProfile.avatar_url) || 'Assets/pfp2.jpg';
+    document.getElementById('mobileAvatar').addEventListener('click', function () {
+      // Fallback values in case profile isn't loaded yet
+      const name = (currentProfile && currentProfile.username) || 'User';
+      const email = (currentUser && currentUser.email) || 'user@example.com';
+      const dob = (currentProfile && currentProfile.dob) ? `DOB: ${currentProfile.dob}` : '';
+      const avatar = (currentProfile && currentProfile.avatar_url) || 'Assets/pfp2.jpg';
 
-  document.getElementById('mobileProfileImg').src = avatar;
-  document.getElementById('mobileProfileName').textContent = name;
-  document.getElementById('mobileProfileEmail').textContent = email;
-  document.getElementById('mobileProfileDob').textContent = dob;
+      document.getElementById('mobileProfileImg').src = avatar;
+      document.getElementById('mobileProfileName').textContent = name;
+      document.getElementById('mobileProfileEmail').textContent = email;
+      document.getElementById('mobileProfileDob').textContent = dob;
 
-  document.getElementById('mobileProfileModal').style.display = "flex";
-});
+      document.getElementById('mobileProfileModal').style.display = "flex";
+    });
 
-// Hide on close
-document.getElementById('closeMobileProfile').addEventListener('click', function() {
-  document.getElementById('mobileProfileModal').style.display = "none";
-});
+    // Hide on close
+    document.getElementById('closeMobileProfile').addEventListener('click', function () {
+      document.getElementById('mobileProfileModal').style.display = "none";
+    });
 
-// Optional: Hide on clicking outside modal content
-document.getElementById('mobileProfileModal').addEventListener('click', function(e) {
-  if (e.target === this) this.style.display = "none";
-});
+    // Optional: Hide on clicking outside modal content
+    document.getElementById('mobileProfileModal').addEventListener('click', function (e) {
+      if (e.target === this) this.style.display = "none";
+    });
+
+    // === CHATBOT LOGIC ===
+    const chatbotFloat = document.getElementById('chatbotFloat');
+    const chatbotModal = document.getElementById('chatbotModal');
+    const closeChatbot = document.getElementById('closeChatbot');
+    const chatbotIframe = document.getElementById('chatbotIframe');
+
+    const CHATBOT_URL = 'http://localhost:5175';
+
+    // Open chatbot
+    if (chatbotFloat) {
+      chatbotFloat.addEventListener('click', () => {
+        if (chatbotModal) chatbotModal.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+
+        // Wait for user to be loaded
+        const waitForUser = setInterval(() => {
+          if (typeof currentUser !== 'undefined' && currentUser) {
+            clearInterval(waitForUser);
+
+            if (chatbotIframe) {
+              const currentSrc = chatbotIframe.getAttribute('src');
+              if (!currentSrc || currentSrc === '') {
+                const userId = currentUser.id || 'guest';
+                console.log('Opening chatbot for user:', userId);
+                chatbotIframe.setAttribute('src', `${CHATBOT_URL}?userId=${userId}`);
+              }
+            }
+          }
+        }, 100);
+
+        // Timeout after 5 seconds
+        setTimeout(() => clearInterval(waitForUser), 5000);
+      });
+    }
+
+    // Close chatbot function
+    function closeChatbotModal() {
+      if (chatbotModal) chatbotModal.classList.remove('active');
+      document.body.style.overflow = ''; // Restore scrolling
+    }
+
+    // Close button
+    if (closeChatbot) {
+      closeChatbot.addEventListener('click', closeChatbotModal);
+    }
+
+    // ESC key to close
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && chatbotModal && chatbotModal.classList.contains('active')) {
+        closeChatbotModal();
+      }
+    });
+
+    // Click outside to close (optional)
+    if (chatbotModal) {
+      chatbotModal.addEventListener('click', (e) => {
+        if (e.target === chatbotModal) {
+          closeChatbotModal();
+        }
+      });
+    }
+
+    // Loading indicator logic
+    if (chatbotIframe) {
+      chatbotIframe.onload = () => {
+        const container = document.querySelector('.chatbot-iframe-container');
+        if (container) container.classList.add('loaded');
+        console.log('✅ Chatbot loaded successfully');
+      };
+    }
 
   </script>
 </body>
+
 </html>

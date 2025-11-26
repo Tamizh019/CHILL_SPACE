@@ -817,8 +817,6 @@ console.log(`⏹️ User ${payload.name} stopped typing`);
 delete usersTyping[payload.userId];
 }
 
-console.log('👥 Current typing users:', Object.keys(usersTyping));
-updateTypingIndicator();
 }
 
 
@@ -2108,30 +2106,6 @@ function copyFromElement(selector) {
 /* ---------- Typing indicator helpers ---------- */
 
 
-function handleTyping() {
-console.log('⌨️ handleTyping called');
-
-if (!presenceChannel) {
-console.warn('⚠️ No presence channel available for typing signal');
-return;
-}
-
-if (!currentUser || !currentProfile) {
-console.warn('⚠️ User data not available for typing signal');
-return;
-}
-
-// Send typing signal
-sendTypingSignal(true);
-
-// Reset the timer - now typingTimer is properly declared
-clearTimeout(typingTimer);
-typingTimer = setTimeout(() => {
-console.log('⏱️ Typing timer expired, sending stop signal');
-sendTypingSignal(false);
-}, 3000);
-}
-
 function stopTyping() {
 console.log('🛑 stopTyping called');
 clearTimeout(typingTimer);
@@ -2262,8 +2236,6 @@ console.log(`⏹️ User ${payload.name} stopped typing`);
 delete usersTyping[payload.userId];
 }
 
-console.log('👥 Current typing users:', Object.keys(usersTyping));
-updateTypingIndicator();
 }
 
 
