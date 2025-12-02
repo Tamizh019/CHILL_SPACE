@@ -254,9 +254,7 @@
 
     @media (max-width: 768px) {
       .chatbot-modal-header {
-        padding: 12px 16px;
-        background: rgba(15, 23, 42, 0.98);
-        /* More opaque on mobile */
+        padding: 16px 20px;
       }
 
       .chatbot-modal-title {
@@ -264,91 +262,8 @@
       }
 
       .chatbot-modal-close {
-        padding: 8px;
-        width: 36px;
-        height: 36px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        /* Circle shape on mobile */
-        background: rgba(239, 68, 68, 0.2);
-        /* More visible background */
-        border: 1px solid rgba(239, 68, 68, 0.5);
-      }
-
-      /* Hide the text "Close" on mobile, only show icon */
-      .chatbot-modal-close {
-        font-size: 0;
-        /* Hide text */
-      }
-
-      .chatbot-modal-close i {
-        font-size: 16px;
-        /* Show icon */
-        margin: 0;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .chatbot-modal-header {
-        padding: 10px 12px !important;
-        background: rgba(15, 23, 42, 1) !important;
-        /* Fully opaque */
-        display: flex !important;
-        /* Force display */
-        visibility: visible !important;
-        /* Force visible */
-        opacity: 1 !important;
-        /* Force opaque */
-        position: sticky !important;
-        /* Stick to top */
-        top: 0 !important;
-        z-index: 10001 !important;
-        /* Above everything */
-      }
-
-      .chatbot-modal-close {
-        padding: 10px !important;
-        width: 44px !important;
-        /* Larger touch target */
-        height: 44px !important;
-        /* Apple recommends 44x44px */
-        border-radius: 50% !important;
-        background: rgba(239, 68, 68, 0.4) !important;
-        /* Bright red */
-        border: 2px solid #ef4444 !important;
-        /* Solid border */
-        font-size: 0 !important;
-        position: relative !important;
-        z-index: 10002 !important;
-        /* On top of header */
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-      }
-
-      .chatbot-modal-close i {
-        font-size: 20px !important;
-        /* Larger icon */
-        color: #ffffff !important;
-        /* Pure white */
-        margin: 0 !important;
-        display: block !important;
-      }
-
-      .chatbot-modal-close:active {
-        background: rgba(239, 68, 68, 0.6) !important;
-        transform: scale(1.1) !important;
-      }
-
-      /* Ensure modal title is visible */
-      .chatbot-modal-title {
-        font-size: 1rem !important;
-        display: flex !important;
-        visibility: visible !important;
+        padding: 8px 16px;
+        font-size: 14px;
       }
     }
   </style>
@@ -1057,7 +972,7 @@ background:rgba(0,0,0,0.72);backdrop-filter:blur(4px); align-items: center; just
     const closeChatbot = document.getElementById('closeChatbot');
     const chatbotIframe = document.getElementById('chatbotIframe');
 
-    const CHATBOT_URL = 'http://localhost:5174';
+    const CHATBOT_URL = 'http://localhost:5175';
 
     // Open chatbot
     if (chatbotFloat) {

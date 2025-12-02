@@ -28,18 +28,12 @@ What began as a workaround for network restrictions evolved into a feature-rich 
 
 ## 🚀 Features
 
-- **Network-Friendly**: Works on restricted college/corporate networks where social media is blocked
 - **Real-time Group Chat**: Instantly send and receive messages with all online users
 - **User Roles**: Each user has a role (Admin, Moderator, VIP, User) shown beside their name in chat and member lists
 - **Online Presence**: See who is online in real time
 - **File Sharing**: Upload, download, and share files with the group. Preview selected files before uploading
 - **Code Snippets**: Send code with syntax highlighting and language selection - perfect for sharing homework solutions and project code!
-- **Emoji Picker**: Express yourself with a built-in emoji picker
-- **Responsive UI**: Beautiful, mobile-friendly design with dark mode and glassmorphism effects
 - **Authentication**: Secure registration, login, and password reset via Supabase Auth
-- **Email Integration**: Customizable email templates for welcome and password reset (see `SMTP_SETUP_GUIDE.md`)
-- **Toast Notifications**: Friendly feedback for all actions (success, error, info)
-- **Browser-Based**: No app installation required - works directly in web browsers
 
 ---
 
@@ -61,7 +55,6 @@ As a 19-year-old developer and AI student from Chennai, I created Chill Space to
 ### The Problem:
 - 🚫 **College Networks Block Everything**: WhatsApp, Telegram, Instagram - all blocked during college hours
 - 📧 **Email is Too Slow**: Sharing files and getting quick responses via email takes forever
-- 💾 **File Size Limits**: Traditional platforms have strict file size restrictions
 - 👥 **Group Coordination**: Hard to know who's online and available for collaboration
 - 💻 **Code Sharing Hassle**: No easy way to share and discuss code with syntax highlighting
 
@@ -69,27 +62,10 @@ As a 19-year-old developer and AI student from Chennai, I created Chill Space to
 - ✅ **Network Bypass**: Works on any network that allows basic web browsing
 - ✅ **Real-time Collaboration**: See who's online and chat instantly during study sessions
 - ✅ **Unrestricted File Sharing**: Share projects, documents, and resources without size hassles
-- ✅ **Code-Friendly**: Built-in syntax highlighting for sharing programming solutions
-- ✅ **Student-Focused**: Perfect for study groups, project teams, and academic collaboration
 - ✅ **Privacy-Conscious**: Your own private space for your group - no public social media noise
 - ✅ **Always Accessible**: Works in college computer labs, library systems, and restricted networks
 
 ---
-
-## 🎮 Games
-
-This project includes a collection of games that can be played directly in the browser.
-
-- **Placement:** A placement preparation game.
-- **Quiz:** A quiz game.
-- **Advice:** Get some advice.
-- **Chess:** A classic game of chess.
-- **DSA Solver:** A DSA problem solver.
-- **Snake:** The classic snake game.
-- **Stone Paper Scissor:** A game of stone, paper, scissor.
-- **Tic Tac Toe:** A classic game of Tic Tac Toe.
-- **Typemaster:** A typing speed game.
-- **White:** A game on a white background.
 
 ## 📦 Project Structure
 
@@ -175,9 +151,6 @@ This will start a live server, and you can access the application at `http://loc
 ## ✨ Usage
 - **Register** a new account or **login** with your credentials
 - **Chat** in real time with all online users during study sessions
-- **Share files** by uploading in the sidebar - perfect for sharing project files, documents, and resources
-- **Send code** by toggling code mode in the chat input - great for sharing solutions and getting help
-- **Pick emojis** to add fun to your messages and and keep the mood light during intense study sessions
 - **Reset your password** via the reset link if needed
 - **Access from anywhere** - works on college computers, personal devices, and restricted networks
 
@@ -188,22 +161,7 @@ This will start a live server, and you can access the application at `http://loc
 - **College Students**: Bypass network restrictions and collaborate freely
 - **Study Groups**: Share code, files, and communicate when WhatsApp is blocked  
 - **Project Teams**: Real-time communication with file sharing capabilities
-- **Computer Labs**: Access your group discussions from any college computer
-- **Library Sessions**: Continue collaborating even on restricted library networks
 - **Developer Teams**: Code sharing with syntax highlighting in any network environment
-- **Student Organizations**: Organized communication for clubs and societies without platform dependencies
-
----
-
-## 🌐 Network Compatibility
-
-**Designed for Restrictive Environments**
-- ✅ Works on college ethernet networks
-- ✅ Functions in corporate firewalls
-- ✅ Accessible from library computers
-- ✅ Compatible with public WiFi restrictions
-- ✅ No VPN or proxy required
-- ✅ Browser-only access (no app installation needed)
 
 ---
 
@@ -235,7 +193,6 @@ This will start a live server, and you can access the application at `http://loc
 - **Institution**: Sathyabama Institute of Science and Technology (SIST), Chennai
 - **Inspiration**: Network restrictions that blocked our usual communication platforms
 - **Special Thanks**: To all the classmates who tested this during college hours when everything else was blocked
-- **Beta Testers**: My study group who provided feedback from various college computer labs
 - **Powered by**: [Supabase](https://supabase.com/) - For the amazing open-source backend that works anywhere
 - **Typography**: [Poppins](https://fonts.google.com/specimen/Poppins)
 - **Icons**: [Font Awesome](https://fontawesome.com/)
@@ -271,8 +228,6 @@ This will start a live server, and you can access the application at `http://loc
 - Uses standard HTTPS connections that pass through most firewalls
 - Lightweight architecture doesn't trigger bandwidth restrictions  
 - Supabase backend is rarely blocked by institutional filters
-- No external social media domains that trigger automatic blocks
-- Optimized for the low-bandwidth conditions common in college networks
 
 ---
 
