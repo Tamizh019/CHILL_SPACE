@@ -53,10 +53,7 @@ window.addEventListener('load', function () {
 });
 
 // Initialize Supabase
-const supabase = window.supabase.createClient(
-    'https://cmriyjrqkvpdchvbpnne.supabase.co',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNtcml5anJxa3ZwZGNodmJwbm5lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI4MzcyODYsImV4cCI6MjA2ODQxMzI4Nn0.wWRO5jZuUfrMPV8A3J7j36yweLe4o-uIcSZYaMhY4O8'
-);
+const supabase = window.supabaseClient;
 
 // Register Form Handler
 document.getElementById('registerForm').addEventListener('submit', async e => {

@@ -1,6 +1,4 @@
 // ===== EMOJI.JS - COMPLETE EMOJI SYSTEM =====
-
-// ===== COMPREHENSIVE EMOJI SEARCH DATABASE =====
 const emojiSearchData = {
     // Smileys & Emotions
     '😀': ['grinning', 'face', 'smile', 'happy', 'joy', 'grin', 'cheerful'],

@@ -11,6 +11,7 @@
   <link rel="icon" href="Assets/logo1.svg" type="image/x-icon">
   <link rel="icon" href="Assets/logo3.png" type="image/x-icon">
   <link rel="stylesheet" href="../css/home.css">
+
   <style>
     /* Chatbot Styles */
     .chatbot-float {
@@ -56,6 +57,7 @@
       backdrop-filter: blur(4px);
       border: 1px solid rgba(255, 255, 255, 0.1);
     }
+
     /* Chatbot Styles */
     .chatbot-float {
       position: fixed;
@@ -250,81 +252,105 @@
       }
     }
 
-@media (max-width: 768px) {
-  .chatbot-modal-header {
-    padding: 12px 16px;
-    background: rgba(15, 23, 42, 0.98); /* More opaque on mobile */
-  }
-  .chatbot-modal-title {
-    font-size: 1.1rem;
-  }
-  .chatbot-modal-close {
-    padding: 8px;
-    width: 36px;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%; /* Circle shape on mobile */
-    background: rgba(239, 68, 68, 0.2); /* More visible background */
-    border: 1px solid rgba(239, 68, 68, 0.5);
-  }
-  
-  /* Hide the text "Close" on mobile, only show icon */
-  .chatbot-modal-close {
-    font-size: 0; /* Hide text */
-  }
-  
-  .chatbot-modal-close i {
-    font-size: 16px; /* Show icon */
-    margin: 0;
-  }
-}
-@media (max-width: 480px) {
-  .chatbot-modal-header {
-    padding: 10px 12px !important;
-    background: rgba(15, 23, 42, 1) !important; /* Fully opaque */
-    display: flex !important; /* Force display */
-    visibility: visible !important; /* Force visible */
-    opacity: 1 !important; /* Force opaque */
-    position: sticky !important; /* Stick to top */
-    top: 0 !important;
-    z-index: 10001 !important; /* Above everything */
-  }
-  .chatbot-modal-close {
-    padding: 10px !important;
-    width: 44px !important;  /* Larger touch target */
-    height: 44px !important; /* Apple recommends 44x44px */
-    border-radius: 50% !important;
-    background: rgba(239, 68, 68, 0.4) !important; /* Bright red */
-    border: 2px solid #ef4444 !important; /* Solid border */
-    font-size: 0 !important;
-    position: relative !important;
-    z-index: 10002 !important; /* On top of header */
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-  }
-  
-  .chatbot-modal-close i {
-    font-size: 20px !important; /* Larger icon */
-    color: #ffffff !important; /* Pure white */
-    margin: 0 !important;
-    display: block !important;
-  }
-  .chatbot-modal-close:active {
-    background: rgba(239, 68, 68, 0.6) !important;
-    transform: scale(1.1) !important;
-  }
-  /* Ensure modal title is visible */
-  .chatbot-modal-title {
-    font-size: 1rem !important;
-    display: flex !important;
-    visibility: visible !important;
-  }
-}
+    @media (max-width: 768px) {
+      .chatbot-modal-header {
+        padding: 12px 16px;
+        background: rgba(15, 23, 42, 0.98);
+        /* More opaque on mobile */
+      }
+
+      .chatbot-modal-title {
+        font-size: 1.1rem;
+      }
+
+      .chatbot-modal-close {
+        padding: 8px;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        /* Circle shape on mobile */
+        background: rgba(239, 68, 68, 0.2);
+        /* More visible background */
+        border: 1px solid rgba(239, 68, 68, 0.5);
+      }
+
+      /* Hide the text "Close" on mobile, only show icon */
+      .chatbot-modal-close {
+        font-size: 0;
+        /* Hide text */
+      }
+
+      .chatbot-modal-close i {
+        font-size: 16px;
+        /* Show icon */
+        margin: 0;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .chatbot-modal-header {
+        padding: 10px 12px !important;
+        background: rgba(15, 23, 42, 1) !important;
+        /* Fully opaque */
+        display: flex !important;
+        /* Force display */
+        visibility: visible !important;
+        /* Force visible */
+        opacity: 1 !important;
+        /* Force opaque */
+        position: sticky !important;
+        /* Stick to top */
+        top: 0 !important;
+        z-index: 10001 !important;
+        /* Above everything */
+      }
+
+      .chatbot-modal-close {
+        padding: 10px !important;
+        width: 44px !important;
+        /* Larger touch target */
+        height: 44px !important;
+        /* Apple recommends 44x44px */
+        border-radius: 50% !important;
+        background: rgba(239, 68, 68, 0.4) !important;
+        /* Bright red */
+        border: 2px solid #ef4444 !important;
+        /* Solid border */
+        font-size: 0 !important;
+        position: relative !important;
+        z-index: 10002 !important;
+        /* On top of header */
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+      }
+
+      .chatbot-modal-close i {
+        font-size: 20px !important;
+        /* Larger icon */
+        color: #ffffff !important;
+        /* Pure white */
+        margin: 0 !important;
+        display: block !important;
+      }
+
+      .chatbot-modal-close:active {
+        background: rgba(239, 68, 68, 0.6) !important;
+        transform: scale(1.1) !important;
+      }
+
+      /* Ensure modal title is visible */
+      .chatbot-modal-title {
+        font-size: 1rem !important;
+        display: flex !important;
+        visibility: visible !important;
+      }
+    }
   </style>
 </head>
 
@@ -373,11 +399,20 @@
     <div class="main-content">
       <!-- Chat Container (Full Width) -->
       <section class="card chat-container">
-        <div class="card-header">
-          <h2><i class="fas fa-comments"></i> Group Chat AI-A4 </h2>
+        <!-- Chat Tabs Header -->
+        <div class="card-header chat-tabs-header">
+          <div class="chat-tabs">
+            <button class="chat-tab active" data-tab="group">
+              <i class="fas fa-users"></i> <span>Group Chat</span>
+            </button>
+            <button class="chat-tab" data-tab="private">
+              <i class="fas fa-user-lock"></i> <span>Private Messages</span>
+            </button>
+          </div>
         </div>
 
-        <!-- Add this ABOVE the existing chat-messages div -->
+        <!-- GROUP CHAT VIEW -->
+        <!-- Pinned Messages Section -->
         <div class="pinned-messages-section" id="pinnedMessagesSection" style="display: none;">
           <div class="pinned-header">
             <h4><i class="fas fa-thumbtack"></i> Pinned Messages</h4>
@@ -390,62 +425,105 @@
           </div>
         </div>
 
-        <!-- Your existing chat-messages div stays the same -->
+        <!-- Group Chat Messages -->
         <div class="chat-messages" id="chatMessages">
-          <!-- Messages will appear here -->
+          <!-- Group messages will appear here -->
+
+          <!-- Typing Indicator - MOVED INSIDE chatMessages -->
+          <div id="typingIndicator" class="typing hidden">
+            <div class="avatar">
+              <img id="typingAvatar" src="" alt="">
+            </div>
+            <div class="bubble">
+              <span id="typingName"></span>&nbsp;
+              <span class="dots">
+                <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+              </span>
+            </div>
+          </div>
         </div>
 
-
-        <!-- Move typing indicator HERE - outside messages but inside chat container -->
-        <div id="typingIndicator" class="typing hidden">
-          <div class="avatar">
-            <img id="typingAvatar" src="" alt="" />
+        <!-- PRIVATE CHAT CONTAINER -->
+        <div class="private-chat-container" id="privateChatContainer" style="display: none;">
+          <!-- User List View -->
+          <div class="private-users-list" id="privateUsersList" style="display: block;">
+            <div class="private-users-header">
+              <h3><i class="fas fa-user-friends"></i> Choose a Friend to chat</h3>
+              <p class="users-subtitle">Start a private conversation</p>
+            </div>
+            <div class="users-grid" id="usersGrid">
+              <!-- Users will be loaded here by loadAllUsers() -->
+            </div>
           </div>
-          <div class="bubble">
-            <span id="typingName"></span> &nbsp;
-            <span class="dots">
-              <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-            </span>
+
+          <!-- Private Chat View (Hidden initially) -->
+          <div class="private-chat-view" id="privateChatView" style="display: none;">
+            <!-- Private Chat Header -->
+            <div class="private-chat-header">
+              <button class="back-btn" onclick="backToUsersList()" title="Back to users list">
+                <i class="fas fa-arrow-left"></i>
+              </button>
+              <div class="private-chat-user-info">
+                <div class="private-chat-user-avatar">
+                  <img id="privateChatAvatar" src="Assets/pfp2.jpg" alt="User Avatar">
+                </div>
+                <div class="private-user-details">
+                  <span id="privateChatUsername" class="private-username">User</span>
+                  <span id="privateChatStatus" class="private-status offline">Offline</span>
+                </div>
+              </div>
+            </div>
+
+
+            <!-- Private Messages Container -->
+            <div class="chat-messages" id="privateChatMessages">
+              <!-- Private messages will appear here -->
+              <div class="empty-chat-placeholder">
+                <i class="fas fa-comments"></i>
+                <p style="font-size: 1.1rem; font-weight: 500;">No messages yet</p>
+                <p style="font-size: 0.9rem; opacity: 0.7;">Send a message to start the conversation</p>
+              </div>
+            </div>
           </div>
         </div>
 
-
-        <!-- Messages will appear here -->
-
-        <div class="chat-input">
-          <div class="chat-controls">
-            <button class="code-toggle" id="codeToggle" title="Toggle Code Mode">
-              <i class="fas fa-code"></i>
+        <!-- Chat Input Area -->
+        <div class="chat-input-wrapper">
+          <div class="chat-input">
+            <div class="chat-controls">
+              <button class="code-toggle" id="codeToggle" title="Toggle Code Mode">
+                <i class="fas fa-code"></i>
+              </button>
+              <button class="emoji-toggle" id="emojiToggle" title="Emoji Picker">
+                <i class="fas fa-smile"></i>
+              </button>
+              <button class="fullscreen-toggle" id="fullscreenToggle" title="Fullscreen Code Editor"
+                style="display: none;">
+                <i class="fas fa-expand"></i>
+              </button>
+              <select class="language-select" id="languageSelect" style="display: none;">
+                <option value="javascript">JavaScript</option>
+                <option value="python">Python</option>
+                <option value="html">HTML</option>
+                <option value="css">CSS</option>
+                <option value="java">Java</option>
+                <option value="cpp">C++</option>
+                <option value="csharp">C#</option>
+                <option value="php">PHP</option>
+                <option value="sql">SQL</option>
+                <option value="bash">Bash</option>
+                <option value="json">JSON</option>
+                <option value="xml">XML</option>
+                <option value="markdown">Markdown</option>
+                <option value="plaintext">Plain Text</option>
+              </select>
+            </div>
+            <input type="text" id="chatInput" placeholder="Type your message..." />
+            <textarea id="codeInput" placeholder="Write your code here..." style="display: none;"></textarea>
+            <button class="btn btn-primary" onclick="sendMessage()">
+              <i class="fas fa-paper-plane"></i>
             </button>
-            <button class="emoji-toggle" id="emojiToggle" title="Emoji Picker">
-              <i class="fas fa-smile"></i>
-            </button>
-            <button class="fullscreen-toggle" id="fullscreenToggle" title="Fullscreen Code Editor"
-              style="display: none;">
-              <i class="fas fa-expand"></i>
-            </button>
-            <select class="language-select" id="languageSelect" style="display: none;">
-              <option value="javascript">JavaScript</option>
-              <option value="python">Python</option>
-              <option value="html">HTML</option>
-              <option value="css">CSS</option>
-              <option value="java">Java</option>
-              <option value="cpp">C++</option>
-              <option value="csharp">C#</option>
-              <option value="php">PHP</option>
-              <option value="sql">SQL</option>
-              <option value="bash">Bash</option>
-              <option value="json">JSON</option>
-              <option value="xml">XML</option>
-              <option value="markdown">Markdown</option>
-              <option value="plaintext">Plain Text</option>
-            </select>
           </div>
-          <input type="text" id="chatInput" placeholder="Type your message..." />
-          <textarea id="codeInput" placeholder="Write your code here..." style="display: none;"></textarea>
-          <button class="btn btn-primary" onclick="sendMessage()">
-            <i class="fas fa-paper-plane"></i>
-          </button>
         </div>
 
         <!-- Emoji Picker -->
@@ -474,6 +552,7 @@
           </div>
         </div>
       </section>
+
 
       <!-- Three Column Layout for Upload, Files, Members -->
       <div class="sidebar-grid">
@@ -941,6 +1020,7 @@ background:rgba(0,0,0,0.72);backdrop-filter:blur(4px); align-items: center; just
 
 
 
+  <script src="../js/supabase-config.js"></script>
   <script src="../js/home.js"></script>
   <script src="../js/emoji.js"></script>
   <script type="module">
@@ -977,7 +1057,7 @@ background:rgba(0,0,0,0.72);backdrop-filter:blur(4px); align-items: center; just
     const closeChatbot = document.getElementById('closeChatbot');
     const chatbotIframe = document.getElementById('chatbotIframe');
 
-    const CHATBOT_URL = 'http://localhost:5175';
+    const CHATBOT_URL = 'http://localhost:5174';
 
     // Open chatbot
     if (chatbotFloat) {
